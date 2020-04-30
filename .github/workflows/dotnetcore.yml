@@ -1,4 +1,4 @@
-name: .NET Core
+name: CI/CD
 
 on:
   push:
@@ -20,4 +20,4 @@ jobs:
     
     #Build and test service   
     - name: Run automated unit and integration tests
-      run: dotnet test DevOpsMetrics/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration ${{ env.dotNetConfiguration }} --logger trx --collect "Code coverage" #--settings:./FeatureFlags/FeatureFlags.Tests/CodeCoverage.runsettings
+      run: dotnet test DevOpsMetrics/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Release --logger trx --collect "Code coverage" #--settings:./FeatureFlags/FeatureFlags.Tests/CodeCoverage.runsettings
