@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DevOpsMetrics.Core
 {
@@ -8,29 +9,56 @@ namespace DevOpsMetrics.Core
     /// </summary>
     public class MeanTimeToRestore
     {
-        public bool AddMeanTimeToRestore(string pipelineName, TimeSpan restoreDuration)
-        {
-            //SaveMeanTimeToRestore(pipelineName, restoreDuration);
+        private List<KeyValuePair<DateTime, TimeSpan>> MeanTimeToRestoreList;
 
+        public MeanTimeToRestore()
+        {
+            MeanTimeToRestoreList = new List<KeyValuePair<DateTime, TimeSpan>>();
+        }
+
+        public float ProcessMeanTimeToRestore(List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList, string pipelineName, int numberOfDays)
+        {
+            if (meanTimeToRestoreList != null)
+            {
+                foreach (KeyValuePair<DateTime, TimeSpan> item in meanTimeToRestoreList)
+                {
+                    AddMeanTimeToRestore(pipelineName, item.Key, item.Value);
+                }
+            }
+            return CalculateMeanTimeToRestore(pipelineName, numberOfDays);
+        }
+
+        private bool AddMeanTimeToRestore(string pipelineName, DateTime eventDateTime, TimeSpan restoreDuration)
+        {
+            MeanTimeToRestoreList.Add(new KeyValuePair<DateTime, TimeSpan>(eventDateTime, restoreDuration));
             return true;
         }
 
-        public float CalculateMeanTimeToRestore(string pipelineName, int numberOfDays)
+        private float CalculateMeanTimeToRestore(string pipelineName, int numberOfDays)
         {
-            List<TimeSpan> items = GetMeanTimeToRestore(pipelineName, numberOfDays);
+            List<KeyValuePair<DateTime, TimeSpan>> items = GetMeanTimeToRestore(pipelineName, numberOfDays);
+
+            //Count up the total MTTR minutes
             double totalMinutes = 0;
-            foreach (TimeSpan item in items)
+            foreach (KeyValuePair<DateTime, TimeSpan> item in items)
             {
-                totalMinutes += item.TotalMinutes;
+                totalMinutes += item.Value.TotalMinutes;
             }
-            float meanTimeForChanges = (float)totalMinutes / (float)items.Count;
+
+            //Calculate mean time for changes per day
+            float meanTimeForChanges = 0;
+            if (items.Count > 0)
+            {
+                meanTimeForChanges = (float)totalMinutes / (float)items.Count;
+            }
 
             return meanTimeForChanges;
         }
 
-        private List<TimeSpan> GetMeanTimeToRestore(string pipelineName, int numberOfDays)
+        //Filter the list by date
+        private List<KeyValuePair<DateTime, TimeSpan>> GetMeanTimeToRestore(string pipelineName, int numberOfDays)
         {
-            return new List<TimeSpan> { new TimeSpan(2, 0, 0), new TimeSpan(0, 45, 0), new TimeSpan(1, 0, 0), new TimeSpan(0, 40, 0), new TimeSpan(0, 50, 0) };
+            return MeanTimeToRestoreList.Where(x => x.Key > DateTime.Now.AddDays(-numberOfDays)).ToList();
         }
     }
 }

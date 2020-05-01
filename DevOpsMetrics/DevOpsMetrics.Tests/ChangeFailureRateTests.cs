@@ -1,39 +1,72 @@
 using DevOpsMetrics.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 
 namespace DevOpsMetrics.Tests
 {
     [TestClass]
     public class ChangeFailureRateTests
     {
+     
         [TestMethod]
-        public void AddChangeFailureRateTest()
+        public void ChangeFailureRateSingleOneDayTest()
         {
             //Arrange
             ChangeFailureRate metrics = new ChangeFailureRate();
             string pipelineName = "TestPipeline.CI";
-            bool deploymentSuccessful = true;
+            int numberOfDays = 1;
+            List<KeyValuePair<DateTime, bool>> changeFailureRateList = new List<KeyValuePair<DateTime, bool>>
+            {
+                new KeyValuePair<DateTime, bool>(DateTime.Now, true)
+            };
 
             //Act
-            bool result = metrics.AddChangeFailureRate(pipelineName, deploymentSuccessful);
+            float result = metrics.ProcessLeadTimeForChanges(changeFailureRateList, pipelineName, numberOfDays);
 
             //Assert
-            Assert.AreEqual(true, result);
+            Assert.AreEqual(1f, result);
         }
 
         [TestMethod]
-        public void CalculateChangeFailureRateTest()
+        public void ChangeFailureRateNullOneDayTest()
+        {
+            //Arrange
+            ChangeFailureRate metrics = new ChangeFailureRate();
+            string pipelineName = "TestPipeline.CI";
+            int numberOfDays = 1;
+            List<KeyValuePair<DateTime, bool>> changeFailureRateList = null;
+
+            //Act
+            float result = metrics.ProcessLeadTimeForChanges(changeFailureRateList, pipelineName, numberOfDays);
+
+            //Assert
+            Assert.AreEqual(0f, result);
+        }
+
+        [TestMethod]
+        public void ChangeFailureRateFiveSevenDaysTest()
         {
             //Arrange
             ChangeFailureRate metrics = new ChangeFailureRate();
             string pipelineName = "TestPipeline.CI";
             int numberOfDays = 7;
+            List<KeyValuePair<DateTime, bool>> changeFailureRateList = new List<KeyValuePair<DateTime, bool>>
+            {
+                new KeyValuePair<DateTime, bool>(DateTime.Now, true),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(-1), false),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(-2), true),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(-3), false),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(-4), true),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(-14), true) //this record should be out of range
+            };
 
             //Act
-            float result = metrics.CalculateChangeFailureRate(pipelineName, numberOfDays);
+            float result = metrics.ProcessLeadTimeForChanges(changeFailureRateList, pipelineName, numberOfDays);
 
             //Assert
             Assert.AreEqual(0.6f, result);
         }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DevOpsMetrics.Core
 {
@@ -8,25 +9,49 @@ namespace DevOpsMetrics.Core
     /// </summary>
     public class DeploymentFrequency
     {
-        public bool AddDeploymentFrequency(string pipelineName, DateTime deploymentTime)
-        {
-            //SaveDeploymentFrequency(pipelineName, deploymentTime);
+        private List<KeyValuePair<DateTime, DateTime>> DeploymentFrequencyList;
 
-            return true;
+        public DeploymentFrequency()
+        {
+            DeploymentFrequencyList = new List<KeyValuePair<DateTime, DateTime>>();
         }
 
-        public float CalculateDeploymentFrequency(string pipelineName, int numberOfDays)
+        public float ProcessDeploymentFrequency(List<KeyValuePair<DateTime, DateTime>> deploymentFrequencyList, string pipelineName, int numberOfDays)
         {
-            List<DateTime> items = GetDeploymentFrequency(pipelineName, numberOfDays);
+            if (deploymentFrequencyList != null)
+            {
+                foreach (KeyValuePair<DateTime, DateTime> item in deploymentFrequencyList)
+                {
+                    AddDeploymentFrequency(pipelineName, item.Key, item.Value);
+                }
+            }
+            return CalculateDeploymentFrequency(pipelineName, numberOfDays);
+        }
 
-            float deploymentsPerDay = (float)numberOfDays / (float)items.Count;
+        private bool AddDeploymentFrequency(string pipelineName, DateTime eventDateTime, DateTime deploymentDateTime)
+        {
+            DeploymentFrequencyList.Add(new KeyValuePair<DateTime, DateTime>(eventDateTime, deploymentDateTime));
+            return true;
+        }
+       
+        private float CalculateDeploymentFrequency(string pipelineName, int numberOfDays)
+        {
+            List<KeyValuePair<DateTime, DateTime>> items = GetDeploymentFrequency(pipelineName, numberOfDays);
+
+            //Calculate the deployments per day
+            float deploymentsPerDay = 0;
+            if (items.Count > 0)
+            {
+                deploymentsPerDay = (float)numberOfDays / (float)items.Count;
+            }
 
             return deploymentsPerDay;
         }
 
-        private List<DateTime> GetDeploymentFrequency(string pipelineName, int numberOfDays)
+        //Filter the list by date
+        private List<KeyValuePair<DateTime, DateTime>> GetDeploymentFrequency(string pipelineName, int numberOfDays)
         {
-            return new List<DateTime> { DateTime.Now, DateTime.Now, DateTime.Now, DateTime.Now, DateTime.Now };
+            return DeploymentFrequencyList.Where(x => x.Key > DateTime.Now.AddDays(-numberOfDays)).ToList();
         }
     }
 }
