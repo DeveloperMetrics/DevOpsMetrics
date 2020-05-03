@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 namespace DevOpsMetrics.Tests.AzureDevOps
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [TestCategory("IntegrationTest")]
     [TestClass]
     public class AzureDevOpsDeploymentFrequencyTests
     {
