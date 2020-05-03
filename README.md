@@ -18,3 +18,9 @@ Currently the CI/CD process:
 2. runs the unit tests
 
 Dependabot runs daily to check for dependency upgrades, and will automatically create a pull request, and approve/close it if all of the tests pass successfully 
+
+
+# References
+
+- Azure DevOps API: https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1
+- GitHub API: https://developer.github.com/v3/actions/workflow-runs/
