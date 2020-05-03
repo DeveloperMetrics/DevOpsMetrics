@@ -20,7 +20,7 @@ jobs:
     
     #Build and test service   
     - name: Run automated unit and integration tests
-      run: dotnet test DevOpsMetrics/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Release --logger trx --collect "Code coverage" #--settings:./FeatureFlags/FeatureFlags.Tests/CodeCoverage.runsettings
+      run: dotnet test DevOpsMetrics/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Release --logger trx --collect "Code coverage" --settings:./DevOpsMetrics/DevOpsMetrics.Tests/CodeCoverage.runsettings
 
     #Publish dotnet objects
     - name: .NET Publish Web Service
