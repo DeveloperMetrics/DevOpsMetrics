@@ -8,9 +8,10 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace DevOpsMetrics.Tests.AzureDevOps
+namespace DevOpsMetrics.Tests.GitHub
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [TestCategory("IntegrationTest")]
     [TestClass]
     public class GitHubDeploymentFrequencyTests
     {

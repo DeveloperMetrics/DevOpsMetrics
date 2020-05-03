@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -20,7 +20,7 @@ jobs:
     
     #Build and test service   
     - name: Run automated unit and integration tests
-      run: dotnet test DevOpsMetrics/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Release --logger trx --collect "Code coverage" #--settings:./FeatureFlags/FeatureFlags.Tests/CodeCoverage.runsettings
+      run: dotnet test DevOpsMetrics/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Release --logger trx --collect "Code coverage" --settings:./DevOpsMetrics/DevOpsMetrics.Tests/CodeCoverage.runsettings
 
     #Publish dotnet objects
     - name: .NET Publish Web Service
@@ -32,3 +32,27 @@ jobs:
       with:
         name: serviceapp
         path: DevOpsMetrics/DevOpsMetrics.Service/bin/Release/netcoreapp3.1/publish
+
+  #Deploy the artifacts to Azure
+  deploy:
+    runs-on: windows-latest
+    needs: build    
+    #if: github.ref == 'refs/heads/master'    
+    steps:        
+    # Login with the secret SP details
+    - name: Log into Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_SP }}  
+    
+    #Download the artifacts from GitHub
+    - name: Download serviceapp artifact
+      uses: actions/download-artifact@v1.0.0
+      with:
+        name: serviceapp  
+    #Deploy service and website to Azure staging slots
+    - name: Deploy web service to Azure WebApp
+      uses: Azure/webapps-deploy@v1
+      with:
+        app-name: devopsmetrics-prod-eu-service
+        package: serviceapp  

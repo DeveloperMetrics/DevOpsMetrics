@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace DevOpsMetrics.Tests.Core
 {
+    [TestCategory("UnitTest")]
     [TestClass]
     public class DeploymentFrequencyTests
     {
