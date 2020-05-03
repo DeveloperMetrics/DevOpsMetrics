@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 
-namespace DevOpsMetrics.Tests
+namespace DevOpsMetrics.Tests.Core
 {
     [TestClass]
     public class DeploymentFrequencyTests
@@ -64,7 +64,7 @@ namespace DevOpsMetrics.Tests
             float result = metrics.ProcessDeploymentFrequency(deploymentFrequencyList, pipelineName, numberOfDays);
 
             //Assert
-            Assert.AreEqual(1.4f, result);
+            Assert.AreEqual(0.71428573f, result);
         }
 
     }

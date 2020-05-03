@@ -33,16 +33,17 @@ namespace DevOpsMetrics.Core
             DeploymentFrequencyList.Add(new KeyValuePair<DateTime, DateTime>(eventDateTime, deploymentDateTime));
             return true;
         }
-       
+
         private float CalculateDeploymentFrequency(string pipelineName, int numberOfDays)
         {
             List<KeyValuePair<DateTime, DateTime>> items = GetDeploymentFrequency(pipelineName, numberOfDays);
 
             //Calculate the deployments per day
             float deploymentsPerDay = 0;
-            if (items.Count > 0)
+
+            if (items.Count > 0 && numberOfDays > 0)
             {
-                deploymentsPerDay = (float)numberOfDays / (float)items.Count;
+                deploymentsPerDay = (float)items.Count / (float)numberOfDays;
             }
 
             return deploymentsPerDay;

@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 
-namespace DevOpsMetrics.Tests
+namespace DevOpsMetrics.Tests.Core
 {
     [TestClass]
     public class MeanTimeToRestoreTests
