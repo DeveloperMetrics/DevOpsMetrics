@@ -3,12 +3,28 @@ using DevOpsMetrics.Service.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.DataAccess
 {
     public class GitHubDeploymentFrequencyDA
     {
+        public async Task<List<GitHubActionsRun>> GetDeployments(string owner, string repo, string branch, string workflowId)
+        {
+            List<GitHubActionsRun> deployments = new List<GitHubActionsRun>();
+            string runListResponse = await SendGitHubMessage($"repos/{owner}/{repo}/actions/workflows/{workflowId}/runs", "https://api.github.com/");
+            if (string.IsNullOrEmpty(runListResponse) == false)
+            {
+                dynamic buildListObject = JsonConvert.DeserializeObject(runListResponse);
+                Newtonsoft.Json.Linq.JArray workflow_runs = buildListObject.workflow_runs;
+                deployments = JsonConvert.DeserializeObject<List<GitHubActionsRun>>(workflow_runs.ToString());
+            }
+
+            return deployments;
+        }
+
         public async Task<float> GetDeploymentFrequency(string owner, string repo, string branch, string workflowId, int numberOfDays)
         {
             //Lists the workflows in a repository. 
@@ -17,10 +33,8 @@ namespace DevOpsMetrics.Service.DataAccess
             //List all workflow runs for a workflow.
             //GET /repos/:owner/:repo/actions/workflows/:workflow_id/runs
 
-            string runListResponse = await Base.SendGitHubMessage($"repos/{owner}/{repo}/actions/workflows/{workflowId}/runs", "https://api.github.com/");
-            Console.WriteLine(runListResponse);
             float deploymentFrequencyResult = 0;
-
+            string runListResponse = await SendGitHubMessage($"repos/{owner}/{repo}/actions/workflows/{workflowId}/runs", "https://api.github.com/");
             if (string.IsNullOrEmpty(runListResponse) == false)
             {
                 dynamic buildListObject = JsonConvert.DeserializeObject(runListResponse);
@@ -41,6 +55,28 @@ namespace DevOpsMetrics.Service.DataAccess
                 deploymentFrequencyResult = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
             }
             return deploymentFrequencyResult;
+        }
+
+        private static async Task<string> SendGitHubMessage(string url, string baseURL)
+        {
+            string responseBody = "";
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("DevOpsMetrics", "0.1"));
+
+                using (HttpResponseMessage response = await client.GetAsync(url))
+                {
+                    response.EnsureSuccessStatusCode();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        responseBody = await response.Content.ReadAsStringAsync();
+                    }
+                }
+            }
+            return responseBody;
         }
     }
 }

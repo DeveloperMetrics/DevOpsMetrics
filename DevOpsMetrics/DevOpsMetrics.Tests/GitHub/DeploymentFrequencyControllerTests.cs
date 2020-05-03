@@ -1,10 +1,13 @@
 ﻿using DevOpsMetrics.Service.DataAccess;
+using DevOpsMetrics.Service.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -13,7 +16,7 @@ namespace DevOpsMetrics.Tests.GitHub
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [TestCategory("IntegrationTest")]
     [TestClass]
-    public class GitHubDeploymentFrequencyTests
+    public class DeploymentFrequencyControllerTests
     {
 
         private TestServer _server;
@@ -37,31 +40,26 @@ namespace DevOpsMetrics.Tests.GitHub
         }
 
         [TestMethod]
-        public async Task GitHubDeploymentFrequencyControllerIntegrationTest()
+        public async Task GHDeploymentsControllerIntegrationTest()
         {
-            if (Client != null)
-            {
-                //Arrange
-                string owner = "samsmithnz";
-                string repo = "samsfeatureflags";
-                string branch = "master";
-                string workflowId = "108084";
-                int numberOfDays = 7;
+            //Arrange
+            string owner = "samsmithnz";
+            string repo = "samsfeatureflags";
+            string branch = "master";
+            string workflowId = "108084";
 
-                //Act
-                HttpResponseMessage response = await Client.GetAsync($"/api/DeploymentFrequency/GetGHDeploymentFrequency?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}&numberOfDays={numberOfDays}");
-                response.EnsureSuccessStatusCode();
-                string result = await response.Content.ReadAsStringAsync();
-                response.Dispose();
+            //Act
+            string url = $"/api/DeploymentFrequency/GetGHDeployments?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}";
+            TestResponse<List<GitHubActionsRun>> httpResponse = new TestResponse<List<GitHubActionsRun>>();
+            List<GitHubActionsRun> list = await httpResponse.GetResponse(Client, url);
 
-                //Assert
-                Assert.IsTrue(result != null);
-                Assert.IsTrue(float.Parse(result) > 0);
-            }
+            //Assert
+            Assert.IsTrue(list != null);
+            Assert.IsTrue(list.Count > 0);
         }
 
         [TestMethod]
-        public async Task GitHubDeploymentFrequencyIntegrationTest()
+        public async Task GHDeploymentFrequencyControllerIntegrationTest()
         {
             //Arrange
             string owner = "samsmithnz";
@@ -71,11 +69,12 @@ namespace DevOpsMetrics.Tests.GitHub
             int numberOfDays = 7;
 
             //Act
-            GitHubDeploymentFrequencyDA da = new GitHubDeploymentFrequencyDA();
-            float deploymentFrequencyResult = await da.GetDeploymentFrequency(owner, repo, branch, workflowId, numberOfDays);
+            string url = $"/api/DeploymentFrequency/GetGHDeploymentFrequency?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}&numberOfDays={numberOfDays}";
+            TestResponse<float> httpResponse = new TestResponse<float>();
+            float deploymentFrequency = await httpResponse.GetResponse(Client, url);
 
             //Assert
-            Assert.IsTrue(deploymentFrequencyResult > 0);
+            Assert.IsTrue(deploymentFrequency > 0);
         }
 
     }

@@ -1,10 +1,12 @@
 ﻿using DevOpsMetrics.Service.DataAccess;
+using DevOpsMetrics.Service.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -13,9 +15,8 @@ namespace DevOpsMetrics.Tests.AzureDevOps
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [TestCategory("IntegrationTest")]
     [TestClass]
-    public class AzureDevOpsDeploymentFrequencyTests
+    public class DeploymentFrequencyControllerTests
     {
-
         private TestServer _server;
         public HttpClient Client;
         public IConfigurationRoot Configuration;
@@ -37,50 +38,43 @@ namespace DevOpsMetrics.Tests.AzureDevOps
         }
 
         [TestMethod]
-        public async Task AzureDevOpsDeploymentFrequencyControllerIntegrationTest()
-        {
-
-            if (Client != null)
-            {
-                //Arrange
-                string patToken = Configuration["AppSettings:PatToken"];
-                string organization = "samsmithnz";
-                string project = "SamLearnsAzure";
-                string branch = "refs/heads/master";
-                // string buildName = "SamLearnsAzure.CI";
-                string buildId = "3673"; //SamLearnsAzure.CI
-                int numberOfDays = 7;
-
-                //Act
-                HttpResponseMessage response = await Client.GetAsync($"/api/DeploymentFrequency/GetAzDeploymentFrequency?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}&numberOfDays={numberOfDays}");
-                response.EnsureSuccessStatusCode();
-                string result = await response.Content.ReadAsStringAsync();
-                response.Dispose();
-
-                //Assert
-                Assert.IsTrue(result != null);
-                Assert.IsTrue(float.Parse(result) > 0);
-            }
-        }
-
-        [TestMethod]
-        public async Task AzureDevOpsDeploymentFrequencyIntegrationTest()
+        public async Task AzDeploymentsControllerIntegrationTest()
         {
             //Arrange
             string patToken = Configuration["AppSettings:PatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
-            // string buildName = "SamLearnsAzure.CI";
+            string buildId = "3673"; //SamLearnsAzure.CI
+
+            //Act
+            string url = $"/api/DeploymentFrequency/GetAzDeployments?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}";
+            TestResponse<List<GitHubActionsRun>> httpResponse = new TestResponse<List<GitHubActionsRun>>();
+            List<GitHubActionsRun> list = await httpResponse.GetResponse(Client, url);
+
+            //Assert
+            Assert.IsTrue(list != null);
+            Assert.IsTrue(list.Count > 0);
+        }
+
+        [TestMethod]
+        public async Task AzDeploymentFrequencyControllerIntegrationTest()
+        {
+            //Arrange
+            string patToken = Configuration["AppSettings:PatToken"];
+            string organization = "samsmithnz";
+            string project = "SamLearnsAzure";
+            string branch = "refs/heads/master";
             string buildId = "3673"; //SamLearnsAzure.CI
             int numberOfDays = 7;
 
             //Act
-            AzureDevOpsDeploymentFrequencyDA da = new AzureDevOpsDeploymentFrequencyDA();
-            float deploymentFrequencyResult = await da.GetDeploymentFrequency(patToken, organization, project, branch, buildId, numberOfDays);
+            string url = $"/api/DeploymentFrequency/GetAzDeploymentFrequency?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}&numberOfDays={numberOfDays}";
+            TestResponse<float> httpResponse = new TestResponse<float>();
+            float result = await httpResponse.GetResponse(Client, url);
 
             //Assert
-            Assert.IsTrue(deploymentFrequencyResult > 0);
+            Assert.IsTrue(result > 0);
         }
 
     }
