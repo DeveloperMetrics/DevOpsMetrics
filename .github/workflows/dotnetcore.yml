@@ -21,3 +21,14 @@ jobs:
     #Build and test service   
     - name: Run automated unit and integration tests
       run: dotnet test DevOpsMetrics/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Release --logger trx --collect "Code coverage" #--settings:./FeatureFlags/FeatureFlags.Tests/CodeCoverage.runsettings
+
+    #Publish dotnet objects
+    - name: .NET Publish Web Service
+      run: dotnet publish DevOpsMetrics/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj --configuration Release
+
+    #Publish build artifacts to GitHub
+    - name: Upload web service build artifacts back to GitHub
+      uses: actions/upload-artifact@master
+      with:
+        name: serviceapp
+        path: DevOpsMetrics/DevOpsMetrics.Service/bin/Release/netcoreapp3.1/publish
