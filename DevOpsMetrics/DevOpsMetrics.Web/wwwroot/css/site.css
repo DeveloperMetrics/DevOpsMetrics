@@ -81,7 +81,7 @@ body {
     background: #fff;
 }
 
-h2 {
+h4 {
     margin: 0 0 20px 0;
     padding: 0 0 5px 0;
     border-bottom: 1px solid #999;
@@ -106,32 +106,32 @@ h2 {
     height: 150px;
     width: 18px;
     margin-right: 2px;
+    border: 1px solid darkgray;
 }
 
-.vertical .progress-track-success {
+.vertical .progress-track {
     position: relative;
-    width: 40px;
+    width: 16px;
     height: 100%;
-    background: #107c10;
-}
-
-.vertical .progress-track-failure {
-    position: relative;
-    width: 40px;
-    height: 100%;
-    background: #fa9d2d;
 }
 
 .vertical .progress-fill {
     position: relative;
-    background: #825;
     height: 50%;
-    width: 18px;
+    width: 14px;
     color: #fff;
     text-align: center;
     font-family: "Lato","Verdana",sans-serif;
     font-size: 12px;
     line-height: 20px;
+}
+
+.success {
+    background: #107c10;
+}
+
+.failure {
+    background: #fa9d2d;
 }
 
 .rounded .progress-track,

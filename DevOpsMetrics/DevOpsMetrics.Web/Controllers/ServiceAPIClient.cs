@@ -26,29 +26,15 @@ namespace DevOpsMetrics.Web.Controllers
         public async Task<List<AzureDevOpsBuild>> GetAZDeployments(string patToken, string organization, string project, string branch, string buildId)
         {
             string url = $"/api/DeploymentFrequency/GetAzDeployments?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}";
-            //List<AzureDevOpsBuild> results = await GetResponse<List<AzureDevOpsBuild>>(_client, url);
-            //if (results == null)
-            //{
-            //    return new List<AzureDevOpsBuild>();
-            //}
-            //else
-            //{
-            //    return results;
-            //}
-            List<AzureDevOpsBuild> results = new List<AzureDevOpsBuild>();
-            if (_client != null && url != null)
+            List<AzureDevOpsBuild> results = await GetResponse<List<AzureDevOpsBuild>>(_client, url);
+            if (results == null)
             {
-                using (HttpResponseMessage response = await _client.GetAsync(url))
-                {
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    if (string.IsNullOrEmpty(responseBody) == false)
-                    {
-                        results = JsonConvert.DeserializeObject<List<AzureDevOpsBuild>>(responseBody);
-                    }
-                }
+                return new List<AzureDevOpsBuild>();
             }
-            return results;
+            else
+            {
+                return results;
+            }
         }
 
         public async Task<float> GetAZDeploymentFrequency(string patToken, string organization, string project, string branch, string buildId, int numberOfDays)

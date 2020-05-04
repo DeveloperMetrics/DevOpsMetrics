@@ -6,112 +6,59 @@
 @*https://codepen.io/vmz/pen/GpKbjm*@
 <!-- Vertical, flat -->
 <div class="container vertical flat">
-    <h2>Azure DevOps SamLearnsAzure.CI</h2>
+    <h4>Azure DevOps - SamLearnsAzure.CI</h4>
     @foreach (DevOpsMetrics.Service.Models.AzureDevOpsBuild item in Model.AZList)
     {
-        if (item.status == "completed")
-        {
-            <div class="progress-bar">
-                <div class="progress-track-success">
-                    <div class="progress-fill">
-                        <span>100%</span>
+        <div class="progress-bar">
+            @if (item.status == "completed")
+            {
+                <div class="progress-track success" title="Build @item.status at @item.finishTime.ToString("h:mm:ss tt dd-MMM-yyyy")">
+                    <div class="progress-fill success">
+                        <span style="color:transparent;">100%</span>
                     </div>
                 </div>
-            </div>
-        }
-        else
-        {
-            <div class="progress-bar">
-                <div class="progress-track-failure">
-                    <div class="progress-fill">
-                        <span>100%</span>
+            }
+            else
+            {
+                <div class="progress-track failure" title="Build @item.status at @item.finishTime.ToString("h:mm:ss tt dd-MMM-yyyy")">
+                    <div class="progress-fill failure">
+                        <span style="color:transparent;">80%</span>
                     </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
     }
-
-    @*<div class="progress-bar">
-            <div class="progress-track">
-                <div class="progress-fill">
-                    <span>75%</span>
-                </div>
-            </div>
-        </div>
-        <div class="progress-bar">
-            <div class="progress-track">
-                <div class="progress-fill">
-                    <span>60%</span>
-                </div>
-            </div>
-        </div>
-        <div class="progress-bar">
-            <div class="progress-track">
-                <div class="progress-fill">
-                    <span>20%</span>
-                </div>
-            </div>
-        </div>
-        <div class="progress-bar">
-            <div class="progress-track">
-                <div class="progress-fill">
-                    <span>34%</span>
-                </div>
-            </div>
-        </div>
-        <div class="progress-bar">
-            <div class="progress-track">
-                <div class="progress-fill">
-                    <span>82%</span>
-                </div>
-            </div>
-        </div>*@
+</div>
+<div style="margin-left: 20px; padding-left: 20px;">
+    <b>Deployment frequency (deployments per day):</b> @Model.AZDeploymentFrequency.ToString("0.00")<br />
+    <b>Deployment rating:</b> @Model.AZDeploymentFrequencyText
 </div>
 
-@*<div class="text-center">
-        <h4 class="display-4">Azure DevOps: SamLearnsAzure.CI</h4>
-        <div id="menu" style="width: 330px; height: 160px;">
-            <ul style="display: inline;">
-                @foreach (DevOpsMetrics.Service.Models.AzureDevOpsBuild item in Model.AZList)
-                {
-                    if (item.status == "completed")
-                    {
-                        <li style="background-color: rgba(16,124,16,1); width: 13.1px; height: 60px; opacity: 1;">
-                            @item.status
-                        </li>
-                    }
-                    else
-                    {
-                        <li style="background-color: rgba(250,157,45,1); width: 13.1px; height: 60px; opacity: 1;">
-                            @item.status
-                        </li>
-                    }
-                }
-            </ul>
+<div class="container vertical flat">
+    <h4>GitHub - SamsFeatureFlags.CI</h4>
+    @foreach (DevOpsMetrics.Service.Models.GitHubActionsRun item in Model.GHList)
+    {
+        <div class="progress-bar">
+            @if (item.status == "completed")
+            {
+                <div class="progress-track success" title="Build @item.status at @item.updated_at.ToString("h:mm:ss tt dd-MMM-yyyy")">
+                    <div class="progress-fill success">
+                        <span style="color:transparent;">100%</span>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="progress-track failure" title="Build @item.status at @item.updated_at.ToString("h:mm:ss tt dd-MMM-yyyy")">
+                    <div class="progress-fill failure">
+                        <span style="color:transparent;">80%</span>
+                    </div>
+                </div>
+            }
         </div>
-    </div>*@
-
-@*<div class="text-center">
-        <h4 class="display-4">GitHub Actions: SamsFeatureFlags.CI</h4>
-        <div id="menu" style="width: 330px; height: 160px;">
-            <ul style="display: inline;">
-                @foreach (DevOpsMetrics.Service.Models.GitHubActionsRun item in Model.GHList)
-                {
-                    if (item.status == "completed")
-                    {
-                        <li style="background-color: rgba(16,124,16,1); width: 13.1px; height: 60px; opacity: 1;">
-                            @item.status
-                        </li>
-                    }
-                    else
-                    {
-                        <li style="background-color: rgba(250,157,45,1); width: 13.1px; height: 60px; opacity: 1;">
-                            @item.status
-                        </li>
-                    }
-                }
-            </ul>
-        </div>
-    </div>*@
-
-
+    }
+</div>
+<div style="margin-left: 20px; padding-left: 20px;">
+    <b>Deployment frequency (deployments per day):</b> @Model.GHDeploymentFrequency.ToString("0.00")<br />
+    <b>Deployment rating:</b> @Model.GHDeploymentFrequencyText
+</div>

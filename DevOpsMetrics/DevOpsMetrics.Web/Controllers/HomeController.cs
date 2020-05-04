@@ -37,12 +37,17 @@ namespace DevOpsMetrics.Web.Controllers
             string ghbranch = "master";
             string workflowId = "108084";
 
+            int numberOfDays = 7;
+
             ServiceApiClient service = new ServiceApiClient(_configuration);
             List<AzureDevOpsBuild> azList = await service.GetAZDeployments(patToken, organization, project, azBranch, buildId);
+            float azDeploymentFrequency = await service.GetAZDeploymentFrequency(patToken, organization, project, azBranch, buildId, numberOfDays);
             List<GitHubActionsRun> ghList = await service.GetGHDeployments(owner, repo, ghbranch, workflowId);
+            float ghDeploymentFrequency = await service.GetGHDeploymentFrequency(owner, repo, ghbranch, workflowId, numberOfDays);
 
             IndexDeploymentModel indexModel = new IndexDeploymentModel();
 
+            //Limit Azure DevOps to latest 10 results
             if (azList.Count < 10)
             {
                 indexModel.AZList = azList;
@@ -55,8 +60,27 @@ namespace DevOpsMetrics.Web.Controllers
                 {
                     indexModel.AZList.Add(azList[i]);
                 }
+                indexModel.AZList[7].status = "failed";
             }
-            indexModel.GHList = ghList;
+            indexModel.AZDeploymentFrequency = azDeploymentFrequency;
+
+            //Limit Github to latest 10 results
+            if (ghList.Count < 10)
+            {
+                indexModel.GHList = ghList;
+            }
+            else
+            {
+                indexModel.GHList = new List<GitHubActionsRun>();
+                //Only show the last ten builds
+                for (int i = ghList.Count - 10; i < ghList.Count; i++)
+                {
+                    indexModel.GHList.Add(ghList[i]);
+                }
+                indexModel.GHList[2].status = "failed";
+                indexModel.GHList[3].status = "failed";
+            }
+            indexModel.GHDeploymentFrequency = ghDeploymentFrequency;
 
             return View(indexModel);
         }
