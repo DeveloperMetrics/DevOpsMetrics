@@ -25,13 +25,20 @@ jobs:
     #Publish dotnet objects
     - name: .NET Publish Web Service
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj --configuration Release
-
+    - name: .NET Publish Website
+      run: dotnet publish DevOpsMetrics/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj --configuration Release
+      
     #Publish build artifacts to GitHub
     - name: Upload web service build artifacts back to GitHub
       uses: actions/upload-artifact@master
       with:
         name: serviceapp
         path: DevOpsMetrics/DevOpsMetrics.Service/bin/Release/netcoreapp3.1/publish
+    - name: Upload web service build artifacts back to GitHub
+      uses: actions/upload-artifact@master
+      with:
+        name: webapp
+        path: DevOpsMetrics/DevOpsMetrics.Web/bin/Release/netcoreapp3.1/publish
 
   #Deploy the artifacts to Azure
   deploy:
@@ -49,10 +56,19 @@ jobs:
     - name: Download serviceapp artifact
       uses: actions/download-artifact@v1.0.0
       with:
-        name: serviceapp  
-    #Deploy service and website to Azure staging slots
+        name: serviceapp 
+    - name: Download webapp artifact
+      uses: actions/download-artifact@v1.0.0
+      with:
+        name: webapp    
+    #Deploy service and website to Azure
     - name: Deploy web service to Azure WebApp
       uses: Azure/webapps-deploy@v1
       with:
         app-name: devopsmetrics-prod-eu-service
         package: serviceapp  
+    - name: Deploy website to Azure WebApp
+      uses: Azure/webapps-deploy@v1
+      with:
+        app-name: devopsmetrics-prod-eu-web
+        package: webapp  
