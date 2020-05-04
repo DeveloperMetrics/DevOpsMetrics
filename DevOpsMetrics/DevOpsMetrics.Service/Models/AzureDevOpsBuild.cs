@@ -7,9 +7,9 @@ namespace DevOpsMetrics.Service.Models
 {
     public class AzureDevOpsBuild
     {
-        public string status;
-        public string sourceBranch;
-        public DateTime queueTime;
-        public DateTime finishTime;
+        public string status { get; set; }
+        public string sourceBranch { get; set; }
+        public DateTime queueTime { get; set; }
+        public DateTime finishTime { get; set; }
     }
 }

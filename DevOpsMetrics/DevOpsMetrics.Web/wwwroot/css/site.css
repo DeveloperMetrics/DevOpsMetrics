@@ -1,0 +1,144 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}
+
+/*Bar chart*/
+*, *:before, *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    background: #fff;
+}
+
+h4 {
+    margin: 0 0 20px 0;
+    padding: 0 0 5px 0;
+    border-bottom: 1px solid #999;
+    font-family: sans-serif;
+    font-weight: normal;
+    color: #333;
+}
+
+.container {
+    width: 500px;
+    margin-left: 40px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    background: #fff;
+    /*padding: 20px;*/
+    overflow: hidden;
+    float: left;
+}
+
+/* Vertical */
+
+.vertical .progress-bar {
+    float: left;
+    height: 150px;
+    width: 18px;
+    margin-right: 2px;
+    border: 1px solid darkgray;
+}
+
+.vertical .progress-track {
+    position: relative;
+    width: 16px;
+    height: 100%;
+}
+
+.vertical .progress-fill {
+    position: relative;
+    height: 50%;
+    width: 14px;
+    color: #fff;
+    text-align: center;
+    font-family: "Lato","Verdana",sans-serif;
+    font-size: 12px;
+    line-height: 20px;
+}
+
+.success {
+    background: #107c10;
+}
+
+.failure {
+    background: #fa9d2d;
+}
+
+.rounded .progress-track,
+.rounded .progress-fill {
+    box-shadow: inset 0 0 5px rgba(0,0,0,.2);
+    border-radius: 3px;
+}
+

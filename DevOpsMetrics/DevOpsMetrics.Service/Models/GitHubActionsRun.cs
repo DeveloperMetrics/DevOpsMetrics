@@ -7,9 +7,9 @@ namespace DevOpsMetrics.Service.Models
 {
     public class GitHubActionsRun
     {
-        public string status;
-        public string head_branch;
-        public DateTime created_at;
-        public DateTime updated_at;
+        public string status { get; set; }
+        public string head_branch { get; set; }
+        public DateTime created_at { get; set; }
+        public DateTime updated_at { get; set; }
     }
 }

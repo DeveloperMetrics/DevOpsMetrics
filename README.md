@@ -8,6 +8,8 @@ All four of these metrics are based on production environments, where the value 
 - Mean time to restore(MTTR): How quickly we can restore production in an outage or degradation
 - Change failure rate: after a production deployment, was it successful? Or did we need to deploy a fix/rollback?
 
+More information in a blog post here: https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/
+
 # Architecture
 Uses .Net CORE 3.1, MSTest. A GitHub action runs the CI/CD process. 
 
@@ -17,9 +19,9 @@ Currently the CI/CD process:
 1. builds the code
 2. runs the unit tests
 3. deploys the webservice to Azure (https://devopsmetrics-prod-eu-service.azurewebsites.net)
+4. deploys the demo website to Azure (https://devopsmetrics-prod-eu-web.azurewebsites.net)
 
 Dependabot runs daily to check for dependency upgrades, and will automatically create a pull request, and approve/close it if all of the tests pass successfully 
-
 
 # References
 
