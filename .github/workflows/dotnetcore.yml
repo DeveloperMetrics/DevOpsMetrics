@@ -37,7 +37,7 @@ jobs:
     - name: Upload web service build artifacts back to GitHub
       uses: actions/upload-artifact@master
       with:
-        name: webeapp
+        name: webapp
         path: DevOpsMetrics/DevOpsMetrics.Web/bin/Release/netcoreapp3.1/publish
 
   #Deploy the artifacts to Azure
