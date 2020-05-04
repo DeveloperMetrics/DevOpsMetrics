@@ -92,9 +92,11 @@ h4 {
 
 .container {
     width: 500px;
-    margin: 20px;
+    margin-left: 40px;
+    margin-top: 10px;
+    margin-bottom: 20px;
     background: #fff;
-    padding: 20px;
+    /*padding: 20px;*/
     overflow: hidden;
     float: left;
 }

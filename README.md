@@ -19,9 +19,9 @@ Currently the CI/CD process:
 1. builds the code
 2. runs the unit tests
 3. deploys the webservice to Azure (https://devopsmetrics-prod-eu-service.azurewebsites.net)
+4. deploys the demo website to Azure (https://devopsmetrics-prod-eu-web.azurewebsites.net)
 
 Dependabot runs daily to check for dependency upgrades, and will automatically create a pull request, and approve/close it if all of the tests pass successfully 
-
 
 # References
 

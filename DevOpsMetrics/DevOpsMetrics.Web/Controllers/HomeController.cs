@@ -80,7 +80,7 @@ namespace DevOpsMetrics.Web.Controllers
                 indexModel.GHList[2].status = "failed";
                 indexModel.GHList[3].status = "failed";
             }
-            indexModel.GHDeploymentFrequency = ghDeploymentFrequency;
+            indexModel.GHDeploymentFrequency = ghDeploymentFrequency / 10f;
 
             return View(indexModel);
         }
