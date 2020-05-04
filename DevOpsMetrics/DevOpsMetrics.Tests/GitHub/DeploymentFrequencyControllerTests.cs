@@ -41,7 +41,7 @@ namespace DevOpsMetrics.Tests.GitHub
         }
 
         [TestMethod]
-        public async Task GHDeploymentsControllerIntegrationTest()
+        public async Task GHDeploymentsControllerDirectIntegrationTest()
         {
             //Arrange
             string owner = "samsmithnz";
@@ -52,6 +52,26 @@ namespace DevOpsMetrics.Tests.GitHub
 
             //Act
             List<GitHubActionsRun> list = await controller.GetGHDeployments(owner, repo, branch, workflowId);
+
+            //Assert
+            Assert.IsTrue(list != null);
+            Assert.IsTrue(list.Count > 0);
+            Assert.IsTrue(list[0].status != null);
+        }
+
+        [TestMethod]
+        public async Task GHDeploymentsControllerAPIIntegrationTest()
+        {
+            //Arrange
+            string owner = "samsmithnz";
+            string repo = "samsfeatureflags";
+            string branch = "master";
+            string workflowId = "108084";
+
+            //Act
+            string url = $"/api/DeploymentFrequency/GetGHDeployments?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}";
+            TestResponse<List<GitHubActionsRun>> httpResponse = new TestResponse<List<GitHubActionsRun>>();
+            List<GitHubActionsRun> list = await httpResponse.GetResponse(Client, url);
 
             //Assert
             Assert.IsTrue(list != null);

@@ -39,10 +39,10 @@ namespace DevOpsMetrics.Tests.AzureDevOps
         }
 
         [TestMethod]
-        public async Task AzDeploymentsControllerIntegrationTest()
+        public async Task AzDeploymentsControllerDirectIntegrationTest()
         {
             //Arrange
-            string patToken = Configuration["AppSettings:PatToken"];
+            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
@@ -59,10 +59,31 @@ namespace DevOpsMetrics.Tests.AzureDevOps
         }
 
         [TestMethod]
-        public async Task AzDeploymentFrequencyControllerIntegrationTest()
+        public async Task AzDeploymentsControllerAPIIntegrationTest()
         {
             //Arrange
             string patToken = Configuration["AppSettings:PatToken"];
+            string organization = "samsmithnz";
+            string project = "SamLearnsAzure";
+            string branch = "refs/heads/master";
+            string buildId = "3673"; //SamLearnsAzure.CI
+
+            //Act
+            string url = $"/api/DeploymentFrequency/GetAzDeployments?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}";
+            TestResponse<List<AzureDevOpsBuild>> httpResponse = new TestResponse<List<AzureDevOpsBuild>>();
+            List<AzureDevOpsBuild> list = await httpResponse.GetResponse(Client, url);
+
+            //Assert
+            Assert.IsTrue(list != null);
+            Assert.IsTrue(list.Count > 0);
+            Assert.IsTrue(list[0].status != null);
+        }
+
+        [TestMethod]
+        public async Task AzDeploymentFrequencyControllerIntegrationTest()
+        {
+            //Arrange
+            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
