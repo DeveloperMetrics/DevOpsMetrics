@@ -1,4 +1,5 @@
-﻿using DevOpsMetrics.Service.DataAccess;
+﻿using DevOpsMetrics.Service.Controllers;
+using DevOpsMetrics.Service.DataAccess;
 using DevOpsMetrics.Service.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -46,11 +47,10 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildId = "3673"; //SamLearnsAzure.CI
+            DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            string url = $"/api/DeploymentFrequency/GetAzDeployments?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}";
-            TestResponse<List<AzureDevOpsBuild>> httpResponse = new TestResponse<List<AzureDevOpsBuild>>();
-            List<AzureDevOpsBuild> list = await httpResponse.GetResponse(Client, url);
+            List<AzureDevOpsBuild> list = await controller.GetAzDeployments(patToken, organization, project, branch, buildId);
 
             //Assert
             Assert.IsTrue(list != null);
@@ -68,14 +68,13 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             string branch = "refs/heads/master";
             string buildId = "3673"; //SamLearnsAzure.CI
             int numberOfDays = 7;
+            DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            string url = $"/api/DeploymentFrequency/GetAzDeploymentFrequency?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}&numberOfDays={numberOfDays}";
-            TestResponse<float> httpResponse = new TestResponse<float>();
-            float result = await httpResponse.GetResponse(Client, url);
+            float deploymentFrequency = await controller.GetAzDeploymentFrequency(patToken, organization, project, branch, buildId, numberOfDays);
 
             //Assert
-            Assert.IsTrue(result > 0);
+            Assert.IsTrue(deploymentFrequency > 0);
         }
 
     }

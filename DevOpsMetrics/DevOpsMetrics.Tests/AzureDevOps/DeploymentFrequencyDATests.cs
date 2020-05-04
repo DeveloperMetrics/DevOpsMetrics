@@ -61,10 +61,10 @@ namespace DevOpsMetrics.Tests.AzureDevOps
 
             //Act
             AzureDevOpsDeploymentFrequencyDA da = new AzureDevOpsDeploymentFrequencyDA();
-            float deploymentFrequencyResult = await da.GetDeploymentFrequency(patToken, organization, project, branch, buildId, numberOfDays);
+            float deploymentFrequency = await da.GetDeploymentFrequency(patToken, organization, project, branch, buildId, numberOfDays);
 
             //Assert
-            Assert.IsTrue(deploymentFrequencyResult > 0);
+            Assert.IsTrue(deploymentFrequency > 0);
         }
 
     }

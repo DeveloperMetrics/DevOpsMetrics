@@ -49,10 +49,10 @@ namespace DevOpsMetrics.Tests.GitHub
 
             //Act
             GitHubDeploymentFrequencyDA da = new GitHubDeploymentFrequencyDA();
-            float deploymentFrequencyResult = await da.GetDeploymentFrequency(owner, repo, branch, workflowId, numberOfDays);
+            float deploymentFrequency = await da.GetDeploymentFrequency(owner, repo, branch, workflowId, numberOfDays);
 
             //Assert
-            Assert.IsTrue(deploymentFrequencyResult > 0);
+            Assert.IsTrue(deploymentFrequency > 0);
         }
     }
 }

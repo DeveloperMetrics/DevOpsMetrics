@@ -57,7 +57,7 @@ namespace DevOpsMetrics.Service.DataAccess
             return deploymentFrequencyResult;
         }
 
-        private static async Task<string> SendGitHubMessage(string url, string baseURL)
+        public async Task<string> SendGitHubMessage(string url, string baseURL)
         {
             string responseBody = "";
             using (HttpClient client = new HttpClient())

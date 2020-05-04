@@ -1,4 +1,5 @@
-﻿using DevOpsMetrics.Service.DataAccess;
+﻿using DevOpsMetrics.Service.Controllers;
+using DevOpsMetrics.Service.DataAccess;
 using DevOpsMetrics.Service.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -47,11 +48,10 @@ namespace DevOpsMetrics.Tests.GitHub
             string repo = "samsfeatureflags";
             string branch = "master";
             string workflowId = "108084";
+            DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            string url = $"/api/DeploymentFrequency/GetGHDeployments?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}";
-            TestResponse<List<GitHubActionsRun>> httpResponse = new TestResponse<List<GitHubActionsRun>>();
-            List<GitHubActionsRun> list = await httpResponse.GetResponse(Client, url);
+            List<GitHubActionsRun> list = await controller.GetGHDeployments(owner, repo, branch, workflowId);
 
             //Assert
             Assert.IsTrue(list != null);
@@ -68,11 +68,10 @@ namespace DevOpsMetrics.Tests.GitHub
             string branch = "master";
             string workflowId = "108084";
             int numberOfDays = 7;
+            DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            string url = $"/api/DeploymentFrequency/GetGHDeploymentFrequency?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}&numberOfDays={numberOfDays}";
-            TestResponse<float> httpResponse = new TestResponse<float>();
-            float deploymentFrequency = await httpResponse.GetResponse(Client, url);
+            float deploymentFrequency = await controller.GetGHDeploymentFrequency(owner, repo, branch, workflowId, numberOfDays);
 
             //Assert
             Assert.IsTrue(deploymentFrequency > 0);

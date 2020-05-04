@@ -65,7 +65,7 @@ namespace DevOpsMetrics.Service.DataAccess
             return deploymentFrequencyResult;
         }
 
-        private async Task<string> SendAzureDevOpsMessage(string patToken, string url)
+        public async Task<string> SendAzureDevOpsMessage(string patToken, string url)
         {
             string responseBody = "";
             using (HttpClient client = new HttpClient())
