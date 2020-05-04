@@ -45,6 +45,7 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             //Assert
             Assert.IsTrue(list != null);
             Assert.IsTrue(list.Count > 0);
+            Assert.IsTrue(list[0].status != null);
         }
 
         [TestMethod]

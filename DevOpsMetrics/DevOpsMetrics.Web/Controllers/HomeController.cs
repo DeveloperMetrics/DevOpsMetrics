@@ -42,7 +42,20 @@ namespace DevOpsMetrics.Web.Controllers
             List<GitHubActionsRun> ghList = await service.GetGHDeployments(owner, repo, ghbranch, workflowId);
 
             IndexDeploymentModel indexModel = new IndexDeploymentModel();
-            indexModel.AZList = azList;
+
+            if (azList.Count < 10)
+            {
+                indexModel.AZList = azList;
+            }
+            else
+            {
+                indexModel.AZList = new List<AzureDevOpsBuild>();
+                //Only show the last ten builds
+                for (int i = azList.Count - 10; i < azList.Count; i++)
+                {
+                    indexModel.AZList.Add(azList[i]);
+                }
+            }
             indexModel.GHList = ghList;
 
             return View(indexModel);

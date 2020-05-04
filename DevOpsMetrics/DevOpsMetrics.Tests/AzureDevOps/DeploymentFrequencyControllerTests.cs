@@ -49,12 +49,13 @@ namespace DevOpsMetrics.Tests.AzureDevOps
 
             //Act
             string url = $"/api/DeploymentFrequency/GetAzDeployments?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}";
-            TestResponse<List<GitHubActionsRun>> httpResponse = new TestResponse<List<GitHubActionsRun>>();
-            List<GitHubActionsRun> list = await httpResponse.GetResponse(Client, url);
+            TestResponse<List<AzureDevOpsBuild>> httpResponse = new TestResponse<List<AzureDevOpsBuild>>();
+            List<AzureDevOpsBuild> list = await httpResponse.GetResponse(Client, url);
 
             //Assert
             Assert.IsTrue(list != null);
             Assert.IsTrue(list.Count > 0);
+            Assert.IsTrue(list[0].status != null);
         }
 
         [TestMethod]
