@@ -34,7 +34,7 @@ jobs:
       with:
         name: serviceapp
         path: DevOpsMetrics/DevOpsMetrics.Service/bin/Release/netcoreapp3.1/publish
-    - name: Upload web service build artifacts back to GitHub
+    - name: Upload website build artifacts back to GitHub
       uses: actions/upload-artifact@master
       with:
         name: webapp
