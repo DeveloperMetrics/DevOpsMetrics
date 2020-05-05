@@ -7,6 +7,7 @@ namespace DevOpsMetrics.Service.Models
 {
     public class AzureDevOpsBuild
     {
+        public string id { get; set; }
         public string status { get; set; }
         public string sourceBranch { get; set; }
         public string buildNumber { get; set; }

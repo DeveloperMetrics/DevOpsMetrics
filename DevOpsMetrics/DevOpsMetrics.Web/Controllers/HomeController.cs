@@ -29,13 +29,16 @@ namespace DevOpsMetrics.Web.Controllers
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string azBranch = "refs/heads/master";
-            string buildId = "3673"; //SamLearnsAzure.CI
+            string buildId = "83"; //"3673"; //SamLearnsAzure.CI
 
             //GitHub
             string owner = "samsmithnz";
-            string repo = "DevOpsMetrics"; //"samsfeatureflags";
-            string ghbranch = "AddingWebsite"; //"master";
-            string workflowId = "1162561";// "108084";
+            string repo = "samsfeatureflags";
+            string ghbranch = "master";
+            string workflowId = "108084";
+            //string repo = "DevOpsMetrics"; 
+            //string ghbranch = "AddingWebsite"; 
+            //string workflowId = "1162561";
 
             int numberOfDays = 7;
             bool getDemoData = false;

@@ -4,18 +4,19 @@
 }
 
 @*https://codepen.io/vmz/pen/GpKbjm*@
-<!-- Vertical, flat -->
 <div class="container vertical flat">
     <h4>Azure DevOps - SamLearnsAzure.CI</h4>
     @foreach (DevOpsMetrics.Service.Models.AzureDevOpsBuild item in Model.AZList)
     {
-        <div class="progress-bar">
-            <div class="progress-track" title="Build started at @item.queueTime.ToString("h:mm:ss tt dd-MMM-yyyy") and @item.status at @item.finishTime.ToString("h:mm:ss tt dd-MMM-yyyy"), in @item.buildDuration minutes (@item.buildDurationPercent%)">
-                <div class="progress-fill @item.status">
-                    <span>@item.buildDurationPercent%</span>
+        <a href="@item.url" target="_blank">
+            <div class="progress-bar">
+                <div class="progress-track" title="Build started at @item.queueTime.ToString("h:mm:ss tt dd-MMM-yyyy") and @item.status at @item.finishTime.ToString("h:mm:ss tt dd-MMM-yyyy"), in @item.buildDuration minutes (@item.buildDurationPercent%)">
+                    <div class="progress-fill @item.status">
+                        <span>@item.buildDurationPercent%</span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
     }
 </div>
 <div class="metricSpan">
@@ -28,11 +29,13 @@
     @foreach (DevOpsMetrics.Service.Models.GitHubActionsRun item in Model.GHList)
     {
         <div class="progress-bar">
-            <div class="progress-track" title="Build started at @item.created_at.ToString("h:mm:ss tt dd-MMM-yyyy") and @item.status at @item.updated_at.ToString("h:mm:ss tt dd-MMM-yyyy"), in @item.buildDuration minutes (@item.buildDurationPercent%)">
-                <div class="progress-fill @item.status">
-                    <span>@item.buildDurationPercent%</span>
+            <a href="@item.url" target="_blank">
+                <div class="progress-track" title="Build started at @item.created_at.ToString("h:mm:ss tt dd-MMM-yyyy") and @item.status at @item.updated_at.ToString("h:mm:ss tt dd-MMM-yyyy"), in @item.buildDuration minutes (@item.buildDurationPercent%)">
+                    <div class="progress-fill @item.status">
+                        <span>@item.buildDurationPercent%</span>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     }
 </div>

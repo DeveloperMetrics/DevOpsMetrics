@@ -22,6 +22,11 @@ namespace DevOpsMetrics.Service.DataAccess
                 Newtonsoft.Json.Linq.JArray value = buildListObject.value;
                 builds = JsonConvert.DeserializeObject<List<AzureDevOpsBuild>>(value.ToString());
             }
+            //construct the Url to the build
+            foreach (AzureDevOpsBuild item in builds)
+            {
+                item.url = "https://dev.azure.com/{organization}/{project}/_build/results?buildId={item.id}&view=results";
+            }
             //sort the list
             builds = builds.OrderBy(o => o.queueTime).ToList();
             return builds;
