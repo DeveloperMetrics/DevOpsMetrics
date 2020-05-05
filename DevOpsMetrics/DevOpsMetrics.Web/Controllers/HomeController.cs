@@ -48,8 +48,8 @@ namespace DevOpsMetrics.Web.Controllers
 
             IndexDeploymentModel indexModel = new IndexDeploymentModel();
 
-            int numberOfBuilds = 10;
-            int numberOfRuns = 10;
+            int numberOfBuilds = 20;
+            int numberOfRuns = 20;
 
             //Limit Azure DevOps to latest 10 results
             if (azList.Count < numberOfBuilds)

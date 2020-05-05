@@ -3,6 +3,7 @@ using DevOpsMetrics.Service.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -21,6 +22,9 @@ namespace DevOpsMetrics.Service.DataAccess
                 Newtonsoft.Json.Linq.JArray workflow_runs = buildListObject.workflow_runs;
                 deployments = JsonConvert.DeserializeObject<List<GitHubActionsRun>>(workflow_runs.ToString());
             }
+
+            //sort the list
+            deployments = deployments.OrderBy(o => o.created_at).ToList();
 
             return deployments;
         }

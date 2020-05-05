@@ -36,6 +36,8 @@ namespace DevOpsMetrics.Tests.GitHub
             Assert.IsTrue(list.Count > 0);
             Assert.IsTrue(list[0].status != null);
             Assert.IsTrue(list[0].buildDuration >= 0f);
+            Assert.IsTrue(list.Count > 1);
+            Assert.IsTrue(list[0].created_at < list[1].created_at);
         }
 
         [TestMethod]
