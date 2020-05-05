@@ -26,5 +26,6 @@ namespace DevOpsMetrics.Service.Models
                 return duration;
             }
         }
+        public int buildDurationPercent { get; set; }
     }
 }
