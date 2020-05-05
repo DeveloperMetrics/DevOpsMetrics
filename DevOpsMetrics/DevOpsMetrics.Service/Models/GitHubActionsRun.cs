@@ -11,5 +11,20 @@ namespace DevOpsMetrics.Service.Models
         public string head_branch { get; set; }
         public DateTime created_at { get; set; }
         public DateTime updated_at { get; set; }
+        
+        //Build duration in minutes
+        public float buildDuration
+        {
+            get
+            {
+                float duration = 0f;
+                if (updated_at != null && created_at != null && updated_at > DateTime.MinValue && created_at > DateTime.MinValue)
+                {
+                    TimeSpan ts = updated_at - created_at;
+                    duration = (float)ts.TotalMinutes;
+                }
+                return duration;
+            }
+        }
     }
 }
