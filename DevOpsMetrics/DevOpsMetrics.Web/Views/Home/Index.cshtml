@@ -4,42 +4,49 @@
 }
 
 @*https://codepen.io/vmz/pen/GpKbjm*@
-<div class="container vertical flat">
-    <h4>Azure DevOps - SamLearnsAzure.CI</h4>
-    @foreach (DevOpsMetrics.Service.Models.AzureDevOpsBuild item in Model.AZList)
-    {
-        <a href="@item.url" target="_blank">
-            <div class="progress-bar">
-                <div class="progress-track" title="Build started at @item.queueTime.ToString("h:mm:ss tt dd-MMM-yyyy") and @item.status at @item.finishTime.ToString("h:mm:ss tt dd-MMM-yyyy"), in @item.buildDuration minutes (@item.buildDurationPercent%)">
-                    <div class="progress-fill @item.status">
-                        <span>@item.buildDurationPercent%</span>
-                    </div>
-                </div>
-            </div>
-        </a>
-    }
-</div>
-<div class="metricSpan">
-    <b>Deployment frequency:</b> @Model.AZDeploymentFrequency.deploymentsPerDay.ToString("0.00") deployments per day (over last 7 days)<br />
-    <b>Deployment rating:</b> @Model.AZDeploymentFrequency.deploymentsPerDayDescription
-</div>
 
-<div class="container vertical flat">
-    <h4>GitHub - SamsFeatureFlags.CI</h4>
-    @foreach (DevOpsMetrics.Service.Models.GitHubActionsRun item in Model.GHList)
-    {
-        <div class="progress-bar">
-            <a href="@item.url" target="_blank">
-                <div class="progress-track" title="Build started at @item.created_at.ToString("h:mm:ss tt dd-MMM-yyyy") and @item.status at @item.updated_at.ToString("h:mm:ss tt dd-MMM-yyyy"), in @item.buildDuration minutes (@item.buildDurationPercent%)">
-                    <div class="progress-fill @item.status">
-                        <span>@item.buildDurationPercent%</span>
+<div class="row">
+    <div class="col-md-12">
+        <div class="container vertical flat">
+            <h4>Azure DevOps - SamLearnsAzure.CI</h4>
+            @foreach (DevOpsMetrics.Service.Models.AzureDevOpsBuild item in Model.AZList)
+            {
+                <a href="@item.url" target="_blank">
+                    <div class="progress-bar">
+                        <div class="progress-track" title="Build started at @item.queueTime.ToString("h:mm:ss tt dd-MMM-yyyy") and @item.status at @item.finishTime.ToString("h:mm:ss tt dd-MMM-yyyy"), in @item.buildDuration minutes (@item.buildDurationPercent%)">
+                            <div class="progress-fill @item.status">
+                                <span>@item.buildDurationPercent%</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            }
         </div>
-    }
-</div>
-<div class="metricSpan">
-    <b>Deployment frequency:</b> @Model.GHDeploymentFrequency.deploymentsPerDay.ToString("0.00") deployments per day (over last 7 days)<br />
-    <b>Deployment rating:</b> @Model.GHDeploymentFrequency.deploymentsPerDayDescription
+        <div class="metricSpan">
+            <b>Deployment frequency:</b> @Model.AZDeploymentFrequency.deploymentsPerDay.ToString("0.00") per day (last 7 days)<br />
+            <b>Deployment frequency ranking:</b> @Model.AZDeploymentFrequency.deploymentsPerDayDescription
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="container vertical flat">
+            <h4>GitHub - SamsFeatureFlags.CI</h4>
+            @foreach (DevOpsMetrics.Service.Models.GitHubActionsRun item in Model.GHList)
+            {
+                <a href="@item.url" target="_blank">
+                    <div class="progress-bar">
+                        <div class="progress-track" title="Build started at @item.created_at.ToString("h:mm:ss tt dd-MMM-yyyy") and @item.status at @item.updated_at.ToString("h:mm:ss tt dd-MMM-yyyy"), in @item.buildDuration minutes (@item.buildDurationPercent%)">
+                            <div class="progress-fill @item.status">
+                                <span>@item.buildDurationPercent%</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+        <div class="metricSpan">
+            <b>Deployment frequency:</b> @Model.GHDeploymentFrequency.deploymentsPerDay.ToString("0.00") per day (last 7 days)<br />
+            <b>Deployment frequency ranking:</b> @Model.GHDeploymentFrequency.deploymentsPerDayDescription
+        </div>
+    </div>
 </div>
