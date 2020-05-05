@@ -19,8 +19,8 @@
     }
 </div>
 <div class="metricSpan">
-    <b>Deployment frequency:</b> @Model.AZDeploymentFrequency.ToString("0.00") deployments per day (over last 7 days)<br />
-    <b>Deployment rating:</b> @Model.AZDeploymentFrequencyText
+    <b>Deployment frequency:</b> @Model.AZDeploymentFrequency.deploymentsPerDay.ToString("0.00") deployments per day (over last 7 days)<br />
+    <b>Deployment rating:</b> @Model.AZDeploymentFrequency.deploymentsPerDayDescription
 </div>
 
 <div class="container vertical flat">
@@ -37,6 +37,6 @@
     }
 </div>
 <div class="metricSpan">
-    <b>Deployment frequency:</b> @Model.GHDeploymentFrequency.ToString("0.00") deployments per day (over last 7 days)<br />
-    <b>Deployment rating:</b> @Model.GHDeploymentFrequencyText
+    <b>Deployment frequency:</b> @Model.GHDeploymentFrequency.deploymentsPerDay.ToString("0.00") deployments per day (over last 7 days)<br />
+    <b>Deployment rating:</b> @Model.GHDeploymentFrequency.deploymentsPerDayDescription
 </div>

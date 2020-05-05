@@ -33,18 +33,18 @@ namespace DevOpsMetrics.Web.Controllers
 
             //GitHub
             string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
-            string ghbranch = "master";
-            string workflowId = "108084";
+            string repo = "DevOpsMetrics"; //"samsfeatureflags";
+            string ghbranch = "AddingWebsite"; //"master";
+            string workflowId = "1162561";// "108084";
 
             int numberOfDays = 7;
             bool getDemoData = false;
 
             ServiceApiClient service = new ServiceApiClient(_configuration);
             List<AzureDevOpsBuild> azList = await service.GetAZDeployments(getDemoData, patToken, organization, project, azBranch, buildId);
-            float azDeploymentFrequency = await service.GetAZDeploymentFrequency(getDemoData, patToken, organization, project, azBranch, buildId, numberOfDays);
+            DeploymentFrequencyModel azDeploymentFrequency = await service.GetAZDeploymentFrequency(getDemoData, patToken, organization, project, azBranch, buildId, numberOfDays);
             List<GitHubActionsRun> ghList = await service.GetGHDeployments(getDemoData, owner, repo, ghbranch, workflowId);
-            float ghDeploymentFrequency = await service.GetGHDeploymentFrequency(getDemoData, owner, repo, ghbranch, workflowId, numberOfDays);
+            DeploymentFrequencyModel ghDeploymentFrequency = await service.GetGHDeploymentFrequency(getDemoData, owner, repo, ghbranch, workflowId, numberOfDays);
 
             IndexDeploymentModel indexModel = new IndexDeploymentModel();
 

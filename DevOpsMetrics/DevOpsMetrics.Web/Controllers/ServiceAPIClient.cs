@@ -111,16 +111,20 @@ namespace DevOpsMetrics.Web.Controllers
             }
         }
 
-        public async Task<float> GetAZDeploymentFrequency(bool getDemoData, string patToken, string organization, string project, string branch, string buildId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetAZDeploymentFrequency(bool getDemoData, string patToken, string organization, string project, string branch, string buildId, int numberOfDays)
         {
             if (getDemoData == true)
             {
-                return 14.04f;
+                return new DeploymentFrequencyModel
+                {
+                    deploymentsPerDay = 10f,
+                    deploymentsPerDayDescription = "Elite"
+                };
             }
             else
             {
                 string url = $"/api/DeploymentFrequency/GetAzDeploymentFrequency?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}&numberOfDays={numberOfDays}";
-                return await GetResponse<float>(_client, url);
+                return await GetResponse<DeploymentFrequencyModel>(_client, url);
             }
         }
 
@@ -211,16 +215,20 @@ namespace DevOpsMetrics.Web.Controllers
             }
         }
 
-        public async Task<float> GetGHDeploymentFrequency(bool getDemoData, string owner, string repo, string branch, string workflowId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetGHDeploymentFrequency(bool getDemoData, string owner, string repo, string branch, string workflowId, int numberOfDays)
         {
             if (getDemoData == true)
             {
-                return 0.14f;
+                return new DeploymentFrequencyModel
+                {
+                    deploymentsPerDay = 1f / 30f,
+                    deploymentsPerDayDescription = "Low"
+                };
             }
             else
             {
                 string url = $"/api/DeploymentFrequency/GetGHDeploymentFrequency?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}&numberOfDays={numberOfDays}";
-                return await GetResponse<float>(_client, url);
+                return await GetResponse<DeploymentFrequencyModel>(_client, url);
             }
         }
 

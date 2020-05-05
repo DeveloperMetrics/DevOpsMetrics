@@ -91,10 +91,12 @@ namespace DevOpsMetrics.Tests.GitHub
             DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            float deploymentFrequency = await controller.GetGHDeploymentFrequency(owner, repo, branch, workflowId, numberOfDays);
+            DeploymentFrequencyModel model = await controller.GetGHDeploymentFrequency(owner, repo, branch, workflowId, numberOfDays);
 
             //Assert
-            Assert.IsTrue(deploymentFrequency > 0);
+            Assert.IsTrue(model.deploymentsPerDay > 0f);
+            Assert.AreEqual(false, string.IsNullOrEmpty(model.deploymentsPerDayDescription));
+            Assert.AreNotEqual("Unknown", model.deploymentsPerDayDescription);
         }
 
     }

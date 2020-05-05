@@ -24,12 +24,12 @@ namespace DevOpsMetrics.Tests.GitHub
             //Arrange
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
-            string branch = "master";
+            string ghbranch = "master";
             string workflowId = "108084";
 
             //Act
             GitHubDeploymentFrequencyDA da = new GitHubDeploymentFrequencyDA();
-            List<GitHubActionsRun> list = await da.GetDeployments(owner, repo, branch, workflowId);
+            List<GitHubActionsRun> list = await da.GetDeployments(owner, repo, ghbranch, workflowId);
 
             //Assert
             Assert.IsTrue(list != null);
@@ -52,10 +52,12 @@ namespace DevOpsMetrics.Tests.GitHub
 
             //Act
             GitHubDeploymentFrequencyDA da = new GitHubDeploymentFrequencyDA();
-            float deploymentFrequency = await da.GetDeploymentFrequency(owner, repo, branch, workflowId, numberOfDays);
+            DeploymentFrequencyModel model = await da.GetDeploymentFrequency(owner, repo, branch, workflowId, numberOfDays);
 
             //Assert
-            Assert.IsTrue(deploymentFrequency > 0);
+            Assert.IsTrue(model.deploymentsPerDay > 0f);
+            Assert.AreEqual(false, string.IsNullOrEmpty(model.deploymentsPerDayDescription));
+            Assert.AreNotEqual("Unknown", model.deploymentsPerDayDescription);
         }
     }
 }
