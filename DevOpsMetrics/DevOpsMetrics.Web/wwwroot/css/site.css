@@ -92,11 +92,9 @@ h4 {
 
 .container {
     width: 500px;
-    margin-left: 40px;
-    margin-top: 10px;
-    margin-bottom: 20px;
+    margin: 20px;
     background: #fff;
-    /*padding: 20px;*/
+    padding: 20px;
     overflow: hidden;
     float: left;
 }
@@ -105,34 +103,38 @@ h4 {
 
 .vertical .progress-bar {
     float: left;
-    height: 150px;
+    height: 100px;
     width: 18px;
     margin-right: 2px;
-    border: 1px solid darkgray;
+    /*border: 1px solid darkgray;*/
 }
 
 .vertical .progress-track {
     position: relative;
-    width: 16px;
+    width: 18px;
     height: 100%;
+    background: #ebebeb;
 }
 
 .vertical .progress-fill {
     position: relative;
+    /*background: #107c10;*/
     height: 50%;
-    width: 14px;
+    width: 18px;
     color: #fff;
     text-align: center;
     font-family: "Lato","Verdana",sans-serif;
     font-size: 12px;
     line-height: 20px;
+    color: transparent;
+    cursor: pointer;
 }
 
-.success {
+.completed {
     background: #107c10;
 }
 
-.failure {
+.failed {
     background: #fa9d2d;
 }
 

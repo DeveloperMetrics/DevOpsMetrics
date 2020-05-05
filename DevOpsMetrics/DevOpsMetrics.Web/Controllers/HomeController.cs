@@ -34,16 +34,106 @@ namespace DevOpsMetrics.Web.Controllers
             //GitHub
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
-            string ghBranch = "master";
+            string ghbranch = "master";
             string workflowId = "108084";
 
             int numberOfDays = 7;
+            bool getDemoData = false;
 
             ServiceApiClient service = new ServiceApiClient(_configuration);
-            IndexDeploymentModel indexModel = await service.GetIndexPage(patToken, organization, project, azBranch, buildId,
-                                                                   owner, repo, ghBranch, workflowId,
-                                                                   numberOfDays);
+            List<AzureDevOpsBuild> azList = await service.GetAZDeployments(getDemoData, patToken, organization, project, azBranch, buildId);
+            float azDeploymentFrequency = await service.GetAZDeploymentFrequency(getDemoData, patToken, organization, project, azBranch, buildId, numberOfDays);
+            List<GitHubActionsRun> ghList = await service.GetGHDeployments(getDemoData, owner, repo, ghbranch, workflowId);
+            float ghDeploymentFrequency = await service.GetGHDeploymentFrequency(getDemoData, owner, repo, ghbranch, workflowId, numberOfDays);
+
+            IndexDeploymentModel indexModel = new IndexDeploymentModel();
+
+            int numberOfBuilds = 10;
+            int numberOfRuns = 10;
+
+            //Limit Azure DevOps to latest 10 results
+            if (azList.Count < numberOfBuilds)
+            {
+                indexModel.AZList = azList;
+            }
+            else
+            {
+                indexModel.AZList = new List<AzureDevOpsBuild>();
+                //Only show the last ten builds
+                for (int i = azList.Count - numberOfBuilds; i < azList.Count; i++)
+                {
+                    indexModel.AZList.Add(azList[i]);
+                }
+                indexModel.AZList[5].status = "failed";
+            }
+            indexModel.AZDeploymentFrequency = azDeploymentFrequency;
+            indexModel.AZList = ProcessAzureDevOpsBuilds(indexModel.AZList);
+
+            //Limit Github to latest 10 results
+            if (ghList.Count < numberOfRuns)
+            {
+                indexModel.GHList = ghList;
+            }
+            else
+            {
+                indexModel.GHList = new List<GitHubActionsRun>();
+                //Only show the last ten builds
+                for (int i = ghList.Count - numberOfRuns; i < ghList.Count; i++)
+                {
+                    indexModel.GHList.Add(ghList[i]);
+                }
+                indexModel.GHList[2].status = "failed";
+                indexModel.GHList[3].status = "failed";
+            }
+            indexModel.GHDeploymentFrequency = ghDeploymentFrequency;
+            indexModel.GHList = ProcessGitHubBuilds(indexModel.GHList);
+
             return View(indexModel);
+        }
+
+        private List<AzureDevOpsBuild> ProcessAzureDevOpsBuilds(List<AzureDevOpsBuild> azList)
+        {
+            float maxBuildDuration = 0f;
+            foreach (AzureDevOpsBuild item in azList)
+            {
+                if (item.buildDuration > maxBuildDuration)
+                {
+                    maxBuildDuration = item.buildDuration;
+                }
+            }
+            foreach (AzureDevOpsBuild item in azList)
+            {
+                float interiumResult = ((item.buildDuration / maxBuildDuration) * 100f);
+                item.buildDurationPercent = ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+            }
+            return azList;
+        }
+
+
+        private List<GitHubActionsRun> ProcessGitHubBuilds(List<GitHubActionsRun> ghList)
+        {
+            float maxBuildDuration = 0f;
+            foreach (GitHubActionsRun item in ghList)
+            {
+                if (item.buildDuration > maxBuildDuration)
+                {
+                    maxBuildDuration = item.buildDuration;
+                }
+            }
+            foreach (GitHubActionsRun item in ghList)
+            {
+                float interiumResult = ((item.buildDuration / maxBuildDuration) * 100f);
+                item.buildDurationPercent = ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+            }
+            return ghList;
+        }
+
+        //We scale the number, so that the lowest number is visible on the charts
+        private int ScaleNumberToRange(float number, float currentMin, float currentMax, float targetMin, float targetMax)
+        {
+            //https://stats.stackexchange.com/questions/281162/scale-a-number-between-a-range/281164
+            int result = (int)(((number - currentMin) / (currentMax - currentMin) * (targetMax - targetMin)) + targetMin);
+            return result;
         }
 
         public IActionResult Privacy()
@@ -56,5 +146,6 @@ namespace DevOpsMetrics.Web.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }

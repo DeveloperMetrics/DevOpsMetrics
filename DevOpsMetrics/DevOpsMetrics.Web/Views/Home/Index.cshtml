@@ -10,27 +10,16 @@
     @foreach (DevOpsMetrics.Service.Models.AzureDevOpsBuild item in Model.AZList)
     {
         <div class="progress-bar">
-            @if (item.status == "completed")
-            {
-                <div class="progress-track success" title="Build @item.status at @item.finishTime.ToString("h:mm:ss tt dd-MMM-yyyy")">
-                    <div class="progress-fill success">
-                        <span style="color:transparent;">100%</span>
-                    </div>
+            <div class="progress-track" title="Build started at @item.queueTime.ToString("h:mm:ss tt dd-MMM-yyyy") and @item.status at @item.finishTime.ToString("h:mm:ss tt dd-MMM-yyyy"), in @item.buildDuration minutes (@item.buildDurationPercent%)">
+                <div class="progress-fill @item.status">
+                    <span>@item.buildDurationPercent%</span>
                 </div>
-            }
-            else
-            {
-                <div class="progress-track failure" title="Build @item.status at @item.finishTime.ToString("h:mm:ss tt dd-MMM-yyyy")">
-                    <div class="progress-fill failure">
-                        <span style="color:transparent;">80%</span>
-                    </div>
-                </div>
-            }
+            </div>
         </div>
     }
 </div>
 <div style="margin-left: 40px; margin-bottom: 20px;">
-    <b>Deployment frequency (deployments per day over last 7 days):</b> @Model.AZDeploymentFrequency.ToString("0.00")<br />
+    <b>Deployment frequency:</b> @Model.AZDeploymentFrequency.ToString("0.00") deployments per day (over last 7 days)<br />
     <b>Deployment rating:</b> @Model.AZDeploymentFrequencyText
 </div>
 
@@ -39,26 +28,15 @@
     @foreach (DevOpsMetrics.Service.Models.GitHubActionsRun item in Model.GHList)
     {
         <div class="progress-bar">
-            @if (item.status == "completed")
-            {
-                <div class="progress-track success" title="Build @item.status at @item.updated_at.ToString("h:mm:ss tt dd-MMM-yyyy")">
-                    <div class="progress-fill success">
-                        <span style="color:transparent;">100%</span>
-                    </div>
+            <div class="progress-track" title="Build started at @item.created_at.ToString("h:mm:ss tt dd-MMM-yyyy") and @item.status at @item.updated_at.ToString("h:mm:ss tt dd-MMM-yyyy"), in @item.buildDuration minutes (@item.buildDurationPercent%)">
+                <div class="progress-fill @item.status">
+                    <span>@item.buildDurationPercent%</span>
                 </div>
-            }
-            else
-            {
-                <div class="progress-track failure" title="Build @item.status at @item.updated_at.ToString("h:mm:ss tt dd-MMM-yyyy")">
-                    <div class="progress-fill failure">
-                        <span style="color:transparent;">80%</span>
-                    </div>
-                </div>
-            }
+            </div>
         </div>
     }
 </div>
 <div style="margin-left: 40px; margin-bottom: 20px;">
-    <b>Deployment frequency (deployments per day over last 7 days):</b> @Model.GHDeploymentFrequency.ToString("0.00")<br />
+    <b>Deployment frequency:</b> @Model.GHDeploymentFrequency.ToString("0.00") deployments per day (over last 7 days)<br />
     <b>Deployment rating:</b> @Model.GHDeploymentFrequencyText
 </div>

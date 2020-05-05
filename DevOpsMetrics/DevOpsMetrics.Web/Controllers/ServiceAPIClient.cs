@@ -1,5 +1,4 @@
 ﻿using DevOpsMetrics.Service.Models;
-using DevOpsMetrics.Web.Models;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -23,94 +22,206 @@ namespace DevOpsMetrics.Web.Controllers
                 BaseAddress = new Uri(_configuration["AppSettings:WebServiceURL"])
             };
         }
-        public async Task<IndexDeploymentModel> GetIndexPage(string patToken, string organization, string project, string azBranch, string buildId,
-                                                            string owner, string repo, string ghBranch, string workflowId,
-                                                            int numberOfDays)
+
+        public async Task<List<AzureDevOpsBuild>> GetAZDeployments(bool getDemoData, string patToken, string organization, string project, string branch, string buildId)
         {
-            IndexDeploymentModel index = new IndexDeploymentModel();
-            List<AzureDevOpsBuild> azList = await GetAZDeployments(patToken, organization, project, azBranch, buildId);
-            float azDeploymentFrequency = await GetAZDeploymentFrequency(patToken, organization, project, azBranch, buildId, numberOfDays);
-            List<GitHubActionsRun> ghList = await GetGHDeployments(owner, repo, ghBranch, workflowId);
-            float ghDeploymentFrequency = await GetGHDeploymentFrequency(owner, repo, ghBranch, workflowId, numberOfDays);
-
-            IndexDeploymentModel indexModel = new IndexDeploymentModel();
-
-            //Limit Azure DevOps to latest 10 results
-            if (azList.Count < 10)
+            if (getDemoData == true)
             {
-                indexModel.AZList = azList;
-            }
-            else
-            {
-                indexModel.AZList = new List<AzureDevOpsBuild>();
-                //Only show the last ten builds
-                for (int i = azList.Count - 10; i < azList.Count; i++)
+                List<AzureDevOpsBuild> results = new List<AzureDevOpsBuild>();
+                AzureDevOpsBuild item1 = new AzureDevOpsBuild
                 {
-                    indexModel.AZList.Add(azList[i]);
-                }
-                indexModel.AZList[7].status = "failed";
-            }
-            indexModel.AZDeploymentFrequency = azDeploymentFrequency;
-
-            //Limit Github to latest 10 results
-            if (ghList.Count < 10)
-            {
-                indexModel.GHList = ghList;
-            }
-            else
-            {
-                indexModel.GHList = new List<GitHubActionsRun>();
-                //Only show the last ten builds
-                for (int i = ghList.Count - 10; i < ghList.Count; i++)
+                    queueTime = DateTime.Now.AddDays(-7).AddMinutes(-4),
+                    finishTime = DateTime.Now.AddDays(-7).AddMinutes(0),
+                    buildNumber = "1",
+                    sourceBranch = "master",
+                    status = "completed",
+                    url = "https://dev.azure.com/samsmithnz/samlearnsazure/1"
+                };
+                results.Add(item1);
+                results.Add(item1);
+                AzureDevOpsBuild item2 = new AzureDevOpsBuild
                 {
-                    indexModel.GHList.Add(ghList[i]);
-                }
-                indexModel.GHList[2].status = "failed";
-                indexModel.GHList[3].status = "failed";
-            }
-            indexModel.GHDeploymentFrequency = ghDeploymentFrequency;
+                    queueTime = DateTime.Now.AddDays(-5).AddMinutes(-5),
+                    finishTime = DateTime.Now.AddDays(-5).AddMinutes(0),
+                    buildNumber = "2",
+                    sourceBranch = "master",
+                    status = "completed",
+                    url = "https://dev.azure.com/samsmithnz/samlearnsazure/2"
+                };
+                results.Add(item2);
+                results.Add(item2);
+                AzureDevOpsBuild item3 = new AzureDevOpsBuild
+                {
+                    queueTime = DateTime.Now.AddDays(-4).AddMinutes(-1),
+                    finishTime = DateTime.Now.AddDays(-4).AddMinutes(0),
+                    buildNumber = "3",
+                    sourceBranch = "master",
+                    status = "failed",
+                    url = "https://dev.azure.com/samsmithnz/samlearnsazure/3"
+                };
+                results.Add(item3);
+                AzureDevOpsBuild item4 = new AzureDevOpsBuild
+                {
+                    queueTime = DateTime.Now.AddDays(-3).AddMinutes(-4),
+                    finishTime = DateTime.Now.AddDays(-3).AddMinutes(0),
+                    buildNumber = "4",
+                    sourceBranch = "master",
+                    status = "completed",
+                    url = "https://dev.azure.com/samsmithnz/samlearnsazure/4"
+                };
+                results.Add(item4);
+                results.Add(item4);
+                AzureDevOpsBuild item5 = new AzureDevOpsBuild
+                {
+                    queueTime = DateTime.Now.AddDays(-2).AddMinutes(-7),
+                    finishTime = DateTime.Now.AddDays(-2).AddMinutes(0),
+                    buildNumber = "5",
+                    sourceBranch = "master",
+                    status = "completed",
+                    url = "https://dev.azure.com/samsmithnz/samlearnsazure/5"
+                };
+                results.Add(item5);
+                AzureDevOpsBuild item6 = new AzureDevOpsBuild
+                {
+                    queueTime = DateTime.Now.AddDays(-1).AddMinutes(-5),
+                    finishTime = DateTime.Now.AddDays(-1).AddMinutes(0),
+                    buildNumber = "6",
+                    sourceBranch = "master",
+                    status = "completed",
+                    url = "https://dev.azure.com/samsmithnz/samlearnsazure/6"
+                };
+                results.Add(item6);
+                results.Add(item6);
 
-            return index;
-        }
 
-        private async Task<List<AzureDevOpsBuild>> GetAZDeployments(string patToken, string organization, string project, string branch, string buildId)
-        {
-            string url = $"/api/DeploymentFrequency/GetAzDeployments?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}";
-            List<AzureDevOpsBuild> results = await GetResponse<List<AzureDevOpsBuild>>(_client, url);
-            if (results == null)
-            {
-                return new List<AzureDevOpsBuild>();
-            }
-            else
-            {
                 return results;
             }
-        }
-
-        private async Task<float> GetAZDeploymentFrequency(string patToken, string organization, string project, string branch, string buildId, int numberOfDays)
-        {
-            string url = $"/api/DeploymentFrequency/GetAzDeploymentFrequency?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}&numberOfDays={numberOfDays}";
-            return await GetResponse<float>(_client, url);
-        }
-
-        private async Task<List<GitHubActionsRun>> GetGHDeployments(string owner, string repo, string branch, string workflowId)
-        {
-            string url = $"/api/DeploymentFrequency/GetGHDeployments?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}";
-            List<GitHubActionsRun> results = await GetResponse<List<GitHubActionsRun>>(_client, url);
-            if (results == null)
+            else
             {
-                return new List<GitHubActionsRun>();
+                string url = $"/api/DeploymentFrequency/GetAzDeployments?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}";
+                List<AzureDevOpsBuild> results = await GetResponse<List<AzureDevOpsBuild>>(_client, url);
+                if (results == null)
+                {
+                    return new List<AzureDevOpsBuild>();
+                }
+                else
+                {
+                    return results;
+                }
+            }
+        }
+
+        public async Task<float> GetAZDeploymentFrequency(bool getDemoData, string patToken, string organization, string project, string branch, string buildId, int numberOfDays)
+        {
+            if (getDemoData == true)
+            {
+                return 14.04f;
             }
             else
             {
-                return results;
+                string url = $"/api/DeploymentFrequency/GetAzDeploymentFrequency?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}&numberOfDays={numberOfDays}";
+                return await GetResponse<float>(_client, url);
             }
         }
 
-        private async Task<float> GetGHDeploymentFrequency(string owner, string repo, string branch, string workflowId, int numberOfDays)
+        public async Task<List<GitHubActionsRun>> GetGHDeployments(bool getDemoData, string owner, string repo, string branch, string workflowId)
         {
-            string url = $"/api/DeploymentFrequency/GetGHDeploymentFrequency?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}&numberOfDays={numberOfDays}";
-            return await GetResponse<float>(_client, url);
+            if (getDemoData == true)
+            {
+                List<GitHubActionsRun> results = new List<GitHubActionsRun>();
+                GitHubActionsRun item1 = new GitHubActionsRun
+                {
+                    created_at = DateTime.Now.AddDays(-7).AddMinutes(-12),
+                    updated_at = DateTime.Now.AddDays(-7).AddMinutes(0),
+                    run_number = "1",
+                    head_branch = "master",
+                    status = "completed",
+                    url = "https://github.com/samsmithnz/devopsmetrics/1"
+                };
+                results.Add(item1);
+                GitHubActionsRun item2 = new GitHubActionsRun
+                {
+                    created_at = DateTime.Now.AddDays(-6).AddMinutes(-16),
+                    updated_at = DateTime.Now.AddDays(-6).AddMinutes(0),
+                    run_number = "2",
+                    head_branch = "master",
+                    status = "completed",
+                    url = "https://github.com/samsmithnz/devopsmetrics/2"
+                };
+                results.Add(item2);
+                results.Add(item2);
+                GitHubActionsRun item3 = new GitHubActionsRun
+                {
+                    created_at = DateTime.Now.AddDays(-4).AddMinutes(-9),
+                    updated_at = DateTime.Now.AddDays(-4).AddMinutes(0),
+                    run_number = "3",
+                    head_branch = "master",
+                    status = "failed",
+                    url = "https://github.com/samsmithnz/devopsmetrics/3"
+                };
+                results.Add(item3);
+                GitHubActionsRun item4 = new GitHubActionsRun
+                {
+                    created_at = DateTime.Now.AddDays(-3).AddMinutes(-10),
+                    updated_at = DateTime.Now.AddDays(-3).AddMinutes(0),
+                    run_number = "4",
+                    head_branch = "master",
+                    status = "completed",
+                    url = "https://github.com/samsmithnz/devopsmetrics/4"
+                };
+                results.Add(item4);
+                results.Add(item4);
+                GitHubActionsRun item5 = new GitHubActionsRun
+                {
+                    created_at = DateTime.Now.AddDays(-2).AddMinutes(-11),
+                    updated_at = DateTime.Now.AddDays(-2).AddMinutes(0),
+                    run_number = "5",
+                    head_branch = "master",
+                    status = "failed",
+                    url = "https://github.com/samsmithnz/devopsmetrics/5"
+                };
+                results.Add(item5);
+                results.Add(item5);
+                GitHubActionsRun item6 = new GitHubActionsRun
+                {
+                    created_at = DateTime.Now.AddDays(-1).AddMinutes(-8),
+                    updated_at = DateTime.Now.AddDays(-1).AddMinutes(0),
+                    run_number = "6",
+                    head_branch = "master",
+                    status = "completed",
+                    url = "https://github.com/samsmithnz/devopsmetrics/6"
+                };
+                results.Add(item6);
+                results.Add(item6);
+
+                return results;
+            }
+            else
+            {
+                string url = $"/api/DeploymentFrequency/GetGHDeployments?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}";
+                List<GitHubActionsRun> results = await GetResponse<List<GitHubActionsRun>>(_client, url);
+                if (results == null)
+                {
+                    return new List<GitHubActionsRun>();
+                }
+                else
+                {
+                    return results;
+                }
+            }
+        }
+
+        public async Task<float> GetGHDeploymentFrequency(bool getDemoData, string owner, string repo, string branch, string workflowId, int numberOfDays)
+        {
+            if (getDemoData == true)
+            {
+                return 0.14f;
+            }
+            else
+            {
+                string url = $"/api/DeploymentFrequency/GetGHDeploymentFrequency?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}&numberOfDays={numberOfDays}";
+                return await GetResponse<float>(_client, url);
+            }
         }
 
         private async Task<T> GetResponse<T>(HttpClient client, string url)
