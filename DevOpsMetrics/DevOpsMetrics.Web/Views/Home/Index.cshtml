@@ -33,7 +33,7 @@
             <h4>GitHub - SamsFeatureFlags.CI</h4>
             @foreach (DevOpsMetrics.Service.Models.GitHubActionsRun item in Model.GHList)
             {
-                <a href="@item.url" target="_blank">
+                <a href="@item.html_url" target="_blank">
                     <div class="progress-bar">
                         <div class="progress-track" title="Build started at @item.created_at.ToString("h:mm:ss tt dd-MMM-yyyy") and @item.status at @item.updated_at.ToString("h:mm:ss tt dd-MMM-yyyy"), in @item.buildDuration minutes (@item.buildDurationPercent%)">
                             <div class="progress-fill @item.status">
