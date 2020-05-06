@@ -13,7 +13,7 @@
             {
                 <a href="@item.url" target="_blank">
                     <div class="progress-bar">
-                        <div class="progress-track" title="Build @item.id @item.status at item.TimeAgo (ran for @item.buildDurationInMinutesAndSeconds)">
+                        <div class="progress-track" title="Build @item.id @item.status at @item.timeSinceBuildCompleted (ran for @item.buildDurationInMinutesAndSeconds)">
                             <div class="progress-fill @item.status">
                                 <span>@item.buildDurationPercent%</span>
                             </div>
@@ -35,7 +35,7 @@
             {
                 <a href="@item.html_url" target="_blank">
                     <div class="progress-bar">
-                        <div class="progress-track" title="Build started at @item.created_at.ToString("h:mm:ss tt dd-MMM-yyyy") and @item.status at @item.updated_at.ToString("h:mm:ss tt dd-MMM-yyyy"), in @item.buildDuration minutes (@item.buildDurationPercent%)">
+                        <div class="progress-track" title="Build @item.run_number @item.status at @item.timeSinceBuildCompleted (ran for @item.buildDurationInMinutesAndSeconds)">
                             <div class="progress-fill @item.status">
                                 <span>@item.buildDurationPercent%</span>
                             </div>
