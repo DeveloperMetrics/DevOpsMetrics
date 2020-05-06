@@ -5,9 +5,9 @@
 
 @*https://codepen.io/vmz/pen/GpKbjm*@
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="container vertical flat">
+@*<div class="row">
+    <div class="col-md-6">
+        <div class="chartContainer vertical flat">
             <h4><img src="~/images/azuredevops-icon.png" style="width:32px;" />&nbsp; Azure DevOps - SamLearnsAzure.CI</h4>
             @foreach (DevOpsMetrics.Service.Models.AzureDevOpsBuild item in Model.AZList)
             {
@@ -22,14 +22,15 @@
                 </a>
             }
         </div>
+        <br />
         <div class="metricSpan">
             <b>Deployment frequency:</b> @Model.AZDeploymentFrequency.deploymentsPerDay.ToString("0.00") per day (last 7 days)<br />
             <b>Deployment frequency ranking:</b> @Model.AZDeploymentFrequency.deploymentsPerDayDescription
         </div>
     </div>
 
-    <div class="col-md-12">
-        <div class="container vertical flat">
+    <div class="col-md-6">
+        <div class="chartContainer vertical flat">
             <h4><img src="~/images/github-icon.png" style="width:32px;" />&nbsp; GitHub - SamsFeatureFlags.CI</h4>
             @foreach (DevOpsMetrics.Service.Models.GitHubActionsRun item in Model.GHList)
             {
@@ -44,9 +45,26 @@
                 </a>
             }
         </div>
+        <br />
         <div class="metricSpan">
             <b>Deployment frequency:</b> @Model.GHDeploymentFrequency.deploymentsPerDay.ToString("0.00") per day (last 7 days)<br />
             <b>Deployment frequency ranking:</b> @Model.GHDeploymentFrequency.deploymentsPerDayDescription
         </div>
     </div>
+</div>*@
+
+<div class="row">
+    @foreach (PartialViewDeploymentModel item in Model.Items)
+    {
+    <div class="col-md-6">
+        @if (item.AZDeploymentFrequency != null)
+        {
+            @await Html.PartialAsync("_AzureDevOpsDeployments", item)
+        }
+        else if (item.GHDeploymentFrequency != null)
+        {
+            @await Html.PartialAsync("_GitHubDeployments", item)
+        }
+    </div>
+    }
 </div>
