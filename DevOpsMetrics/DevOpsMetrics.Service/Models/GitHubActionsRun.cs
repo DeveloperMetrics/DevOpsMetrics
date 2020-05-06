@@ -52,15 +52,15 @@ namespace DevOpsMetrics.Service.Models
                     TimeSpan timespan = DateTime.Now - updated_at;
                     if (timespan.TotalMinutes < 60)
                     {
-                        duration = timespan.TotalMinutes.ToString() + " mins ago";
+                        duration = ((int)timespan.TotalMinutes).ToString() + " mins ago";
                     }
                     else if (timespan.TotalHours < 24)
                     {
-                        duration = timespan.TotalHours.ToString() + " hours ago";
+                        duration = ((int)timespan.TotalHours).ToString() + " hours ago";
                     }
                     else if (timespan.TotalDays < 7)
                     {
-                        duration = timespan.TotalDays.ToString() + " days ago";
+                        duration = ((int)timespan.TotalDays).ToString() + " days ago";
                     }
                     else
                     {
