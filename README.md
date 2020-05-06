@@ -12,7 +12,7 @@ More information in a blog post here: https://samlearnsazure.blog/2020/04/30/hig
 
 The current solution shows:
 - Deployment Frequency, in both Azure DevOps and GitHub:
-![Image description](https://github.com/samsmithnz/DevOpsMetrics/tree/AddingBuildDuration/DevOpsMetrics/ReadmeImages/DeploymentFrequencyDemo.png)
+![Image description](https://github.com/samsmithnz/DevOpsMetrics/tree/AddingBuildDuration/ReadmeImages/DeploymentFrequencyDemo.png)
 
 
 # Architecture
