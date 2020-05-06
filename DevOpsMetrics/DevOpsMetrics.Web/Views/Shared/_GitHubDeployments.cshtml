@@ -1,0 +1,22 @@
+﻿@model PartialViewDeploymentModel
+
+<div class="chartContainer vertical flat">
+    <h4><img src="~/images/github-icon.png" style="width:32px;" />&nbsp; GitHub - @Model.DeploymentName</h4>
+    @foreach (DevOpsMetrics.Service.Models.GitHubActionsRun item in Model.GHList)
+    {
+        <a href="@item.html_url" target="_blank">
+            <div class="progress-bar">
+                <div class="progress-track" title="Build @item.run_number @item.status @item.timeSinceBuildCompleted (ran for @item.buildDurationInMinutesAndSeconds)">
+                    <div class="progress-fill @item.status">
+                        <span>@item.buildDurationPercent%</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    }
+</div>
+<br />
+<div class="metricSpan">
+    <b>Deployment frequency:</b> @Model.GHDeploymentFrequency.deploymentsPerDay.ToString("0.00") per day (last 7 days)<br />
+    <b>Deployment frequency ranking:</b> @Model.GHDeploymentFrequency.deploymentsPerDayDescription
+</div>
