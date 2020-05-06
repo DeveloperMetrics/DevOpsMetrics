@@ -13,7 +13,7 @@
             {
                 <a href="@item.url" target="_blank">
                     <div class="progress-bar">
-                        <div class="progress-track" title="Build @item.id @item.status at @item.timeSinceBuildCompleted (ran for @item.buildDurationInMinutesAndSeconds)">
+                        <div class="progress-track" title="Build @item.id @item.status @item.timeSinceBuildCompleted (ran for @item.buildDurationInMinutesAndSeconds)">
                             <div class="progress-fill @item.status">
                                 <span>@item.buildDurationPercent%</span>
                             </div>
@@ -30,12 +30,12 @@
 
     <div class="col-md-12">
         <div class="container vertical flat">
-            <h4>GitHub - SamsFeatureFlags.CI</h4>
+            <h4>GitHub Actions - SamsFeatureFlags.CI</h4>
             @foreach (DevOpsMetrics.Service.Models.GitHubActionsRun item in Model.GHList)
             {
                 <a href="@item.html_url" target="_blank">
                     <div class="progress-bar">
-                        <div class="progress-track" title="Build @item.run_number @item.status at @item.timeSinceBuildCompleted (ran for @item.buildDurationInMinutesAndSeconds)">
+                        <div class="progress-track" title="Build @item.run_number @item.status @item.timeSinceBuildCompleted (ran for @item.buildDurationInMinutesAndSeconds)">
                             <div class="progress-fill @item.status">
                                 <span>@item.buildDurationPercent%</span>
                             </div>
