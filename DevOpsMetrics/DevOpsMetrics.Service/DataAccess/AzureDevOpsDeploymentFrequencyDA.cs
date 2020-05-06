@@ -25,7 +25,7 @@ namespace DevOpsMetrics.Service.DataAccess
             //construct the Url to the build
             foreach (AzureDevOpsBuild item in builds)
             {
-                item.url = "https://dev.azure.com/{organization}/{project}/_build/results?buildId={item.id}&view=results";
+                item.url = $"https://dev.azure.com/{organization}/{project}/_build/results?buildId={item.id}&view=results";
             }
             //sort the list
             builds = builds.OrderBy(o => o.queueTime).ToList();
