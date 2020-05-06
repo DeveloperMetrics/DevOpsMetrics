@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="container vertical flat">
-            <h4>Azure DevOps - SamLearnsAzure.CI</h4>
+            <h4><img src="~/images/azuredevops-icon.png" style="width:32px;" />&nbsp; Azure DevOps - SamLearnsAzure.CI</h4>
             @foreach (DevOpsMetrics.Service.Models.AzureDevOpsBuild item in Model.AZList)
             {
                 <a href="@item.url" target="_blank">
@@ -30,7 +30,7 @@
 
     <div class="col-md-12">
         <div class="container vertical flat">
-            <h4>GitHub Actions - SamsFeatureFlags.CI</h4>
+            <h4><img src="~/images/github-icon.png" style="width:32px;" />&nbsp; GitHub - SamsFeatureFlags.CI</h4>
             @foreach (DevOpsMetrics.Service.Models.GitHubActionsRun item in Model.GHList)
             {
                 <a href="@item.html_url" target="_blank">
