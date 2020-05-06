@@ -67,7 +67,6 @@ namespace DevOpsMetrics.Web.Controllers
                 {
                     indexModel.AZList.Add(azList[i]);
                 }
-                indexModel.AZList[5].status = "failed";
             }
             indexModel.AZDeploymentFrequency = azDeploymentFrequency;
             indexModel.AZList = ProcessAzureDevOpsBuilds(indexModel.AZList);
@@ -85,8 +84,6 @@ namespace DevOpsMetrics.Web.Controllers
                 {
                     indexModel.GHList.Add(ghList[i]);
                 }
-                indexModel.GHList[2].status = "failed";
-                indexModel.GHList[3].status = "failed";
             }
             indexModel.GHDeploymentFrequency = ghDeploymentFrequency;
             indexModel.GHList = ProcessGitHubBuilds(indexModel.GHList);

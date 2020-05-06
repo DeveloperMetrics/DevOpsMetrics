@@ -81,18 +81,17 @@ namespace DevOpsMetrics.Web.Controllers
                     url = "https://dev.azure.com/samsmithnz/samlearnsazure/5"
                 };
                 results.Add(item5);
+                results.Add(item5);
                 AzureDevOpsBuild item6 = new AzureDevOpsBuild
                 {
                     queueTime = DateTime.Now.AddDays(-1).AddMinutes(-5),
                     finishTime = DateTime.Now.AddDays(-1).AddMinutes(0),
                     buildNumber = "6",
                     sourceBranch = "master",
-                    status = "completed",
+                    status = "inProgress",
                     url = "https://dev.azure.com/samsmithnz/samlearnsazure/6"
                 };
                 results.Add(item6);
-                results.Add(item6);
-
 
                 return results;
             }
