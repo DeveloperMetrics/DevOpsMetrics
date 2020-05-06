@@ -54,5 +54,32 @@ namespace DevOpsMetrics.Core
         {
             return DeploymentFrequencyList.Where(x => x.Key > DateTime.Now.AddDays(-numberOfDays)).ToList();
         }
+
+
+        public string GetDeploymentFrequencyRating(float deploymentsPerDay)
+        {
+            float dailyDeployment = 1f;
+            float weeklyDeployment = 1f / 7f;
+            float monthlyDeployment = 1f / 30f;
+
+            string result = "";
+            if (deploymentsPerDay > dailyDeployment) //NOTE: Does not capture on-demand deployments
+            {
+                result = "Elite";
+            }
+            else if (deploymentsPerDay <= dailyDeployment && deploymentsPerDay >= weeklyDeployment)
+            {
+                result = "High";
+            }
+            else if (deploymentsPerDay < weeklyDeployment && deploymentsPerDay >= monthlyDeployment)
+            {
+                result = "Medium";
+            }
+            else if (deploymentsPerDay < monthlyDeployment)
+            {
+                result = "Low";
+            }
+            return result;
+        }
     }
 }

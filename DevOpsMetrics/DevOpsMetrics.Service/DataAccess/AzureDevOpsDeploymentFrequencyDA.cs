@@ -3,6 +3,7 @@ using DevOpsMetrics.Service.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -21,12 +22,20 @@ namespace DevOpsMetrics.Service.DataAccess
                 Newtonsoft.Json.Linq.JArray value = buildListObject.value;
                 builds = JsonConvert.DeserializeObject<List<AzureDevOpsBuild>>(value.ToString());
             }
+            //construct the Url to the build
+            foreach (AzureDevOpsBuild item in builds)
+            {
+                item.url = $"https://dev.azure.com/{organization}/{project}/_build/results?buildId={item.id}&view=results";
+            }
+            //sort the list
+            builds = builds.OrderBy(o => o.queueTime).ToList();
             return builds;
         }
 
-        public async Task<float> GetDeploymentFrequency(string patToken, string organization, string project, string branch, string buildId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetDeploymentFrequency(string patToken, string organization, string project, string branch, string buildId, int numberOfDays)
         {
-            float deploymentFrequencyResult = 0;
+            float deploymentsPerDay = 0;
+            DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
 
             ////Gets a list of builds
             //GET https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1         
@@ -48,8 +57,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     }
                 }
 
-                DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
-                deploymentFrequencyResult = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
+                deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
                 //////Gets build detail
                 //////GET https://dev.azure.com/{organization}/{project}/_apis/build/builds/{buildId}?api-version=5.1
                 //string buildDetailResponse = await Base.SendAzureDevOpsMessage($"https://dev.azure.com/{organization}/{project}/_apis/build/builds/{buildId}?api-version=5.1");
@@ -60,9 +68,13 @@ namespace DevOpsMetrics.Service.DataAccess
                 ////string finishTime = buildObject.finishTime;
                 ////Console.WriteLine(status);
                 ////Console.WriteLine(finishTime);
-
             }
-            return deploymentFrequencyResult;
+            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            {
+                deploymentsPerDay = deploymentsPerDay,
+                deploymentsPerDayDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
+            };
+            return model;
         }
 
         public async Task<string> SendAzureDevOpsMessage(string patToken, string url)

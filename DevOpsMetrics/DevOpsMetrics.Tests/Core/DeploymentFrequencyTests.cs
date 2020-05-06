@@ -68,5 +68,91 @@ namespace DevOpsMetrics.Tests.Core
             Assert.AreEqual(0.71428573f, result);
         }
 
+        [TestMethod]
+        public void DeploymentFrequencyRatingEliteTest()
+        {
+            //Arrange
+            DeploymentFrequency metrics = new DeploymentFrequency();
+            float dailyDeployment = 1f;
+            //float weeklyDeployment = 1f / 7f;
+            //float monthlyDeployment = 1f / 30f;
+
+            //Act
+            string EliteResult = metrics.GetDeploymentFrequencyRating(dailyDeployment + dailyDeployment);
+            string EliteResult2 = metrics.GetDeploymentFrequencyRating(dailyDeployment + 0.001f);
+
+            //Assert
+            Assert.AreEqual("Elite", EliteResult);
+            Assert.AreEqual("Elite", EliteResult2);
+        }
+
+        [TestMethod]
+        public void DeploymentFrequencyRatingHighTest()
+        {
+            //Arrange
+            DeploymentFrequency metrics = new DeploymentFrequency();
+            //float dailyDeployment = 1f;
+            float weeklyDeployment = 1f / 7f;
+            //float monthlyDeployment = 1f / 30f;
+
+            //Act
+            string HighResult = metrics.GetDeploymentFrequencyRating(weeklyDeployment);
+
+            //Assert
+            Assert.AreEqual("High", HighResult);
+        }
+
+        [TestMethod]
+        public void DeploymentFrequencyRatingMediumTest()
+        {
+            //Arrange
+            DeploymentFrequency metrics = new DeploymentFrequency();
+            //float dailyDeployment = 1f;
+            //float weeklyDeployment = 1f / 7f;
+            float monthlyDeployment = 1f / 30f;
+
+            //Act
+            string MediumResult = metrics.GetDeploymentFrequencyRating(monthlyDeployment);
+
+            //Assert
+
+            Assert.AreEqual("Medium", MediumResult);
+
+        }
+
+        [TestMethod]
+        public void DeploymentFrequencyRatingLowTest()
+        {
+            //Arrange
+            DeploymentFrequency metrics = new DeploymentFrequency();
+            //float dailyDeployment = 1f;
+            //float weeklyDeployment = 1f / 7f;
+            float monthlyDeployment = 1f / 30f;
+
+            //Act
+
+            string LowResult = metrics.GetDeploymentFrequencyRating(monthlyDeployment - 0.01f);
+
+            //Assert
+            Assert.AreEqual("Low", LowResult);
+        }
+
+        [TestMethod]
+        public void DeploymentFrequencyRatingZeroLowTest()
+        {
+            //Arrange
+            DeploymentFrequency metrics = new DeploymentFrequency();
+            //float dailyDeployment = 1f;
+            //float weeklyDeployment = 1f / 7f;
+            //float monthlyDeployment = 1f / 30f;
+
+            //Act
+
+            string LowResult = metrics.GetDeploymentFrequencyRating(0f);
+
+            //Assert
+            Assert.AreEqual("Low", LowResult);
+        }
+
     }
 }

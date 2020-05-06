@@ -19,11 +19,11 @@ namespace DevOpsMetrics.Service.Controllers
         }
 
         [HttpGet("GetAzDeploymentFrequency")]
-        public async Task<float> GetAzDeploymentFrequency(string patToken, string organization, string project, string AzureDevOpsbranch, string buildId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetAzDeploymentFrequency(string patToken, string organization, string project, string AzureDevOpsbranch, string buildId, int numberOfDays)
         {
             AzureDevOpsDeploymentFrequencyDA da = new AzureDevOpsDeploymentFrequencyDA();
-            float deploymentFrequencyResult = await da.GetDeploymentFrequency(patToken, organization, project, AzureDevOpsbranch, buildId, numberOfDays);
-            return deploymentFrequencyResult;
+            DeploymentFrequencyModel model = await da.GetDeploymentFrequency(patToken, organization, project, AzureDevOpsbranch, buildId, numberOfDays);
+            return model;
         }
 
         [HttpGet("GetGHDeployments")]
@@ -35,11 +35,11 @@ namespace DevOpsMetrics.Service.Controllers
         }
 
         [HttpGet("GetGHDeploymentFrequency")]
-        public async Task<float> GetGHDeploymentFrequency(string owner, string repo, string GHbranch, string workflowId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetGHDeploymentFrequency(string owner, string repo, string GHbranch, string workflowId, int numberOfDays)
         {
             GitHubDeploymentFrequencyDA da = new GitHubDeploymentFrequencyDA();
-            float deploymentFrequencyResult = await da.GetDeploymentFrequency(owner, repo, GHbranch, workflowId, numberOfDays);
-            return deploymentFrequencyResult;
+            DeploymentFrequencyModel model = await da.GetDeploymentFrequency(owner, repo, GHbranch, workflowId, numberOfDays);
+            return model;
         }
     }
 }

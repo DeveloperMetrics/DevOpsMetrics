@@ -3,6 +3,7 @@ using DevOpsMetrics.Service.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -22,10 +23,13 @@ namespace DevOpsMetrics.Service.DataAccess
                 deployments = JsonConvert.DeserializeObject<List<GitHubActionsRun>>(workflow_runs.ToString());
             }
 
+            //sort the list
+            deployments = deployments.OrderBy(o => o.created_at).ToList();
+
             return deployments;
         }
 
-        public async Task<float> GetDeploymentFrequency(string owner, string repo, string branch, string workflowId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetDeploymentFrequency(string owner, string repo, string branch, string workflowId, int numberOfDays)
         {
             //Lists the workflows in a repository. 
             //GET /repos/:owner/:repo/actions/workflows
@@ -33,7 +37,8 @@ namespace DevOpsMetrics.Service.DataAccess
             //List all workflow runs for a workflow.
             //GET /repos/:owner/:repo/actions/workflows/:workflow_id/runs
 
-            float deploymentFrequencyResult = 0;
+            float deploymentsPerDay = 0;
+            DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
             string runListResponse = await SendGitHubMessage($"repos/{owner}/{repo}/actions/workflows/{workflowId}/runs", "https://api.github.com/");
             if (string.IsNullOrEmpty(runListResponse) == false)
             {
@@ -51,10 +56,14 @@ namespace DevOpsMetrics.Service.DataAccess
                     }
                 }
 
-                DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
-                deploymentFrequencyResult = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
+                deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
             }
-            return deploymentFrequencyResult;
+            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            {
+                deploymentsPerDay = deploymentsPerDay,
+                deploymentsPerDayDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
+            };
+            return model;
         }
 
         public async Task<string> SendGitHubMessage(string url, string baseURL)

@@ -9,22 +9,9 @@ namespace DevOpsMetrics.Web.Models
     public class IndexDeploymentModel
     {
         public List<AzureDevOpsBuild> AZList { get; set; }
-        public float AZDeploymentFrequency { get; set; }
-        public string AZDeploymentFrequencyText
-        {
-            get
-            {
-                return "Elite";
-            }
-        }
+        public DeploymentFrequencyModel AZDeploymentFrequency { get; set; }
         public List<GitHubActionsRun> GHList { get; set; }
-        public float GHDeploymentFrequency { get; set; }
-        public string GHDeploymentFrequencyText
-        {
-            get
-            {
-                return "Poor";
-            }
-        }
+        public DeploymentFrequencyModel GHDeploymentFrequency { get; set; }
+
     }
 }

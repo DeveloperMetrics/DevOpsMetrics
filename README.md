@@ -10,6 +10,11 @@ All four of these metrics are based on production environments, where the value 
 
 More information in a blog post here: https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/
 
+The current solution shows:
+- Deployment Frequency, in both Azure DevOps and GitHub:
+![Image description](https://github.com/samsmithnz/DevOpsMetrics/tree/AddingBuildDuration/ReadmeImages/DeploymentFrequencyDemo.png)
+
+
 # Architecture
 Uses .Net CORE 3.1, MSTest. A GitHub action runs the CI/CD process. 
 

@@ -46,6 +46,8 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             Assert.IsTrue(list != null);
             Assert.IsTrue(list.Count > 0);
             Assert.IsTrue(list[0].status != null);
+            Assert.IsTrue(list[0].buildDuration >= 0f);
+            Assert.IsTrue(list[0].queueTime < list[1].queueTime);
         }
 
         [TestMethod]
@@ -61,10 +63,12 @@ namespace DevOpsMetrics.Tests.AzureDevOps
 
             //Act
             AzureDevOpsDeploymentFrequencyDA da = new AzureDevOpsDeploymentFrequencyDA();
-            float deploymentFrequency = await da.GetDeploymentFrequency(patToken, organization, project, branch, buildId, numberOfDays);
+            DeploymentFrequencyModel model = await da.GetDeploymentFrequency(patToken, organization, project, branch, buildId, numberOfDays);
 
             //Assert
-            Assert.IsTrue(deploymentFrequency > 0);
+            Assert.IsTrue(model.deploymentsPerDay > 0f);
+            Assert.AreEqual(false, string.IsNullOrEmpty(model.deploymentsPerDayDescription));
+            Assert.AreNotEqual("Unknown", model.deploymentsPerDayDescription);
         }
 
     }
