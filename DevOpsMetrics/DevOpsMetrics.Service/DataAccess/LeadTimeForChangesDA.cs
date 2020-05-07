@@ -46,14 +46,6 @@ namespace DevOpsMetrics.Service.DataAccess
                         date = item.committer.date
                     });
                 }
-                
-                LeadTimeForChangesModel leadTime = new LeadTimeForChangesModel
-                {
-                    branch = branch,
-                    duration = new TimeSpan(),
-                    BuildCount = branchBuilds.Count,
-                    Commits = commits
-                };
 
                 DateTime minTime = DateTime.MaxValue;
                 DateTime maxTime = DateTime.MinValue;
@@ -79,7 +71,15 @@ namespace DevOpsMetrics.Service.DataAccess
                         maxTime = branchBuild.finishTime;
                     }
                 }
-                leadTime.duration = (maxTime - minTime);
+                LeadTimeForChangesModel leadTime = new LeadTimeForChangesModel
+                {
+                    Branch = branch,
+                    BuildCount = branchBuilds.Count,
+                    Commits = commits,
+                    StartDateTime = minTime,
+                    EndDateTime = maxTime
+                };
+
                 items.Add(leadTime);
             }
 
@@ -128,14 +128,6 @@ namespace DevOpsMetrics.Service.DataAccess
                     });
                 }
 
-                LeadTimeForChangesModel leadTime = new LeadTimeForChangesModel
-                {
-                    branch = branch,
-                    duration = new TimeSpan(),
-                    BuildCount = branchBuilds.Count,
-                    Commits = commits
-                };
-
                 DateTime minTime = DateTime.MaxValue;
                 DateTime maxTime = DateTime.MinValue;
                 foreach (GitHubPRCommit pullRequestCommit in pullRequestCommits)
@@ -160,7 +152,16 @@ namespace DevOpsMetrics.Service.DataAccess
                         maxTime = branchBuild.updated_at;
                     }
                 }
-                leadTime.duration = (maxTime - minTime);
+
+                LeadTimeForChangesModel leadTime = new LeadTimeForChangesModel
+                {
+                    Branch = branch,
+                    BuildCount = branchBuilds.Count,
+                    Commits = commits,
+                    StartDateTime = minTime,
+                    EndDateTime = maxTime
+                };
+
                 items.Add(leadTime);
             }
 

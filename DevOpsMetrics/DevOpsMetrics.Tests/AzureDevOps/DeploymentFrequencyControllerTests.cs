@@ -68,7 +68,7 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             string buildId = "3673"; //SamLearnsAzure.CI
 
             //Act
-            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeployments?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}";
+            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeployments?patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildId={buildId}";
             TestResponse<List<AzureDevOpsBuild>> httpResponse = new TestResponse<List<AzureDevOpsBuild>>();
             List<AzureDevOpsBuild> list = await httpResponse.GetResponse(Client, url);
 
@@ -94,9 +94,9 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(patToken, organization, project, branch, buildId, numberOfDays);
 
             //Assert
-            Assert.IsTrue(model.deploymentsPerDay > 0f);
-            Assert.AreEqual(false, string.IsNullOrEmpty(model.deploymentsPerDayDescription));
-            Assert.AreNotEqual("Unknown", model.deploymentsPerDayDescription);
+            Assert.IsTrue(model.DeploymentsPerDay > 0f);
+            Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayDescription));
+            Assert.AreNotEqual("Unknown", model.DeploymentsPerDayDescription);
         }
 
     }

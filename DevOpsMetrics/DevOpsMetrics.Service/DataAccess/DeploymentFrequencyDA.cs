@@ -59,8 +59,8 @@ namespace DevOpsMetrics.Service.DataAccess
             }
             DeploymentFrequencyModel model = new DeploymentFrequencyModel
             {
-                deploymentsPerDay = deploymentsPerDay,
-                deploymentsPerDayDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
+                DeploymentsPerDay = deploymentsPerDay,
+                DeploymentsPerDayDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
             };
             return model;
         }
@@ -113,8 +113,8 @@ namespace DevOpsMetrics.Service.DataAccess
             }
             DeploymentFrequencyModel model = new DeploymentFrequencyModel
             {
-                deploymentsPerDay = deploymentsPerDay,
-                deploymentsPerDayDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
+                DeploymentsPerDay = deploymentsPerDay,
+                DeploymentsPerDayDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
             };
             return model;
         }

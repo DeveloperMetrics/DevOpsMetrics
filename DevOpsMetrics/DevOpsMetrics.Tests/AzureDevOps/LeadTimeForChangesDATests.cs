@@ -41,8 +41,8 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             //Assert
             Assert.IsTrue(list != null);
             Assert.IsTrue(list.Count > 0);
-            Assert.IsTrue(list[0].branch != null);
-            Assert.IsTrue(list[0].duration.TotalSeconds > 0);
+            Assert.IsTrue(list[0].Branch != null);
+            Assert.IsTrue(list[0].Duration.TotalSeconds > 0);
             Assert.IsTrue(list[0].BuildCount > 0);
             Assert.IsTrue(list[0].Commits.Count > 0);
         }

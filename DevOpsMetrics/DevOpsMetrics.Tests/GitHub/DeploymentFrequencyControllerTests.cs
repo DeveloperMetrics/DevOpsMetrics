@@ -92,9 +92,9 @@ namespace DevOpsMetrics.Tests.GitHub
             DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(owner, repo, branch, workflowId, numberOfDays);
 
             //Assert
-            Assert.IsTrue(model.deploymentsPerDay > 0f);
-            Assert.AreEqual(false, string.IsNullOrEmpty(model.deploymentsPerDayDescription));
-            Assert.AreNotEqual("Unknown", model.deploymentsPerDayDescription);
+            Assert.IsTrue(model.DeploymentsPerDay > 0f);
+            Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayDescription));
+            Assert.AreNotEqual("Unknown", model.DeploymentsPerDayDescription);
         }
 
     }

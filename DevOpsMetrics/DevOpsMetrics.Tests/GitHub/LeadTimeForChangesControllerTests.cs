@@ -54,28 +54,28 @@ namespace DevOpsMetrics.Tests.GitHub
             //Assert
             Assert.IsTrue(list != null);
             Assert.IsTrue(list.Count > 0);
-            Assert.IsTrue(list[0].branch != null);
+            Assert.IsTrue(list[0].Branch != null);
         }
 
-        //[TestMethod]
-        //public async Task GHDeploymentsControllerAPIIntegrationTest()
-        //{
-        //    //Arrange
-        //    string owner = "samsmithnz";
-        //    string repo = "devopsmetrics";
-        //    string branch = "master";
-        //    string workflowId = "1162561";
+        [TestMethod]
+        public async Task GHDeploymentsControllerAPIIntegrationTest()
+        {
+            //Arrange
+            string owner = "samsmithnz";
+            string repo = "devopsmetrics";
+            string branch = "master";
+            string workflowId = "1162561";
 
-        //    //Act
-        //    string url = $"/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}";
-        //    TestResponse<List<LeadTimeForChangesModel>> httpResponse = new TestResponse<List<LeadTimeForChangesModel>>();
-        //    List<LeadTimeForChangesModel> list = await httpResponse.GetResponse(Client, url);
+            //Act
+            string url = $"/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?owner={owner}&repo={repo}&branch={branch}&workflowId={workflowId}";
+            TestResponse<List<LeadTimeForChangesModel>> httpResponse = new TestResponse<List<LeadTimeForChangesModel>>();
+            List<LeadTimeForChangesModel> list = await httpResponse.GetResponse(Client, url);
 
-        //    //Assert
-        //    Assert.IsTrue(list != null);
-        //    Assert.IsTrue(list.Count > 0);
-        //    //Assert.IsTrue(list[0].branch != null);
-        //}
+            //Assert
+            Assert.IsTrue(list != null);
+            Assert.IsTrue(list.Count > 0);
+            //Assert.IsTrue(list[0].branch != null);
+        }
 
     }
 }

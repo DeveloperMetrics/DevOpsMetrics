@@ -115,8 +115,8 @@ namespace DevOpsMetrics.Web.Services
             {
                 return new DeploymentFrequencyModel
                 {
-                    deploymentsPerDay = 10f,
-                    deploymentsPerDayDescription = "Elite"
+                    DeploymentsPerDay = 10f,
+                    DeploymentsPerDayDescription = "Elite"
                 };
             }
             else
@@ -219,8 +219,8 @@ namespace DevOpsMetrics.Web.Services
             {
                 return new DeploymentFrequencyModel
                 {
-                    deploymentsPerDay = 1f / 30f,
-                    deploymentsPerDayDescription = "Low"
+                    DeploymentsPerDay = 1f / 30f,
+                    DeploymentsPerDayDescription = "Low"
                 };
             }
             else
@@ -238,7 +238,7 @@ namespace DevOpsMetrics.Web.Services
             {
                 return new LeadTimeForChangesModel
                 {
-                    branch = "abc123",
+                    Branch = "abc123",
                     BuildCount = 2,
                     Commits = new List<Commit>
                     {
@@ -255,7 +255,8 @@ namespace DevOpsMetrics.Web.Services
                             name = "commit 2"
                         }
                     },
-                    duration = DateTime.Now.AddDays(-5) - DateTime.Now.AddDays(-7)
+                    StartDateTime = DateTime.Now.AddDays(-7),
+                    EndDateTime = DateTime.Now.AddDays(-5) 
                 };
             }
             else
@@ -270,7 +271,7 @@ namespace DevOpsMetrics.Web.Services
             {
                 return new LeadTimeForChangesModel
                 {
-                    branch = "abc123",
+                    Branch = "abc123",
                     BuildCount = 2,
                     Commits = new List<Commit>
                     {
@@ -287,7 +288,8 @@ namespace DevOpsMetrics.Web.Services
                             name = "commit 2"
                         }
                     },
-                    duration = DateTime.Now.AddDays(-5) - DateTime.Now.AddDays(-7)
+                    StartDateTime = DateTime.Now.AddDays(-7),
+                    EndDateTime = DateTime.Now.AddDays(-5)
                 };
             }
             else

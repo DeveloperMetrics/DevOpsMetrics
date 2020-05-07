@@ -62,9 +62,9 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(patToken, organization, project, branch, buildId, numberOfDays);
 
             //Assert
-            Assert.IsTrue(model.deploymentsPerDay > 0f);
-            Assert.AreEqual(false, string.IsNullOrEmpty(model.deploymentsPerDayDescription));
-            Assert.AreNotEqual("Unknown", model.deploymentsPerDayDescription);
+            Assert.IsTrue(model.DeploymentsPerDay > 0f);
+            Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayDescription));
+            Assert.AreNotEqual("Unknown", model.DeploymentsPerDayDescription);
         }
 
     }

@@ -54,7 +54,7 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             //Assert
             Assert.IsTrue(list != null);
             Assert.IsTrue(list.Count > 0);
-            Assert.IsTrue(list[0].branch != null);
+            Assert.IsTrue(list[0].Branch != null);
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             string buildId = "3673"; //SamLearnsAzure.CI
 
             //Act
-            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeployments?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}";
+            string url = $"/api/LeadTimeForChanges/GetAzureDevOpsLeadTimeForChanges?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}";
             TestResponse<List<LeadTimeForChangesModel>> httpResponse = new TestResponse<List<LeadTimeForChangesModel>>();
             List<LeadTimeForChangesModel> list = await httpResponse.GetResponse(Client, url);
 
