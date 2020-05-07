@@ -85,64 +85,6 @@ namespace DevOpsMetrics.Web.Controllers
             };
             return View(indexModel);
         }
-
-        public async Task<PartialViewDeploymentModel> CreateAzureDevOpsBuild(bool showDemoData, string deploymentName, string patToken, string organization, string project, string azBranch, string buildId, int numberOfDeployments,int numberOfDays)
-        {
-            ServiceApiClient service = new ServiceApiClient(_configuration);
-            List<AzureDevOpsBuild> azList = await service.GetAZDeployments(showDemoData, patToken, organization, project, azBranch, buildId);
-            DeploymentFrequencyModel azDeploymentFrequency = await service.GetAZDeploymentFrequency(showDemoData, patToken, organization, project, azBranch, buildId, numberOfDays);
-
-            PartialViewDeploymentModel item = new PartialViewDeploymentModel
-            {
-                DeploymentName = deploymentName,
-                AZList = azList,
-                AZDeploymentFrequency = azDeploymentFrequency
-            };
-
-            //Limit Azure DevOps to latest results
-            if (azList.Count >= numberOfDeployments)
-            {
-                item.AZList = new List<AzureDevOpsBuild>();
-                //Only show the last ten builds
-                for (int i = azList.Count - numberOfDeployments; i < azList.Count; i++)
-                {
-                    item.AZList.Add(azList[i]);
-                }
-            }
-            item.AZDeploymentFrequency = azDeploymentFrequency;
-            item.AZList = DeploymentFrequencyService.ProcessAzureDevOpsBuilds(item.AZList);
-
-            return item;
-        }
-       
-        public async Task<PartialViewDeploymentModel> CreateGitHubActionsRun(bool showDemoData, string deploymentName, string owner, string repo, string ghbranch, string workflowId, int numberOfDeployments, int numberOfDays)
-        {
-            ServiceApiClient service = new ServiceApiClient(_configuration);
-            List<GitHubActionsRun> ghList = await service.GetGHDeployments(showDemoData, owner, repo, ghbranch, workflowId);
-            DeploymentFrequencyModel ghDeploymentFrequency = await service.GetGHDeploymentFrequency(showDemoData, owner, repo, ghbranch, workflowId, numberOfDays);
-
-            PartialViewDeploymentModel item = new PartialViewDeploymentModel
-            {
-                DeploymentName = deploymentName,
-                GHDeploymentFrequency = ghDeploymentFrequency,
-                GHList = ghList
-            };
-
-            //Limit GitHub to latest 10 results
-            if (ghList.Count >= numberOfDeployments)
-            {
-                item.GHList = new List<GitHubActionsRun>();
-                //Only show the last ten builds
-                for (int i = ghList.Count - numberOfDeployments; i < ghList.Count; i++)
-                {
-                    item.GHList.Add(ghList[i]);
-                }
-            }
-            item.GHDeploymentFrequency = ghDeploymentFrequency;
-            item.GHList = DeploymentFrequencyService.ProcessGitHubRuns(item.GHList);
-
-            return item;
-        }
  
         public async Task<IActionResult> DeploymentFrequency()
         {
@@ -211,6 +153,66 @@ namespace DevOpsMetrics.Web.Controllers
                 Items = items
             };
             return View(indexModel);
+        }
+
+
+
+        public async Task<PartialViewDeploymentModel> CreateAzureDevOpsBuild(bool showDemoData, string deploymentName, string patToken, string organization, string project, string azBranch, string buildId, int numberOfDeployments, int numberOfDays)
+        {
+            ServiceApiClient service = new ServiceApiClient(_configuration);
+            List<AzureDevOpsBuild> azList = await service.GetAzureDevOpsDeployments(showDemoData, patToken, organization, project, azBranch, buildId);
+            DeploymentFrequencyModel azDeploymentFrequency = await service.GetAzureDevOpsDeploymentFrequency(showDemoData, patToken, organization, project, azBranch, buildId, numberOfDays);
+
+            PartialViewDeploymentModel item = new PartialViewDeploymentModel
+            {
+                DeploymentName = deploymentName,
+                AzureDevOpsList = azList,
+                AzureDevOpsDeploymentFrequency = azDeploymentFrequency
+            };
+
+            //Limit Azure DevOps to latest results
+            if (azList.Count >= numberOfDeployments)
+            {
+                item.AzureDevOpsList = new List<AzureDevOpsBuild>();
+                //Only show the last ten builds
+                for (int i = azList.Count - numberOfDeployments; i < azList.Count; i++)
+                {
+                    item.AzureDevOpsList.Add(azList[i]);
+                }
+            }
+            item.AzureDevOpsDeploymentFrequency = azDeploymentFrequency;
+            item.AzureDevOpsList = DeploymentFrequencyService.ProcessAzureDevOpsBuilds(item.AzureDevOpsList);
+
+            return item;
+        }
+
+        public async Task<PartialViewDeploymentModel> CreateGitHubActionsRun(bool showDemoData, string deploymentName, string owner, string repo, string ghbranch, string workflowId, int numberOfDeployments, int numberOfDays)
+        {
+            ServiceApiClient service = new ServiceApiClient(_configuration);
+            List<GitHubActionsRun> ghList = await service.GetGitHubDeployments(showDemoData, owner, repo, ghbranch, workflowId);
+            DeploymentFrequencyModel ghDeploymentFrequency = await service.GetGitHubDeploymentFrequency(showDemoData, owner, repo, ghbranch, workflowId, numberOfDays);
+
+            PartialViewDeploymentModel item = new PartialViewDeploymentModel
+            {
+                DeploymentName = deploymentName,
+                GitHubDeploymentFrequency = ghDeploymentFrequency,
+                GitHubList = ghList
+            };
+
+            //Limit GitHub to latest 10 results
+            if (ghList.Count >= numberOfDeployments)
+            {
+                item.GitHubList = new List<GitHubActionsRun>();
+                //Only show the last ten builds
+                for (int i = ghList.Count - numberOfDeployments; i < ghList.Count; i++)
+                {
+                    item.GitHubList.Add(ghList[i]);
+                }
+            }
+            item.GitHubDeploymentFrequency = ghDeploymentFrequency;
+            item.GitHubList = DeploymentFrequencyService.ProcessGitHubRuns(item.GitHubList);
+
+            return item;
         }
 
         public IActionResult LeadTimeForChanges()

@@ -9,11 +9,11 @@
     @foreach (PartialViewDeploymentModel item in Model.Items)
     {
     <div class="col-md-6">
-        @if (item.AZDeploymentFrequency != null)
+        @if (item.AzureDevOpsDeploymentFrequency != null)
         {
             @await Html.PartialAsync("_AzureDevOpsDeployments", item)
         }
-        else if (item.GHDeploymentFrequency != null)
+        else if (item.GitHubDeploymentFrequency != null)
         {
             @await Html.PartialAsync("_GitHubDeployments", item)
         }

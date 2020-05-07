@@ -35,8 +35,8 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             string buildId = "3673"; //SamLearnsAzure.CI
 
             //Act
-            AzureDevOpsLeadTimeForChangesDA da = new AzureDevOpsLeadTimeForChangesDA();
-            List<LeadTimeForChangesModel> list = await da.GetLeadTimesForChanges(patToken, organization, project, masterBranch, buildId);
+            LeadTimeForChangesDA da = new LeadTimeForChangesDA();
+            List<LeadTimeForChangesModel> list = await da.GetAzureDevOpsLeadTimesForChanges(patToken, organization, project, masterBranch, buildId);
 
             //Assert
             Assert.IsTrue(list != null);

@@ -49,7 +49,7 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            List<AzureDevOpsBuild> list = await controller.GetAzDeployments(patToken, organization, project, branch, buildId);
+            List<AzureDevOpsBuild> list = await controller.GetAzureDevOpsDeployments(patToken, organization, project, branch, buildId);
 
             //Assert
             Assert.IsTrue(list != null);
@@ -68,7 +68,7 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             string buildId = "3673"; //SamLearnsAzure.CI
 
             //Act
-            string url = $"/api/DeploymentFrequency/GetAzDeployments?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}";
+            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeployments?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}";
             TestResponse<List<AzureDevOpsBuild>> httpResponse = new TestResponse<List<AzureDevOpsBuild>>();
             List<AzureDevOpsBuild> list = await httpResponse.GetResponse(Client, url);
 
@@ -91,7 +91,7 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetAzDeploymentFrequency(patToken, organization, project, branch, buildId, numberOfDays);
+            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(patToken, organization, project, branch, buildId, numberOfDays);
 
             //Assert
             Assert.IsTrue(model.deploymentsPerDay > 0f);

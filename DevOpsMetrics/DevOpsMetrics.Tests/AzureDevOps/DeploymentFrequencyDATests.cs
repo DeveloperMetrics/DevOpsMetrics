@@ -35,8 +35,8 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             string buildId = "3673"; //SamLearnsAzure.CI
 
             //Act
-            AzureDevOpsDeploymentFrequencyDA da = new AzureDevOpsDeploymentFrequencyDA();
-            List<AzureDevOpsBuild> list = await da.GetDeployments(patToken, organization, project, branch, buildId);
+            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
+            List<AzureDevOpsBuild> list = await da.GetAzureDevOpsDeployments(patToken, organization, project, branch, buildId);
 
             //Assert
             Assert.IsTrue(list != null);
@@ -58,8 +58,8 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             int numberOfDays = 7;
 
             //Act
-            AzureDevOpsDeploymentFrequencyDA da = new AzureDevOpsDeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetDeploymentFrequency(patToken, organization, project, branch, buildId, numberOfDays);
+            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
+            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(patToken, organization, project, branch, buildId, numberOfDays);
 
             //Assert
             Assert.IsTrue(model.deploymentsPerDay > 0f);

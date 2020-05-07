@@ -2,7 +2,7 @@
 
 <div class="chartContainer vertical flat">
     <h4><img src="~/images/GitHub-icon.png" style="width:32px;" />&nbsp; GitHub - @Model.DeploymentName</h4>
-    @foreach (DevOpsMetrics.Service.Models.GitHubActionsRun item in Model.GHList)
+    @foreach (DevOpsMetrics.Service.Models.GitHubActionsRun item in Model.GitHubList)
     {
         <a href="@item.html_url" target="_blank">
             <div class="progress-bar">
@@ -17,6 +17,6 @@
 </div>
 <br />
 <div class="metricSpan">
-    <b>Deployment frequency:</b> @Model.GHDeploymentFrequency.deploymentsPerDay.ToString("0.00") per day (last 7 days)<br />
-    <b>Deployment frequency ranking:</b> @Model.GHDeploymentFrequency.deploymentsPerDayDescription
+    <b>Deployment frequency:</b> @Model.GitHubDeploymentFrequency.deploymentsPerDay.ToString("0.00") per day (last 7 days)<br />
+    <b>Deployment frequency ranking:</b> @Model.GitHubDeploymentFrequency.deploymentsPerDayDescription
 </div>

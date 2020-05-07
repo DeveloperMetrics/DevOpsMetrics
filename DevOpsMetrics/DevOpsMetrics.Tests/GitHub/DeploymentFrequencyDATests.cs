@@ -21,8 +21,8 @@ namespace DevOpsMetrics.Tests.GitHub
             string workflowId = "108084";
 
             //Act
-            GitHubDeploymentFrequencyDA da = new GitHubDeploymentFrequencyDA();
-            List<GitHubActionsRun> list = await da.GetDeployments(owner, repo, ghbranch, workflowId);
+            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
+            List<GitHubActionsRun> list = await da.GetGitHubDeployments(owner, repo, ghbranch, workflowId);
 
             //Assert
             Assert.IsTrue(list != null);
@@ -44,8 +44,8 @@ namespace DevOpsMetrics.Tests.GitHub
             int numberOfDays = 7;
 
             //Act
-            GitHubDeploymentFrequencyDA da = new GitHubDeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetDeploymentFrequency(owner, repo, branch, workflowId, numberOfDays);
+            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
+            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(owner, repo, branch, workflowId, numberOfDays);
 
             //Assert
             Assert.IsTrue(model.deploymentsPerDay > 0f);

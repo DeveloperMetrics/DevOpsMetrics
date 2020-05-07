@@ -49,7 +49,7 @@ namespace DevOpsMetrics.Tests.GitHub
             DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            List<GitHubActionsRun> list = await controller.GetGHDeployments(owner, repo, branch, workflowId);
+            List<GitHubActionsRun> list = await controller.GetGitHubDeployments(owner, repo, branch, workflowId);
 
             //Assert
             Assert.IsTrue(list != null);
@@ -67,7 +67,7 @@ namespace DevOpsMetrics.Tests.GitHub
             string workflowId = "108084";
 
             //Act
-            string url = $"/api/DeploymentFrequency/GetGHDeployments?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}";
+            string url = $"/api/DeploymentFrequency/GetGitHubDeployments?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}";
             TestResponse<List<GitHubActionsRun>> httpResponse = new TestResponse<List<GitHubActionsRun>>();
             List<GitHubActionsRun> list = await httpResponse.GetResponse(Client, url);
 
@@ -89,7 +89,7 @@ namespace DevOpsMetrics.Tests.GitHub
             DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetGHDeploymentFrequency(owner, repo, branch, workflowId, numberOfDays);
+            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(owner, repo, branch, workflowId, numberOfDays);
 
             //Assert
             Assert.IsTrue(model.deploymentsPerDay > 0f);

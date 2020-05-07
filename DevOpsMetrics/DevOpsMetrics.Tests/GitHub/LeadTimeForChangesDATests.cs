@@ -21,8 +21,8 @@ namespace DevOpsMetrics.Tests.GitHub
             string workflowId = "1162561";
 
             //Act
-            GitHubLeadTimeForChangesDA da = new GitHubLeadTimeForChangesDA();
-            List<LeadTimeForChangesModel> list = await da.GetLeadTimesForChanges(owner, repo, masterBranch, workflowId);
+            LeadTimeForChangesDA da = new LeadTimeForChangesDA();
+            List<LeadTimeForChangesModel> list = await da.GetGitHubLeadTimesForChanges(owner, repo, masterBranch, workflowId);
 
             //Assert
             Assert.IsTrue(list != null);

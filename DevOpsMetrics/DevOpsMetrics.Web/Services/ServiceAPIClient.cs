@@ -22,7 +22,7 @@ namespace DevOpsMetrics.Web.Services
             };
         }
 
-        public async Task<List<AzureDevOpsBuild>> GetAZDeployments(bool getDemoData, string patToken, string organization, string project, string branch, string buildId)
+        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsDeployments(bool getDemoData, string patToken, string organization, string project, string branch, string buildId)
         {
             if (getDemoData == true)
             {
@@ -96,7 +96,7 @@ namespace DevOpsMetrics.Web.Services
             }
             else
             {
-                string url = $"/api/DeploymentFrequency/GetAzDeployments?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}";
+                string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeployments?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}";
                 List<AzureDevOpsBuild> results = await GetResponse<List<AzureDevOpsBuild>>(_client, url);
                 if (results == null)
                 {
@@ -109,7 +109,7 @@ namespace DevOpsMetrics.Web.Services
             }
         }
 
-        public async Task<DeploymentFrequencyModel> GetAZDeploymentFrequency(bool getDemoData, string patToken, string organization, string project, string branch, string buildId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getDemoData, string patToken, string organization, string project, string branch, string buildId, int numberOfDays)
         {
             if (getDemoData == true)
             {
@@ -121,12 +121,12 @@ namespace DevOpsMetrics.Web.Services
             }
             else
             {
-                string url = $"/api/DeploymentFrequency/GetAzDeploymentFrequency?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}&numberOfDays={numberOfDays}";
+                string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildId={buildId}&numberOfDays={numberOfDays}";
                 return await GetResponse<DeploymentFrequencyModel>(_client, url);
             }
         }
 
-        public async Task<List<GitHubActionsRun>> GetGHDeployments(bool getDemoData, string owner, string repo, string branch, string workflowId)
+        public async Task<List<GitHubActionsRun>> GetGitHubDeployments(bool getDemoData, string owner, string repo, string branch, string workflowId)
         {
             if (getDemoData == true)
             {
@@ -200,7 +200,7 @@ namespace DevOpsMetrics.Web.Services
             }
             else
             {
-                string url = $"/api/DeploymentFrequency/GetGHDeployments?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}";
+                string url = $"/api/DeploymentFrequency/GetGitHubDeployments?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}";
                 List<GitHubActionsRun> results = await GetResponse<List<GitHubActionsRun>>(_client, url);
                 if (results == null)
                 {
@@ -213,7 +213,7 @@ namespace DevOpsMetrics.Web.Services
             }
         }
 
-        public async Task<DeploymentFrequencyModel> GetGHDeploymentFrequency(bool getDemoData, string owner, string repo, string branch, string workflowId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getDemoData, string owner, string repo, string branch, string workflowId, int numberOfDays)
         {
             if (getDemoData == true)
             {
