@@ -92,10 +92,10 @@ namespace DevOpsMetrics.Service.DataAccess
 
         private async Task<string> GetPullRequestByBranchName(string owner, string repo, string branch)
         {
-            //https://developer.github.com/v3/pulls/#list-pull-requests
+            //https://developer.GitHub.com/v3/pulls/#list-pull-requests
             //GET /repos/:owner/:repo/pulls
             string url = $"/repos/{owner}/{repo}/pulls?state=all&head={branch}";
-            string response = await MessageUtility.SendGitHubMessage(url, "https://api.github.com/");
+            string response = await MessageUtility.SendGitHubMessage(url, "https://api.GitHub.com/");
 
             List<GitHubPR> prs = new List<GitHubPR>();
             if (string.IsNullOrEmpty(response) == false)
@@ -117,10 +117,10 @@ namespace DevOpsMetrics.Service.DataAccess
 
         private async Task<List<GitHubPRCommit>> GetPullRequestDetails(string owner, string repo, string pull_number)
         {
-            //https://developer.github.com/v3/pulls/#list-commits-on-a-pull-request
+            //https://developer.GitHub.com/v3/pulls/#list-commits-on-a-pull-request
             //GET /repos/:owner/:repo/pulls/:pull_number/commits
             string url = $"/repos/{owner}/{repo}/pulls/{pull_number}/commits";
-            string response = await MessageUtility.SendGitHubMessage(url, "https://api.github.com/");
+            string response = await MessageUtility.SendGitHubMessage(url, "https://api.GitHub.com/");
 
             List<GitHubPRCommit> commits = new List<GitHubPRCommit>();
             if (string.IsNullOrEmpty(response) == false)

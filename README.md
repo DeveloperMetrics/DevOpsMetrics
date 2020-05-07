@@ -15,7 +15,7 @@ More information in a blog post here: https://samlearnsazure.blog/2020/04/30/hig
   - How does it work? We look at the number of successful pipeline runs. 
   - Assumptions/things we can't currently measure: 
     - The deployment is to a production environment
-![Deployment Frequency](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/DeploymentFrequencyDemo.png)
+![Deployment Frequency](https://GitHub.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/DeploymentFrequencyDemo.png)
 
 - Lead time for changes, in both Azure DevOps and GitHub:
   - How does it work? We look at the number of successful pipeline runs and match it with Pull Requests 
@@ -29,7 +29,7 @@ More information in a blog post here: https://samlearnsazure.blog/2020/04/30/hig
 # Architecture
 Uses .Net CORE 3.1 & MSTest. A GitHub action runs the CI/CD process. 
 
-[![Build](https://github.com/samsmithnz/DevOpsMetrics/workflows/CI/CD/badge.svg)](https://github.com/samsmithnz/DevOpsMetrics/actions?query=workflow%3ACI%2FCD)
+[![Build](https://GitHub.com/samsmithnz/DevOpsMetrics/workflows/CI/CD/badge.svg)](https://GitHub.com/samsmithnz/DevOpsMetrics/actions?query=workflow%3ACI%2FCD)
 
 Currently the CI/CD process: 
 1. Builds the code
@@ -42,4 +42,4 @@ Dependabot runs daily to check for dependency upgrades, and will automatically c
 # References
 
 - Azure DevOps API: https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1
-- GitHub API: https://developer.github.com/v3/actions/workflow-runs/
+- GitHub API: https://developer.GitHub.com/v3/actions/workflow-runs/

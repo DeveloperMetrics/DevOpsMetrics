@@ -8,6 +8,6 @@ namespace DevOpsMetrics.Service.Models
     public class GitHubPR
     {
         public string number { get; set; }
-        public GHHead head { get; set; }
+        public GitHubHead head { get; set; }
     }
 }

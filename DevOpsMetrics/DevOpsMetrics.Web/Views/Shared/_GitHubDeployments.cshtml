@@ -1,7 +1,7 @@
 ﻿@model PartialViewDeploymentModel
 
 <div class="chartContainer vertical flat">
-    <h4><img src="~/images/github-icon.png" style="width:32px;" />&nbsp; GitHub - @Model.DeploymentName</h4>
+    <h4><img src="~/images/GitHub-icon.png" style="width:32px;" />&nbsp; GitHub - @Model.DeploymentName</h4>
     @foreach (DevOpsMetrics.Service.Models.GitHubActionsRun item in Model.GHList)
     {
         <a href="@item.html_url" target="_blank">

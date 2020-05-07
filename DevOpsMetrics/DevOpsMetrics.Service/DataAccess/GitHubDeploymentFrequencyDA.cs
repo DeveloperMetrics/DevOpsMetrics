@@ -13,7 +13,7 @@ namespace DevOpsMetrics.Service.DataAccess
         public async Task<List<GitHubActionsRun>> GetDeployments(string owner, string repo, string branch, string workflowId)
         {
             List<GitHubActionsRun> deployments = new List<GitHubActionsRun>();
-            string runListResponse = await MessageUtility.SendGitHubMessage($"repos/{owner}/{repo}/actions/workflows/{workflowId}/runs", "https://api.github.com/");
+            string runListResponse = await MessageUtility.SendGitHubMessage($"repos/{owner}/{repo}/actions/workflows/{workflowId}/runs", "https://api.GitHub.com/");
             if (string.IsNullOrEmpty(runListResponse) == false)
             {
                 dynamic buildListObject = JsonConvert.DeserializeObject(runListResponse);
@@ -37,7 +37,7 @@ namespace DevOpsMetrics.Service.DataAccess
 
             float deploymentsPerDay = 0;
             DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
-            string runListResponse = await MessageUtility.SendGitHubMessage($"repos/{owner}/{repo}/actions/workflows/{workflowId}/runs", "https://api.github.com/");
+            string runListResponse = await MessageUtility.SendGitHubMessage($"repos/{owner}/{repo}/actions/workflows/{workflowId}/runs", "https://api.GitHub.com/");
             if (string.IsNullOrEmpty(runListResponse) == false)
             {
                 dynamic buildListObject = JsonConvert.DeserializeObject(runListResponse);

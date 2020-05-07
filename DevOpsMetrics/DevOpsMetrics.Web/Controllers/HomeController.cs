@@ -128,7 +128,7 @@ namespace DevOpsMetrics.Web.Controllers
                 GHList = ghList
             };
 
-            //Limit Github to latest 10 results
+            //Limit GitHub to latest 10 results
             if (ghList.Count >= numberOfDeployments)
             {
                 item.GHList = new List<GitHubActionsRun>();

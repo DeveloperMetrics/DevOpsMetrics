@@ -138,7 +138,7 @@ namespace DevOpsMetrics.Web.Services
                     run_number = "1",
                     head_branch = "master",
                     status = "completed",
-                    html_url = "https://github.com/samsmithnz/devopsmetrics/1"
+                    html_url = "https://GitHub.com/samsmithnz/devopsmetrics/1"
                 };
                 results.Add(item1);
                 GitHubActionsRun item2 = new GitHubActionsRun
@@ -148,7 +148,7 @@ namespace DevOpsMetrics.Web.Services
                     run_number = "2",
                     head_branch = "master",
                     status = "completed",
-                    html_url = "https://github.com/samsmithnz/devopsmetrics/2"
+                    html_url = "https://GitHub.com/samsmithnz/devopsmetrics/2"
                 };
                 results.Add(item2);
                 results.Add(item2);
@@ -159,7 +159,7 @@ namespace DevOpsMetrics.Web.Services
                     run_number = "3",
                     head_branch = "master",
                     status = "failed",
-                    html_url = "https://github.com/samsmithnz/devopsmetrics/3"
+                    html_url = "https://GitHub.com/samsmithnz/devopsmetrics/3"
                 };
                 results.Add(item3);
                 GitHubActionsRun item4 = new GitHubActionsRun
@@ -169,7 +169,7 @@ namespace DevOpsMetrics.Web.Services
                     run_number = "4",
                     head_branch = "master",
                     status = "completed",
-                    html_url = "https://github.com/samsmithnz/devopsmetrics/4"
+                    html_url = "https://GitHub.com/samsmithnz/devopsmetrics/4"
                 };
                 results.Add(item4);
                 results.Add(item4);
@@ -180,7 +180,7 @@ namespace DevOpsMetrics.Web.Services
                     run_number = "5",
                     head_branch = "master",
                     status = "failed",
-                    html_url = "https://github.com/samsmithnz/devopsmetrics/5"
+                    html_url = "https://GitHub.com/samsmithnz/devopsmetrics/5"
                 };
                 results.Add(item5);
                 results.Add(item5);
@@ -191,7 +191,7 @@ namespace DevOpsMetrics.Web.Services
                     run_number = "6",
                     head_branch = "master",
                     status = "completed",
-                    html_url = "https://github.com/samsmithnz/devopsmetrics/6"
+                    html_url = "https://GitHub.com/samsmithnz/devopsmetrics/6"
                 };
                 results.Add(item6);
                 results.Add(item6);

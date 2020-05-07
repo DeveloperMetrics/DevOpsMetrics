@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.Models
 {
-    public class GHHead
+    public class GitHubHead
     {
         public string @ref {get;set;}
 }
