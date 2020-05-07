@@ -230,6 +230,73 @@ namespace DevOpsMetrics.Web.Services
             }
         }
 
+
+
+        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getDemoData, string patToken, string organization, string project, string branch, string buildId)
+        {
+            if (getDemoData == true)
+            {
+                return new LeadTimeForChangesModel
+                {
+                    branch = "abc123",
+                    BuildCount = 2,
+                    Commits = new List<Commit>
+                    {
+                        new Commit
+                        {
+                            commitId="abc",
+                            date = DateTime.Now.AddDays(-7),
+                            name = "commit 1"
+                        },
+                        new Commit
+                        {
+                            commitId="def",
+                            date = DateTime.Now.AddDays(-5),
+                            name = "commit 2"
+                        }
+                    },
+                    duration = DateTime.Now.AddDays(-5) - DateTime.Now.AddDays(-7)
+                };
+            }
+            else
+            {
+                string url = $"/api/LeadTimeForChanges/GetAzureDevOpsLeadTimeForChanges?patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildId={buildId}";
+                return await GetResponse<LeadTimeForChangesModel>(_client, url);
+            }
+        }
+        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimeForChanges(bool getDemoData, string owner, string repo, string branch, string workflowId, int numberOfDays)
+        {
+            if (getDemoData == true)
+            {
+                return new LeadTimeForChangesModel
+                {
+                    branch = "abc123",
+                    BuildCount = 2,
+                    Commits = new List<Commit>
+                    {
+                        new Commit
+                        {
+                            commitId="abc",
+                            date = DateTime.Now.AddDays(-7),
+                            name = "commit 1"
+                        },
+                        new Commit
+                        {
+                            commitId="def",
+                            date = DateTime.Now.AddDays(-5),
+                            name = "commit 2"
+                        }
+                    },
+                    duration = DateTime.Now.AddDays(-5) - DateTime.Now.AddDays(-7)
+                };
+            }
+            else
+            {
+                string url = $"/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?owner={owner}&repo={repo}&branch={branch}&workflowId={workflowId}&numberOfDays={numberOfDays}";
+                return await GetResponse<LeadTimeForChangesModel>(_client, url);
+            }
+        }
+
         private async Task<T> GetResponse<T>(HttpClient client, string url)
         {
             T obj = default;

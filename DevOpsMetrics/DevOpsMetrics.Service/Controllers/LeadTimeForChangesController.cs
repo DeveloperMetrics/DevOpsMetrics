@@ -1,5 +1,4 @@
-﻿using DevOpsMetrics.Core;
-using DevOpsMetrics.Service.DataAccess;
+﻿using DevOpsMetrics.Service.DataAccess;
 using DevOpsMetrics.Service.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -12,19 +11,19 @@ namespace DevOpsMetrics.Service.Controllers
     public class LeadTimeForChangesController : ControllerBase
     {
 
-        [HttpGet("GetAzLeadTimeForChanges")]
-        public async Task<List<LeadTimeForChangesModel>> GetAzLeadTimeForChanges(string patToken, string organization, string project, string AZbranch, string buildId)
+        [HttpGet("GetAzureDevOpsLeadTimeForChanges")]
+        public async Task<List<LeadTimeForChangesModel>> GetAzureDevOpsLeadTimeForChanges(string patToken, string organization, string project, string branch, string buildId)
         {
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-            List<LeadTimeForChangesModel> leadTimeForChanges = await da.GetAzureDevOpsLeadTimesForChanges(patToken, organization, project, AZbranch, buildId);
+            List<LeadTimeForChangesModel> leadTimeForChanges = await da.GetAzureDevOpsLeadTimesForChanges(patToken, organization, project, branch, buildId);
             return leadTimeForChanges;
         }
 
         [HttpGet("GetGitHubLeadTimeForChanges")]
-        public async Task<List<LeadTimeForChangesModel>> GetGitHubLeadTimeForChanges(string owner, string repo, string GHbranch, string workflowId)
+        public async Task<List<LeadTimeForChangesModel>> GetGitHubLeadTimeForChanges(string owner, string repo, string branch, string workflowId)
         {
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-            List<LeadTimeForChangesModel> leadTimeForChanges = await da.GetGitHubLeadTimesForChanges(owner, repo, GHbranch, workflowId);
+            List<LeadTimeForChangesModel> leadTimeForChanges = await da.GetGitHubLeadTimesForChanges(owner, repo, branch, workflowId);
             return leadTimeForChanges;
         }
 
