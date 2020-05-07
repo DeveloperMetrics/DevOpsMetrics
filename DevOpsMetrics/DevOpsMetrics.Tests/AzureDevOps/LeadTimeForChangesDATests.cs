@@ -47,26 +47,5 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             Assert.IsTrue(list[0].Commits.Count > 0);
         }
 
-        //[TestMethod]
-        //public async Task AzDeploymentFrequencyDAIntegrationTest()
-        //{
-        //    //Arrange
-        //    string patToken = Configuration["AppSettings:PatToken"];
-        //    string organization = "samsmithnz";
-        //    string project = "SamLearnsAzure";
-        //    string branch = "refs/heads/master";
-        //    string buildId = "3673"; //SamLearnsAzure.CI
-        //    int numberOfDays = 7;
-
-        //    //Act
-        //    AzureDevOpsDeploymentFrequencyDA da = new AzureDevOpsDeploymentFrequencyDA();
-        //    DeploymentFrequencyModel model = await da.GetDeploymentFrequency(patToken, organization, project, branch, buildId, numberOfDays);
-
-        //    //Assert
-        //    Assert.IsTrue(model.deploymentsPerDay > 0f);
-        //    Assert.AreEqual(false, string.IsNullOrEmpty(model.deploymentsPerDayDescription));
-        //    Assert.AreNotEqual("Unknown", model.deploymentsPerDayDescription);
-        //}
-
     }
 }

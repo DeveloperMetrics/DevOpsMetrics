@@ -39,9 +39,9 @@ namespace DevOpsMetrics.Service.DataAccess
             foreach (string branch in branches)
             {
                 List<AzureDevOpsBuild> branchBuilds = builds.Where(a => a.sourceBranch == branch).ToList();
-                List<PullRequestCommit> pullRequestCommits = await GetPullRequestDetails(patToken, organization, project, branch.Replace("refs/pull/", "").Replace("/merge", ""));
+                List<AzureDevOpsPRCommit> pullRequestCommits = await GetPullRequestDetails(patToken, organization, project, branch.Replace("refs/pull/", "").Replace("/merge", ""));
                 List<Commit> commits = new List<Commit>();
-                foreach (PullRequestCommit item in pullRequestCommits)
+                foreach (AzureDevOpsPRCommit item in pullRequestCommits)
                 {
                     commits.Add(new Commit
                     {
@@ -61,7 +61,7 @@ namespace DevOpsMetrics.Service.DataAccess
 
                 DateTime minTime = DateTime.MaxValue;
                 DateTime maxTime = DateTime.MinValue;
-                foreach (PullRequestCommit pullRequestCommit in pullRequestCommits)
+                foreach (AzureDevOpsPRCommit pullRequestCommit in pullRequestCommits)
                 {
                     if (minTime > pullRequestCommit.committer.date)
                     {
@@ -90,18 +90,18 @@ namespace DevOpsMetrics.Service.DataAccess
             return items;
         }
 
-        private async Task<List<PullRequestCommit>> GetPullRequestDetails(string patToken, string organization, string project, string pullRequestId)
+        private async Task<List<AzureDevOpsPRCommit>> GetPullRequestDetails(string patToken, string organization, string project, string pullRequestId)
         {
             string repositoryId = "SamLearnsAzure";
             //https://docs.microsoft.com/en-us/rest/api/azure/devops/git/pull%20request%20commits/get%20pull%20request%20commits?view=azure-devops-rest-5.1
             string url = $"https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repositoryId}/pullRequests/{pullRequestId}/commits?api-version=5.1";
             string response = await MessageUtility.SendAzureDevOpsMessage(patToken, url);
-            List<PullRequestCommit> commits = new List<PullRequestCommit>();
+            List<AzureDevOpsPRCommit> commits = new List<AzureDevOpsPRCommit>();
             if (string.IsNullOrEmpty(response) == false)
             {
                 dynamic buildListObject = JsonConvert.DeserializeObject(response);
                 Newtonsoft.Json.Linq.JArray value = buildListObject.value;
-                commits = JsonConvert.DeserializeObject<List<PullRequestCommit>>(value.ToString());
+                commits = JsonConvert.DeserializeObject<List<AzureDevOpsPRCommit>>(value.ToString());
             }
             return commits;
         }

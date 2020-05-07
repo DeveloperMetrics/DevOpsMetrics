@@ -5,15 +5,9 @@ using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.Models
 {
-    public class PullRequestCommit
+    public class GitHubPRCommit
     {
-        public string commitId { get; set; }
+        public string sha { get; set; }
         public Committer committer { get; set; }
-    }
-
-    public class Committer
-    {
-        public string name { get; set; }
-        public DateTime date { get; set; }
     }
 }
