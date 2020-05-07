@@ -4,8 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.DataAccess
@@ -15,7 +13,7 @@ namespace DevOpsMetrics.Service.DataAccess
         public async Task<List<AzureDevOpsBuild>> GetDeployments(string patToken, string organization, string project, string branch, string buildId)
         {
             List<AzureDevOpsBuild> builds = new List<AzureDevOpsBuild>();
-            string buildListResponse = await SendAzureDevOpsMessage(patToken, $"https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1&queryOrder=BuildQueryOrder,finishTimeDescending");
+            string buildListResponse = await MessageUtility.SendAzureDevOpsMessage(patToken, $"https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1&queryOrder=BuildQueryOrder,finishTimeDescending");
             if (string.IsNullOrEmpty(buildListResponse) == false)
             {
                 dynamic buildListObject = JsonConvert.DeserializeObject(buildListResponse);
@@ -39,7 +37,7 @@ namespace DevOpsMetrics.Service.DataAccess
 
             ////Gets a list of builds
             //GET https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1         
-            string buildListResponse = await SendAzureDevOpsMessage(patToken, $"https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1&queryOrder=BuildQueryOrder,finishTimeDescending");
+            string buildListResponse = await MessageUtility.SendAzureDevOpsMessage(patToken, $"https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1&queryOrder=BuildQueryOrder,finishTimeDescending");
             //Console.WriteLine(buildListResponse);
             if (string.IsNullOrEmpty(buildListResponse) == false)
             {
@@ -77,21 +75,5 @@ namespace DevOpsMetrics.Service.DataAccess
             return model;
         }
 
-        public async Task<string> SendAzureDevOpsMessage(string patToken, string url)
-        {
-            string responseBody = "";
-            using (HttpClient client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", "", patToken))));
-                using (HttpResponseMessage response = await client.GetAsync(url))
-                {
-                    response.EnsureSuccessStatusCode();
-                    responseBody = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(responseBody);
-                }
-            }
-            return responseBody;
-        }
     }
 }

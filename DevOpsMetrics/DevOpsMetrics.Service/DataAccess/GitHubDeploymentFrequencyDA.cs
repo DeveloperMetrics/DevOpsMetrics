@@ -4,8 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.DataAccess
@@ -15,7 +13,7 @@ namespace DevOpsMetrics.Service.DataAccess
         public async Task<List<GitHubActionsRun>> GetDeployments(string owner, string repo, string branch, string workflowId)
         {
             List<GitHubActionsRun> deployments = new List<GitHubActionsRun>();
-            string runListResponse = await SendGitHubMessage($"repos/{owner}/{repo}/actions/workflows/{workflowId}/runs", "https://api.github.com/");
+            string runListResponse = await MessageUtility.SendGitHubMessage($"repos/{owner}/{repo}/actions/workflows/{workflowId}/runs", "https://api.github.com/");
             if (string.IsNullOrEmpty(runListResponse) == false)
             {
                 dynamic buildListObject = JsonConvert.DeserializeObject(runListResponse);
@@ -39,7 +37,7 @@ namespace DevOpsMetrics.Service.DataAccess
 
             float deploymentsPerDay = 0;
             DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
-            string runListResponse = await SendGitHubMessage($"repos/{owner}/{repo}/actions/workflows/{workflowId}/runs", "https://api.github.com/");
+            string runListResponse = await MessageUtility.SendGitHubMessage($"repos/{owner}/{repo}/actions/workflows/{workflowId}/runs", "https://api.github.com/");
             if (string.IsNullOrEmpty(runListResponse) == false)
             {
                 dynamic buildListObject = JsonConvert.DeserializeObject(runListResponse);
@@ -64,28 +62,6 @@ namespace DevOpsMetrics.Service.DataAccess
                 deploymentsPerDayDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
             };
             return model;
-        }
-
-        public async Task<string> SendGitHubMessage(string url, string baseURL)
-        {
-            string responseBody = "";
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(baseURL);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("DevOpsMetrics", "0.1"));
-
-                using (HttpResponseMessage response = await client.GetAsync(url))
-                {
-                    response.EnsureSuccessStatusCode();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        responseBody = await response.Content.ReadAsStringAsync();
-                    }
-                }
-            }
-            return responseBody;
         }
     }
 }

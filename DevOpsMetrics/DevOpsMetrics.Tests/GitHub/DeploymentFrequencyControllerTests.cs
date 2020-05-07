@@ -1,12 +1,10 @@
 ﻿using DevOpsMetrics.Service.Controllers;
-using DevOpsMetrics.Service.DataAccess;
 using DevOpsMetrics.Service.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;

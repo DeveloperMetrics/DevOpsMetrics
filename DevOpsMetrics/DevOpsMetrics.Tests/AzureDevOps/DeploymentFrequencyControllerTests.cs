@@ -1,5 +1,4 @@
 ﻿using DevOpsMetrics.Service.Controllers;
-using DevOpsMetrics.Service.DataAccess;
 using DevOpsMetrics.Service.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;

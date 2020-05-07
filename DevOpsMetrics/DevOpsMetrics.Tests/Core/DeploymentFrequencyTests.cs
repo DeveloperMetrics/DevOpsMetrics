@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace DevOpsMetrics.Tests.Core
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [TestCategory("UnitTest")]
     [TestClass]
     public class DeploymentFrequencyTests
