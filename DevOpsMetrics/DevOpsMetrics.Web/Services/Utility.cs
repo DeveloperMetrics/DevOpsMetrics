@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace DevOpsMetrics.Web.Services
+{
+    public class Utility
+    {
+        //We scale the number, so that the lowest number is visible on the charts
+        public static int ScaleNumberToRange(float number, float currentMin, float currentMax, float targetMin, float targetMax)
+        {
+            //https://stats.stackexchange.com/questions/281162/scale-a-number-between-a-range/281164
+            int result = (int)(((number - currentMin) / (currentMax - currentMin) * (targetMax - targetMin)) + targetMin);
+            return result;
+        }
+
+    }
+}

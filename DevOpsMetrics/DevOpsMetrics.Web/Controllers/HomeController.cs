@@ -1,5 +1,6 @@
 ﻿using DevOpsMetrics.Service.Models;
 using DevOpsMetrics.Web.Models;
+using DevOpsMetrics.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -26,7 +27,7 @@ namespace DevOpsMetrics.Web.Controllers
             int numberOfDays = 7;
             bool showDemoData = false;
             List<PartialViewDeploymentModel> items = new List<PartialViewDeploymentModel>();
-            PartialViewDeploymentModel newItem = null;
+            PartialViewDeploymentModel newItem;
 
             //Azure DevOps 1
             string deploymentName = "SamLearnsAzure.CI";
@@ -78,21 +79,25 @@ namespace DevOpsMetrics.Web.Controllers
                 items.Add(newItem);
             }
 
-            IndexDeploymentModel indexModel = new IndexDeploymentModel();
-            indexModel.Items = items;
+            DeploymentViewModel indexModel = new DeploymentViewModel
+            {
+                Items = items
+            };
             return View(indexModel);
         }
 
-        private async Task<PartialViewDeploymentModel> CreateAzureDevOpsBuild(bool showDemoData, string deploymentName, string patToken, string organization, string project, string azBranch, string buildId, int numberOfDeployments,int numberOfDays)
+        public async Task<PartialViewDeploymentModel> CreateAzureDevOpsBuild(bool showDemoData, string deploymentName, string patToken, string organization, string project, string azBranch, string buildId, int numberOfDeployments,int numberOfDays)
         {
             ServiceApiClient service = new ServiceApiClient(_configuration);
             List<AzureDevOpsBuild> azList = await service.GetAZDeployments(showDemoData, patToken, organization, project, azBranch, buildId);
             DeploymentFrequencyModel azDeploymentFrequency = await service.GetAZDeploymentFrequency(showDemoData, patToken, organization, project, azBranch, buildId, numberOfDays);
 
-            PartialViewDeploymentModel item = new PartialViewDeploymentModel();
-            item.DeploymentName = deploymentName;
-            item.AZList = azList;
-            item.AZDeploymentFrequency = azDeploymentFrequency;
+            PartialViewDeploymentModel item = new PartialViewDeploymentModel
+            {
+                DeploymentName = deploymentName,
+                AZList = azList,
+                AZDeploymentFrequency = azDeploymentFrequency
+            };
 
             //Limit Azure DevOps to latest results
             if (azList.Count >= numberOfDeployments)
@@ -105,20 +110,23 @@ namespace DevOpsMetrics.Web.Controllers
                 }
             }
             item.AZDeploymentFrequency = azDeploymentFrequency;
-            item.AZList = ProcessAzureDevOpsBuilds(item.AZList);
+            item.AZList = DeploymentFrequencyService.ProcessAzureDevOpsBuilds(item.AZList);
 
             return item;
         }
-        private async Task<PartialViewDeploymentModel> CreateGitHubActionsRun(bool showDemoData, string deploymentName, string owner, string repo, string ghbranch, string workflowId, int numberOfDeployments, int numberOfDays)
+       
+        public async Task<PartialViewDeploymentModel> CreateGitHubActionsRun(bool showDemoData, string deploymentName, string owner, string repo, string ghbranch, string workflowId, int numberOfDeployments, int numberOfDays)
         {
             ServiceApiClient service = new ServiceApiClient(_configuration);
             List<GitHubActionsRun> ghList = await service.GetGHDeployments(showDemoData, owner, repo, ghbranch, workflowId);
             DeploymentFrequencyModel ghDeploymentFrequency = await service.GetGHDeploymentFrequency(showDemoData, owner, repo, ghbranch, workflowId, numberOfDays);
-           
-            PartialViewDeploymentModel item = new PartialViewDeploymentModel();
-            item.DeploymentName = deploymentName;
-            item.GHDeploymentFrequency = ghDeploymentFrequency;
-            item.GHList = ghList;
+
+            PartialViewDeploymentModel item = new PartialViewDeploymentModel
+            {
+                DeploymentName = deploymentName,
+                GHDeploymentFrequency = ghDeploymentFrequency,
+                GHList = ghList
+            };
 
             //Limit Github to latest 10 results
             if (ghList.Count >= numberOfDeployments)
@@ -131,53 +139,83 @@ namespace DevOpsMetrics.Web.Controllers
                 }
             }
             item.GHDeploymentFrequency = ghDeploymentFrequency;
-            item.GHList = ProcessGitHubBuilds(item.GHList);
+            item.GHList = DeploymentFrequencyService.ProcessGitHubRuns(item.GHList);
 
             return item;
         }
-
-        private List<AzureDevOpsBuild> ProcessAzureDevOpsBuilds(List<AzureDevOpsBuild> azList)
+ 
+        public async Task<IActionResult> DeploymentFrequency()
         {
-            float maxBuildDuration = 0f;
-            foreach (AzureDevOpsBuild item in azList)
+            int numberOfDeployments = 20;
+            int numberOfDays = 7;
+            bool showDemoData = false;
+            List<PartialViewDeploymentModel> items = new List<PartialViewDeploymentModel>();
+            PartialViewDeploymentModel newItem;
+
+            //Azure DevOps 1
+            //TODO: Move variables
+            string deploymentName = "SamLearnsAzure.CI";
+            string patToken = _configuration["AppSettings:PatToken"];
+            string organization = "samsmithnz";
+            string project = "SamLearnsAzure";
+            string azBranch = "refs/heads/master";
+            string buildId = "83"; //"3673"; //SamLearnsAzure.CI
+            newItem = await CreateAzureDevOpsBuild(showDemoData, deploymentName, patToken, organization, project, azBranch, buildId, numberOfDeployments, numberOfDays);
+            if (newItem != null)
             {
-                if (item.buildDuration > maxBuildDuration)
-                {
-                    maxBuildDuration = item.buildDuration;
-                }
+                items.Add(newItem);
             }
-            foreach (AzureDevOpsBuild item in azList)
+
+            //Azure DevOps 2
+            //TODO: Move variables
+            string deploymentName2 = "PartsUnlimited.CI";
+            string patToken2 = _configuration["AppSettings:PatToken"];
+            string organization2 = "samsmithnz";
+            string project2 = "PartsUnlimited";
+            string azBranch2 = "refs/heads/master";
+            string buildId2 = "75"; //"3673"; //SamLearnsAzure.CI
+            newItem = await CreateAzureDevOpsBuild(showDemoData, deploymentName2, patToken2, organization2, project2, azBranch2, buildId2, numberOfDeployments, numberOfDays);
+            if (newItem != null)
             {
-                float interiumResult = ((item.buildDuration / maxBuildDuration) * 100f);
-                item.buildDurationPercent = ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+                items.Add(newItem);
             }
-            return azList;
+
+            //GitHub 1
+            //TODO: Move variables
+            deploymentName = "SamsFeatureFlags.CI";
+            string owner = "samsmithnz";
+            string repo = "samsfeatureflags";
+            string ghbranch = "master";
+            string workflowId = "108084";
+            newItem = await CreateGitHubActionsRun(showDemoData, deploymentName, owner, repo, ghbranch, workflowId, numberOfDeployments, numberOfDays);
+            if (newItem != null)
+            {
+                items.Add(newItem);
+            }
+
+            //GitHub 2
+            //TODO: Move variables
+            deploymentName = "DevOpsMetrics.CI";
+            string owner2 = "samsmithnz";
+            string repo2 = "DevOpsMetrics";
+            string ghbranch2 = "AddingWebsite";
+            string workflowId2 = "1162561";
+            newItem = await CreateGitHubActionsRun(showDemoData, deploymentName, owner2, repo2, ghbranch2, workflowId2, numberOfDeployments, numberOfDays);
+            if (newItem != null)
+            {
+                items.Add(newItem);
+            }
+
+            DeploymentViewModel indexModel = new DeploymentViewModel
+            {
+                Items = items
+            };
+            return View(indexModel);
         }
 
-        private List<GitHubActionsRun> ProcessGitHubBuilds(List<GitHubActionsRun> ghList)
+        public IActionResult LeadTimeForChanges()
         {
-            float maxBuildDuration = 0f;
-            foreach (GitHubActionsRun item in ghList)
-            {
-                if (item.buildDuration > maxBuildDuration)
-                {
-                    maxBuildDuration = item.buildDuration;
-                }
-            }
-            foreach (GitHubActionsRun item in ghList)
-            {
-                float interiumResult = ((item.buildDuration / maxBuildDuration) * 100f);
-                item.buildDurationPercent = ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
-            }
-            return ghList;
-        }
-
-        //We scale the number, so that the lowest number is visible on the charts
-        private int ScaleNumberToRange(float number, float currentMin, float currentMax, float targetMin, float targetMax)
-        {
-            //https://stats.stackexchange.com/questions/281162/scale-a-number-between-a-range/281164
-            int result = (int)(((number - currentMin) / (currentMax - currentMin) * (targetMax - targetMin)) + targetMin);
-            return result;
+            return View();
         }
 
         public IActionResult Privacy()

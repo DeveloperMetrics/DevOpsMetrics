@@ -1,0 +1,22 @@
+﻿@model IndexDeploymentModel;
+@{
+    ViewData["Title"] = "Deployment frequency";
+}
+
+@* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
+
+<div class="row">
+    @foreach (PartialViewDeploymentModel item in Model.Items)
+    {
+    <div class="col-md-6">
+        @if (item.AZDeploymentFrequency != null)
+        {
+            @await Html.PartialAsync("_AzureDevOpsDeployments", item)
+        }
+        else if (item.GHDeploymentFrequency != null)
+        {
+            @await Html.PartialAsync("_GitHubDeployments", item)
+        }
+    </div>
+    }
+</div>

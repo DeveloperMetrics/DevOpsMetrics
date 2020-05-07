@@ -3,11 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace DevOpsMetrics.Web.Controllers
+namespace DevOpsMetrics.Web.Services
 {
     public class ServiceApiClient
     {

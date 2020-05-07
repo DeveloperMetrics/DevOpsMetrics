@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DevOpsMetrics.Web.Models
 {
-    public class IndexDeploymentModel
+    public class DeploymentViewModel
     {
         public List<PartialViewDeploymentModel> Items { get; set; }
     }
