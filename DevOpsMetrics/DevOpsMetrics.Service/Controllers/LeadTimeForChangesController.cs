@@ -20,10 +20,10 @@ namespace DevOpsMetrics.Service.Controllers
         }
 
         [HttpGet("GetGitHubLeadTimeForChanges")]
-        public async Task<List<LeadTimeForChangesModel>> GetGitHubLeadTimeForChanges(string owner, string repo, string branch, string workflowId)
+        public async Task<List<LeadTimeForChangesModel>> GetGitHubLeadTimeForChanges(string clientId, string clientSecret ,string owner, string repo, string branch, string workflowId)
         {
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-            List<LeadTimeForChangesModel> leadTimeForChanges = await da.GetGitHubLeadTimesForChanges(owner, repo, branch, workflowId);
+            List<LeadTimeForChangesModel> leadTimeForChanges = await da.GetGitHubLeadTimesForChanges(clientId, clientSecret, owner, repo, branch, workflowId);
             return leadTimeForChanges;
         }
 

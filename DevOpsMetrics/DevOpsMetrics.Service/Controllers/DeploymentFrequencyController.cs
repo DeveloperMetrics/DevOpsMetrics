@@ -27,18 +27,18 @@ namespace DevOpsMetrics.Service.Controllers
         }
 
         [HttpGet("GetGitHubDeployments")]
-        public async Task<List<GitHubActionsRun>> GetGitHubDeployments(string owner, string repo, string GHbranch, string workflowId)
+        public async Task<List<GitHubActionsRun>> GetGitHubDeployments(string clientId, string clientSecret, string owner, string repo, string GHbranch, string workflowId)
         {
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            List<GitHubActionsRun> deployments = await da.GetGitHubDeployments(owner, repo, GHbranch, workflowId);
+            List<GitHubActionsRun> deployments = await da.GetGitHubDeployments(clientId, clientSecret, owner, repo, GHbranch, workflowId);
             return deployments;
         }
 
         [HttpGet("GetGitHubDeploymentFrequency")]
-        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(string owner, string repo, string GHbranch, string workflowId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(string clientId, string clientSecret, string owner, string repo, string GHbranch, string workflowId, int numberOfDays)
         {
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(owner, repo, GHbranch, workflowId, numberOfDays);
+            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(clientId, clientSecret, owner, repo, GHbranch, workflowId, numberOfDays);
             return model;
         }
     }

@@ -1,14 +1,15 @@
-﻿@*@model LeadTimeForChangesPartialViewModel
+﻿@using DevOpsMetrics.Service.Models
+@model LeadTimeForChangesPartialViewModel
 
 <div class="chartContainer vertical flat">
-    <h4><img src="~/images/GitHub-icon.png" style="width:32px;" />&nbsp; GitHub - @Model.DeploymentName</h4>
-    @foreach (DevOpsMetrics.Service.Models.GitHubActionsRun item in Model.GitHubList)
+    <h4><img src="~/images/GitHub-icon.png" style="width:32px;" />&nbsp; GitHub - @Model.ProjectName</h4>
+    @foreach (LeadTimeForChangesModel item in Model.GitHubList)
     {
-        <a href="@item.html_url" target="_blank">
+        <a href="https://github.com/samsmithnz" target="_blank">
             <div class="progress-bar">
-                <div class="progress-track" title="Build @item.run_number @item.status @item.timeSinceBuildCompleted (ran for @item.buildDurationInMinutesAndSeconds)">
-                    <div class="progress-fill @item.status">
-                        <span>@item.buildDurationPercent%</span>
+                <div class="progress-track" title="Branch @item.Branch had @item.Commits.Count commits over @item.Duration.TotalHours.ToString("0.0") hours">
+                    <div class="progress-fill inProgress">
+                        <span>@item.DurationPercent%</span>
                     </div>
                 </div>
             </div>
@@ -17,8 +18,6 @@
 </div>
 <br />
 <div class="metricSpan">
-    <b>Deployment frequency:</b> @Model.GitHubDeploymentFrequency.DeploymentsPerDay.ToString("0.00") per day (last 7 days)<br />
-    <b>Deployment frequency ranking:</b> @Model.GitHubDeploymentFrequency.DeploymentsPerDayDescription
-</div>*@
-
-coming soon
+    <b>Lead time for changes:</b> @Model.AverageDuration.ToString("0.0") hours<br />
+    <b>Lead time for changes ranking:</b> @Model.AverageDurationRating
+</div>

@@ -7,7 +7,7 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public static class MessageUtility
     {
-        public async static Task<string> SendAzureDevOpsMessage(string patToken, string url)
+        public async static Task<string> SendAzureDevOpsMessage(string url, string patToken)
         {
             string responseBody = "";
             using (HttpClient client = new HttpClient())
@@ -24,15 +24,20 @@ namespace DevOpsMetrics.Service.DataAccess
             return responseBody;
         }
 
-        public async static Task<string> SendGitHubMessage(string url, string baseURL)
+        public async static Task<string> SendGitHubMessage(string url, string clientId, string clientSecret)
         {
             string responseBody = "";
             using (HttpClient client = new HttpClient())
             {
-                client.BaseAddress = new Uri(baseURL);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("DevOpsMetrics", "0.1"));
+
+                //If we use a id/secret, we significantly increase the rate from 60 requests an hour to 5000. https://developer.github.com/v3/#rate-limiting
+                if (string.IsNullOrEmpty(clientId) == false && string.IsNullOrEmpty(clientSecret) == false)
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", clientId, clientSecret))));
+                }
 
                 using (HttpResponseMessage response = await client.GetAsync(url))
                 {

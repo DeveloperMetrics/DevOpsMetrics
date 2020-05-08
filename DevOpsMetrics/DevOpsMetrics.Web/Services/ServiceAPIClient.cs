@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -367,6 +368,7 @@ namespace DevOpsMetrics.Web.Services
             T obj = default;
             if (client != null && url != null)
             {
+                Debug.WriteLine("Running url: " + client.BaseAddress.ToString() +  url);
                 using (HttpResponseMessage response = await client.GetAsync(url))
                 {
                     response.EnsureSuccessStatusCode();

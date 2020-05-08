@@ -15,6 +15,8 @@ namespace DevOpsMetrics.Tests.GitHub
         public async Task GHDeploymentsDAIntegrationTest()
         {
             //Arrange
+            string clientId = "";
+            string clientSecret = "";
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
             string ghbranch = "master";
@@ -22,7 +24,7 @@ namespace DevOpsMetrics.Tests.GitHub
 
             //Act
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            List<GitHubActionsRun> list = await da.GetGitHubDeployments(owner, repo, ghbranch, workflowId);
+            List<GitHubActionsRun> list = await da.GetGitHubDeployments(clientId, clientSecret, owner, repo, ghbranch, workflowId);
 
             //Assert
             Assert.IsTrue(list != null);
@@ -37,6 +39,8 @@ namespace DevOpsMetrics.Tests.GitHub
         public async Task GHDeploymentFrequencyDAIntegrationTest()
         {
             //Arrange
+            string clientId = "";
+            string clientSecret = "";
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
             string branch = "master";
@@ -45,7 +49,7 @@ namespace DevOpsMetrics.Tests.GitHub
 
             //Act
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(owner, repo, branch, workflowId, numberOfDays);
+            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(clientId, clientSecret, owner, repo, branch, workflowId, numberOfDays);
 
             //Assert
             Assert.IsTrue(model.DeploymentsPerDay > 0f);

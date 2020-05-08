@@ -39,9 +39,11 @@ namespace DevOpsMetrics.Tests.GitHub
         }
 
         [TestMethod]
-        public async Task GHDeploymentsControllerDirectIntegrationTest()
+        public async Task GHLeadTimeControllerDirectIntegrationTest()
         {
             //Arrange
+            string clientId = "";
+            string clientSecret = "";
             string owner = "samsmithnz";
             string repo = "devopsmetrics";
             string branch = "master";
@@ -49,7 +51,7 @@ namespace DevOpsMetrics.Tests.GitHub
             LeadTimeForChangesController controller = new LeadTimeForChangesController();
 
             //Act
-            List<LeadTimeForChangesModel> list = await controller.GetGitHubLeadTimeForChanges(owner, repo, branch, workflowId);
+            List<LeadTimeForChangesModel> list = await controller.GetGitHubLeadTimeForChanges(clientId, clientSecret, owner, repo, branch, workflowId);
 
             //Assert
             Assert.IsTrue(list != null);
@@ -58,7 +60,7 @@ namespace DevOpsMetrics.Tests.GitHub
         }
 
         [TestMethod]
-        public async Task GHDeploymentsControllerAPIIntegrationTest()
+        public async Task GHLeadTimeControllerAPIIntegrationTest()
         {
             //Arrange
             string owner = "samsmithnz";

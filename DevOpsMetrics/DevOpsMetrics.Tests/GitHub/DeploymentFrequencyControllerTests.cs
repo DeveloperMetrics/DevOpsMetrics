@@ -42,6 +42,8 @@ namespace DevOpsMetrics.Tests.GitHub
         public async Task GHDeploymentsControllerDirectIntegrationTest()
         {
             //Arrange
+            string clientId = "";
+            string clientSecret = "";
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
             string branch = "master";
@@ -49,7 +51,7 @@ namespace DevOpsMetrics.Tests.GitHub
             DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            List<GitHubActionsRun> list = await controller.GetGitHubDeployments(owner, repo, branch, workflowId);
+            List<GitHubActionsRun> list = await controller.GetGitHubDeployments(clientId, clientSecret, owner, repo, branch, workflowId);
 
             //Assert
             Assert.IsTrue(list != null);
@@ -81,6 +83,8 @@ namespace DevOpsMetrics.Tests.GitHub
         public async Task GHDeploymentFrequencyControllerIntegrationTest()
         {
             //Arrange
+            string clientId = "";
+            string clientSecret = "";
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
             string branch = "master";
@@ -89,7 +93,7 @@ namespace DevOpsMetrics.Tests.GitHub
             DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(owner, repo, branch, workflowId, numberOfDays);
+            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(clientId, clientSecret, owner, repo, branch, workflowId, numberOfDays);
 
             //Assert
             Assert.IsTrue(model.DeploymentsPerDay > 0f);

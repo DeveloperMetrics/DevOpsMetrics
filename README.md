@@ -14,7 +14,7 @@ More information in a blog post here: https://samlearnsazure.blog/2020/04/30/hig
 - Deployment Frequency, in both Azure DevOps and GitHub:
   - How does it work? We look at the number of successful pipeline runs. 
   - Assumptions/things we can't currently measure: 
-    - The deployment is to a production environment
+    - The build is multi-stage - and leads to a deployment in a production environment    
 ![Deployment Frequency](https://GitHub.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/DeploymentFrequencyDemo.png)
 
 - Lead time for changes, in both Azure DevOps and GitHub:

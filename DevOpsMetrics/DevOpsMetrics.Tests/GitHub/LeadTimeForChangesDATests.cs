@@ -15,6 +15,8 @@ namespace DevOpsMetrics.Tests.GitHub
         public async Task GHLeadTimeForChangesDAIntegrationTest()
         {
             //Arrange
+            string clientId = "";
+            string clientSecret = "";
             string owner = "samsmithnz";
             string repo = "devopsmetrics";
             string masterBranch = "master";
@@ -22,7 +24,7 @@ namespace DevOpsMetrics.Tests.GitHub
 
             //Act
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-            List<LeadTimeForChangesModel> list = await da.GetGitHubLeadTimesForChanges(owner, repo, masterBranch, workflowId);
+            List<LeadTimeForChangesModel> list = await da.GetGitHubLeadTimesForChanges(clientId, clientSecret, owner, repo, masterBranch, workflowId);
 
             //Assert
             Assert.IsTrue(list != null);

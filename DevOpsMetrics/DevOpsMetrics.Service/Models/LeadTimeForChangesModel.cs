@@ -5,6 +5,7 @@ namespace DevOpsMetrics.Service.Models
 {
     public class LeadTimeForChangesModel
     {
+        public string PullRequestId { get; set; }
         public string Branch { get; set; }
         public DateTime StartDateTime { get; set; }
         public DateTime EndDateTime { get; set; }
