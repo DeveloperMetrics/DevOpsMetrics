@@ -62,26 +62,6 @@ namespace DevOpsMetrics.Tests.GitHub
         }
 
         [TestMethod]
-        public async Task GHDeploymentsControllerAPIIntegrationTest()
-        {
-            //Arrange
-            string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
-            string branch = "master";
-            string workflowId = "108084";
-
-            //Act
-            string url = $"/api/DeploymentFrequency/GetGitHubDeployments?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}";
-            TestResponse<List<GitHubActionsRun>> httpResponse = new TestResponse<List<GitHubActionsRun>>();
-            List<GitHubActionsRun> list = await httpResponse.GetResponse(Client, url);
-
-            //Assert
-            Assert.IsTrue(list != null);
-            Assert.IsTrue(list.Count > 0);
-            Assert.IsTrue(list[0].status != null);
-        }
-
-        [TestMethod]
         public async Task GHDeploymentFrequencyControllerIntegrationTest()
         {
             //Arrange
@@ -101,6 +81,28 @@ namespace DevOpsMetrics.Tests.GitHub
             Assert.IsTrue(model.DeploymentsPerDay > 0f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayDescription));
             Assert.AreNotEqual("Unknown", model.DeploymentsPerDayDescription);
+        }
+
+        [TestMethod]
+        public async Task GHDeploymentsControllerAPIIntegrationTest()
+        {
+            //Arrange
+            string clientId = "";
+            string clientSecret = "";
+            string owner = "samsmithnz";
+            string repo = "samsfeatureflags";
+            string branch = "master";
+            string workflowId = "108084";
+
+            //Act
+            string url = $"/api/DeploymentFrequency/GetGitHubDeployments?clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}";
+            TestResponse<List<GitHubActionsRun>> httpResponse = new TestResponse<List<GitHubActionsRun>>();
+            List<GitHubActionsRun> list = await httpResponse.GetResponse(Client, url);
+
+            //Assert
+            Assert.IsTrue(list != null);
+            Assert.IsTrue(list.Count > 0);
+            Assert.IsTrue(list[0].status != null);
         }
 
     }

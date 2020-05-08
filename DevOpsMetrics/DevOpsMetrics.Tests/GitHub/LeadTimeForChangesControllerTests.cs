@@ -64,13 +64,15 @@ namespace DevOpsMetrics.Tests.GitHub
         public async Task GHLeadTimeControllerAPIIntegrationTest()
         {
             //Arrange
+            string clientId = "";
+            string clientSecret = "";
             string owner = "samsmithnz";
             string repo = "devopsmetrics";
             string branch = "master";
             string workflowId = "1162561";
 
             //Act
-            string url = $"/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?owner={owner}&repo={repo}&branch={branch}&workflowId={workflowId}";
+            string url = $"/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowId={workflowId}";
             TestResponse<List<LeadTimeForChangesModel>> httpResponse = new TestResponse<List<LeadTimeForChangesModel>>();
             List<LeadTimeForChangesModel> list = await httpResponse.GetResponse(Client, url);
 

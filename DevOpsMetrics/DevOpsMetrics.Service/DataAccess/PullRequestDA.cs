@@ -29,7 +29,7 @@ namespace DevOpsMetrics.Service.DataAccess
         {
             //https://developer.GitHub.com/v3/pulls/#list-pull-requests
             //GET /repos/:owner/:repo/pulls
-            string url = $"/repos/{owner}/{repo}/pulls?state=all&head={branch}";
+            string url = $"https://api.github.com/repos/{owner}/{repo}/pulls?state=all&head={branch}";
             string response = await MessageUtility.SendGitHubMessage(url, clientId, clientSecret);
 
             List<GitHubPR> prs = new List<GitHubPR>();

@@ -16,7 +16,8 @@ namespace DevOpsMetrics.Service.DataAccess
         public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsDeployments(string patToken, string organization, string project, string branch, string buildId)
         {
             List<AzureDevOpsBuild> builds = new List<AzureDevOpsBuild>();
-            string buildListResponse = await MessageUtility.SendAzureDevOpsMessage( $"https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1&queryOrder=BuildQueryOrder,finishTimeDescending",patToken);
+            string url = $"https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1&queryOrder=BuildQueryOrder,finishTimeDescending";
+            string buildListResponse = await MessageUtility.SendAzureDevOpsMessage(url, patToken);
             if (string.IsNullOrEmpty(buildListResponse) == false)
             {
                 dynamic buildListObject = JsonConvert.DeserializeObject(buildListResponse);
@@ -39,8 +40,9 @@ namespace DevOpsMetrics.Service.DataAccess
             DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
 
             ////Gets a list of builds
-            //GET https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1         
-            string buildListResponse = await MessageUtility.SendAzureDevOpsMessage($"https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1&queryOrder=BuildQueryOrder,finishTimeDescending", patToken);
+            //GET https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1      
+            string url = $"https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1&queryOrder=BuildQueryOrder,finishTimeDescending";
+            string buildListResponse = await MessageUtility.SendAzureDevOpsMessage(url, patToken);
             //Console.WriteLine(buildListResponse);
             if (string.IsNullOrEmpty(buildListResponse) == false)
             {
@@ -71,7 +73,9 @@ namespace DevOpsMetrics.Service.DataAccess
         public async Task<List<GitHubActionsRun>> GetGitHubDeployments(string clientId, string clientSecret, string owner, string repo, string branch, string workflowId)
         {
             List<GitHubActionsRun> deployments = new List<GitHubActionsRun>();
-            string runListResponse = await MessageUtility.SendGitHubMessage($"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflowId}/runs", clientId, clientSecret);
+            string url = $"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflowId}/runs";
+
+            string runListResponse = await MessageUtility.SendGitHubMessage(url, clientId, clientSecret);
             if (string.IsNullOrEmpty(runListResponse) == false)
             {
                 dynamic buildListObject = JsonConvert.DeserializeObject(runListResponse);
@@ -95,7 +99,8 @@ namespace DevOpsMetrics.Service.DataAccess
 
             float deploymentsPerDay = 0;
             DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
-            string runListResponse = await MessageUtility.SendGitHubMessage($"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflowId}/runs", clientId, clientSecret);
+            string url = $"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflowId}/runs";
+            string runListResponse = await MessageUtility.SendGitHubMessage(url, clientId, clientSecret);
             if (string.IsNullOrEmpty(runListResponse) == false)
             {
                 dynamic buildListObject = JsonConvert.DeserializeObject(runListResponse);
