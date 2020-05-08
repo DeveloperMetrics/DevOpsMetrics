@@ -8,33 +8,33 @@
 //{
 //    public class LeadTimeForChangesService
 //    {
-//        //public static async Task<DeploymentPartialViewModel> CreateAzureDevOpsBuild(bool showDemoData, string deploymentName, string patToken, string organization, string project, string azBranch, string buildId, int numberOfDeployments, int numberOfDays, IConfiguration configuration)
-//        //{
-//        //    ServiceApiClient service = new ServiceApiClient(configuration);
-//        //    List<LeadTimeForChangesModel> azList = await service.GetAzureDevOpsLeadTimeForChanges(showDemoData, patToken, organization, project, azBranch, buildId);
-            
-//        //    //DeploymentPartialViewModel item = new DeploymentPartialViewModel
-//        //    //{
-//        //    //    DeploymentName = deploymentName,
-//        //    //    AzureDevOpsList = azList,
-//        //    //    AzureDevOpsDeploymentFrequency = azDeploymentFrequency
-//        //    //};
+//        public static async Task<DeploymentPartialViewModel> CreateAzureDevOpsLeadTimeForChanges(bool showDemoData, string deploymentName, string patToken, string organization, string project, string azBranch, string buildId, int numberOfDeployments, int numberOfDays, IConfiguration configuration)
+//        {
+//            ServiceApiClient service = new ServiceApiClient(configuration);
+//            List<LeadTimeForChangesModel> azList = await service.GetAzureDevOpsLeadTimeForChanges(showDemoData, patToken, organization, project, azBranch, buildId);
 
-//        //    ////Limit Azure DevOps to latest results
-//        //    //if (azList.Count >= numberOfDeployments)
-//        //    //{
-//        //    //    item.AzureDevOpsList = new List<AzureDevOpsBuild>();
-//        //    //    //Only show the last ten builds
-//        //    //    for (int i = azList.Count - numberOfDeployments; i < azList.Count; i++)
-//        //    //    {
-//        //    //        item.AzureDevOpsList.Add(azList[i]);
-//        //    //    }
-//        //    //}
-//        //    //item.AzureDevOpsDeploymentFrequency = azDeploymentFrequency;
-//        //    //item.AzureDevOpsList = DeploymentFrequencyService.ProcessAzureDevOpsBuilds(item.AzureDevOpsList);
+//            //DeploymentPartialViewModel item = new DeploymentPartialViewModel
+//            //{
+//            //    DeploymentName = deploymentName,
+//            //    AzureDevOpsList = azList,
+//            //    AzureDevOpsDeploymentFrequency = azDeploymentFrequency
+//            //};
 
-//        //    return azList;
-//        //}
+//            ////Limit Azure DevOps to latest results
+//            //if (azList.Count >= numberOfDeployments)
+//            //{
+//            //    item.AzureDevOpsList = new List<AzureDevOpsBuild>();
+//            //    //Only show the last ten builds
+//            //    for (int i = azList.Count - numberOfDeployments; i < azList.Count; i++)
+//            //    {
+//            //        item.AzureDevOpsList.Add(azList[i]);
+//            //    }
+//            //}
+//            //item.AzureDevOpsDeploymentFrequency = azDeploymentFrequency;
+//            //item.AzureDevOpsList = DeploymentFrequencyService.ProcessAzureDevOpsBuilds(item.AzureDevOpsList);
+
+//            return azList;
+//        }
 
 //        public static async Task<DeploymentPartialViewModel> CreateGitHubActionsRun(bool showDemoData, string deploymentName, string owner, string repo, string ghbranch, string workflowId, int numberOfDeployments, int numberOfDays, IConfiguration configuration)
 //        {

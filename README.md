@@ -8,6 +8,8 @@ All four of these metrics are based on production environments, where the value 
 - Mean time to restore(MTTR): How quickly we can restore production in an outage or degradation
 - Change failure rate: after a production deployment, was it successful? Or did we need to deploy a fix/rollback?
 
+![High performing metrics](https://samlearnsazure.files.wordpress.com/2020/04/01highperformers.png)
+
 More information in a blog post here: https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/
 
 ## The current solution:

@@ -1,4 +1,7 @@
 ﻿using DevOpsMetrics.Service.Models;
+using DevOpsMetrics.Service.Models.AzureDevOps;
+using DevOpsMetrics.Service.Models.Common;
+using DevOpsMetrics.Service.Models.GitHub;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -239,19 +242,37 @@ namespace DevOpsMetrics.Web.Services
                 {
                     new LeadTimeForChangesModel
                     {
+                        PullRequestId = "122",
+                        Branch = "abc122",
+                        BuildCount = 1,
+                        Commits = new List<Commit>
+                        {
+                            new Commit
+                            {
+                                commitId = "hij",
+                                date = DateTime.Now.AddDays(-11),
+                                name = "commit A"
+                            }
+                        },
+                        StartDateTime = DateTime.Now.AddDays(-11),
+                        EndDateTime = DateTime.Now.AddDays(-11).AddMinutes(5)
+                    },
+                    new LeadTimeForChangesModel
+                    {
+                        PullRequestId = "123",
                         Branch = "abc123",
                         BuildCount = 2,
                         Commits = new List<Commit>
                         {
                             new Commit
                             {
-                                commitId="abc",
+                                commitId = "abc",
                                 date = DateTime.Now.AddDays(-7),
                                 name = "commit 1"
                             },
                             new Commit
                             {
-                                commitId="def",
+                                commitId = "def",
                                 date = DateTime.Now.AddDays(-5),
                                 name = "commit 2"
                             }
@@ -261,25 +282,26 @@ namespace DevOpsMetrics.Web.Services
                     },
                     new LeadTimeForChangesModel
                     {
+                        PullRequestId = "124",
                         Branch = "xyz890",
                         BuildCount = 3,
                         Commits = new List<Commit>
                         {
                             new Commit
                             {
-                                commitId="abc",
+                                commitId = "abc",
                                 date = DateTime.Now.AddDays(-7),
                                 name = "commit 1"
                             },
                             new Commit
                             {
-                                commitId="def",
+                                commitId = "def",
                                 date = DateTime.Now.AddDays(-5),
                                 name = "commit 2"
                             },
                             new Commit
                             {
-                                commitId="ghi",
+                                commitId = "ghi",
                                 date = DateTime.Now.AddDays(-2),
                                 name = "commit 3"
                             }
@@ -305,6 +327,7 @@ namespace DevOpsMetrics.Web.Services
                 {
                     new LeadTimeForChangesModel
                     {
+                        PullRequestId = "221",
                         Branch = "abc123",
                         BuildCount = 2,
                         Commits = new List<Commit>
@@ -327,6 +350,7 @@ namespace DevOpsMetrics.Web.Services
                     },
                     new LeadTimeForChangesModel
                     {
+                        PullRequestId = "222",
                         Branch = "xyz890",
                         BuildCount = 3,
                         Commits = new List<Commit>
@@ -368,7 +392,7 @@ namespace DevOpsMetrics.Web.Services
             T obj = default;
             if (client != null && url != null)
             {
-                Debug.WriteLine("Running url: " + client.BaseAddress.ToString() +  url);
+                Debug.WriteLine("Running url: " + client.BaseAddress.ToString() + url);
                 using (HttpResponseMessage response = await client.GetAsync(url))
                 {
                     response.EnsureSuccessStatusCode();

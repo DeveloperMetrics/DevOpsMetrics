@@ -1,4 +1,7 @@
 ﻿using DevOpsMetrics.Service.Models;
+using DevOpsMetrics.Service.Models.AzureDevOps;
+using DevOpsMetrics.Service.Models.Common;
+using DevOpsMetrics.Service.Models.GitHub;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿namespace DevOpsMetrics.Service.Models
+﻿namespace DevOpsMetrics.Service.Models.AzureDevOps
 {
     public class AzureDevOpsPRCommit
     {

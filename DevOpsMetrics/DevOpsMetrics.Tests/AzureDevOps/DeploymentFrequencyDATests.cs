@@ -1,5 +1,7 @@
 ﻿using DevOpsMetrics.Service.DataAccess;
 using DevOpsMetrics.Service.Models;
+using DevOpsMetrics.Service.Models.AzureDevOps;
+using DevOpsMetrics.Service.Models.Common;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

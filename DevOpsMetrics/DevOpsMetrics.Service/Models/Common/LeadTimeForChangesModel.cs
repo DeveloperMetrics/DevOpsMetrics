@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DevOpsMetrics.Service.Models
+namespace DevOpsMetrics.Service.Models.Common
 {
     public class LeadTimeForChangesModel
     {
@@ -16,7 +16,7 @@ namespace DevOpsMetrics.Service.Models
                 return EndDateTime - StartDateTime;
             }
         }
-        public int DurationPercent { get; set; } = 50;
+        public int DurationPercent { get; set; } = 100;
         public List<Commit> Commits { get; set; }
         public int BuildCount { get; set; } //TODO: Should this actually be the list of builds?
     }

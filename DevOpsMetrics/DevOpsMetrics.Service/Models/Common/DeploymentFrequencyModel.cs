@@ -1,5 +1,5 @@
 ﻿
-namespace DevOpsMetrics.Service.Models
+namespace DevOpsMetrics.Service.Models.Common
 {
     public class DeploymentFrequencyModel
     {

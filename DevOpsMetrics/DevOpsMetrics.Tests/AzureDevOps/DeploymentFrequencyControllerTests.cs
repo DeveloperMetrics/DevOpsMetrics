@@ -1,5 +1,7 @@
 ﻿using DevOpsMetrics.Service.Controllers;
 using DevOpsMetrics.Service.Models;
+using DevOpsMetrics.Service.Models.AzureDevOps;
+using DevOpsMetrics.Service.Models.Common;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;

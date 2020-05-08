@@ -1,4 +1,5 @@
 ﻿using DevOpsMetrics.Service.Models;
+using DevOpsMetrics.Service.Models.Common;
 using System.Collections.Generic;
 
 namespace DevOpsMetrics.Web.Models

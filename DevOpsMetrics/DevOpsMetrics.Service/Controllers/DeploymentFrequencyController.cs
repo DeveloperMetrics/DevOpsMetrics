@@ -1,5 +1,7 @@
 ﻿using DevOpsMetrics.Service.DataAccess;
-using DevOpsMetrics.Service.Models;
+using DevOpsMetrics.Service.Models.AzureDevOps;
+using DevOpsMetrics.Service.Models.Common;
+using DevOpsMetrics.Service.Models.GitHub;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;

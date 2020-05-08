@@ -1,4 +1,7 @@
 ﻿using DevOpsMetrics.Service.Models;
+using DevOpsMetrics.Service.Models.AzureDevOps;
+using DevOpsMetrics.Service.Models.Common;
+using DevOpsMetrics.Service.Models.GitHub;
 using DevOpsMetrics.Web.Models;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
@@ -25,7 +28,7 @@ namespace DevOpsMetrics.Web.Services
             if (azList.Count >= numberOfDeployments)
             {
                 item.AzureDevOpsList = new List<AzureDevOpsBuild>();
-                //Only show the last ten builds
+                //Only show the last n builds
                 for (int i = azList.Count - numberOfDeployments; i < azList.Count; i++)
                 {
                     item.AzureDevOpsList.Add(azList[i]);

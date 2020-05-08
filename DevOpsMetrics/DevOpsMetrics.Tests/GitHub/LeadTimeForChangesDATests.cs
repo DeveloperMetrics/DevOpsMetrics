@@ -1,5 +1,6 @@
 ﻿using DevOpsMetrics.Service.DataAccess;
 using DevOpsMetrics.Service.Models;
+using DevOpsMetrics.Service.Models.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Threading.Tasks;
