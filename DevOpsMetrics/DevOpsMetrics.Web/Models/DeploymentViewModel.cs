@@ -5,6 +5,6 @@ namespace DevOpsMetrics.Web.Models
 {
     public class DeploymentViewModel
     {
-        public List<PartialViewDeploymentModel> Items { get; set; }
+        public List<DeploymentPartialViewModel> Items { get; set; }
     }
 }

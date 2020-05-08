@@ -4,7 +4,7 @@
 }
 
 <div class="row">
-    @foreach (PartialViewDeploymentModel item in Model.Items)
+    @foreach (DeploymentPartialViewModel item in Model.Items)
     {
     <div class="col-md-6">
         @if (item.AzureDevOpsDeploymentFrequency != null)

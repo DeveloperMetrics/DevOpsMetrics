@@ -1,22 +1,22 @@
-﻿@model DeploymentViewModel;
+﻿@model DeploymentViewModel
 @{
     ViewData["Title"] = "Deployment frequency";
 }
-
+<h1>Deployment frequency</h1>
 @* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
 
 <div class="row">
-    @foreach (PartialViewDeploymentModel item in Model.Items)
+    @foreach (DeploymentPartialViewModel item in Model.Items)
     {
-    <div class="col-md-6">
-        @if (item.AzureDevOpsDeploymentFrequency != null)
-        {
-            @await Html.PartialAsync("_AzureDevOpsDeployments", item)
-        }
-        else if (item.GitHubDeploymentFrequency != null)
-        {
-            @await Html.PartialAsync("_GitHubDeployments", item)
-        }
-    </div>
+        <div class="col-md-6">
+            @if (item.AzureDevOpsDeploymentFrequency != null)
+            {
+                @await Html.PartialAsync("_AzureDevOpsDeployments", item)
+            }
+            else if (item.GitHubDeploymentFrequency != null)
+            {
+                @await Html.PartialAsync("_GitHubDeployments", item)
+            }
+        </div>
     }
 </div>

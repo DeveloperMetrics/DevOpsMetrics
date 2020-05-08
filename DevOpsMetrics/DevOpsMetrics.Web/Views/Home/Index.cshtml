@@ -1,20 +1,23 @@
-﻿@model DeploymentViewModel;
+﻿@using DevOpsMetrics.Service.Models
+@model List<LeadTimeForChangesPartialViewModel>
 @{
     ViewData["Title"] = "Home Page";
 }
-
+<h1>Lead time for changes</h1>
 <div class="row">
-    @foreach (PartialViewDeploymentModel item in Model.Items)
+    @foreach (LeadTimeForChangesPartialViewModel item in Model)
     {
     <div class="col-md-6">
-        @if (item.AzureDevOpsDeploymentFrequency != null)
+        @if (item.AzureDevOpsList != null)
         {
-            @await Html.PartialAsync("_AzureDevOpsDeployments", item)
+            @await Html.PartialAsync("_AzureDevOpsLeadTimeForChanges", item)
         }
-        else if (item.GitHubDeploymentFrequency != null)
+        else if (item.GitHubList != null)
         {
-            @await Html.PartialAsync("_GitHubDeployments", item)
+            @await Html.PartialAsync("_GitHubLeadTimeForChanges", item)
         }
     </div>
     }
 </div>
+
+

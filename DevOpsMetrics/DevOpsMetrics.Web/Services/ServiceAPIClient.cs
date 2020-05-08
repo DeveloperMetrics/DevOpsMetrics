@@ -22,9 +22,9 @@ namespace DevOpsMetrics.Web.Services
             };
         }
 
-        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsDeployments(bool getDemoData, string patToken, string organization, string project, string branch, string buildId)
+        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsDeployments(bool showDemoData, string patToken, string organization, string project, string branch, string buildId)
         {
-            if (getDemoData == true)
+            if (showDemoData == true)
             {
                 List<AzureDevOpsBuild> results = new List<AzureDevOpsBuild>();
                 AzureDevOpsBuild item1 = new AzureDevOpsBuild
@@ -109,9 +109,9 @@ namespace DevOpsMetrics.Web.Services
             }
         }
 
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getDemoData, string patToken, string organization, string project, string branch, string buildId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool showDemoData, string patToken, string organization, string project, string branch, string buildId, int numberOfDays)
         {
-            if (getDemoData == true)
+            if (showDemoData == true)
             {
                 return new DeploymentFrequencyModel
                 {
@@ -126,9 +126,9 @@ namespace DevOpsMetrics.Web.Services
             }
         }
 
-        public async Task<List<GitHubActionsRun>> GetGitHubDeployments(bool getDemoData, string owner, string repo, string branch, string workflowId)
+        public async Task<List<GitHubActionsRun>> GetGitHubDeployments(bool showDemoData, string owner, string repo, string branch, string workflowId)
         {
-            if (getDemoData == true)
+            if (showDemoData == true)
             {
                 List<GitHubActionsRun> results = new List<GitHubActionsRun>();
                 GitHubActionsRun item1 = new GitHubActionsRun
@@ -213,9 +213,9 @@ namespace DevOpsMetrics.Web.Services
             }
         }
 
-        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getDemoData, string owner, string repo, string branch, string workflowId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool showDemoData, string owner, string repo, string branch, string workflowId, int numberOfDays)
         {
-            if (getDemoData == true)
+            if (showDemoData == true)
             {
                 return new DeploymentFrequencyModel
                 {
@@ -230,72 +230,135 @@ namespace DevOpsMetrics.Web.Services
             }
         }
 
-
-
-        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getDemoData, string patToken, string organization, string project, string branch, string buildId)
+        public async Task<List<LeadTimeForChangesModel>> GetAzureDevOpsLeadTimeForChanges(bool showDemoData, string patToken, string organization, string project, string branch, string buildId)
         {
-            if (getDemoData == true)
+            if (showDemoData == true)
             {
-                return new LeadTimeForChangesModel
+                List<LeadTimeForChangesModel> results = new List<LeadTimeForChangesModel>
                 {
-                    Branch = "abc123",
-                    BuildCount = 2,
-                    Commits = new List<Commit>
+                    new LeadTimeForChangesModel
                     {
-                        new Commit
+                        Branch = "abc123",
+                        BuildCount = 2,
+                        Commits = new List<Commit>
                         {
-                            commitId="abc",
-                            date = DateTime.Now.AddDays(-7),
-                            name = "commit 1"
+                            new Commit
+                            {
+                                commitId="abc",
+                                date = DateTime.Now.AddDays(-7),
+                                name = "commit 1"
+                            },
+                            new Commit
+                            {
+                                commitId="def",
+                                date = DateTime.Now.AddDays(-5),
+                                name = "commit 2"
+                            }
                         },
-                        new Commit
-                        {
-                            commitId="def",
-                            date = DateTime.Now.AddDays(-5),
-                            name = "commit 2"
-                        }
+                        StartDateTime = DateTime.Now.AddDays(-7),
+                        EndDateTime = DateTime.Now.AddDays(-5)
                     },
-                    StartDateTime = DateTime.Now.AddDays(-7),
-                    EndDateTime = DateTime.Now.AddDays(-5) 
+                    new LeadTimeForChangesModel
+                    {
+                        Branch = "xyz890",
+                        BuildCount = 3,
+                        Commits = new List<Commit>
+                        {
+                            new Commit
+                            {
+                                commitId="abc",
+                                date = DateTime.Now.AddDays(-7),
+                                name = "commit 1"
+                            },
+                            new Commit
+                            {
+                                commitId="def",
+                                date = DateTime.Now.AddDays(-5),
+                                name = "commit 2"
+                            },
+                            new Commit
+                            {
+                                commitId="ghi",
+                                date = DateTime.Now.AddDays(-2),
+                                name = "commit 3"
+                            }
+                        },
+                        StartDateTime = DateTime.Now.AddDays(-7),
+                        EndDateTime = DateTime.Now.AddDays(-2)
+                    }
                 };
+                return results;
             }
             else
             {
                 string url = $"/api/LeadTimeForChanges/GetAzureDevOpsLeadTimeForChanges?patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildId={buildId}";
-                return await GetResponse<LeadTimeForChangesModel>(_client, url);
+                return await GetResponse<List<LeadTimeForChangesModel>>(_client, url);
             }
         }
-        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimeForChanges(bool getDemoData, string owner, string repo, string branch, string workflowId, int numberOfDays)
+
+        public async Task<List<LeadTimeForChangesModel>> GetGitHubLeadTimeForChanges(bool showDemoData, string owner, string repo, string branch, string workflowId)
         {
-            if (getDemoData == true)
+            if (showDemoData == true)
             {
-                return new LeadTimeForChangesModel
+                List<LeadTimeForChangesModel> results = new List<LeadTimeForChangesModel>
                 {
-                    Branch = "abc123",
-                    BuildCount = 2,
-                    Commits = new List<Commit>
+                    new LeadTimeForChangesModel
                     {
-                        new Commit
+                        Branch = "abc123",
+                        BuildCount = 2,
+                        Commits = new List<Commit>
                         {
-                            commitId="abc",
-                            date = DateTime.Now.AddDays(-7),
-                            name = "commit 1"
+                            new Commit
+                            {
+                                commitId="abc",
+                                date = DateTime.Now.AddDays(-7),
+                                name = "commit 1"
+                            },
+                            new Commit
+                            {
+                                commitId="def",
+                                date = DateTime.Now.AddDays(-5),
+                                name = "commit 2"
+                            }
                         },
-                        new Commit
-                        {
-                            commitId="def",
-                            date = DateTime.Now.AddDays(-5),
-                            name = "commit 2"
-                        }
+                        StartDateTime = DateTime.Now.AddDays(-7),
+                        EndDateTime = DateTime.Now.AddDays(-5)
                     },
-                    StartDateTime = DateTime.Now.AddDays(-7),
-                    EndDateTime = DateTime.Now.AddDays(-5)
+                    new LeadTimeForChangesModel
+                    {
+                        Branch = "xyz890",
+                        BuildCount = 3,
+                        Commits = new List<Commit>
+                        {
+                            new Commit
+                            {
+                                commitId="abc",
+                                date = DateTime.Now.AddDays(-7),
+                                name = "commit 1"
+                            },
+                            new Commit
+                            {
+                                commitId="def",
+                                date = DateTime.Now.AddDays(-5),
+                                name = "commit 2"
+                            },
+                            new Commit
+                            {
+                                commitId="ghi",
+                                date = DateTime.Now.AddDays(-2),
+                                name = "commit 3"
+                            }
+                        },
+                        StartDateTime = DateTime.Now.AddDays(-7),
+                        EndDateTime = DateTime.Now.AddDays(-2)
+                    }
                 };
+                return results;
             }
             else
             {
-                string url = $"/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?owner={owner}&repo={repo}&branch={branch}&workflowId={workflowId}&numberOfDays={numberOfDays}";
-                return await GetResponse<LeadTimeForChangesModel>(_client, url);
+                string url = $"/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?owner={owner}&repo={repo}&branch={branch}&workflowId={workflowId}";
+                return await GetResponse<List<LeadTimeForChangesModel>>(_client, url);
             }
         }
 

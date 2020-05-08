@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DevOpsMetrics.Web.Models
 {
-    public class PartialViewDeploymentModel
+    public class DeploymentPartialViewModel
     {
         public string DeploymentName { get; set; }
         public List<AzureDevOpsBuild> AzureDevOpsList { get; set; }

@@ -25,74 +25,48 @@ namespace DevOpsMetrics.Web.Controllers
         {
             int numberOfDeployments = 20;
             int numberOfDays = 7;
-            bool showDemoData = false;
-            List<PartialViewDeploymentModel> items = new List<PartialViewDeploymentModel>();
-            PartialViewDeploymentModel newItem;
+            bool showDemoData = true;
+            ServiceApiClient serviceAPIClient = new ServiceApiClient(_configuration);
+            List<LeadTimeForChangesPartialViewModel> items = new List<LeadTimeForChangesPartialViewModel>();
+            LeadTimeForChangesPartialViewModel newItem;
 
             //Azure DevOps 1
-            string deploymentName = "SamLearnsAzure.CI";
             string patToken = _configuration["AppSettings:PatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string azBranch = "refs/heads/master";
             string buildId = "83"; //"3673"; //SamLearnsAzure.CI
-            newItem = await CreateAzureDevOpsBuild(showDemoData, deploymentName, patToken, organization, project, azBranch, buildId, numberOfDeployments, numberOfDays);
-            if (newItem != null)
+            List<LeadTimeForChangesModel> azleadTimes1 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(showDemoData, patToken, organization, project, azBranch, buildId);
+            newItem = new LeadTimeForChangesPartialViewModel
             {
-                items.Add(newItem);
-            }
-
-            //Azure DevOps 2
-            string deploymentName2 = "PartsUnlimited.CI";
-            string patToken2 = _configuration["AppSettings:PatToken"];
-            string organization2 = "samsmithnz";
-            string project2 = "PartsUnlimited";
-            string azBranch2 = "refs/heads/master";
-            string buildId2 = "75"; //"3673"; //SamLearnsAzure.CI
-            newItem = await CreateAzureDevOpsBuild(showDemoData, deploymentName2, patToken2, organization2, project2, azBranch2, buildId2, numberOfDeployments, numberOfDays);
-            if (newItem != null)
-            {
-                items.Add(newItem);
-            }
-
-            //GitHub 1
-            deploymentName = "SamsFeatureFlags.CI";
-            string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
-            string ghbranch = "master";
-            string workflowId = "108084";
-            newItem = await CreateGitHubActionsRun(showDemoData, deploymentName, owner, repo, ghbranch, workflowId, numberOfDeployments, numberOfDays);
-            if (newItem != null)
-            {
-                items.Add(newItem);
-            }
+                ProjectName = project,
+                AzureDevOpsList = azleadTimes1
+            };
+            items.Add(newItem);
 
             //GitHub 2
-            deploymentName = "DevOpsMetrics.CI";
             string owner2 = "samsmithnz";
             string repo2 = "DevOpsMetrics";
             string ghbranch2 = "AddingWebsite";
             string workflowId2 = "1162561";
-            newItem = await CreateGitHubActionsRun(showDemoData, deploymentName, owner2, repo2, ghbranch2, workflowId2, numberOfDeployments, numberOfDays);
-            if (newItem != null)
+            List<LeadTimeForChangesModel> ghleadTimes2 = await serviceAPIClient.GetGitHubLeadTimeForChanges(showDemoData, owner2, repo2, ghbranch2, workflowId2);
+            newItem = new LeadTimeForChangesPartialViewModel
             {
-                items.Add(newItem);
-            }
-
-            DeploymentViewModel indexModel = new DeploymentViewModel
-            {
-                Items = items
+                ProjectName = project,
+                GitHubList = ghleadTimes2
             };
-            return View(indexModel);
+            items.Add(newItem);
+
+            return View(items);
         }
- 
+
         public async Task<IActionResult> DeploymentFrequency()
         {
             int numberOfDeployments = 20;
             int numberOfDays = 7;
             bool showDemoData = false;
-            List<PartialViewDeploymentModel> items = new List<PartialViewDeploymentModel>();
-            PartialViewDeploymentModel newItem;
+            List<DeploymentPartialViewModel> items = new List<DeploymentPartialViewModel>();
+            DeploymentPartialViewModel newItem;
 
             //Azure DevOps 1
             //TODO: Move variables
@@ -102,7 +76,7 @@ namespace DevOpsMetrics.Web.Controllers
             string project = "SamLearnsAzure";
             string azBranch = "refs/heads/master";
             string buildId = "83"; //"3673"; //SamLearnsAzure.CI
-            newItem = await CreateAzureDevOpsBuild(showDemoData, deploymentName, patToken, organization, project, azBranch, buildId, numberOfDeployments, numberOfDays);
+            newItem = await DeploymentFrequencyService.CreateAzureDevOpsBuild(showDemoData, deploymentName, patToken, organization, project, azBranch, buildId, numberOfDeployments, numberOfDays, _configuration);
             if (newItem != null)
             {
                 items.Add(newItem);
@@ -116,7 +90,7 @@ namespace DevOpsMetrics.Web.Controllers
             string project2 = "PartsUnlimited";
             string azBranch2 = "refs/heads/master";
             string buildId2 = "75"; //"3673"; //SamLearnsAzure.CI
-            newItem = await CreateAzureDevOpsBuild(showDemoData, deploymentName2, patToken2, organization2, project2, azBranch2, buildId2, numberOfDeployments, numberOfDays);
+            newItem = await DeploymentFrequencyService.CreateAzureDevOpsBuild(showDemoData, deploymentName2, patToken2, organization2, project2, azBranch2, buildId2, numberOfDeployments, numberOfDays, _configuration);
             if (newItem != null)
             {
                 items.Add(newItem);
@@ -129,7 +103,7 @@ namespace DevOpsMetrics.Web.Controllers
             string repo = "samsfeatureflags";
             string ghbranch = "master";
             string workflowId = "108084";
-            newItem = await CreateGitHubActionsRun(showDemoData, deploymentName, owner, repo, ghbranch, workflowId, numberOfDeployments, numberOfDays);
+            newItem = await DeploymentFrequencyService.CreateGitHubActionsRun(showDemoData, deploymentName, owner, repo, ghbranch, workflowId, numberOfDeployments, numberOfDays, _configuration);
             if (newItem != null)
             {
                 items.Add(newItem);
@@ -142,7 +116,7 @@ namespace DevOpsMetrics.Web.Controllers
             string repo2 = "DevOpsMetrics";
             string ghbranch2 = "AddingWebsite";
             string workflowId2 = "1162561";
-            newItem = await CreateGitHubActionsRun(showDemoData, deploymentName, owner2, repo2, ghbranch2, workflowId2, numberOfDeployments, numberOfDays);
+            newItem = await DeploymentFrequencyService.CreateGitHubActionsRun(showDemoData, deploymentName, owner2, repo2, ghbranch2, workflowId2, numberOfDeployments, numberOfDays, _configuration);
             if (newItem != null)
             {
                 items.Add(newItem);
@@ -155,65 +129,6 @@ namespace DevOpsMetrics.Web.Controllers
             return View(indexModel);
         }
 
-
-
-        public async Task<PartialViewDeploymentModel> CreateAzureDevOpsBuild(bool showDemoData, string deploymentName, string patToken, string organization, string project, string azBranch, string buildId, int numberOfDeployments, int numberOfDays)
-        {
-            ServiceApiClient service = new ServiceApiClient(_configuration);
-            List<AzureDevOpsBuild> azList = await service.GetAzureDevOpsDeployments(showDemoData, patToken, organization, project, azBranch, buildId);
-            DeploymentFrequencyModel azDeploymentFrequency = await service.GetAzureDevOpsDeploymentFrequency(showDemoData, patToken, organization, project, azBranch, buildId, numberOfDays);
-
-            PartialViewDeploymentModel item = new PartialViewDeploymentModel
-            {
-                DeploymentName = deploymentName,
-                AzureDevOpsList = azList,
-                AzureDevOpsDeploymentFrequency = azDeploymentFrequency
-            };
-
-            //Limit Azure DevOps to latest results
-            if (azList.Count >= numberOfDeployments)
-            {
-                item.AzureDevOpsList = new List<AzureDevOpsBuild>();
-                //Only show the last ten builds
-                for (int i = azList.Count - numberOfDeployments; i < azList.Count; i++)
-                {
-                    item.AzureDevOpsList.Add(azList[i]);
-                }
-            }
-            item.AzureDevOpsDeploymentFrequency = azDeploymentFrequency;
-            item.AzureDevOpsList = DeploymentFrequencyService.ProcessAzureDevOpsBuilds(item.AzureDevOpsList);
-
-            return item;
-        }
-
-        public async Task<PartialViewDeploymentModel> CreateGitHubActionsRun(bool showDemoData, string deploymentName, string owner, string repo, string ghbranch, string workflowId, int numberOfDeployments, int numberOfDays)
-        {
-            ServiceApiClient service = new ServiceApiClient(_configuration);
-            List<GitHubActionsRun> ghList = await service.GetGitHubDeployments(showDemoData, owner, repo, ghbranch, workflowId);
-            DeploymentFrequencyModel ghDeploymentFrequency = await service.GetGitHubDeploymentFrequency(showDemoData, owner, repo, ghbranch, workflowId, numberOfDays);
-
-            PartialViewDeploymentModel item = new PartialViewDeploymentModel
-            {
-                DeploymentName = deploymentName,
-                GitHubDeploymentFrequency = ghDeploymentFrequency,
-                GitHubList = ghList
-            };
-
-            //Limit GitHub to latest 10 results
-            if (ghList.Count >= numberOfDeployments)
-            {
-                item.GitHubList = new List<GitHubActionsRun>();
-                //Only show the last ten builds
-                for (int i = ghList.Count - numberOfDeployments; i < ghList.Count; i++)
-                {
-                    item.GitHubList.Add(ghList[i]);
-                }
-            }
-            item.GitHubDeploymentFrequency = ghDeploymentFrequency;
-            item.GitHubList = DeploymentFrequencyService.ProcessGitHubRuns(item.GitHubList);
-
-            return item;
-        }
 
         public IActionResult LeadTimeForChanges()
         {

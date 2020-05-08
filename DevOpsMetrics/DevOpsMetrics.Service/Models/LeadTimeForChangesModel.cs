@@ -15,6 +15,7 @@ namespace DevOpsMetrics.Service.Models
                 return EndDateTime - StartDateTime;
             }
         }
+        public int DurationPercent { get; set; } = 50;
         public List<Commit> Commits { get; set; }
         public int BuildCount { get; set; } //TODO: Should this actually be the list of builds?
     }
