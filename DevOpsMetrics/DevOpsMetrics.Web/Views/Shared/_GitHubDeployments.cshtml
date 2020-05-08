@@ -1,8 +1,9 @@
-﻿@model DeploymentPartialViewModel
+﻿@using DevOpsMetrics.Service.Models.GitHub
+@model DeploymentPartialViewModel
 
 <div class="chartContainer vertical flat">
     <h4><img src="~/images/GitHub-icon.png" style="width:32px;" />&nbsp; GitHub - @Model.DeploymentName</h4>
-    @foreach (DevOpsMetrics.Service.Models.GitHubActionsRun item in Model.GitHubList)
+    @foreach (GitHubActionsRun item in Model.GitHubList)
     {
         <a href="@item.html_url" target="_blank">
             <div class="progress-bar">

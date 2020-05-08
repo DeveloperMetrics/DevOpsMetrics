@@ -1,8 +1,9 @@
-﻿@model DeploymentPartialViewModel
+﻿@using DevOpsMetrics.Service.Models.AzureDevOps
+@model DeploymentPartialViewModel
 
 <div class="chartContainer vertical flat">
     <h4><img src="~/images/AzureDevops-icon.png" style="width:32px;" />&nbsp; Azure DevOps - @Model.DeploymentName</h4>
-    @foreach (DevOpsMetrics.Service.Models.AzureDevOpsBuild item in Model.AzureDevOpsList)
+    @foreach (AzureDevOpsBuild item in Model.AzureDevOpsList)
     {
         <a href="@item.url" target="_blank">
             <div class="progress-bar">
