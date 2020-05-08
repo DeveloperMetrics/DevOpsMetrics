@@ -225,7 +225,7 @@ namespace DevOpsMetrics.Web.Services
             }
             else
             {
-                string url = $"/api/DeploymentFrequency/GetGHDeploymentFrequency?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}&numberOfDays={numberOfDays}";
+                string url = $"/api/DeploymentFrequency/GetGitHubDeploymentFrequency?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}&numberOfDays={numberOfDays}";
                 return await GetResponse<DeploymentFrequencyModel>(_client, url);
             }
         }
