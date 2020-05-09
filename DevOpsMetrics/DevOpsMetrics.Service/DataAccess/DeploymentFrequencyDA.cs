@@ -194,6 +194,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 StartTime = DateTime.Now.AddDays(-7).AddMinutes(-4),
                 EndTime = DateTime.Now.AddDays(-7).AddMinutes(0),
+                BuildDurationPercent = 70,
                 BuildNumber = "1",
                 Branch = "master",
                 Status = "completed",
@@ -205,6 +206,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 StartTime = DateTime.Now.AddDays(-5).AddMinutes(-5),
                 EndTime = DateTime.Now.AddDays(-5).AddMinutes(0),
+                BuildDurationPercent = 40,
                 BuildNumber = "2",
                 Branch = "master",
                 Status = "completed",
@@ -216,6 +218,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 StartTime = DateTime.Now.AddDays(-4).AddMinutes(-1),
                 EndTime = DateTime.Now.AddDays(-4).AddMinutes(0),
+                BuildDurationPercent = 20,
                 BuildNumber = "3",
                 Branch = "master",
                 Status = "failed",
@@ -226,6 +229,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 StartTime = DateTime.Now.AddDays(-3).AddMinutes(-4),
                 EndTime = DateTime.Now.AddDays(-3).AddMinutes(0),
+                BuildDurationPercent = 50,
                 BuildNumber = "4",
                 Branch = "master",
                 Status = "completed",
@@ -237,6 +241,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 StartTime = DateTime.Now.AddDays(-2).AddMinutes(-7),
                 EndTime = DateTime.Now.AddDays(-2).AddMinutes(0),
+                BuildDurationPercent = 60,
                 BuildNumber = "5",
                 Branch = "master",
                 Status = "completed",
@@ -248,6 +253,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 StartTime = DateTime.Now.AddDays(-1).AddMinutes(-5),
                 EndTime = DateTime.Now.AddDays(-1).AddMinutes(0),
+                BuildDurationPercent = 70,
                 BuildNumber = "6",
                 Branch = "master",
                 Status = "inProgress",
@@ -265,6 +271,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 StartTime = DateTime.Now.AddDays(-7).AddMinutes(-12),
                 EndTime = DateTime.Now.AddDays(-7).AddMinutes(0),
+                BuildDurationPercent = 70,
                 BuildNumber = "1",
                 Branch = "master",
                 Status = "completed",
@@ -275,6 +282,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 StartTime = DateTime.Now.AddDays(-6).AddMinutes(-16),
                 EndTime = DateTime.Now.AddDays(-6).AddMinutes(0),
+                BuildDurationPercent = 90,
                 BuildNumber = "2",
                 Branch = "master",
                 Status = "completed",
@@ -286,6 +294,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 StartTime = DateTime.Now.AddDays(-4).AddMinutes(-9),
                 EndTime = DateTime.Now.AddDays(-4).AddMinutes(0),
+                BuildDurationPercent = 40,
                 BuildNumber = "3",
                 Branch = "master",
                 Status = "failed",
@@ -296,6 +305,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 StartTime = DateTime.Now.AddDays(-3).AddMinutes(-10),
                 EndTime = DateTime.Now.AddDays(-3).AddMinutes(0),
+                BuildDurationPercent = 45,
                 BuildNumber = "4",
                 Branch = "master",
                 Status = "completed",
@@ -307,6 +317,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 StartTime = DateTime.Now.AddDays(-2).AddMinutes(-11),
                 EndTime = DateTime.Now.AddDays(-2).AddMinutes(0),
+                BuildDurationPercent = 50,
                 BuildNumber = "5",
                 Branch = "master",
                 Status = "failed",
@@ -318,6 +329,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 StartTime = DateTime.Now.AddDays(-1).AddMinutes(-8),
                 EndTime = DateTime.Now.AddDays(-1).AddMinutes(0),
+                BuildDurationPercent = 20,
                 BuildNumber = "6",
                 Branch = "master",
                 Status = "completed",
