@@ -25,8 +25,8 @@ namespace DevOpsMetrics.Tests.GitHub
             string workflowId = "108084";
 
             //Act
-            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            List<GitHubActionsRun> list = await da.GetGitHubDeployments(clientId, clientSecret, owner, repo, ghbranch, workflowId);
+            BuildsDA da = new BuildsDA();
+            List<GitHubActionsRun> list = await da.GetGitHubActionRuns(clientId, clientSecret, owner, repo, ghbranch, workflowId);
 
             //Assert
             Assert.IsTrue(list != null);
@@ -54,9 +54,9 @@ namespace DevOpsMetrics.Tests.GitHub
             DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(clientId, clientSecret, owner, repo, branch, workflowId, numberOfDays);
 
             //Assert
-            Assert.IsTrue(model.DeploymentsPerDay > 0f);
-            Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayDescription));
-            Assert.AreNotEqual("Unknown", model.DeploymentsPerDayDescription);
+            Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
+            Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription));
+            Assert.AreNotEqual("Unknown", model.DeploymentsPerDayMetricDescription);
         }
     }
 }

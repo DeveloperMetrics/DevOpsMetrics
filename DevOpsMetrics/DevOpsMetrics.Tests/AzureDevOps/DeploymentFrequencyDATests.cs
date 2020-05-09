@@ -37,8 +37,8 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             string buildId = "3673"; //SamLearnsAzure.CI
 
             //Act
-            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            List<AzureDevOpsBuild> list = await da.GetAzureDevOpsDeployments(patToken, organization, project, branch, buildId);
+            BuildsDA da = new BuildsDA();
+            List<AzureDevOpsBuild> list = await da.GetAzureDevOpsBuilds(patToken, organization, project, branch, buildId);
 
             //Assert
             Assert.IsTrue(list != null);
@@ -56,17 +56,18 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
+            string buildName = "SamLearnsAzure.CI";
             string buildId = "3673"; //SamLearnsAzure.CI
             int numberOfDays = 7;
 
             //Act
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(patToken, organization, project, branch, buildId, numberOfDays);
+            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(patToken, organization, project, branch, buildName, buildId, numberOfDays);
 
             //Assert
-            Assert.IsTrue(model.DeploymentsPerDay > 0f);
-            Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayDescription));
-            Assert.AreNotEqual("Unknown", model.DeploymentsPerDayDescription);
+            Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
+            Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription));
+            Assert.AreNotEqual("Unknown", model.DeploymentsPerDayMetricDescription);
         }
 
     }

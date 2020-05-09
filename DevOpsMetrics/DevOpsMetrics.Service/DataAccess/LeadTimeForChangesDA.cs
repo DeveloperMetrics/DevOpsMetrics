@@ -11,11 +11,11 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class LeadTimeForChangesDA
     {
-        public async Task<List<LeadTimeForChangesModel>> GetAzureDevOpsLeadTimesForChanges(string patToken, string organization, string project, string masterBranch, string buildId)
+        public async Task<List<LeadTimeForChangesModel>> GetAzureDevOpsLeadTimesForChanges(string patToken, string organization, string project, string repositoryId, string masterBranch, string buildId)
         {
             List<AzureDevOpsBuild> initialBuilds = new List<AzureDevOpsBuild>();
-            DeploymentFrequencyDA deployments = new DeploymentFrequencyDA();
-            initialBuilds = await deployments.GetAzureDevOpsDeployments(patToken, organization, project, masterBranch, buildId);
+            BuildsDA buildsDA = new BuildsDA();
+            initialBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, organization, project, masterBranch, buildId);
 
             //Filter out all branches that aren't a master build
             List<AzureDevOpsBuild> builds = new List<AzureDevOpsBuild>();
@@ -39,7 +39,8 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 List<AzureDevOpsBuild> branchBuilds = builds.Where(a => a.sourceBranch == branch).ToList();
                 string pullRequestId = branch.Replace("refs/pull/", "").Replace("/merge", "");
-                List<AzureDevOpsPRCommit> pullRequestCommits = await PullRequestDA.GetAzureDevOpsPullRequestDetails(patToken, organization, project, pullRequestId);
+                PullRequestDA pullRequestDA = new PullRequestDA();
+                List<AzureDevOpsPRCommit> pullRequestCommits = await pullRequestDA.GetAzureDevOpsPullRequestCommits(patToken, organization, project, repositoryId, pullRequestId);
                 List<Commit> commits = new List<Commit>();
                 foreach (AzureDevOpsPRCommit item in pullRequestCommits)
                 {
@@ -94,8 +95,8 @@ namespace DevOpsMetrics.Service.DataAccess
         public async Task<List<LeadTimeForChangesModel>> GetGitHubLeadTimesForChanges(string clientId, string clientSecret, string owner, string repo, string masterBranch, string workflowId)
         {
             List<GitHubActionsRun> initialRuns = new List<GitHubActionsRun>();
-            DeploymentFrequencyDA deployments = new DeploymentFrequencyDA();
-            initialRuns = await deployments.GetGitHubDeployments(clientId, clientSecret, owner, repo, masterBranch, workflowId);
+            BuildsDA buildsDA = new BuildsDA();
+            initialRuns = await buildsDA.GetGitHubActionRuns(clientId, clientSecret, owner, repo, masterBranch, workflowId);
 
             //Filter out all branches that aren't a master build
             List<GitHubActionsRun> runs = new List<GitHubActionsRun>();
@@ -120,8 +121,9 @@ namespace DevOpsMetrics.Service.DataAccess
                 List<GitHubActionsRun> branchBuilds = runs.Where(a => a.head_branch == branch).ToList();
                 //This is messy. In Azure DevOps we could get the build trigger/pull request id. In GitHub we cannot. 
                 //Instead we get the pull request id by searching pull requests by branch
-                string pullRequestId = await PullRequestDA.GetGitHubPullRequestByBranchName(clientId, clientSecret, owner, repo, branch);
-                List<GitHubPRCommit> pullRequestCommits = await PullRequestDA.GetGitHubPullRequestDetails(clientId, clientSecret, owner, repo, pullRequestId);
+                PullRequestDA pullRequestDA = new PullRequestDA();
+                string pullRequestId = await pullRequestDA.GetGitHubPullRequestIdByBranchName(clientId, clientSecret, owner, repo, branch);
+                List<GitHubPRCommit> pullRequestCommits = await pullRequestDA.GetGitHubPullRequestCommits(clientId, clientSecret, owner, repo, pullRequestId);
                 List<Commit> commits = new List<Commit>();
                 foreach (GitHubPRCommit item in pullRequestCommits)
                 {

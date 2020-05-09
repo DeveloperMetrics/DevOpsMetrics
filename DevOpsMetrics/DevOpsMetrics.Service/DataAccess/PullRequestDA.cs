@@ -1,6 +1,4 @@
-﻿using DevOpsMetrics.Service.Models;
-using DevOpsMetrics.Service.Models.AzureDevOps;
-using DevOpsMetrics.Service.Models.Common;
+﻿using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.GitHub;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -10,12 +8,12 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class PullRequestDA
     {
-        public static async Task<List<AzureDevOpsPRCommit>> GetAzureDevOpsPullRequestDetails(string patToken, string organization, string project, string pullRequestId)
+        public async Task<List<AzureDevOpsPRCommit>> GetAzureDevOpsPullRequestCommits(string patToken, string organization, string project, string repositoryId, string pullRequestId)
         {
-            string repositoryId = "SamLearnsAzure";
             //https://docs.microsoft.com/en-us/rest/api/azure/devops/git/pull%20request%20commits/get%20pull%20request%20commits?view=azure-devops-rest-5.1
             string url = $"https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repositoryId}/pullRequests/{pullRequestId}/commits?api-version=5.1";
             string response = await MessageUtility.SendAzureDevOpsMessage(url, patToken);
+            
             List<AzureDevOpsPRCommit> commits = new List<AzureDevOpsPRCommit>();
             if (string.IsNullOrEmpty(response) == false)
             {
@@ -26,13 +24,13 @@ namespace DevOpsMetrics.Service.DataAccess
             return commits;
         }
 
-        public static async Task<string> GetGitHubPullRequestByBranchName(string clientId, string clientSecret, string owner, string repo, string branch)
+        public async Task<string> GetGitHubPullRequestIdByBranchName(string clientId, string clientSecret, string owner, string repo, string branch)
         {
             //https://developer.GitHub.com/v3/pulls/#list-pull-requests
             //GET /repos/:owner/:repo/pulls
             string url = $"https://api.github.com/repos/{owner}/{repo}/pulls?state=all&head={branch}";
             string response = await MessageUtility.SendGitHubMessage(url, clientId, clientSecret);
-
+            
             List<GitHubPR> prs = new List<GitHubPR>();
             if (string.IsNullOrEmpty(response) == false)
             {
@@ -40,6 +38,8 @@ namespace DevOpsMetrics.Service.DataAccess
                 Newtonsoft.Json.Linq.JArray value = buildListObject;
                 prs = JsonConvert.DeserializeObject<List<GitHubPR>>(value.ToString());
             }
+
+            //Find the PR id
             string prId = "";
             foreach (GitHubPR item in prs)
             {
@@ -51,7 +51,7 @@ namespace DevOpsMetrics.Service.DataAccess
             return prId;
         }
 
-        public static async Task<List<GitHubPRCommit>> GetGitHubPullRequestDetails(string clientId, string clientSecret, string owner, string repo, string pull_number)
+        public async Task<List<GitHubPRCommit>> GetGitHubPullRequestCommits(string clientId, string clientSecret, string owner, string repo, string pull_number)
         {
             //https://developer.GitHub.com/v3/pulls/#list-commits-on-a-pull-request
             //GET /repos/:owner/:repo/pulls/:pull_number/commits

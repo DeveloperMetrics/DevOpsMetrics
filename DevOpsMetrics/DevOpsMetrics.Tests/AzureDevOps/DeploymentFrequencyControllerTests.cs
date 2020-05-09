@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Tests.AzureDevOps
@@ -88,17 +89,18 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
+            string buildName = "SamLearnsAzure.CI";
             string buildId = "3673"; //SamLearnsAzure.CI
             int numberOfDays = 7;
             DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(patToken, organization, project, branch, buildId, numberOfDays);
+            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(patToken, organization, project, branch, buildName, buildId, numberOfDays);
 
             //Assert
-            Assert.IsTrue(model.DeploymentsPerDay > 0f);
-            Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayDescription));
-            Assert.AreNotEqual("Unknown", model.DeploymentsPerDayDescription);
+            Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
+            Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription));
+            Assert.AreNotEqual("Unknown", model.DeploymentsPerDayMetricDescription);
         }
 
     }

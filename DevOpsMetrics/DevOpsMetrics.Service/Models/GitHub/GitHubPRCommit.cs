@@ -1,5 +1,6 @@
-﻿
-namespace DevOpsMetrics.Service.Models.Common
+﻿using DevOpsMetrics.Service.Models.Common;
+
+namespace DevOpsMetrics.Service.Models.GitHub
 {
     public class GitHubPRCommit
     {

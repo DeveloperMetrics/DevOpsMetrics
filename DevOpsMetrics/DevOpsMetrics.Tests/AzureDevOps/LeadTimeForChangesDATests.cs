@@ -32,12 +32,13 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             string patToken = Configuration["AppSettings:PatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
+            string repositoryId = "SamLearnsAzure";
             string masterBranch = "refs/heads/master";
             string buildId = "3673"; //SamLearnsAzure.CI
 
             //Act
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-            List<LeadTimeForChangesModel> list = await da.GetAzureDevOpsLeadTimesForChanges(patToken, organization, project, masterBranch, buildId);
+            List<LeadTimeForChangesModel> list = await da.GetAzureDevOpsLeadTimesForChanges(patToken, organization, project, repositoryId, masterBranch, buildId);
 
             //Assert
             Assert.IsTrue(list != null);

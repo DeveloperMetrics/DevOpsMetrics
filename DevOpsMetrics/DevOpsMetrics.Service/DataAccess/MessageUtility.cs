@@ -16,7 +16,7 @@ namespace DevOpsMetrics.Service.DataAccess
             }
             using (HttpClient client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 //If we use a pat token, we can access private repos
                 if (string.IsNullOrEmpty(patToken) == false)
                 {
@@ -25,8 +25,11 @@ namespace DevOpsMetrics.Service.DataAccess
                 using (HttpResponseMessage response = await client.GetAsync(url))
                 {
                     response.EnsureSuccessStatusCode();
-                    responseBody = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(responseBody);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        responseBody = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine(responseBody);
+                    }
                 }
             }
             return responseBody;
@@ -55,6 +58,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     if (response.IsSuccessStatusCode)
                     {
                         responseBody = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine(responseBody);
                     }
                 }
             }

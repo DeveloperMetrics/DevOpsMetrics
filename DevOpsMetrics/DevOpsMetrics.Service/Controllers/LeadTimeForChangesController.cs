@@ -12,10 +12,10 @@ namespace DevOpsMetrics.Service.Controllers
     {
 
         [HttpGet("GetAzureDevOpsLeadTimeForChanges")]
-        public async Task<List<LeadTimeForChangesModel>> GetAzureDevOpsLeadTimeForChanges(string patToken, string organization, string project, string branch, string buildId)
+        public async Task<List<LeadTimeForChangesModel>> GetAzureDevOpsLeadTimeForChanges(string patToken, string organization, string project, string repositoryId, string branch, string buildId)
         {
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-            List<LeadTimeForChangesModel> leadTimeForChanges = await da.GetAzureDevOpsLeadTimesForChanges(patToken, organization, project, branch, buildId);
+            List<LeadTimeForChangesModel> leadTimeForChanges = await da.GetAzureDevOpsLeadTimesForChanges(patToken, organization, project, repositoryId, branch, buildId);
 
             //TimeSpan largestDuration = TimeSpan.Zero;
             //double totalHours = 0;

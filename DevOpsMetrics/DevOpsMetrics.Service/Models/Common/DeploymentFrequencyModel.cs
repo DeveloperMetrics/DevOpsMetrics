@@ -1,9 +1,13 @@
 ﻿
+using System.Collections.Generic;
+
 namespace DevOpsMetrics.Service.Models.Common
 {
     public class DeploymentFrequencyModel
     {
-        public float DeploymentsPerDay { get; set; }
-        public string DeploymentsPerDayDescription { get; set; }
+        public string DeploymentName { get; set; }
+        public List<Build> BuildList { get; set; }
+        public float DeploymentsPerDayMetric { get; set; }
+        public string DeploymentsPerDayMetricDescription { get; set; }
     }
 }

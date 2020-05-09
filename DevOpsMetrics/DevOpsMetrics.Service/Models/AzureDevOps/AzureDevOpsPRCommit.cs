@@ -8,5 +8,4 @@ namespace DevOpsMetrics.Service.Models.AzureDevOps
         public Committer committer { get; set; }
     }
 
-
 }

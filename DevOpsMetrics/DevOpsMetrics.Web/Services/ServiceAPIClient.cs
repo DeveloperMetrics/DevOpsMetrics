@@ -119,8 +119,8 @@ namespace DevOpsMetrics.Web.Services
             {
                 return new DeploymentFrequencyModel
                 {
-                    DeploymentsPerDay = 10f,
-                    DeploymentsPerDayDescription = "Elite"
+                    DeploymentsPerDayMetric = 10f,
+                    DeploymentsPerDayMetricDescription = "Elite"
                 };
             }
             else
@@ -223,8 +223,8 @@ namespace DevOpsMetrics.Web.Services
             {
                 return new DeploymentFrequencyModel
                 {
-                    DeploymentsPerDay = 1f / 30f,
-                    DeploymentsPerDayDescription = "Low"
+                    DeploymentsPerDayMetric = 1f / 30f,
+                    DeploymentsPerDayMetricDescription = "Low"
                 };
             }
             else

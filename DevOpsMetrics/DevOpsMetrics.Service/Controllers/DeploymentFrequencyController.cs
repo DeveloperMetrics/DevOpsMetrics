@@ -13,26 +13,26 @@ namespace DevOpsMetrics.Service.Controllers
     public class DeploymentFrequencyController : ControllerBase
     {
         [HttpGet("GetAzureDevOpsDeployments")]
-        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsDeployments(string patToken, string organization, string project, string AzureDevOpsbranch, string buildId)
+        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsDeployments(string patToken, string organization, string project, string branch, string buildId)
         {
-            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            List<AzureDevOpsBuild> deployments = await da.GetAzureDevOpsDeployments(patToken, organization, project, AzureDevOpsbranch, buildId);
+            BuildsDA da = new BuildsDA();
+            List<AzureDevOpsBuild> deployments = await da.GetAzureDevOpsBuilds(patToken, organization, project, branch, buildId);
             return deployments;
         }
 
         [HttpGet("GetAzureDevOpsDeploymentFrequency")]
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(string patToken, string organization, string project, string AzureDevOpsbranch, string buildId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays)
         {
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(patToken, organization, project, AzureDevOpsbranch, buildId, numberOfDays);
+            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(patToken, organization, project, branch, buildName, buildId, numberOfDays);
             return model;
         }
 
         [HttpGet("GetGitHubDeployments")]
         public async Task<List<GitHubActionsRun>> GetGitHubDeployments(string clientId, string clientSecret, string owner, string repo, string GHbranch, string workflowId)
         {
-            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            List<GitHubActionsRun> deployments = await da.GetGitHubDeployments(clientId, clientSecret, owner, repo, GHbranch, workflowId);
+            BuildsDA da = new BuildsDA();
+            List<GitHubActionsRun> deployments = await da.GetGitHubActionRuns(clientId, clientSecret, owner, repo, GHbranch, workflowId);
             return deployments;
         }
 

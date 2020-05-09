@@ -1,5 +1,4 @@
 ﻿using DevOpsMetrics.Core;
-using DevOpsMetrics.Service.Models;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;
@@ -13,31 +12,11 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class DeploymentFrequencyDA
     {
-        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsDeployments(string patToken, string organization, string project, string branch, string buildId)
-        {
-            List<AzureDevOpsBuild> builds = new List<AzureDevOpsBuild>();
-            string url = $"https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1&queryOrder=BuildQueryOrder,finishTimeDescending";
-            string buildListResponse = await MessageUtility.SendAzureDevOpsMessage(url, patToken);
-            if (string.IsNullOrEmpty(buildListResponse) == false)
-            {
-                dynamic buildListObject = JsonConvert.DeserializeObject(buildListResponse);
-                Newtonsoft.Json.Linq.JArray value = buildListObject.value;
-                builds = JsonConvert.DeserializeObject<List<AzureDevOpsBuild>>(value.ToString());
-            }
-            //construct the Url to the build
-            foreach (AzureDevOpsBuild item in builds)
-            {
-                item.url = $"https://dev.azure.com/{organization}/{project}/_build/results?buildId={item.id}&view=results";
-            }
-            //sort the list
-            builds = builds.OrderBy(o => o.queueTime).ToList();
-            return builds;
-        }
-
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(string patToken, string organization, string project, string branch, string buildId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays)
         {
             float deploymentsPerDay = 0;
             DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
+            List<Build> builds = new List<Build>();
 
             ////Gets a list of builds
             //GET https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1      
@@ -48,45 +27,42 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 dynamic buildListObject = JsonConvert.DeserializeObject(buildListResponse);
                 Newtonsoft.Json.Linq.JArray value = buildListObject.value;
-                IEnumerable<AzureDevOpsBuild> builds = JsonConvert.DeserializeObject<List<AzureDevOpsBuild>>(value.ToString());
+                IEnumerable<AzureDevOpsBuild> azureDevOpsBuilds = JsonConvert.DeserializeObject<List<AzureDevOpsBuild>>(value.ToString());
 
                 List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
-                foreach (AzureDevOpsBuild item in builds)
+                foreach (AzureDevOpsBuild item in azureDevOpsBuilds)
                 {
+                    //Only return completed builds on the target branch
                     if (item.status == "completed" && item.sourceBranch == branch && item.queueTime > DateTime.Now.AddDays(-numberOfDays))
                     {
                         KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.queueTime, item.queueTime);
                         dateList.Add(newItem);
+                        builds.Add(
+                            new Build
+                            {
+                                Id = item.id,
+                                Branch = item.sourceBranch,
+                                BuildNumber = item.buildNumber,
+                                StartTime = item.queueTime,
+                                EndTime = item.finishTime,
+                                Status = item.status,
+                                Url = item.url
+                            }
+                        );
                     }
                 }
 
                 deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
             }
+
             DeploymentFrequencyModel model = new DeploymentFrequencyModel
             {
-                DeploymentsPerDay = deploymentsPerDay,
-                DeploymentsPerDayDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
+                DeploymentName = buildName,
+                BuildList = builds,
+                DeploymentsPerDayMetric = deploymentsPerDay,
+                DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
             };
             return model;
-        }
-
-        public async Task<List<GitHubActionsRun>> GetGitHubDeployments(string clientId, string clientSecret, string owner, string repo, string branch, string workflowId)
-        {
-            List<GitHubActionsRun> deployments = new List<GitHubActionsRun>();
-            string url = $"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflowId}/runs";
-
-            string runListResponse = await MessageUtility.SendGitHubMessage(url, clientId, clientSecret);
-            if (string.IsNullOrEmpty(runListResponse) == false)
-            {
-                dynamic buildListObject = JsonConvert.DeserializeObject(runListResponse);
-                Newtonsoft.Json.Linq.JArray workflow_runs = buildListObject.workflow_runs;
-                deployments = JsonConvert.DeserializeObject<List<GitHubActionsRun>>(workflow_runs.ToString());
-            }
-
-            //sort the list
-            deployments = deployments.OrderBy(o => o.created_at).ToList();
-
-            return deployments;
         }
 
         public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(string clientId, string clientSecret, string owner, string repo, string branch, string workflowId, int numberOfDays)
@@ -121,8 +97,8 @@ namespace DevOpsMetrics.Service.DataAccess
             }
             DeploymentFrequencyModel model = new DeploymentFrequencyModel
             {
-                DeploymentsPerDay = deploymentsPerDay,
-                DeploymentsPerDayDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
+                DeploymentsPerDayMetric = deploymentsPerDay,
+                DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
             };
             return model;
         }
