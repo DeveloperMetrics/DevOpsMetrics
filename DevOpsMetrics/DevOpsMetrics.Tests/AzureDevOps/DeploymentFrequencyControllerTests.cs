@@ -60,28 +60,28 @@ namespace DevOpsMetrics.Tests.AzureDevOps
         //    Assert.IsTrue(list[0].status != null);
         //}
 
-        [TestCategory("APITest")]
-        [TestMethod]
-        public async Task AzDeploymentsControllerAPIIntegrationTest()
-        {
-            //Arrange
-            bool getSampleData = false;
-            string patToken = Configuration["AppSettings:PatToken"];
-            string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildId = "3673"; //SamLearnsAzure.CI
+        //[TestCategory("APITest")]
+        //[TestMethod]
+        //public async Task AzDeploymentsControllerAPIIntegrationTest()
+        //{
+        //    //Arrange
+        //    bool getSampleData = false;
+        //    string patToken = Configuration["AppSettings:PatToken"];
+        //    string organization = "samsmithnz";
+        //    string project = "SamLearnsAzure";
+        //    string branch = "refs/heads/master";
+        //    string buildId = "3673"; //SamLearnsAzure.CI
 
-            //Act
-            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeployments?getSampleData={getSampleData}&patToken ={patToken}&organization={organization}&project={project}&branch={branch}&buildId={buildId}";
-            TestResponse<List<AzureDevOpsBuild>> httpResponse = new TestResponse<List<AzureDevOpsBuild>>();
-            List<AzureDevOpsBuild> list = await httpResponse.GetResponse(Client, url);
+        //    //Act
+        //    string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeployments?getSampleData={getSampleData}&patToken ={patToken}&organization={organization}&project={project}&branch={branch}&buildId={buildId}";
+        //    TestResponse<List<AzureDevOpsBuild>> httpResponse = new TestResponse<List<AzureDevOpsBuild>>();
+        //    List<AzureDevOpsBuild> list = await httpResponse.GetResponse(Client, url);
 
-            //Assert
-            Assert.IsTrue(list != null);
-            Assert.IsTrue(list.Count > 0);
-            Assert.IsTrue(list[0].status != null);
-        }
+        //    //Assert
+        //    Assert.IsTrue(list != null);
+        //    Assert.IsTrue(list.Count > 0);
+        //    Assert.IsTrue(list[0].status != null);
+        //}
 
         [TestCategory("ControllerTest")]
         [TestMethod]
