@@ -38,28 +38,28 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             Client.BaseAddress = new Uri(Configuration["AppSettings:WebServiceURL"]);
         }
 
-        [TestCategory("ControllerTest")]
-        [TestMethod]
-        public async Task AzLeadTimeControllerIntegrationTest()
-        {
-            //Arrange
-            bool getSampleData = true;
-            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-            string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string repositoryId = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildId = "3673"; //SamLearnsAzure.CI
-            LeadTimeForChangesController controller = new LeadTimeForChangesController();
+        //[TestCategory("ControllerTest")]
+        //[TestMethod]
+        //public async Task AzLeadTimeControllerIntegrationTest()
+        //{
+        //    //Arrange
+        //    bool getSampleData = true;
+        //    string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
+        //    string organization = "samsmithnz";
+        //    string project = "SamLearnsAzure";
+        //    string repositoryId = "SamLearnsAzure";
+        //    string branch = "refs/heads/master";
+        //    string buildId = "3673"; //SamLearnsAzure.CI
+        //    LeadTimeForChangesController controller = new LeadTimeForChangesController();
 
-            //Act
-            List<LeadTimeForChangesModel> list = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, repositoryId, branch, buildId);
+        //    //Act
+        //    List<LeadTimeForChangesModel> list = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, repositoryId, branch, buildId);
 
-            //Assert
-            Assert.IsTrue(list != null);
-            Assert.IsTrue(list.Count > 0);
-            Assert.IsTrue(list[0].Branch != null);
-        }
+        //    //Assert
+        //    Assert.IsTrue(list != null);
+        //    Assert.IsTrue(list.Count > 0);
+        //    Assert.IsTrue(list[0].Branch != null);
+        //}
 
         [TestCategory("APITest")]
         [TestMethod]

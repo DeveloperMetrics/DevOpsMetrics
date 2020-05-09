@@ -13,30 +13,30 @@ namespace DevOpsMetrics.Tests.GitHub
     [TestClass]
     public class DeploymentFrequencyDATests
     {
-        [TestMethod]
-        public async Task GHDeploymentsDAIntegrationTest()
-        {
-            //Arrange
-            bool getSampleData = false; 
-            string clientId = "";
-            string clientSecret = "";
-            string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
-            string ghbranch = "master";
-            string workflowId = "108084";
+        //[TestMethod]
+        //public async Task GHDeploymentsDAIntegrationTest()
+        //{
+        //    //Arrange
+        //    bool getSampleData = false; 
+        //    string clientId = "";
+        //    string clientSecret = "";
+        //    string owner = "samsmithnz";
+        //    string repo = "samsfeatureflags";
+        //    string ghbranch = "master";
+        //    string workflowId = "108084";
 
-            //Act
-            BuildsDA da = new BuildsDA();
-            List<GitHubActionsRun> list = await da.GetGitHubActionRuns(getSampleData, clientId, clientSecret, owner, repo, ghbranch, workflowId);
+        //    //Act
+        //    BuildsDA da = new BuildsDA();
+        //    List<GitHubActionsRun> list = await da.GetGitHubActionRuns(getSampleData, clientId, clientSecret, owner, repo, ghbranch, workflowId);
 
-            //Assert
-            Assert.IsTrue(list != null);
-            Assert.IsTrue(list.Count > 0);
-            Assert.IsTrue(list[0].status != null);
-            Assert.IsTrue(list[0].buildDuration >= 0f);
-            Assert.IsTrue(list.Count > 1);
-            Assert.IsTrue(list[0].created_at < list[1].created_at);
-        }
+        //    //Assert
+        //    Assert.IsTrue(list != null);
+        //    Assert.IsTrue(list.Count > 0);
+        //    Assert.IsTrue(list[0].status != null);
+        //    Assert.IsTrue(list[0].buildDuration >= 0f);
+        //    Assert.IsTrue(list.Count > 1);
+        //    Assert.IsTrue(list[0].created_at < list[1].created_at);
+        //}
 
         [TestMethod]
         public async Task GHDeploymentFrequencyDAIntegrationTest()
@@ -48,12 +48,13 @@ namespace DevOpsMetrics.Tests.GitHub
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
             string branch = "master";
+            string workflowName = "samsfeatureflags CI/CD";
             string workflowId = "108084";
             int numberOfDays = 7;
 
             //Act
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowId, numberOfDays);
+            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays);
 
             //Assert
             Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);

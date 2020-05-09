@@ -1,8 +1,23 @@
 ﻿@using DevOpsMetrics.Service.Models.Common
 @model DeploymentFrequencyModel
 
+@{
+    string widgetImageName = "";
+    string widgetName = "";
+    if (Model.IsAzureDevOps == true)
+    {
+        widgetImageName = "AzureDevops-icon.png";
+        widgetName = "Azure DevOps";
+    }
+    else
+    {
+        widgetImageName = "GitHub-icon.png";
+        widgetName = "GitHub";
+    }
+}
+
 <div class="chartContainer vertical flat">
-    <h4><img src="~/images/AzureDevops-icon.png" style="width:32px;" />&nbsp; Azure DevOps - @Model.DeploymentName</h4>
+    <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.DeploymentName</h4>
     @foreach (Build item in Model.BuildList)
     {
         <a href="@item.Url" target="_blank">

@@ -13,80 +13,87 @@ namespace DevOpsMetrics.Service.DataAccess
     {
         public async Task<List<LeadTimeForChangesModel>> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string masterBranch, string buildId)
         {
-            List<AzureDevOpsBuild> initialBuilds = new List<AzureDevOpsBuild>();
-            BuildsDA buildsDA = new BuildsDA();
-            initialBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, organization, project, masterBranch, buildId);
-
-            //Filter out all branches that aren't a master build
-            List<AzureDevOpsBuild> builds = new List<AzureDevOpsBuild>();
-            List<string> branches = new List<string>();
-            foreach (AzureDevOpsBuild item in initialBuilds)
+            List<LeadTimeForChangesModel> items = new List<LeadTimeForChangesModel>();
+            if (getSampleData == false)
             {
-                if (item.status == "completed" && item.sourceBranch != masterBranch && item.sourceBranch == "refs/pull/445/merge")
+                List<AzureDevOpsBuild> initialBuilds = new List<AzureDevOpsBuild>();
+                BuildsDA buildsDA = new BuildsDA();
+                initialBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, organization, project, masterBranch, buildId);
+
+                //Filter out all branches that aren't a master build
+                List<AzureDevOpsBuild> builds = new List<AzureDevOpsBuild>();
+                List<string> branches = new List<string>();
+                foreach (AzureDevOpsBuild item in initialBuilds)
                 {
-                    builds.Add(item);
-                    //Load all of the branches
-                    if (branches.Contains(item.sourceBranch) == false)
+                    if (item.status == "completed" && item.sourceBranch != masterBranch && item.sourceBranch == "refs/pull/445/merge")
                     {
-                        branches.Add(item.sourceBranch);
+                        builds.Add(item);
+                        //Load all of the branches
+                        if (branches.Contains(item.sourceBranch) == false)
+                        {
+                            branches.Add(item.sourceBranch);
+                        }
                     }
+                }
+
+                //Process the lead time for changes
+                foreach (string branch in branches)
+                {
+                    List<AzureDevOpsBuild> branchBuilds = builds.Where(a => a.sourceBranch == branch).ToList();
+                    string pullRequestId = branch.Replace("refs/pull/", "").Replace("/merge", "");
+                    PullRequestDA pullRequestDA = new PullRequestDA();
+                    List<AzureDevOpsPRCommit> pullRequestCommits = await pullRequestDA.GetAzureDevOpsPullRequestCommits(patToken, organization, project, repositoryId, pullRequestId);
+                    List<Commit> commits = new List<Commit>();
+                    foreach (AzureDevOpsPRCommit item in pullRequestCommits)
+                    {
+                        commits.Add(new Commit
+                        {
+                            commitId = item.commitId,
+                            name = item.committer.name,
+                            date = item.committer.date
+                        });
+                    }
+
+                    DateTime minTime = DateTime.MaxValue;
+                    DateTime maxTime = DateTime.MinValue;
+                    foreach (AzureDevOpsPRCommit pullRequestCommit in pullRequestCommits)
+                    {
+                        if (minTime > pullRequestCommit.committer.date)
+                        {
+                            minTime = pullRequestCommit.committer.date;
+                        }
+                        if (maxTime < pullRequestCommit.committer.date)
+                        {
+                            maxTime = pullRequestCommit.committer.date;
+                        }
+                    }
+                    foreach (AzureDevOpsBuild branchBuild in branchBuilds)
+                    {
+                        if (minTime > branchBuild.finishTime)
+                        {
+                            minTime = branchBuild.finishTime;
+                        }
+                        if (maxTime < branchBuild.finishTime)
+                        {
+                            maxTime = branchBuild.finishTime;
+                        }
+                    }
+                    LeadTimeForChangesModel leadTime = new LeadTimeForChangesModel
+                    {
+                        PullRequestId = pullRequestId,
+                        Branch = branch,
+                        BuildCount = branchBuilds.Count,
+                        Commits = commits,
+                        StartDateTime = minTime,
+                        EndDateTime = maxTime
+                    };
+
+                    items.Add(leadTime);
                 }
             }
-
-            //Process the lead time for changes
-            List<LeadTimeForChangesModel> items = new List<LeadTimeForChangesModel>();
-            foreach (string branch in branches)
+            else
             {
-                List<AzureDevOpsBuild> branchBuilds = builds.Where(a => a.sourceBranch == branch).ToList();
-                string pullRequestId = branch.Replace("refs/pull/", "").Replace("/merge", "");
-                PullRequestDA pullRequestDA = new PullRequestDA();
-                List<AzureDevOpsPRCommit> pullRequestCommits = await pullRequestDA.GetAzureDevOpsPullRequestCommits(patToken, organization, project, repositoryId, pullRequestId);
-                List<Commit> commits = new List<Commit>();
-                foreach (AzureDevOpsPRCommit item in pullRequestCommits)
-                {
-                    commits.Add(new Commit
-                    {
-                        commitId = item.commitId,
-                        name = item.committer.name,
-                        date = item.committer.date
-                    });
-                }
 
-                DateTime minTime = DateTime.MaxValue;
-                DateTime maxTime = DateTime.MinValue;
-                foreach (AzureDevOpsPRCommit pullRequestCommit in pullRequestCommits)
-                {
-                    if (minTime > pullRequestCommit.committer.date)
-                    {
-                        minTime = pullRequestCommit.committer.date;
-                    }
-                    if (maxTime < pullRequestCommit.committer.date)
-                    {
-                        maxTime = pullRequestCommit.committer.date;
-                    }
-                }
-                foreach (AzureDevOpsBuild branchBuild in branchBuilds)
-                {
-                    if (minTime > branchBuild.finishTime)
-                    {
-                        minTime = branchBuild.finishTime;
-                    }
-                    if (maxTime < branchBuild.finishTime)
-                    {
-                        maxTime = branchBuild.finishTime;
-                    }
-                }
-                LeadTimeForChangesModel leadTime = new LeadTimeForChangesModel
-                {
-                    PullRequestId = pullRequestId,
-                    Branch = branch,
-                    BuildCount = branchBuilds.Count,
-                    Commits = commits,
-                    StartDateTime = minTime,
-                    EndDateTime = maxTime
-                };
-
-                items.Add(leadTime);
             }
 
             return items;

@@ -28,19 +28,19 @@ namespace DevOpsMetrics.Service.Controllers
             return model;
         }
 
-        [HttpGet("GetGitHubDeployments")]
-        public async Task<List<GitHubActionsRun>> GetGitHubDeployments(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string GHbranch, string workflowId)
-        {
-            BuildsDA da = new BuildsDA();
-            List<GitHubActionsRun> deployments = await da.GetGitHubActionRuns(getSampleData, clientId, clientSecret, owner, repo, GHbranch, workflowId);
-            return deployments;
-        }
+        //[HttpGet("GetGitHubDeployments")]
+        //public async Task<List<GitHubActionsRun>> GetGitHubDeployments(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string GHbranch, string workflowId)
+        //{
+        //    BuildsDA da = new BuildsDA();
+        //    List<GitHubActionsRun> deployments = await da.GetGitHubActionRuns(getSampleData, clientId, clientSecret, owner, repo, GHbranch, workflowId);
+        //    return deployments;
+        //}
 
         [HttpGet("GetGitHubDeploymentFrequency")]
-        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string GHbranch, string workflowId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays)
         {
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, GHbranch, workflowId, numberOfDays);
+            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays);
             return model;
         }
     }

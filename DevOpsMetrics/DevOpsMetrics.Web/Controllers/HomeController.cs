@@ -27,7 +27,7 @@ namespace DevOpsMetrics.Web.Controllers
         {
             int numberOfDeployments = 20;
             int numberOfDays = 7;
-            bool showDemoData = true;
+            bool getSampleData = true;
             ServiceApiClient serviceAPIClient = new ServiceApiClient(_configuration);
             List<LeadTimeForChangesPartialViewModel> items = new List<LeadTimeForChangesPartialViewModel>();
             LeadTimeForChangesPartialViewModel newItem;
@@ -38,7 +38,7 @@ namespace DevOpsMetrics.Web.Controllers
             string project = "SamLearnsAzure";
             string azBranch = "refs/heads/master";
             string buildId = "83"; //"3673"; //SamLearnsAzure.CI
-            List<LeadTimeForChangesModel> azleadTimes1 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(showDemoData, patToken, organization, project, azBranch, buildId);
+            List<LeadTimeForChangesModel> azleadTimes1 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, azBranch, buildId);
             newItem = new LeadTimeForChangesPartialViewModel
             {
                 ProjectName = project,
@@ -51,7 +51,7 @@ namespace DevOpsMetrics.Web.Controllers
             string repo2 = "DevOpsMetrics";
             string ghbranch2 = "AddingWebsite";
             string workflowId2 = "1162561";
-            List<LeadTimeForChangesModel> ghleadTimes2 = await serviceAPIClient.GetGitHubLeadTimeForChanges(showDemoData, owner2, repo2, ghbranch2, workflowId2);
+            List<LeadTimeForChangesModel> ghleadTimes2 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, owner2, repo2, ghbranch2, workflowId2);
             newItem = new LeadTimeForChangesPartialViewModel
             {
                 ProjectName = project,
@@ -66,67 +66,66 @@ namespace DevOpsMetrics.Web.Controllers
         {
             int numberOfDeployments = 20;
             int numberOfDays = 7;
-            bool showDemoData = false;
+            bool getSampleData = true;
             ServiceApiClient serviceApiClient = new ServiceApiClient(_configuration);
             List<DeploymentFrequencyModel> items = new List<DeploymentFrequencyModel>();
-            DeploymentFrequencyModel newItem;
-
+            
             //Azure DevOps 1
             //TODO: Move variables
-            string deploymentName = "SamLearnsAzure.CI";
             string patToken = _configuration["AppSettings:PatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string azBranch = "refs/heads/master";
+            string buildName = "SamLearnsAzure.CI";
             string buildId = "83"; //"3673"; //SamLearnsAzure.CI
-            newItem = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(showDemoData, patToken, organization, project, azBranch, buildId, numberOfDays);
-            //newItem = await DeploymentFrequencyService.CreateAzureDevOpsBuild(showDemoData, deploymentName, patToken, organization, project, azBranch, buildId, numberOfDeployments, numberOfDays, _configuration);
-            if (newItem != null)
+            DeploymentFrequencyModel newItem1 = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, azBranch, buildName, buildId, numberOfDays);
+            if (newItem1 != null)
             {
-                items.Add(newItem);
+                items.Add(newItem1);
             }
 
             //Azure DevOps 2
             //TODO: Move variables
-            string deploymentName2 = "PartsUnlimited.CI";
             string patToken2 = _configuration["AppSettings:PatToken"];
             string organization2 = "samsmithnz";
             string project2 = "PartsUnlimited";
             string azBranch2 = "refs/heads/master";
+            string buildName2 = "PartsUnlimited.CI";
             string buildId2 = "75"; //"3673"; //SamLearnsAzure.CI
-            newItem = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(showDemoData, patToken2, organization2, project2, azBranch2, buildId2, numberOfDays);
-            //newItem = await DeploymentFrequencyService.CreateAzureDevOpsBuild(showDemoData, deploymentName2, patToken2, organization2, project2, azBranch2, buildId2, numberOfDeployments, numberOfDays, _configuration);
-            if (newItem != null)
+            DeploymentFrequencyModel newItem2 = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken2, organization2, project2, azBranch2, buildName2, buildId2, numberOfDays);
+            if (newItem2 != null)
             {
-                items.Add(newItem);
+                items.Add(newItem2);
             }
 
             //GitHub 1
             //TODO: Move variables
-            deploymentName = "SamsFeatureFlags.CI";
+            string clientId = "";
+            string clientSecret = "";
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
             string ghbranch = "master";
+            string workflowName = "SamsFeatureFlags.CI";
             string workflowId = "108084";
-            newItem = await serviceApiClient.GetGitHubDeploymentFrequency(showDemoData, owner, repo, ghbranch, workflowId, numberOfDays);
-            //newItem = await DeploymentFrequencyService.CreateGitHubActionsRun(showDemoData, deploymentName, owner, repo, ghbranch, workflowId, numberOfDeployments, numberOfDays, _configuration);
-            if (newItem != null)
+            DeploymentFrequencyModel newItem3 = await serviceApiClient.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, ghbranch, workflowName, workflowId, numberOfDays);
+            if (newItem3 != null)
             {
-                items.Add(newItem);
+                items.Add(newItem3);
             }
 
             //GitHub 2
             //TODO: Move variables
-            deploymentName = "DevOpsMetrics.CI";
+            string clientId2 = "";
+            string clientSecret2 = "";
             string owner2 = "samsmithnz";
             string repo2 = "DevOpsMetrics";
             string ghbranch2 = "AddingWebsite";
+            string workflowName2 = "DevOpsMetrics.CI";
             string workflowId2 = "1162561";
-            newItem = await serviceApiClient.GetGitHubDeploymentFrequency(showDemoData, owner2, repo2, ghbranch2, workflowId2, numberOfDays);
-            //newItem = await DeploymentFrequencyService.CreateGitHubActionsRun(showDemoData, deploymentName, owner2, repo2, ghbranch2, workflowId2, numberOfDeployments, numberOfDays, _configuration);
-            if (newItem != null)
+            DeploymentFrequencyModel newItem4 = await serviceApiClient.GetGitHubDeploymentFrequency(getSampleData, clientId2, clientSecret2, owner2, repo2, ghbranch2, workflowName2, workflowId2, numberOfDays);
+            if (newItem4 != null)
             {
-                items.Add(newItem);
+                items.Add(newItem4);
             }
 
             return View(items);

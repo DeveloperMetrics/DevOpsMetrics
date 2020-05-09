@@ -8,10 +8,10 @@
 //{
 //    public class LeadTimeForChangesService
 //    {
-//        public static async Task<DeploymentPartialViewModel> CreateAzureDevOpsLeadTimeForChanges(bool showDemoData, string deploymentName, string patToken, string organization, string project, string azBranch, string buildId, int numberOfDeployments, int numberOfDays, IConfiguration configuration)
+//        public static async Task<DeploymentPartialViewModel> CreateAzureDevOpsLeadTimeForChanges(bool getSampleData, string deploymentName, string patToken, string organization, string project, string azBranch, string buildId, int numberOfDeployments, int numberOfDays, IConfiguration configuration)
 //        {
 //            ServiceApiClient service = new ServiceApiClient(configuration);
-//            List<LeadTimeForChangesModel> azList = await service.GetAzureDevOpsLeadTimeForChanges(showDemoData, patToken, organization, project, azBranch, buildId);
+//            List<LeadTimeForChangesModel> azList = await service.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, azBranch, buildId);
 
 //            //DeploymentPartialViewModel item = new DeploymentPartialViewModel
 //            //{
@@ -36,11 +36,11 @@
 //            return azList;
 //        }
 
-//        public static async Task<DeploymentPartialViewModel> CreateGitHubActionsRun(bool showDemoData, string deploymentName, string owner, string repo, string ghbranch, string workflowId, int numberOfDeployments, int numberOfDays, IConfiguration configuration)
+//        public static async Task<DeploymentPartialViewModel> CreateGitHubActionsRun(bool getSampleData, string deploymentName, string owner, string repo, string ghbranch, string workflowId, int numberOfDeployments, int numberOfDays, IConfiguration configuration)
 //        {
 //            ServiceApiClient service = new ServiceApiClient(configuration);
-//            List<GitHubActionsRun> ghList = await service.GetGitHubDeployments(showDemoData, owner, repo, ghbranch, workflowId);
-//            DeploymentFrequencyModel ghDeploymentFrequency = await service.GetGitHubDeploymentFrequency(showDemoData, owner, repo, ghbranch, workflowId, numberOfDays);
+//            List<GitHubActionsRun> ghList = await service.GetGitHubDeployments(getSampleData, owner, repo, ghbranch, workflowId);
+//            DeploymentFrequencyModel ghDeploymentFrequency = await service.GetGitHubDeploymentFrequency(getSampleData, owner, repo, ghbranch, workflowId, numberOfDays);
 
 //            DeploymentPartialViewModel item = new DeploymentPartialViewModel
 //            {
