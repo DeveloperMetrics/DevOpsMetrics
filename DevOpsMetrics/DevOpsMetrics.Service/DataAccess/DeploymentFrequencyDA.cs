@@ -30,7 +30,8 @@ namespace DevOpsMetrics.Service.DataAccess
                     dynamic buildListObject = JsonConvert.DeserializeObject(buildListResponse);
                     Newtonsoft.Json.Linq.JArray value = buildListObject.value;
                     IEnumerable<AzureDevOpsBuild> azureDevOpsBuilds = JsonConvert.DeserializeObject<List<AzureDevOpsBuild>>(value.ToString());
-
+                    azureDevOpsBuilds = ProcessAzureDevOpsBuilds(azureDevOpsBuilds.ToList());
+                    
                     List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
                     foreach (AzureDevOpsBuild item in azureDevOpsBuilds)
                     {
@@ -47,6 +48,7 @@ namespace DevOpsMetrics.Service.DataAccess
                                     BuildNumber = item.buildNumber,
                                     StartTime = item.queueTime,
                                     EndTime = item.finishTime,
+                                    BuildDurationPercent = item.buildDurationPercent,
                                     Status = item.status,
                                     Url = item.url
                                 }
@@ -98,6 +100,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     dynamic buildListObject = JsonConvert.DeserializeObject(runListResponse);
                     Newtonsoft.Json.Linq.JArray workflow_runs = buildListObject.workflow_runs;
                     IEnumerable<GitHubActionsRun> gitHubRuns = JsonConvert.DeserializeObject<List<GitHubActionsRun>>(workflow_runs.ToString());
+                    gitHubRuns = ProcessGitHubRuns(gitHubRuns.ToList());
 
                     List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
                     foreach (GitHubActionsRun item in gitHubRuns)
@@ -114,6 +117,7 @@ namespace DevOpsMetrics.Service.DataAccess
                                     BuildNumber = item.run_number,
                                     StartTime = item.created_at,
                                     EndTime = item.updated_at,
+                                    BuildDurationPercent = item.buildDurationPercent,
                                     Status = item.status,
                                     Url = item.html_url
                                 }
@@ -145,6 +149,42 @@ namespace DevOpsMetrics.Service.DataAccess
                 };
                 return model;
             }
+        }
+
+        private static List<AzureDevOpsBuild> ProcessAzureDevOpsBuilds(List<AzureDevOpsBuild> azList)
+        {
+            float maxBuildDuration = 0f;
+            foreach (AzureDevOpsBuild item in azList)
+            {
+                if (item.buildDuration > maxBuildDuration)
+                {
+                    maxBuildDuration = item.buildDuration;
+                }
+            }
+            foreach (AzureDevOpsBuild item in azList)
+            {
+                float interiumResult = ((item.buildDuration / maxBuildDuration) * 100f);
+                item.buildDurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+            }
+            return azList;
+        }
+
+        private static List<GitHubActionsRun> ProcessGitHubRuns(List<GitHubActionsRun> ghList)
+        {
+            float maxBuildDuration = 0f;
+            foreach (GitHubActionsRun item in ghList)
+            {
+                if (item.buildDuration > maxBuildDuration)
+                {
+                    maxBuildDuration = item.buildDuration;
+                }
+            }
+            foreach (GitHubActionsRun item in ghList)
+            {
+                float interiumResult = ((item.buildDuration / maxBuildDuration) * 100f);
+                item.buildDurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+            }
+            return ghList;
         }
 
         private List<Build> GetSampleAzureDevOpsBuilds()
