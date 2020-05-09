@@ -18,9 +18,9 @@ namespace DevOpsMetrics.Service.Models.AzureDevOps
             get
             {
                 float duration = 0f;
-                if (updated_at != null && created_at != null && updated_at > DateTime.MinValue && created_at > DateTime.MinValue)
+                if (finishTime != null && queueTime != null && finishTime > DateTime.MinValue && queueTime > DateTime.MinValue)
                 {
-                    TimeSpan ts = updated_at - created_at;
+                    TimeSpan ts = finishTime - queueTime;
                     duration = (float)ts.TotalMinutes;
                 }
                 return duration;
@@ -32,9 +32,9 @@ namespace DevOpsMetrics.Service.Models.AzureDevOps
             get
             {
                 string duration = "0:00";
-                if (updated_at != null && created_at != null && updated_at > DateTime.MinValue && created_at > DateTime.MinValue)
+                if (finishTime != null && queueTime != null && finishTime > DateTime.MinValue && queueTime > DateTime.MinValue)
                 {
-                    TimeSpan timespan = updated_at - created_at;
+                    TimeSpan timespan = finishTime - queueTime;
                     duration = $"{(int)timespan.TotalMinutes}:{timespan.Seconds:00}";
                 }
                 return duration;
@@ -45,9 +45,9 @@ namespace DevOpsMetrics.Service.Models.AzureDevOps
             get
             {
                 string duration = "0:00";
-                if (updated_at != null && updated_at > DateTime.MinValue)
+                if (finishTime != null && finishTime > DateTime.MinValue)
                 {
-                    TimeSpan timespan = DateTime.Now - updated_at;
+                    TimeSpan timespan = DateTime.Now - finishTime;
                     if (timespan.TotalMinutes < 60)
                     {
                         duration = ((int)timespan.TotalMinutes).ToString() + " mins ago";
@@ -62,7 +62,7 @@ namespace DevOpsMetrics.Service.Models.AzureDevOps
                     }
                     else
                     {
-                        duration = updated_at.ToString("dd-MMM-yyyy");
+                        duration = finishTime.ToString("dd-MMM-yyyy");
                     }
                 }
                 return duration;
