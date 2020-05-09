@@ -1,5 +1,7 @@
 ﻿using DevOpsMetrics.Service.DataAccess;
 using DevOpsMetrics.Service.Models;
+using DevOpsMetrics.Service.Models.Common;
+using DevOpsMetrics.Service.Models.GitHub;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,46 +13,29 @@ namespace DevOpsMetrics.Tests.GitHub
     [TestClass]
     public class DeploymentFrequencyDATests
     {
-        [TestMethod]
-        public async Task GHDeploymentsDAIntegrationTest()
-        {
-            //Arrange
-            string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
-            string ghbranch = "master";
-            string workflowId = "108084";
-
-            //Act
-            GitHubDeploymentFrequencyDA da = new GitHubDeploymentFrequencyDA();
-            List<GitHubActionsRun> list = await da.GetDeployments(owner, repo, ghbranch, workflowId);
-
-            //Assert
-            Assert.IsTrue(list != null);
-            Assert.IsTrue(list.Count > 0);
-            Assert.IsTrue(list[0].status != null);
-            Assert.IsTrue(list[0].buildDuration >= 0f);
-            Assert.IsTrue(list.Count > 1);
-            Assert.IsTrue(list[0].created_at < list[1].created_at);
-        }
-
+      
         [TestMethod]
         public async Task GHDeploymentFrequencyDAIntegrationTest()
         {
             //Arrange
+            bool getSampleData = true;
+            string clientId = "";
+            string clientSecret = "";
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
             string branch = "master";
+            string workflowName = "samsfeatureflags CI/CD";
             string workflowId = "108084";
             int numberOfDays = 7;
 
             //Act
-            GitHubDeploymentFrequencyDA da = new GitHubDeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetDeploymentFrequency(owner, repo, branch, workflowId, numberOfDays);
+            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
+            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays);
 
             //Assert
-            Assert.IsTrue(model.deploymentsPerDay > 0f);
-            Assert.AreEqual(false, string.IsNullOrEmpty(model.deploymentsPerDayDescription));
-            Assert.AreNotEqual("Unknown", model.deploymentsPerDayDescription);
+            Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
+            Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription));
+            Assert.AreNotEqual("Unknown", model.DeploymentsPerDayMetricDescription);
         }
     }
 }

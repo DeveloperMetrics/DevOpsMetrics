@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DevOpsMetrics.Service.Models.Common;
 
-namespace DevOpsMetrics.Service.Models
+namespace DevOpsMetrics.Service.Models.AzureDevOps
 {
     public class AzureDevOpsPRCommit
     {
         public string commitId { get; set; }
         public Committer committer { get; set; }
     }
-
 
 }

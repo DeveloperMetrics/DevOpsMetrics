@@ -1,0 +1,38 @@
+﻿@using DevOpsMetrics.Service.Models.Common
+@model DeploymentFrequencyModel
+
+@{
+    string widgetImageName = "";
+    string widgetName = "";
+    if (Model.IsAzureDevOps == true)
+    {
+        widgetImageName = "AzureDevops-icon.png";
+        widgetName = "Azure DevOps";
+    }
+    else
+    {
+        widgetImageName = "GitHub-icon.png";
+        widgetName = "GitHub";
+    }
+}
+
+<div class="chartContainer vertical flat">
+    <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.DeploymentName</h4>
+    @foreach (Build item in Model.BuildList)
+    {
+        <a href="@item.Url" target="_blank">
+            <div class="progress-bar">
+                <div class="progress-track" title="Build @item.Id @item.Status @item.TimeSinceBuildCompleted (ran for @item.BuildDurationInMinutesAndSeconds)">
+                    <div class="progress-fill @item.Status">
+                        <span>@item.BuildDurationPercent%</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    }
+</div>
+<br />
+<div class="metricSpan">
+    <b>Deployment frequency:</b> @Model.DeploymentsPerDayMetric.ToString("0.00") per day (last 7 days)<br />
+    <b>Deployment frequency ranking:</b> @Model.DeploymentsPerDayMetricDescription
+</div>

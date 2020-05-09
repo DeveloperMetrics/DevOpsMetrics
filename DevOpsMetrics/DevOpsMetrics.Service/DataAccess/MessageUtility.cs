@@ -7,39 +7,58 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public static class MessageUtility
     {
-        public async static Task<string> SendAzureDevOpsMessage(string patToken, string url)
+        public async static Task<string> SendAzureDevOpsMessage(string url, string patToken)
         {
             string responseBody = "";
-            using (HttpClient client = new HttpClient())
+            if (url.IndexOf("dev.azure.com") == -1)
             {
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", "", patToken))));
-                using (HttpResponseMessage response = await client.GetAsync(url))
-                {
-                    response.EnsureSuccessStatusCode();
-                    responseBody = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(responseBody);
-                }
+                throw new Exception("dev.azure.com missing from URL");
             }
-            return responseBody;
-        }
-
-        public async static Task<string> SendGitHubMessage(string url, string baseURL)
-        {
-            string responseBody = "";
             using (HttpClient client = new HttpClient())
             {
-                client.BaseAddress = new Uri(baseURL);
-                client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("DevOpsMetrics", "0.1"));
-
+                //If we use a pat token, we can access private repos
+                if (string.IsNullOrEmpty(patToken) == false)
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", "", patToken))));
+                }
                 using (HttpResponseMessage response = await client.GetAsync(url))
                 {
                     response.EnsureSuccessStatusCode();
                     if (response.IsSuccessStatusCode)
                     {
                         responseBody = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine(responseBody);
+                    }
+                }
+            }
+            return responseBody;
+        }
+
+        public async static Task<string> SendGitHubMessage(string url, string clientId, string clientSecret)
+        {
+            string responseBody = "";
+            if (url.IndexOf("api.github.com") == -1)
+            {
+                throw new Exception("api.github.com missing from URL");
+            }
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("DevOpsMetrics", "0.1"));
+                //If we use a id/secret, we significantly increase the rate from 60 requests an hour to 5000. https://developer.github.com/v3/#rate-limiting
+                if (string.IsNullOrEmpty(clientId) == false && string.IsNullOrEmpty(clientSecret) == false)
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", clientId, clientSecret))));
+                }
+                using (HttpResponseMessage response = await client.GetAsync(url))
+                {
+                    response.EnsureSuccessStatusCode();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        responseBody = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine(responseBody);
                     }
                 }
             }

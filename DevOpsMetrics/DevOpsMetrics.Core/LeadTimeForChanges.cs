@@ -59,5 +59,31 @@ namespace DevOpsMetrics.Core
         {
             return LeadTimeForChangesList.Where(x => x.Key > DateTime.Now.AddDays(-numberOfDays)).ToList();
         }
+
+        public string GetLeadTimeForChangesRating(float leadTimeForChanges)
+        {
+            float dailyDeployment = 1f;
+            float weeklyDeployment = 1f / 7f;
+            float monthlyDeployment = 1f / 30f;
+
+            string result = "";
+            if (leadTimeForChanges > dailyDeployment) //less than one day
+            {
+                result = "Elite";
+            }
+            else if (leadTimeForChanges <= dailyDeployment && leadTimeForChanges >= weeklyDeployment) //between one day and one week
+            {
+                result = "High";
+            }
+            else if (leadTimeForChanges < weeklyDeployment && leadTimeForChanges >= monthlyDeployment) //between one week and one month
+            {
+                result = "Medium";
+            }
+            else if (leadTimeForChanges < monthlyDeployment) //more than one month
+            {
+                result = "Low";
+            }
+            return result;
+        }
     }
 }

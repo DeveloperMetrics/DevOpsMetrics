@@ -1,5 +1,6 @@
 ﻿using DevOpsMetrics.Service.DataAccess;
 using DevOpsMetrics.Service.Models;
+using DevOpsMetrics.Service.Models.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,27 +12,30 @@ namespace DevOpsMetrics.Tests.GitHub
     [TestClass]
     public class LeadTimeForChangesDATests
     {
-        [TestMethod]
-        public async Task GHLeadTimeForChangesDAIntegrationTest()
-        {
-            //Arrange
-            string owner = "samsmithnz";
-            string repo = "devopsmetrics";
-            string masterBranch = "master";
-            string workflowId = "1162561";
+        //[TestMethod]
+        //public async Task GHLeadTimeForChangesDAIntegrationTest()
+        //{
+        //    //Arrange
+        //    bool getSampleData = true;
+        //    string clientId = "";
+        //    string clientSecret = "";
+        //    string owner = "samsmithnz";
+        //    string repo = "devopsmetrics";
+        //    string masterBranch = "master";
+        //    string workflowId = "1162561";
 
-            //Act
-            GitHubLeadTimeForChangesDA da = new GitHubLeadTimeForChangesDA();
-            List<LeadTimeForChangesModel> list = await da.GetLeadTimesForChanges(owner, repo, masterBranch, workflowId);
+        //    //Act
+        //    LeadTimeForChangesDA da = new LeadTimeForChangesDA();
+        //    List<LeadTimeForChangesModel> list = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, owner, repo, masterBranch, workflowId);
 
-            //Assert
-            Assert.IsTrue(list != null);
-            Assert.IsTrue(list.Count > 0);
-            Assert.IsTrue(list[0].branch != null);
-            Assert.IsTrue(list[0].duration.TotalSeconds > 0);
-            Assert.IsTrue(list[0].BuildCount > 0);
-            Assert.IsTrue(list[0].Commits.Count > 0);
-        }
+        //    //Assert
+        //    Assert.IsTrue(list != null);
+        //    Assert.IsTrue(list.Count > 0);
+        //    Assert.IsTrue(list[0].Branch != null);
+        //    Assert.IsTrue(list[0].Duration.TotalSeconds > 0);
+        //    Assert.IsTrue(list[0].BuildCount > 0);
+        //    Assert.IsTrue(list[0].Commits.Count > 0);
+        //}
 
     }
 }

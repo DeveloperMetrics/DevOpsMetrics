@@ -1,0 +1,31 @@
+﻿@using DevOpsMetrics.Service.Models.Common
+@model List<DeploymentFrequencyModel>
+@{
+    ViewData["Title"] = "Deployment frequency";
+}
+<h2>Deployment frequency</h2>
+@* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
+
+<div class="row">
+    @foreach (DeploymentFrequencyModel item in Model)
+    {
+        <div class="col-md-6">
+            @if (item.IsAzureDevOps == true)
+            {
+                @await Html.PartialAsync("_Deployments", item)
+            }
+            else if (item.IsAzureDevOps == false)
+            {
+                @await Html.PartialAsync("_Deployments", item)
+            }
+        </div>
+    }
+</div>
+@*<div class="row">
+        <div class="col-md-12">
+            What am I looking at?
+            Deployment Frequency is a high performing DevOps metric. This page helps us to measure it across various projects in both Azure DevOps and GitHub
+            - How does it work? We look at the number of successful pipeline runs
+            - Assumptions/things we can't currently measure: The build is multi-stage - and leads to a deployment in a production environment. We only look at the master branch, ignoring feature branches (as these probably aren't deploying to production')
+        </div>
+    </div>*@

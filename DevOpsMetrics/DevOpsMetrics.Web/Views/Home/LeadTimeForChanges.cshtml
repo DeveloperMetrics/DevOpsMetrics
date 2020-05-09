@@ -1,0 +1,21 @@
+﻿@*@model DeploymentViewModel;
+@{
+    ViewData["Title"] = "Lead time for changes";
+}
+
+<h2>Lead time for changes</h2>
+<div class="row">
+    @foreach (DeploymentPartialViewModel item in Model.Items)
+    {
+        <div class="col-md-6">
+            @if (item.AzureDevOpsDeploymentFrequency != null)
+            {
+                @await Html.PartialAsync("_AzureDevOpsDeployments", item)
+            }
+            else if (item.GitHubDeploymentFrequency != null)
+            {
+                @await Html.PartialAsync("_GitHubDeployments", item)
+            }
+        </div>
+    }
+</div>*@

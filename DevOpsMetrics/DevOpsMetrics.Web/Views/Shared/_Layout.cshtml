@@ -22,6 +22,12 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="DeploymentFrequency">Deployment frequency</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LeadTimeForChanges">Lead time for changes</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
@@ -37,7 +43,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @DateTime.Now.Year.ToString() - DevOpsMetrics.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; @DateTime.Now.Year.ToString() - DevOpsMetrics.Web - <a href="https://github.com/samsmithnz/DevOpsMetrics">GitHub/source code</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

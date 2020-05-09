@@ -1,5 +1,7 @@
 ﻿using DevOpsMetrics.Service.Controllers;
 using DevOpsMetrics.Service.Models;
+using DevOpsMetrics.Service.Models.Common;
+using DevOpsMetrics.Service.Models.GitHub;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -38,63 +40,73 @@ namespace DevOpsMetrics.Tests.GitHub
             Client.BaseAddress = new Uri(Configuration["AppSettings:WebServiceURL"]);
         }
 
-        [TestMethod]
-        public async Task GHDeploymentsControllerDirectIntegrationTest()
-        {
-            //Arrange
-            string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
-            string branch = "master";
-            string workflowId = "108084";
-            DeploymentFrequencyController controller = new DeploymentFrequencyController();
-
-            //Act
-            List<GitHubActionsRun> list = await controller.GetGHDeployments(owner, repo, branch, workflowId);
-
-            //Assert
-            Assert.IsTrue(list != null);
-            Assert.IsTrue(list.Count > 0);
-            Assert.IsTrue(list[0].status != null);
-        }
-
-        [TestMethod]
-        public async Task GHDeploymentsControllerAPIIntegrationTest()
-        {
-            //Arrange
-            string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
-            string branch = "master";
-            string workflowId = "108084";
-
-            //Act
-            string url = $"/api/DeploymentFrequency/GetGHDeployments?owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}";
-            TestResponse<List<GitHubActionsRun>> httpResponse = new TestResponse<List<GitHubActionsRun>>();
-            List<GitHubActionsRun> list = await httpResponse.GetResponse(Client, url);
-
-            //Assert
-            Assert.IsTrue(list != null);
-            Assert.IsTrue(list.Count > 0);
-            Assert.IsTrue(list[0].status != null);
-        }
-
+        [TestCategory("ControllerTest")]
         [TestMethod]
         public async Task GHDeploymentFrequencyControllerIntegrationTest()
         {
             //Arrange
+            bool getSampleData = true;
+            string clientId = "";
+            string clientSecret = "";
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
             string branch = "master";
+            string workflowName = "samsfeatureflags CI/CD";
             string workflowId = "108084";
             int numberOfDays = 7;
             DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetGHDeploymentFrequency(owner, repo, branch, workflowId, numberOfDays);
+            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays);
 
             //Assert
-            Assert.IsTrue(model.deploymentsPerDay > 0f);
-            Assert.AreEqual(false, string.IsNullOrEmpty(model.deploymentsPerDayDescription));
-            Assert.AreNotEqual("Unknown", model.deploymentsPerDayDescription);
+            Assert.AreEqual(false, model.IsAzureDevOps);
+            Assert.AreEqual(workflowName, model.DeploymentName);
+            Assert.AreEqual(10f, model.DeploymentsPerDayMetric);
+            Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual(10, model.BuildList.Count);
+            Assert.AreEqual(70, model.BuildList[0].BuildDurationPercent);
+            Assert.AreEqual("1", model.BuildList[0].BuildNumber);
+            Assert.AreEqual("master", model.BuildList[0].Branch);
+            Assert.AreEqual("completed", model.BuildList[0].Status);
+            Assert.AreEqual("https://GitHub.com/samsmithnz/devopsmetrics/1", model.BuildList[0].Url);
+            Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
+            Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
+        }
+
+        [TestCategory("APITest")]
+        [TestMethod]
+        public async Task GHDeploymentsControllerAPIIntegrationTest()
+        {
+            //Arrange
+            bool getSampleData = true;
+            string clientId = "";
+            string clientSecret = "";
+            string owner = "samsmithnz";
+            string repo = "samsfeatureflags";
+            string branch = "master";
+            string workflowName = "samsfeatureflags CI/CD";
+            string workflowId = "108084";
+            int numberOfDays = 7;
+
+            //Act
+            string url = $"/api/DeploymentFrequency/GetGitHubDeploymentFrequency?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&numberOfDays={numberOfDays}";
+            TestResponse<DeploymentFrequencyModel> httpResponse = new TestResponse<DeploymentFrequencyModel>();
+            DeploymentFrequencyModel model = await httpResponse.GetResponse(Client, url);
+
+            //Assert
+            Assert.AreEqual(false, model.IsAzureDevOps);
+            Assert.AreEqual(workflowName, model.DeploymentName);
+            Assert.AreEqual(10f, model.DeploymentsPerDayMetric);
+            Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual(10, model.BuildList.Count);
+            Assert.AreEqual(70, model.BuildList[0].BuildDurationPercent);
+            Assert.AreEqual("1", model.BuildList[0].BuildNumber);
+            Assert.AreEqual("master", model.BuildList[0].Branch);
+            Assert.AreEqual("completed", model.BuildList[0].Status);
+            Assert.AreEqual("https://GitHub.com/samsmithnz/devopsmetrics/1", model.BuildList[0].Url);
+            Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
+            Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
         }
 
     }
