@@ -26,28 +26,6 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             Configuration = config.Build();
         }
 
-        //[TestMethod]
-        //public async Task AzDeploymentsDAIntegrationTest()
-        //{
-        //    //Arrange
-        //    string patToken = Configuration["AppSettings:PatToken"];
-        //    string organization = "samsmithnz";
-        //    string project = "SamLearnsAzure";
-        //    string branch = "refs/heads/master";
-        //    string buildId = "3673"; //SamLearnsAzure.CI
-
-        //    //Act
-        //    BuildsDA da = new BuildsDA();
-        //    List<AzureDevOpsBuild> list = await da.GetAzureDevOpsBuilds(patToken, organization, project, branch, buildId);
-
-        //    //Assert
-        //    Assert.IsTrue(list != null);
-        //    Assert.IsTrue(list.Count > 0);
-        //    Assert.IsTrue(list[0].status != null);
-        //    Assert.IsTrue(list[0].buildDuration >= 0f);
-        //    Assert.IsTrue(list[0].queueTime < list[1].queueTime);
-        //}
-
         [TestMethod]
         public async Task AzDeploymentFrequencyDAIntegrationTest()
         {

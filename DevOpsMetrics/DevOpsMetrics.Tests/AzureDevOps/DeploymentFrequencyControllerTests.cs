@@ -40,49 +40,6 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             Client.BaseAddress = new Uri(Configuration["AppSettings:WebServiceURL"]);
         }
 
-        //[TestMethod]
-        //public async Task AzDeploymentsControllerDirectIntegrationTest()
-        //{
-        //    //Arrange
-        //    string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-        //    string organization = "samsmithnz";
-        //    string project = "SamLearnsAzure";
-        //    string branch = "refs/heads/master";
-        //    string buildId = "3673"; //SamLearnsAzure.CI
-        //    DeploymentFrequencyController controller = new DeploymentFrequencyController();
-
-        //    //Act
-        //    List<AzureDevOpsBuild> list = await controller.GetAzureDevOpsDeployments(patToken, organization, project, branch, buildId);
-
-        //    //Assert
-        //    Assert.IsTrue(list != null);
-        //    Assert.IsTrue(list.Count > 0);
-        //    Assert.IsTrue(list[0].status != null);
-        //}
-
-        //[TestCategory("APITest")]
-        //[TestMethod]
-        //public async Task AzDeploymentsControllerAPIIntegrationTest()
-        //{
-        //    //Arrange
-        //    bool getSampleData = false;
-        //    string patToken = Configuration["AppSettings:PatToken"];
-        //    string organization = "samsmithnz";
-        //    string project = "SamLearnsAzure";
-        //    string branch = "refs/heads/master";
-        //    string buildId = "3673"; //SamLearnsAzure.CI
-
-        //    //Act
-        //    string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeployments?getSampleData={getSampleData}&patToken ={patToken}&organization={organization}&project={project}&branch={branch}&buildId={buildId}";
-        //    TestResponse<List<AzureDevOpsBuild>> httpResponse = new TestResponse<List<AzureDevOpsBuild>>();
-        //    List<AzureDevOpsBuild> list = await httpResponse.GetResponse(Client, url);
-
-        //    //Assert
-        //    Assert.IsTrue(list != null);
-        //    Assert.IsTrue(list.Count > 0);
-        //    Assert.IsTrue(list[0].status != null);
-        //}
-
         [TestCategory("ControllerTest")]
         [TestMethod]
         public async Task AzDeploymentFrequencyControllerIntegrationTest()
@@ -102,9 +59,52 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays);
 
             //Assert
-            Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
-            Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription));
-            Assert.AreNotEqual("Unknown", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual(true, model.IsAzureDevOps);
+            Assert.AreEqual(buildName, model.DeploymentName);
+            Assert.AreEqual(10f, model.DeploymentsPerDayMetric);
+            Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual(10, model.BuildList.Count);
+            Assert.AreEqual(70, model.BuildList[0].BuildDurationPercent);
+            Assert.AreEqual("1", model.BuildList[0].BuildNumber);
+            Assert.AreEqual("master", model.BuildList[0].Branch);
+            Assert.AreEqual("completed", model.BuildList[0].Status);
+            Assert.AreEqual("https://dev.azure.com/samsmithnz/samlearnsazure/1", model.BuildList[0].Url);
+            Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
+            Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
+        }
+
+        [TestCategory("APITest")]
+        [TestMethod]
+        public async Task AzDeploymentsControllerAPIIntegrationTest()
+        {
+            //Arrange
+            bool getSampleData = true;
+            string patToken = Configuration["AppSettings:PatToken"];
+            string organization = "samsmithnz";
+            string project = "SamLearnsAzure";
+            string branch = "refs/heads/master";
+            string buildName = "SamLearnsAzure.CI";
+            string buildId = "3673"; //SamLearnsAzure.CI
+            int numberOfDays = 7;
+
+            //Act
+            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}";
+            TestResponse<DeploymentFrequencyModel> httpResponse = new TestResponse<DeploymentFrequencyModel>();
+            DeploymentFrequencyModel model = await httpResponse.GetResponse(Client, url);
+
+            //Assert
+            Assert.AreEqual(true, model.IsAzureDevOps);
+            Assert.AreEqual(buildName, model.DeploymentName);
+            Assert.AreEqual(10f, model.DeploymentsPerDayMetric);
+            Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual(10, model.BuildList.Count);
+            Assert.AreEqual(70, model.BuildList[0].BuildDurationPercent);
+            Assert.AreEqual("1", model.BuildList[0].BuildNumber);
+            Assert.AreEqual("master", model.BuildList[0].Branch);
+            Assert.AreEqual("completed", model.BuildList[0].Status);
+            Assert.AreEqual("https://dev.azure.com/samsmithnz/samlearnsazure/1", model.BuildList[0].Url);
+            Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
+            Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
         }
 
     }
