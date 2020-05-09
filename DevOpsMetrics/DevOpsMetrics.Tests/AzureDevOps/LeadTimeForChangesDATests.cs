@@ -29,6 +29,7 @@ namespace DevOpsMetrics.Tests.AzureDevOps
         public async Task AzLeadTimeForChangesDAIntegrationTest()
         {
             //Arrange
+            bool getSampleData = true;
             string patToken = Configuration["AppSettings:PatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
@@ -38,7 +39,7 @@ namespace DevOpsMetrics.Tests.AzureDevOps
 
             //Act
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-            List<LeadTimeForChangesModel> list = await da.GetAzureDevOpsLeadTimesForChanges(patToken, organization, project, repositoryId, masterBranch, buildId);
+            List<LeadTimeForChangesModel> list = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, organization, project, repositoryId, masterBranch, buildId);
 
             //Assert
             Assert.IsTrue(list != null);

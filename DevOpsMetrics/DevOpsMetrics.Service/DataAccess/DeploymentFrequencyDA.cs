@@ -12,7 +12,7 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class DeploymentFrequencyDA
     {
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays)
         {
             float deploymentsPerDay = 0;
             DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
@@ -57,6 +57,7 @@ namespace DevOpsMetrics.Service.DataAccess
 
             DeploymentFrequencyModel model = new DeploymentFrequencyModel
             {
+                IsAzureDevOps = true,
                 DeploymentName = buildName,
                 BuildList = builds,
                 DeploymentsPerDayMetric = deploymentsPerDay,
@@ -65,7 +66,7 @@ namespace DevOpsMetrics.Service.DataAccess
             return model;
         }
 
-        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(string clientId, string clientSecret, string owner, string repo, string branch, string workflowId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowId, int numberOfDays)
         {
             //Lists the workflows in a repository. 
             //GET /repos/:owner/:repo/actions/workflows
@@ -97,6 +98,9 @@ namespace DevOpsMetrics.Service.DataAccess
             }
             DeploymentFrequencyModel model = new DeploymentFrequencyModel
             {
+                IsAzureDevOps = false,
+                //DeploymentName = buildName,
+                //BuildList = builds,
                 DeploymentsPerDayMetric = deploymentsPerDay,
                 DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
             };

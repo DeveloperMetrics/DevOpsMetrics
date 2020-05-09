@@ -36,7 +36,7 @@ namespace DevOpsMetrics.Service.DataAccess
             return builds;
         }
 
-        public async Task<List<GitHubActionsRun>> GetGitHubActionRuns(string clientId, string clientSecret, string owner, string repo, string branch, string workflowId)
+        public async Task<List<GitHubActionsRun>> GetGitHubActionRuns(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowId)
         {
             List<GitHubActionsRun> runs = new List<GitHubActionsRun>();
             string url = $"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflowId}/runs";

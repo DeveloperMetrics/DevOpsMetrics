@@ -1,15 +1,15 @@
-﻿@using DevOpsMetrics.Service.Models.AzureDevOps
-@model DeploymentPartialViewModel
+﻿@using DevOpsMetrics.Service.Models.Common
+@model DeploymentFrequencyModel
 
 <div class="chartContainer vertical flat">
     <h4><img src="~/images/AzureDevops-icon.png" style="width:32px;" />&nbsp; Azure DevOps - @Model.DeploymentName</h4>
-    @foreach (AzureDevOpsBuild item in Model.AzureDevOpsList)
+    @foreach (Build item in Model.BuildList)
     {
-        <a href="@item.url" target="_blank">
+        <a href="@item.Url" target="_blank">
             <div class="progress-bar">
-                <div class="progress-track" title="Build @item.id @item.status @item.timeSinceBuildCompleted (ran for @item.buildDurationInMinutesAndSeconds)">
-                    <div class="progress-fill @item.status">
-                        <span>@item.buildDurationPercent%</span>
+                <div class="progress-track" title="Build @item.Id @item.Status @item.TimeSinceBuildCompleted (ran for @item.BuildDurationInMinutesAndSeconds)">
+                    <div class="progress-fill @item.Status">
+                        <span>@item.BuildDurationPercent%</span>
                     </div>
                 </div>
             </div>
@@ -18,6 +18,6 @@
 </div>
 <br />
 <div class="metricSpan">
-    <b>Deployment frequency:</b> @Model.AzureDevOpsDeploymentFrequency.DeploymentsPerDayMetric.ToString("0.00") per day (last 7 days)<br />
-    <b>Deployment frequency ranking:</b> @Model.AzureDevOpsDeploymentFrequency.DeploymentsPerDayMetricDescription
+    <b>Deployment frequency:</b> @Model.DeploymentsPerDayMetric.ToString("0.00") per day (last 7 days)<br />
+    <b>Deployment frequency ranking:</b> @Model.DeploymentsPerDayMetricDescription
 </div>

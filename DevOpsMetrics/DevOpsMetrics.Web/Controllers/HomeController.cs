@@ -67,8 +67,9 @@ namespace DevOpsMetrics.Web.Controllers
             int numberOfDeployments = 20;
             int numberOfDays = 7;
             bool showDemoData = false;
-            List<DeploymentPartialViewModel> items = new List<DeploymentPartialViewModel>();
-            DeploymentPartialViewModel newItem;
+            ServiceApiClient serviceApiClient = new ServiceApiClient(_configuration);
+            List<DeploymentFrequencyModel> items = new List<DeploymentFrequencyModel>();
+            DeploymentFrequencyModel newItem;
 
             //Azure DevOps 1
             //TODO: Move variables
@@ -78,7 +79,8 @@ namespace DevOpsMetrics.Web.Controllers
             string project = "SamLearnsAzure";
             string azBranch = "refs/heads/master";
             string buildId = "83"; //"3673"; //SamLearnsAzure.CI
-            newItem = await DeploymentFrequencyService.CreateAzureDevOpsBuild(showDemoData, deploymentName, patToken, organization, project, azBranch, buildId, numberOfDeployments, numberOfDays, _configuration);
+            newItem = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(showDemoData, patToken, organization, project, azBranch, buildId, numberOfDays);
+            //newItem = await DeploymentFrequencyService.CreateAzureDevOpsBuild(showDemoData, deploymentName, patToken, organization, project, azBranch, buildId, numberOfDeployments, numberOfDays, _configuration);
             if (newItem != null)
             {
                 items.Add(newItem);
@@ -92,7 +94,8 @@ namespace DevOpsMetrics.Web.Controllers
             string project2 = "PartsUnlimited";
             string azBranch2 = "refs/heads/master";
             string buildId2 = "75"; //"3673"; //SamLearnsAzure.CI
-            newItem = await DeploymentFrequencyService.CreateAzureDevOpsBuild(showDemoData, deploymentName2, patToken2, organization2, project2, azBranch2, buildId2, numberOfDeployments, numberOfDays, _configuration);
+            newItem = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(showDemoData, patToken2, organization2, project2, azBranch2, buildId2, numberOfDays);
+            //newItem = await DeploymentFrequencyService.CreateAzureDevOpsBuild(showDemoData, deploymentName2, patToken2, organization2, project2, azBranch2, buildId2, numberOfDeployments, numberOfDays, _configuration);
             if (newItem != null)
             {
                 items.Add(newItem);
@@ -105,7 +108,8 @@ namespace DevOpsMetrics.Web.Controllers
             string repo = "samsfeatureflags";
             string ghbranch = "master";
             string workflowId = "108084";
-            newItem = await DeploymentFrequencyService.CreateGitHubActionsRun(showDemoData, deploymentName, owner, repo, ghbranch, workflowId, numberOfDeployments, numberOfDays, _configuration);
+            newItem = await serviceApiClient.GetGitHubDeploymentFrequency(showDemoData, owner, repo, ghbranch, workflowId, numberOfDays);
+            //newItem = await DeploymentFrequencyService.CreateGitHubActionsRun(showDemoData, deploymentName, owner, repo, ghbranch, workflowId, numberOfDeployments, numberOfDays, _configuration);
             if (newItem != null)
             {
                 items.Add(newItem);
@@ -118,17 +122,14 @@ namespace DevOpsMetrics.Web.Controllers
             string repo2 = "DevOpsMetrics";
             string ghbranch2 = "AddingWebsite";
             string workflowId2 = "1162561";
-            newItem = await DeploymentFrequencyService.CreateGitHubActionsRun(showDemoData, deploymentName, owner2, repo2, ghbranch2, workflowId2, numberOfDeployments, numberOfDays, _configuration);
+            newItem = await serviceApiClient.GetGitHubDeploymentFrequency(showDemoData, owner2, repo2, ghbranch2, workflowId2, numberOfDays);
+            //newItem = await DeploymentFrequencyService.CreateGitHubActionsRun(showDemoData, deploymentName, owner2, repo2, ghbranch2, workflowId2, numberOfDeployments, numberOfDays, _configuration);
             if (newItem != null)
             {
                 items.Add(newItem);
             }
 
-            DeploymentViewModel indexModel = new DeploymentViewModel
-            {
-                Items = items
-            };
-            return View(indexModel);
+            return View(items);
         }
 
 

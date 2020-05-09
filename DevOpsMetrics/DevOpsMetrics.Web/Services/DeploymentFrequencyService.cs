@@ -11,34 +11,34 @@ namespace DevOpsMetrics.Web.Services
 {
     public class DeploymentFrequencyService
     {
-        public static async Task<DeploymentPartialViewModel> CreateAzureDevOpsBuild(bool showDemoData, string deploymentName, string patToken, string organization, string project, string azBranch, string buildId, int numberOfDeployments, int numberOfDays, IConfiguration configuration)
-        {
-            ServiceApiClient service = new ServiceApiClient(configuration);
-            List<AzureDevOpsBuild> azList = await service.GetAzureDevOpsDeployments(showDemoData, patToken, organization, project, azBranch, buildId);
-            DeploymentFrequencyModel azDeploymentFrequency = await service.GetAzureDevOpsDeploymentFrequency(showDemoData, patToken, organization, project, azBranch, buildId, numberOfDays);
+        //public static async Task<DeploymentPartialViewModel> CreateAzureDevOpsBuild(bool showDemoData, string deploymentName, string patToken, string organization, string project, string azBranch, string buildId, int numberOfDeployments, int numberOfDays, IConfiguration configuration)
+        //{
+        //    ServiceApiClient service = new ServiceApiClient(configuration);
+        //    List<AzureDevOpsBuild> azList = await service.GetAzureDevOpsDeployments(showDemoData, patToken, organization, project, azBranch, buildId);
+        //    DeploymentFrequencyModel azDeploymentFrequency = await service.GetAzureDevOpsDeploymentFrequency(showDemoData, patToken, organization, project, azBranch, buildId, numberOfDays);
 
-            DeploymentPartialViewModel item = new DeploymentPartialViewModel
-            {
-                DeploymentName = deploymentName,
-                AzureDevOpsList = azList,
-                AzureDevOpsDeploymentFrequency = azDeploymentFrequency
-            };
+        //    DeploymentPartialViewModel item = new DeploymentPartialViewModel
+        //    {
+        //        DeploymentName = deploymentName,
+        //        AzureDevOpsList = azList,
+        //        AzureDevOpsDeploymentFrequency = azDeploymentFrequency
+        //    };
 
-            //Limit Azure DevOps to latest results
-            if (azList.Count >= numberOfDeployments)
-            {
-                item.AzureDevOpsList = new List<AzureDevOpsBuild>();
-                //Only show the last n builds
-                for (int i = azList.Count - numberOfDeployments; i < azList.Count; i++)
-                {
-                    item.AzureDevOpsList.Add(azList[i]);
-                }
-            }
-            item.AzureDevOpsDeploymentFrequency = azDeploymentFrequency;
-            item.AzureDevOpsList = DeploymentFrequencyService.ProcessAzureDevOpsBuilds(item.AzureDevOpsList);
+        //    //Limit Azure DevOps to latest results
+        //    if (azList.Count >= numberOfDeployments)
+        //    {
+        //        item.AzureDevOpsList = new List<AzureDevOpsBuild>();
+        //        //Only show the last n builds
+        //        for (int i = azList.Count - numberOfDeployments; i < azList.Count; i++)
+        //        {
+        //            item.AzureDevOpsList.Add(azList[i]);
+        //        }
+        //    }
+        //    item.AzureDevOpsDeploymentFrequency = azDeploymentFrequency;
+        //    item.AzureDevOpsList = DeploymentFrequencyService.ProcessAzureDevOpsBuilds(item.AzureDevOpsList);
 
-            return item;
-        }
+        //    return item;
+        //}
 
         public static async Task<DeploymentPartialViewModel> CreateGitHubActionsRun(bool showDemoData, string deploymentName, string owner, string repo, string ghbranch, string workflowId, int numberOfDeployments, int numberOfDays, IConfiguration configuration)
         {
@@ -69,23 +69,23 @@ namespace DevOpsMetrics.Web.Services
             return item;
         }
 
-        public static List<AzureDevOpsBuild> ProcessAzureDevOpsBuilds(List<AzureDevOpsBuild> azList)
-        {
-            float maxBuildDuration = 0f;
-            foreach (AzureDevOpsBuild item in azList)
-            {
-                if (item.buildDuration > maxBuildDuration)
-                {
-                    maxBuildDuration = item.buildDuration;
-                }
-            }
-            foreach (AzureDevOpsBuild item in azList)
-            {
-                float interiumResult = ((item.buildDuration / maxBuildDuration) * 100f);
-                item.buildDurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
-            }
-            return azList;
-        }
+        //public static List<AzureDevOpsBuild> ProcessAzureDevOpsBuilds(List<AzureDevOpsBuild> azList)
+        //{
+        //    float maxBuildDuration = 0f;
+        //    foreach (AzureDevOpsBuild item in azList)
+        //    {
+        //        if (item.buildDuration > maxBuildDuration)
+        //        {
+        //            maxBuildDuration = item.buildDuration;
+        //        }
+        //    }
+        //    foreach (AzureDevOpsBuild item in azList)
+        //    {
+        //        float interiumResult = ((item.buildDuration / maxBuildDuration) * 100f);
+        //        item.buildDurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+        //    }
+        //    return azList;
+        //}
 
         public static List<GitHubActionsRun> ProcessGitHubRuns(List<GitHubActionsRun> ghList)
         {

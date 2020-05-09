@@ -1,4 +1,5 @@
-﻿@model DeploymentViewModel
+﻿@using DevOpsMetrics.Service.Models.Common
+@model List<DeploymentFrequencyModel>
 @{
     ViewData["Title"] = "Deployment frequency";
 }
@@ -6,14 +7,14 @@
 @* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
 
 <div class="row">
-    @foreach (DeploymentPartialViewModel item in Model.Items)
+    @foreach (DeploymentFrequencyModel item in Model)
     {
         <div class="col-md-6">
-            @if (item.AzureDevOpsDeploymentFrequency != null)
+            @if (item.IsAzureDevOps ==true)
             {
                 @await Html.PartialAsync("_AzureDevOpsDeployments", item)
             }
-            else if (item.GitHubDeploymentFrequency != null)
+            else if (item.IsAzureDevOps == false)
             {
                 @await Html.PartialAsync("_GitHubDeployments", item)
             }

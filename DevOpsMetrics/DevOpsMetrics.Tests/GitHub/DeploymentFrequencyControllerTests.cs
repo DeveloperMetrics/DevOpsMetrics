@@ -40,10 +40,12 @@ namespace DevOpsMetrics.Tests.GitHub
             Client.BaseAddress = new Uri(Configuration["AppSettings:WebServiceURL"]);
         }
 
+        [TestCategory("ControllerTest")]
         [TestMethod]
-        public async Task GHDeploymentsControllerDirectIntegrationTest()
+        public async Task GHDeploymentsControllerIntegrationTest()
         {
             //Arrange
+            bool getSampleData = true;
             string clientId = "";
             string clientSecret = "";
             string owner = "samsmithnz";
@@ -53,7 +55,7 @@ namespace DevOpsMetrics.Tests.GitHub
             DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            List<GitHubActionsRun> list = await controller.GetGitHubDeployments(clientId, clientSecret, owner, repo, branch, workflowId);
+            List<GitHubActionsRun> list = await controller.GetGitHubDeployments(getSampleData, clientId, clientSecret, owner, repo, branch, workflowId);
 
             //Assert
             Assert.IsTrue(list != null);
@@ -61,10 +63,12 @@ namespace DevOpsMetrics.Tests.GitHub
             Assert.IsTrue(list[0].status != null);
         }
 
+        [TestCategory("ControllerTest")]
         [TestMethod]
         public async Task GHDeploymentFrequencyControllerIntegrationTest()
         {
             //Arrange
+            bool getSampleData = true;
             string clientId = "";
             string clientSecret = "";
             string owner = "samsmithnz";
@@ -75,7 +79,7 @@ namespace DevOpsMetrics.Tests.GitHub
             DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(clientId, clientSecret, owner, repo, branch, workflowId, numberOfDays);
+            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowId, numberOfDays);
 
             //Assert
             Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
@@ -83,10 +87,12 @@ namespace DevOpsMetrics.Tests.GitHub
             Assert.AreNotEqual("Unknown", model.DeploymentsPerDayMetricDescription);
         }
 
+        [TestCategory("APITest")]
         [TestMethod]
         public async Task GHDeploymentsControllerAPIIntegrationTest()
         {
             //Arrange
+            bool getSampleData = false;
             string clientId = "";
             string clientSecret = "";
             string owner = "samsmithnz";
@@ -95,7 +101,7 @@ namespace DevOpsMetrics.Tests.GitHub
             string workflowId = "108084";
 
             //Act
-            string url = $"/api/DeploymentFrequency/GetGitHubDeployments?clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}";
+            string url = $"/api/DeploymentFrequency/GetGitHubDeployments?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&GHbranch={branch}&workflowId={workflowId}";
             TestResponse<List<GitHubActionsRun>> httpResponse = new TestResponse<List<GitHubActionsRun>>();
             List<GitHubActionsRun> list = await httpResponse.GetResponse(Client, url);
 

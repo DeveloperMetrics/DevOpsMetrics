@@ -39,10 +39,12 @@ namespace DevOpsMetrics.Tests.GitHub
             Client.BaseAddress = new Uri(Configuration["AppSettings:WebServiceURL"]);
         }
 
+        [TestCategory("ControllerTest")]
         [TestMethod]
-        public async Task GHLeadTimeControllerDirectIntegrationTest()
+        public async Task GHLeadTimeControllerIntegrationTest()
         {
             //Arrange
+            bool getSampleData = true;
             string clientId = "";
             string clientSecret = "";
             string owner = "samsmithnz";
@@ -52,7 +54,7 @@ namespace DevOpsMetrics.Tests.GitHub
             LeadTimeForChangesController controller = new LeadTimeForChangesController();
 
             //Act
-            List<LeadTimeForChangesModel> list = await controller.GetGitHubLeadTimeForChanges(clientId, clientSecret, owner, repo, branch, workflowId);
+            List<LeadTimeForChangesModel> list = await controller.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret, owner, repo, branch, workflowId);
 
             //Assert
             Assert.IsTrue(list != null);
@@ -60,10 +62,12 @@ namespace DevOpsMetrics.Tests.GitHub
             Assert.IsTrue(list[0].Branch != null);
         }
 
+        [TestCategory("APITest")]
         [TestMethod]
         public async Task GHLeadTimeControllerAPIIntegrationTest()
         {
             //Arrange
+            bool getSampleData = false;
             string clientId = "";
             string clientSecret = "";
             string owner = "samsmithnz";
@@ -72,7 +76,7 @@ namespace DevOpsMetrics.Tests.GitHub
             string workflowId = "1162561";
 
             //Act
-            string url = $"/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowId={workflowId}";
+            string url = $"/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowId={workflowId}";
             TestResponse<List<LeadTimeForChangesModel>> httpResponse = new TestResponse<List<LeadTimeForChangesModel>>();
             List<LeadTimeForChangesModel> list = await httpResponse.GetResponse(Client, url);
 

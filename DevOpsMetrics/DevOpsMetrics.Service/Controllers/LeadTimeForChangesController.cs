@@ -12,10 +12,10 @@ namespace DevOpsMetrics.Service.Controllers
     {
 
         [HttpGet("GetAzureDevOpsLeadTimeForChanges")]
-        public async Task<List<LeadTimeForChangesModel>> GetAzureDevOpsLeadTimeForChanges(string patToken, string organization, string project, string repositoryId, string branch, string buildId)
+        public async Task<List<LeadTimeForChangesModel>> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string branch, string buildId)
         {
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-            List<LeadTimeForChangesModel> leadTimeForChanges = await da.GetAzureDevOpsLeadTimesForChanges(patToken, organization, project, repositoryId, branch, buildId);
+            List<LeadTimeForChangesModel> leadTimeForChanges = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, organization, project, repositoryId, branch, buildId);
 
             //TimeSpan largestDuration = TimeSpan.Zero;
             //double totalHours = 0;
@@ -46,10 +46,10 @@ namespace DevOpsMetrics.Service.Controllers
         }
 
         [HttpGet("GetGitHubLeadTimeForChanges")]
-        public async Task<List<LeadTimeForChangesModel>> GetGitHubLeadTimeForChanges(string clientId, string clientSecret ,string owner, string repo, string branch, string workflowId)
+        public async Task<List<LeadTimeForChangesModel>> GetGitHubLeadTimeForChanges(bool getSampleData, string clientId, string clientSecret ,string owner, string repo, string branch, string workflowId)
         {
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-            List<LeadTimeForChangesModel> leadTimeForChanges = await da.GetGitHubLeadTimesForChanges(clientId, clientSecret, owner, repo, branch, workflowId);
+            List<LeadTimeForChangesModel> leadTimeForChanges = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, owner, repo, branch, workflowId);
             return leadTimeForChanges;
         }
 

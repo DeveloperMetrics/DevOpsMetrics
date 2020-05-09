@@ -40,30 +40,32 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             Client.BaseAddress = new Uri(Configuration["AppSettings:WebServiceURL"]);
         }
 
-        [TestMethod]
-        public async Task AzDeploymentsControllerDirectIntegrationTest()
-        {
-            //Arrange
-            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-            string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildId = "3673"; //SamLearnsAzure.CI
-            DeploymentFrequencyController controller = new DeploymentFrequencyController();
+        //[TestMethod]
+        //public async Task AzDeploymentsControllerDirectIntegrationTest()
+        //{
+        //    //Arrange
+        //    string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
+        //    string organization = "samsmithnz";
+        //    string project = "SamLearnsAzure";
+        //    string branch = "refs/heads/master";
+        //    string buildId = "3673"; //SamLearnsAzure.CI
+        //    DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
-            //Act
-            List<AzureDevOpsBuild> list = await controller.GetAzureDevOpsDeployments(patToken, organization, project, branch, buildId);
+        //    //Act
+        //    List<AzureDevOpsBuild> list = await controller.GetAzureDevOpsDeployments(patToken, organization, project, branch, buildId);
 
-            //Assert
-            Assert.IsTrue(list != null);
-            Assert.IsTrue(list.Count > 0);
-            Assert.IsTrue(list[0].status != null);
-        }
+        //    //Assert
+        //    Assert.IsTrue(list != null);
+        //    Assert.IsTrue(list.Count > 0);
+        //    Assert.IsTrue(list[0].status != null);
+        //}
 
+        [TestCategory("APITest")]
         [TestMethod]
         public async Task AzDeploymentsControllerAPIIntegrationTest()
         {
             //Arrange
+            bool getSampleData = false;
             string patToken = Configuration["AppSettings:PatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
@@ -71,7 +73,7 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             string buildId = "3673"; //SamLearnsAzure.CI
 
             //Act
-            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeployments?patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildId={buildId}";
+            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeployments?getSampleData={getSampleData}&patToken ={patToken}&organization={organization}&project={project}&branch={branch}&buildId={buildId}";
             TestResponse<List<AzureDevOpsBuild>> httpResponse = new TestResponse<List<AzureDevOpsBuild>>();
             List<AzureDevOpsBuild> list = await httpResponse.GetResponse(Client, url);
 
@@ -81,10 +83,12 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             Assert.IsTrue(list[0].status != null);
         }
 
+        [TestCategory("ControllerTest")]
         [TestMethod]
         public async Task AzDeploymentFrequencyControllerIntegrationTest()
         {
             //Arrange
+            bool getSampleData = true;
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
@@ -95,7 +99,7 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(patToken, organization, project, branch, buildName, buildId, numberOfDays);
+            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays);
 
             //Assert
             Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);

@@ -11,7 +11,7 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class LeadTimeForChangesDA
     {
-        public async Task<List<LeadTimeForChangesModel>> GetAzureDevOpsLeadTimesForChanges(string patToken, string organization, string project, string repositoryId, string masterBranch, string buildId)
+        public async Task<List<LeadTimeForChangesModel>> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string masterBranch, string buildId)
         {
             List<AzureDevOpsBuild> initialBuilds = new List<AzureDevOpsBuild>();
             BuildsDA buildsDA = new BuildsDA();
@@ -92,11 +92,11 @@ namespace DevOpsMetrics.Service.DataAccess
             return items;
         }
 
-        public async Task<List<LeadTimeForChangesModel>> GetGitHubLeadTimesForChanges(string clientId, string clientSecret, string owner, string repo, string masterBranch, string workflowId)
+        public async Task<List<LeadTimeForChangesModel>> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string masterBranch, string workflowId)
         {
             List<GitHubActionsRun> initialRuns = new List<GitHubActionsRun>();
             BuildsDA buildsDA = new BuildsDA();
-            initialRuns = await buildsDA.GetGitHubActionRuns(clientId, clientSecret, owner, repo, masterBranch, workflowId);
+            initialRuns = await buildsDA.GetGitHubActionRuns(getSampleData, clientId, clientSecret, owner, repo, masterBranch, workflowId);
 
             //Filter out all branches that aren't a master build
             List<GitHubActionsRun> runs = new List<GitHubActionsRun>();

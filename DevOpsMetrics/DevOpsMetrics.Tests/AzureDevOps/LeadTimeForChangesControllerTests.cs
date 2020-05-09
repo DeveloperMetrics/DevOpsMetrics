@@ -38,10 +38,12 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             Client.BaseAddress = new Uri(Configuration["AppSettings:WebServiceURL"]);
         }
 
+        [TestCategory("ControllerTest")]
         [TestMethod]
-        public async Task AzLeadTimeControllerDirectIntegrationTest()
+        public async Task AzLeadTimeControllerIntegrationTest()
         {
             //Arrange
+            bool getSampleData = true;
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
@@ -51,7 +53,7 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             LeadTimeForChangesController controller = new LeadTimeForChangesController();
 
             //Act
-            List<LeadTimeForChangesModel> list = await controller.GetAzureDevOpsLeadTimeForChanges(patToken, organization, project, repositoryId, branch, buildId);
+            List<LeadTimeForChangesModel> list = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, repositoryId, branch, buildId);
 
             //Assert
             Assert.IsTrue(list != null);
@@ -59,10 +61,12 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             Assert.IsTrue(list[0].Branch != null);
         }
 
+        [TestCategory("APITest")]
         [TestMethod]
         public async Task AzLeadTimeControllerAPIIntegrationTest()
         {
             //Arrange
+            bool getSampleData = false;
             string patToken = Configuration["AppSettings:PatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
@@ -71,7 +75,7 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             string buildId = "3673"; //SamLearnsAzure.CI
 
             //Act
-            string url = $"/api/LeadTimeForChanges/GetAzureDevOpsLeadTimeForChanges?patToken={patToken}&organization={organization}&project={project}&repositoryId={repositoryId}& branch={branch}&buildId={buildId}";
+            string url = $"/api/LeadTimeForChanges/GetAzureDevOpsLeadTimeForChanges?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&repositoryId={repositoryId}& branch={branch}&buildId={buildId}";
             TestResponse<List<LeadTimeForChangesModel>> httpResponse = new TestResponse<List<LeadTimeForChangesModel>>();
             List<LeadTimeForChangesModel> list = await httpResponse.GetResponse(Client, url);
 
