@@ -17,7 +17,7 @@ namespace DevOpsMetrics.Tests.GitHub
         public async Task GHLeadTimeForChangesDAIntegrationTest()
         {
             //Arrange
-            bool getSampleData = false;
+            bool getSampleData = true;
             string clientId = "";
             string clientSecret = "";
             string owner = "samsmithnz";
