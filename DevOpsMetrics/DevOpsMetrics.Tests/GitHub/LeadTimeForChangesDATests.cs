@@ -17,7 +17,7 @@ namespace DevOpsMetrics.Tests.GitHub
         public async Task GHLeadTimeForChangesDAIntegrationTest()
         {
             //Arrange
-            bool getSampleData = true;
+            bool getSampleData = false;
             string clientId = "";
             string clientSecret = "";
             string owner = "samsmithnz";
@@ -44,8 +44,8 @@ namespace DevOpsMetrics.Tests.GitHub
             Assert.AreEqual(33f, model.PullRequests[0].DurationPercent);
             Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
             Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
-            Assert.AreEqual(12f, model.AverageDuration);
-            Assert.AreEqual("Elite", model.AverageDurationRating);
+            Assert.AreEqual(12f, model.AverageLeadTimeForChanges);
+            Assert.AreEqual("Elite", model.AverageLeadTimeForChangesRating);
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using DevOpsMetrics.Service.Models;
+﻿using DevOpsMetrics.Core;
+using DevOpsMetrics.Service.Models;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;
@@ -14,7 +15,9 @@ namespace DevOpsMetrics.Service.DataAccess
     {
         public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string masterBranch, string buildId)
         {
-            List<PullRequestModel> items = new List<PullRequestModel>();
+            int numberOfDays = 7;
+            LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
+            List<PullRequestModel> pullRequests = new List<PullRequestModel>();
             if (getSampleData == false)
             {
                 List<AzureDevOpsBuild> initialBuilds = new List<AzureDevOpsBuild>();
@@ -38,6 +41,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 }
 
                 //Process the lead time for changes
+                List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>();
                 foreach (string branch in branches)
                 {
                     List<AzureDevOpsBuild> branchBuilds = builds.Where(a => a.sourceBranch == branch).ToList();
@@ -79,7 +83,7 @@ namespace DevOpsMetrics.Service.DataAccess
                             maxTime = branchBuild.finishTime;
                         }
                     }
-                    PullRequestModel leadTime = new PullRequestModel
+                    PullRequestModel pullRequest = new PullRequestModel
                     {
                         PullRequestId = pullRequestId,
                         Branch = branch,
@@ -89,17 +93,19 @@ namespace DevOpsMetrics.Service.DataAccess
                         EndDateTime = maxTime,
                         Url = $"https://dev.azure.com/{organization}/{project}/_git/{repositoryId}/pullrequest/{pullRequestId}"
                     };
-
-                    items.Add(leadTime);
+                    leadTimeForChangesList.Add(new KeyValuePair<DateTime, TimeSpan>(minTime, pullRequest.Duration));
+                    pullRequests.Add(pullRequest);
                 }
+
+                float leadTime = leadTimeForChanges.ProcessLeadTimeForChanges(leadTimeForChangesList, project, numberOfDays);
 
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
                     ProjectName = project,
                     IsAzureDevOps = true,
-                    AverageDuration = 12f,
-                    AverageDurationRating = "Elite",
-                    PullRequests = CreatePullRequestsSample(true),
+                    AverageLeadTimeForChanges = leadTime,
+                    AverageLeadTimeForChangesRating = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
+                    PullRequests = pullRequests,
                 };
 
                 return model;
@@ -110,8 +116,8 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     ProjectName = project,
                     IsAzureDevOps = true,
-                    AverageDuration = 12f,
-                    AverageDurationRating = "Elite",
+                    AverageLeadTimeForChanges = 12f,
+                    AverageLeadTimeForChangesRating = "Elite",
                     PullRequests = CreatePullRequestsSample(true),
                 };
 
@@ -121,6 +127,9 @@ namespace DevOpsMetrics.Service.DataAccess
 
         public async Task<LeadTimeForChangesModel> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string masterBranch, string workflowId)
         {
+            int numberOfDays = 7;
+            LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
+            List<PullRequestModel> pullRequests = new List<PullRequestModel>();
             if (getSampleData == false)
             {
                 List<GitHubActionsRun> initialRuns = new List<GitHubActionsRun>();
@@ -144,7 +153,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 }
 
                 //Process the lead time for changes
-                List<PullRequestModel> items = new List<PullRequestModel>();
+                List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>();
                 foreach (string branch in branches)
                 {
                     List<GitHubActionsRun> branchBuilds = runs.Where(a => a.head_branch == branch).ToList();
@@ -189,7 +198,7 @@ namespace DevOpsMetrics.Service.DataAccess
                         }
                     }
 
-                    PullRequestModel leadTime = new PullRequestModel
+                    PullRequestModel pullRequest = new PullRequestModel
                     {
                         PullRequestId = pullRequestId,
                         Branch = branch,
@@ -200,15 +209,19 @@ namespace DevOpsMetrics.Service.DataAccess
                         Url = $"https://github.com/{owner}/{repo}/pull/{pullRequestId}"
                     };
 
-                    items.Add(leadTime);
+                    leadTimeForChangesList.Add(new KeyValuePair<DateTime, TimeSpan>(minTime, pullRequest.Duration));
+                    pullRequests.Add(pullRequest);
                 }
+
+                float leadTime = leadTimeForChanges.ProcessLeadTimeForChanges(leadTimeForChangesList, repo, numberOfDays);
+
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
                     ProjectName = repo,
                     IsAzureDevOps = false,
-                    AverageDuration = 12f,
-                    AverageDurationRating = "Elite",
-                    PullRequests = CreatePullRequestsSample(false),
+                    AverageLeadTimeForChanges = leadTime,
+                    AverageLeadTimeForChangesRating = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
+                    PullRequests = pullRequests,
                 };
 
                 return model;
@@ -219,8 +232,8 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     ProjectName = repo,
                     IsAzureDevOps = false,
-                    AverageDuration = 12f,
-                    AverageDurationRating = "Elite",
+                    AverageLeadTimeForChanges = 12f,
+                    AverageLeadTimeForChangesRating = "Elite",
                     PullRequests = CreatePullRequestsSample(false),
                 };
 

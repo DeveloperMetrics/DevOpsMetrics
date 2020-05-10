@@ -9,8 +9,8 @@ namespace DevOpsMetrics.Service.Models.Common
         public bool IsAzureDevOps { get; set; }
         public List<PullRequestModel> PullRequests { get; set; }
 
-        public float AverageDuration { get; set; }
-        public string AverageDurationRating { get; set; }
+        public float AverageLeadTimeForChanges { get; set; }
+        public string AverageLeadTimeForChangesRating { get; set; }
 
     }
 }

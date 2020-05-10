@@ -1,11 +1,9 @@
-﻿using DevOpsMetrics.Service.Models;
-using DevOpsMetrics.Service.Models.Common;
+﻿using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Web.Models;
 using DevOpsMetrics.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -38,11 +36,6 @@ namespace DevOpsMetrics.Web.Controllers
             string azBranch = "refs/heads/master";
             string buildId = "83"; //"3673"; //SamLearnsAzure.CI
             LeadTimeForChangesModel newItem1 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, azBranch, buildId);
-            ////LeadTimeForChangesModel newItem1 = new LeadTimeForChangesModel
-            ////{
-            ////    ProjectName = project,
-            ////    AzureDevOpsList = azleadTimes1
-            ////};
             items.Add(newItem1);
 
             //GitHub 2
@@ -53,11 +46,6 @@ namespace DevOpsMetrics.Web.Controllers
             string ghbranch2 = "AddingWebsite";
             string workflowId2 = "1162561";
             LeadTimeForChangesModel newItem2 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, clientId2, clientSecret2, owner2, repo2, ghbranch2, workflowId2);
-            ////LeadTimeForChangesModel newItem2 = new LeadTimeForChangesModel
-            ////{
-            ////    ProjectName = project,
-            ////    GitHubList = ghleadTimes2
-            ////};
             items.Add(newItem2);
 
             return View(items);
@@ -135,7 +123,7 @@ namespace DevOpsMetrics.Web.Controllers
 
         public IActionResult LeadTimeForChanges()
         {
-            return View();
+            return View(Index());
         }
 
         public IActionResult Privacy()
