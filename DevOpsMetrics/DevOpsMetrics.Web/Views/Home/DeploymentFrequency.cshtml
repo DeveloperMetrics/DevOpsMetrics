@@ -10,14 +10,7 @@
     @foreach (DeploymentFrequencyModel item in Model)
     {
         <div class="col-md-6">
-            @if (item.IsAzureDevOps == true)
-            {
-                @await Html.PartialAsync("_Deployments", item)
-            }
-            else if (item.IsAzureDevOps == false)
-            {
-                @await Html.PartialAsync("_Deployments", item)
-            }
+            @await Html.PartialAsync("_Deployments", item)
         </div>
     }
 </div>
