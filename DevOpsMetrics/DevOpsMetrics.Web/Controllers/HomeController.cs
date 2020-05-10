@@ -25,7 +25,7 @@ namespace DevOpsMetrics.Web.Controllers
         {
             int numberOfDeployments = 20;
             int numberOfDays = 7;
-            bool getSampleData = true;
+            bool getSampleData = false;
             ServiceApiClient serviceAPIClient = new ServiceApiClient(_configuration);
             List<LeadTimeForChangesModel> items = new List<LeadTimeForChangesModel>();
 
