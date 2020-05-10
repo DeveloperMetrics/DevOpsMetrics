@@ -1,12 +1,26 @@
-﻿@using DevOpsMetrics.Service.Models.Common 
-@model LeadTimeForChangesPartialViewModel
+﻿@using DevOpsMetrics.Service.Models.Common
+@model LeadTimeForChangesModel
 
-TODO
-@*<div class="chartContainer vertical flat">
-    <h4><img src="~/images/AzureDevops-icon.png" style="width:32px;" />&nbsp; Azure DevOps - @Model.ProjectName</h4>
-    @foreach (LeadTimeForChangesModel item in Model.AzureDevOpsList)
+@{
+    string widgetImageName = "";
+    string widgetName = "";
+    if (Model.IsAzureDevOps == true)
     {
-        <a href="https://github.com/samsmithnz" target="_blank">
+        widgetImageName = "AzureDevops-icon.png";
+        widgetName = "Azure DevOps";
+    }
+    else
+    {
+        widgetImageName = "GitHub-icon.png";
+        widgetName = "GitHub";
+    }
+}
+
+<div class="chartContainer vertical flat">
+    <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ProjectName</h4>
+    @foreach (PullRequestModel item in Model.PullRequests)
+    {
+        <a href="@item.Url" target="_blank">
             <div class="progress-bar">
                 <div class="progress-track" title="PR #@item.PullRequestId branch @item.Branch had @item.Commits.Count commits over @item.Duration.TotalHours.ToString("0.0") hours">
                     <div class="progress-fill inProgress">
@@ -21,7 +35,7 @@ TODO
 <div class="metricSpan">
     <b>Lead time for changes:</b> @Model.AverageDuration.ToString("0.0") hours<br />
     <b>Lead time for changes ranking:</b> @Model.AverageDurationRating
-</div>*@
+</div>
 
 @*<div>
         <h4><img src="~/images/AzureDevops-icon.png" style="width:32px;" />&nbsp; Azure DevOps - @Model.ProjectName</h4>

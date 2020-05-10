@@ -86,26 +86,33 @@ namespace DevOpsMetrics.Service.DataAccess
                         BuildCount = branchBuilds.Count,
                         Commits = commits,
                         StartDateTime = minTime,
-                        EndDateTime = maxTime
+                        EndDateTime = maxTime,
+                        Url = $"https://dev.azure.com/{organization}/{project}/_git/{repositoryId}/pullrequest/{pullRequestId}"
                     };
 
                     items.Add(leadTime);
                 }
 
-                LeadTimeForChangesModel model = new LeadTimeForChangesModel();
-
+                LeadTimeForChangesModel model = new LeadTimeForChangesModel
+                {
+                    ProjectName = project,
+                    IsAzureDevOps = true,
+                    AverageDuration = 12f,
+                    AverageDurationRating = "Elite",
+                    PullRequests = CreatePullRequestsSample(true),
+                };
 
                 return model;
-
             }
             else
             {
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
                     ProjectName = project,
+                    IsAzureDevOps = false,
                     AverageDuration = 12f,
                     AverageDurationRating = "Elite",
-                    PullRequests = CreatePullRequestsSample(),
+                    PullRequests = CreatePullRequestsSample(true),
                 };
 
                 return model;
@@ -189,60 +196,126 @@ namespace DevOpsMetrics.Service.DataAccess
                         BuildCount = branchBuilds.Count,
                         Commits = commits,
                         StartDateTime = minTime,
-                        EndDateTime = maxTime
+                        EndDateTime = maxTime,
+                        Url = $"https://github.com/{owner}/{repo}/pull/{pullRequestId}"
                     };
 
                     items.Add(leadTime);
                 }
-                LeadTimeForChangesModel model = new LeadTimeForChangesModel();
+                LeadTimeForChangesModel model = new LeadTimeForChangesModel
+                {
+                    ProjectName = repo,
+                    IsAzureDevOps = true,
+                    AverageDuration = 12f,
+                    AverageDurationRating = "Elite",
+                    PullRequests = CreatePullRequestsSample(false),
+                };
 
                 return model;
-
             }
             else
             {
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
                     ProjectName = repo,
+                    IsAzureDevOps = true,
                     AverageDuration = 12f,
                     AverageDurationRating = "Elite",
-                    PullRequests = CreatePullRequestsSample(),
+                    PullRequests = CreatePullRequestsSample(false),
                 };
 
                 return model;
             }
         }
 
-        private List<PullRequestModel> CreatePullRequestsSample()
+        private List<PullRequestModel> CreatePullRequestsSample(bool isAzureDevOps)
         {
             List<PullRequestModel> prs = new List<PullRequestModel>();
+
+            string url = "";
+            if (isAzureDevOps)
+            {
+                url = $"https://dev.azure.com/testOrganization/testProject/_git/testRepo/pullrequest/123";
+            }
+            else
+            {
+                url = $"https://github.com/testOwner/testRepo/pull/123";
+            }
 
             prs.Add(
                 new PullRequestModel
                 {
                     PullRequestId = "123",
                     Branch = "branch1",
-                    BuildCount = 3,
-                    Commits = CreateCommitsSample(),
-                    DurationPercent = 50,
+                    BuildCount = 1,
+                    Commits = CreateCommitsSample(1),
+                    DurationPercent = 33,
                     StartDateTime = DateTime.Now.AddDays(-7),
-                    EndDateTime = DateTime.Now.AddDays(-7).AddHours(1)
+                    EndDateTime = DateTime.Now.AddDays(-7).AddMinutes(1),
+                    Url = url
+                });
+            prs.Add(
+                new PullRequestModel
+                {
+                    PullRequestId = "124",
+                    Branch = "branch2",
+                    BuildCount = 3,
+                    Commits = CreateCommitsSample(3),
+                    DurationPercent = 100,
+                    StartDateTime = DateTime.Now.AddDays(-7),
+                    EndDateTime = DateTime.Now.AddDays(-5),
+                    Url = url
+                });
+            prs.Add(
+                new PullRequestModel
+                {
+                    PullRequestId = "126",
+                    Branch = "branch3",
+                    BuildCount = 2,
+                    Commits = CreateCommitsSample(2),
+                    DurationPercent = 66,
+                    StartDateTime = DateTime.Now.AddDays(-7),
+                    EndDateTime = DateTime.Now.AddDays(-6),
+                    Url = url
                 });
 
             return prs;
         }
 
-        private List<Commit> CreateCommitsSample()
+        private List<Commit> CreateCommitsSample(int numberOfCommits)
         {
             List<Commit> commits = new List<Commit>();
 
-            commits.Add(
+            if (numberOfCommits > 0)
+            {
+                commits.Add(
+                    new Commit
+                    {
+                        commitId = "abc",
+                        name = "name1",
+                        date = DateTime.Now.AddDays(-7)
+                    });
+            }
+            if (numberOfCommits > 1)
+            {
+                commits.Add(
                 new Commit
                 {
-                    commitId = "abc",
-                    name = "name1",
-                    date = DateTime.Now.AddDays(-7)
+                    commitId = "def",
+                    name = "name2",
+                    date = DateTime.Now.AddDays(-6)
                 });
+            }
+            if (numberOfCommits > 2)
+            {
+                commits.Add(
+                new Commit
+                {
+                    commitId = "ghi",
+                    name = "name3",
+                    date = DateTime.Now.AddDays(-5)
+                });
+            }
 
             return commits;
         }

@@ -7,6 +7,7 @@ namespace DevOpsMetrics.Service.Models.Common
     {
         public string PullRequestId { get; set; }
         public string Branch { get; set; }
+        public string Url { get; set; }
         public DateTime StartDateTime { get; set; }
         public DateTime EndDateTime { get; set; }
         public TimeSpan Duration

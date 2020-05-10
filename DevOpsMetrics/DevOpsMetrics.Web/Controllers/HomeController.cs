@@ -31,32 +31,34 @@ namespace DevOpsMetrics.Web.Controllers
             ServiceApiClient serviceAPIClient = new ServiceApiClient(_configuration);
             List<LeadTimeForChangesModel> items = new List<LeadTimeForChangesModel>();
 
-            ////Azure DevOps 1
-            //string patToken = _configuration["AppSettings:PatToken"];
-            //string organization = "samsmithnz";
-            //string project = "SamLearnsAzure";
-            //string azBranch = "refs/heads/master";
-            //string buildId = "83"; //"3673"; //SamLearnsAzure.CI
-            //List<PullRequestModel> azleadTimes1 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, azBranch, buildId);
+            //Azure DevOps 1
+            string patToken = _configuration["AppSettings:PatToken"];
+            string organization = "samsmithnz";
+            string project = "SamLearnsAzure";
+            string azBranch = "refs/heads/master";
+            string buildId = "83"; //"3673"; //SamLearnsAzure.CI
+            LeadTimeForChangesModel newItem1 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, azBranch, buildId);
             ////LeadTimeForChangesModel newItem1 = new LeadTimeForChangesModel
             ////{
             ////    ProjectName = project,
             ////    AzureDevOpsList = azleadTimes1
             ////};
-            //items.Add(newItem);
+            items.Add(newItem1);
 
-            ////GitHub 2
-            //string owner2 = "samsmithnz";
-            //string repo2 = "DevOpsMetrics";
-            //string ghbranch2 = "AddingWebsite";
-            //string workflowId2 = "1162561";
-            //List<PullRequestModel> ghleadTimes2 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, owner2, repo2, ghbranch2, workflowId2);
+            //GitHub 2
+            string clientId2 = "";
+            string clientSecret2 = "";
+            string owner2 = "samsmithnz";
+            string repo2 = "DevOpsMetrics";
+            string ghbranch2 = "AddingWebsite";
+            string workflowId2 = "1162561";
+            LeadTimeForChangesModel newItem2 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, clientId2, clientSecret2, owner2, repo2, ghbranch2, workflowId2);
             ////LeadTimeForChangesModel newItem2 = new LeadTimeForChangesModel
             ////{
             ////    ProjectName = project,
             ////    GitHubList = ghleadTimes2
             ////};
-            //items.Add(newItem);
+            items.Add(newItem2);
 
             return View(items);
         }
