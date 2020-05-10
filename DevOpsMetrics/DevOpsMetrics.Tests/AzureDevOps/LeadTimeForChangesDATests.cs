@@ -60,5 +60,6 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             Assert.AreEqual("Elite", model.AverageLeadTimeForChangesRating);
         }
 
+     
     }
 }

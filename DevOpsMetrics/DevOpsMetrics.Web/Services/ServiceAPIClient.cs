@@ -24,7 +24,7 @@ namespace DevOpsMetrics.Web.Services
 
         public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays)
         {
-            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&AzureDevOpsbranch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}";
+            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}";
             return await GetResponse<DeploymentFrequencyModel>(_client, url);
         }
 
@@ -34,9 +34,9 @@ namespace DevOpsMetrics.Web.Services
             return await GetResponse<DeploymentFrequencyModel>(_client, url);
         }
 
-        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, string patToken, string organization, string project, string branch, string buildId)
+        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string branch, string buildId)
         {
-            string url = $"/api/LeadTimeForChanges/GetAzureDevOpsLeadTimeForChanges?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildId={buildId}";
+            string url = $"/api/LeadTimeForChanges/GetAzureDevOpsLeadTimeForChanges?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&repositoryId={repositoryId}&branch={branch}&buildId={buildId}";
             return await GetResponse<LeadTimeForChangesModel>(_client, url);
         }
 

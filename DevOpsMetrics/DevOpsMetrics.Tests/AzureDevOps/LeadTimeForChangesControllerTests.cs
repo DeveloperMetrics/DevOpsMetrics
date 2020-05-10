@@ -87,9 +87,10 @@ namespace DevOpsMetrics.Tests.AzureDevOps
             string branch = "refs/heads/master";
             string buildId = "3673"; //SamLearnsAzure.CI
 
-            //Act
-            string url = $"/api/LeadTimeForChanges/GetAzureDevOpsLeadTimeForChanges?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&repositoryId={repositoryId}& branch={branch}&buildId={buildId}";
-            TestResponse<LeadTimeForChangesModel> httpResponse = new TestResponse<LeadTimeForChangesModel>();
+            //Act            
+            string url = $"/api/LeadTimeForChanges/GetAzureDevOpsLeadTimeForChanges?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&repositoryId={repositoryId}&branch={branch}&buildId={buildId}";
+            string url2 = "https://devopsmetrics-prod-eu-service.azurewebsites.net//api/LeadTimeForChanges/GetAzureDevOpsLeadTimeForChanges?getSampleData=False&patToken=&organization=samsmithnz&project=SamLearnsAzure&branch=refs/heads/master&buildId=3673";
+                TestResponse<LeadTimeForChangesModel> httpResponse = new TestResponse<LeadTimeForChangesModel>();
             LeadTimeForChangesModel model = await httpResponse.GetResponse(Client, url);
 
             //Assert

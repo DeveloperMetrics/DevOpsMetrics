@@ -33,9 +33,10 @@ namespace DevOpsMetrics.Web.Controllers
             string patToken = _configuration["AppSettings:PatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
+            string repositoryId = "SamLearnsAzure";
             string azBranch = "refs/heads/master";
-            string buildId = "83"; //"3673"; //SamLearnsAzure.CI
-            LeadTimeForChangesModel newItem1 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, azBranch, buildId);
+            string buildId = "3673"; //SamLearnsAzure.CI
+            LeadTimeForChangesModel newItem1 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, repositoryId, azBranch, buildId);
             items.Add(newItem1);
 
             //GitHub 2
