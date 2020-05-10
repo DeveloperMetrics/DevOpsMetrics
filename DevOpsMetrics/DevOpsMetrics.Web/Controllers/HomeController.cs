@@ -38,7 +38,7 @@ namespace DevOpsMetrics.Web.Controllers
             string project = "SamLearnsAzure";
             string azBranch = "refs/heads/master";
             string buildId = "83"; //"3673"; //SamLearnsAzure.CI
-            List<LeadTimeForChangesModel> azleadTimes1 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, azBranch, buildId);
+            List<PullRequestModel> azleadTimes1 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, azBranch, buildId);
             newItem = new LeadTimeForChangesPartialViewModel
             {
                 ProjectName = project,
@@ -51,7 +51,7 @@ namespace DevOpsMetrics.Web.Controllers
             string repo2 = "DevOpsMetrics";
             string ghbranch2 = "AddingWebsite";
             string workflowId2 = "1162561";
-            List<LeadTimeForChangesModel> ghleadTimes2 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, owner2, repo2, ghbranch2, workflowId2);
+            List<PullRequestModel> ghleadTimes2 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, owner2, repo2, ghbranch2, workflowId2);
             newItem = new LeadTimeForChangesPartialViewModel
             {
                 ProjectName = project,

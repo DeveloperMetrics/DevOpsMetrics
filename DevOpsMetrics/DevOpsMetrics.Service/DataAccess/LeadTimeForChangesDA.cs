@@ -5,15 +5,16 @@ using DevOpsMetrics.Service.Models.GitHub;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.DataAccess
 {
     public class LeadTimeForChangesDA
     {
-        public async Task<List<LeadTimeForChangesModel>> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string masterBranch, string buildId)
+        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string masterBranch, string buildId)
         {
-            List<LeadTimeForChangesModel> items = new List<LeadTimeForChangesModel>();
+            List<PullRequestModel> items = new List<PullRequestModel>();
             if (getSampleData == false)
             {
                 List<AzureDevOpsBuild> initialBuilds = new List<AzureDevOpsBuild>();
@@ -78,7 +79,7 @@ namespace DevOpsMetrics.Service.DataAccess
                             maxTime = branchBuild.finishTime;
                         }
                     }
-                    LeadTimeForChangesModel leadTime = new LeadTimeForChangesModel
+                    PullRequestModel leadTime = new PullRequestModel
                     {
                         PullRequestId = pullRequestId,
                         Branch = branch,
@@ -90,98 +91,160 @@ namespace DevOpsMetrics.Service.DataAccess
 
                     items.Add(leadTime);
                 }
+
+                LeadTimeForChangesModel model = new LeadTimeForChangesModel();
+
+
+                return model;
+
             }
             else
             {
-
-            }
-
-            return items;
-        }
-
-        public async Task<List<LeadTimeForChangesModel>> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string masterBranch, string workflowId)
-        {
-            List<GitHubActionsRun> initialRuns = new List<GitHubActionsRun>();
-            BuildsDA buildsDA = new BuildsDA();
-            initialRuns = await buildsDA.GetGitHubActionRuns(getSampleData, clientId, clientSecret, owner, repo, masterBranch, workflowId);
-
-            //Filter out all branches that aren't a master build
-            List<GitHubActionsRun> runs = new List<GitHubActionsRun>();
-            List<string> branches = new List<string>();
-            foreach (GitHubActionsRun item in initialRuns)
-            {
-                if (item.status == "completed" && item.head_branch != masterBranch)//&& item.head_branch == "refs/pull/445/merge")
+                LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
-                    runs.Add(item);
-                    //Load all of the branches
-                    if (branches.Contains(item.head_branch) == false)
-                    {
-                        branches.Add(item.head_branch);
-                    }
-                }
-            }
-
-            //Process the lead time for changes
-            List<LeadTimeForChangesModel> items = new List<LeadTimeForChangesModel>();
-            foreach (string branch in branches)
-            {
-                List<GitHubActionsRun> branchBuilds = runs.Where(a => a.head_branch == branch).ToList();
-                //This is messy. In Azure DevOps we could get the build trigger/pull request id. In GitHub we cannot. 
-                //Instead we get the pull request id by searching pull requests by branch
-                PullRequestDA pullRequestDA = new PullRequestDA();
-                string pullRequestId = await pullRequestDA.GetGitHubPullRequestIdByBranchName(clientId, clientSecret, owner, repo, branch);
-                List<GitHubPRCommit> pullRequestCommits = await pullRequestDA.GetGitHubPullRequestCommits(clientId, clientSecret, owner, repo, pullRequestId);
-                List<Commit> commits = new List<Commit>();
-                foreach (GitHubPRCommit item in pullRequestCommits)
-                {
-                    commits.Add(new Commit
-                    {
-                        commitId = item.sha,
-                        name = item.committer.name,
-                        date = item.committer.date
-                    });
-                }
-
-                DateTime minTime = DateTime.MaxValue;
-                DateTime maxTime = DateTime.MinValue;
-                foreach (GitHubPRCommit pullRequestCommit in pullRequestCommits)
-                {
-                    if (minTime > pullRequestCommit.committer.date)
-                    {
-                        minTime = pullRequestCommit.committer.date;
-                    }
-                    if (maxTime < pullRequestCommit.committer.date)
-                    {
-                        maxTime = pullRequestCommit.committer.date;
-                    }
-                }
-                foreach (GitHubActionsRun branchBuild in branchBuilds)
-                {
-                    if (minTime > branchBuild.updated_at)
-                    {
-                        minTime = branchBuild.updated_at;
-                    }
-                    if (maxTime < branchBuild.updated_at)
-                    {
-                        maxTime = branchBuild.updated_at;
-                    }
-                }
-
-                LeadTimeForChangesModel leadTime = new LeadTimeForChangesModel
-                {
-                    PullRequestId = pullRequestId,
-                    Branch = branch,
-                    BuildCount = branchBuilds.Count,
-                    Commits = commits,
-                    StartDateTime = minTime,
-                    EndDateTime = maxTime
+                    ProjectName = project,
+                    AverageDuration = 12f,
+                    AverageDurationRating = "Elite",
+                    PullRequests = CreatePullRequestsSample(),
                 };
 
-                items.Add(leadTime);
+                return model;
             }
-
-            return items;
         }
 
+        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string masterBranch, string workflowId)
+        {
+            if (getSampleData == false)
+            {
+                List<GitHubActionsRun> initialRuns = new List<GitHubActionsRun>();
+                BuildsDA buildsDA = new BuildsDA();
+                initialRuns = await buildsDA.GetGitHubActionRuns(getSampleData, clientId, clientSecret, owner, repo, masterBranch, workflowId);
+
+                //Filter out all branches that aren't a master build
+                List<GitHubActionsRun> runs = new List<GitHubActionsRun>();
+                List<string> branches = new List<string>();
+                foreach (GitHubActionsRun item in initialRuns)
+                {
+                    if (item.status == "completed" && item.head_branch != masterBranch)//&& item.head_branch == "refs/pull/445/merge")
+                    {
+                        runs.Add(item);
+                        //Load all of the branches
+                        if (branches.Contains(item.head_branch) == false)
+                        {
+                            branches.Add(item.head_branch);
+                        }
+                    }
+                }
+
+                //Process the lead time for changes
+                List<PullRequestModel> items = new List<PullRequestModel>();
+                foreach (string branch in branches)
+                {
+                    List<GitHubActionsRun> branchBuilds = runs.Where(a => a.head_branch == branch).ToList();
+                    //This is messy. In Azure DevOps we could get the build trigger/pull request id. In GitHub we cannot. 
+                    //Instead we get the pull request id by searching pull requests by branch
+                    PullRequestDA pullRequestDA = new PullRequestDA();
+                    string pullRequestId = await pullRequestDA.GetGitHubPullRequestIdByBranchName(clientId, clientSecret, owner, repo, branch);
+                    List<GitHubPRCommit> pullRequestCommits = await pullRequestDA.GetGitHubPullRequestCommits(clientId, clientSecret, owner, repo, pullRequestId);
+                    List<Commit> commits = new List<Commit>();
+                    foreach (GitHubPRCommit item in pullRequestCommits)
+                    {
+                        commits.Add(new Commit
+                        {
+                            commitId = item.sha,
+                            name = item.committer.name,
+                            date = item.committer.date
+                        });
+                    }
+
+                    DateTime minTime = DateTime.MaxValue;
+                    DateTime maxTime = DateTime.MinValue;
+                    foreach (GitHubPRCommit pullRequestCommit in pullRequestCommits)
+                    {
+                        if (minTime > pullRequestCommit.committer.date)
+                        {
+                            minTime = pullRequestCommit.committer.date;
+                        }
+                        if (maxTime < pullRequestCommit.committer.date)
+                        {
+                            maxTime = pullRequestCommit.committer.date;
+                        }
+                    }
+                    foreach (GitHubActionsRun branchBuild in branchBuilds)
+                    {
+                        if (minTime > branchBuild.updated_at)
+                        {
+                            minTime = branchBuild.updated_at;
+                        }
+                        if (maxTime < branchBuild.updated_at)
+                        {
+                            maxTime = branchBuild.updated_at;
+                        }
+                    }
+
+                    PullRequestModel leadTime = new PullRequestModel
+                    {
+                        PullRequestId = pullRequestId,
+                        Branch = branch,
+                        BuildCount = branchBuilds.Count,
+                        Commits = commits,
+                        StartDateTime = minTime,
+                        EndDateTime = maxTime
+                    };
+
+                    items.Add(leadTime);
+                }
+                LeadTimeForChangesModel model = new LeadTimeForChangesModel();
+
+                return model;
+
+            }
+            else
+            {
+                LeadTimeForChangesModel model = new LeadTimeForChangesModel
+                {
+                    ProjectName = repo,
+                    AverageDuration = 12f,
+                    AverageDurationRating = "Elite",
+                    PullRequests = CreatePullRequestsSample(),
+                };
+
+                return model;
+            }
+        }
+
+        private List<PullRequestModel> CreatePullRequestsSample()
+        {
+            List<PullRequestModel> prs = new List<PullRequestModel>();
+
+            prs.Add(
+                new PullRequestModel
+                {
+                    PullRequestId = "123",
+                    Branch = "branch1",
+                    BuildCount = 3,
+                    Commits = CreateCommitsSample(),
+                    DurationPercent = 50,
+                    StartDateTime = DateTime.Now.AddDays(-7),
+                    EndDateTime = DateTime.Now.AddDays(-7).AddHours(1)
+                });
+
+            return prs;
+        }
+
+        private List<Commit> CreateCommitsSample()
+        {
+            List<Commit> commits = new List<Commit>();
+
+            commits.Add(
+                new Commit
+                {
+                    commitId = "abc",
+                    name = "name1",
+                    date = DateTime.Now.AddDays(-7)
+                });
+
+            return commits;
+        }
     }
 }
