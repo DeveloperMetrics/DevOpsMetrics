@@ -109,7 +109,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
                     ProjectName = project,
-                    IsAzureDevOps = false,
+                    IsAzureDevOps = true,
                     AverageDuration = 12f,
                     AverageDurationRating = "Elite",
                     PullRequests = CreatePullRequestsSample(true),
@@ -205,7 +205,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
                     ProjectName = repo,
-                    IsAzureDevOps = true,
+                    IsAzureDevOps = false,
                     AverageDuration = 12f,
                     AverageDurationRating = "Elite",
                     PullRequests = CreatePullRequestsSample(false),
@@ -218,7 +218,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
                     ProjectName = repo,
-                    IsAzureDevOps = true,
+                    IsAzureDevOps = false,
                     AverageDuration = 12f,
                     AverageDurationRating = "Elite",
                     PullRequests = CreatePullRequestsSample(false),
