@@ -11,7 +11,7 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class LeadTimeForChangesDA
     {
-        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string masterBranch, string buildId, int numberOfDays)
+        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string masterBranch, string buildId, int numberOfDays, int maxNumberOfItems)
         {
             LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
             List<PullRequestModel> pullRequests = new List<PullRequestModel>();
@@ -122,7 +122,7 @@ namespace DevOpsMetrics.Service.DataAccess
             }
         }
 
-        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string masterBranch, string workflowId, int numberOfDays)
+        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string masterBranch, string workflowId, int numberOfDays, int maxNumberOfItems)
         {
             LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
             List<PullRequestModel> pullRequests = new List<PullRequestModel>();

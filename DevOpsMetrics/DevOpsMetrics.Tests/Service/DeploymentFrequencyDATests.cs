@@ -35,10 +35,11 @@ namespace DevOpsMetrics.Tests.Service
             string buildName = "SamLearnsAzure.CI";
             string buildId = "3673"; //SamLearnsAzure.CI
             int numberOfDays = 30;
+            int maxNumberOfItems = 20;
 
             //Act
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays);
+            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
@@ -59,10 +60,11 @@ namespace DevOpsMetrics.Tests.Service
             string workflowName = "samsfeatureflags CI/CD";
             string workflowId = "108084";
             int numberOfDays = 30;
+            int maxNumberOfItems = 20;
 
             //Act
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays);
+            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);

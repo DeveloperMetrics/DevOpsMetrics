@@ -23,7 +23,7 @@ namespace DevOpsMetrics.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            int numberOfItems = 20;
+            int maxNumberOfItems = 20;
             int numberOfDays = 30;
             bool getSampleData = true;
             ServiceApiClient serviceAPIClient = new ServiceApiClient(_configuration);
@@ -54,7 +54,7 @@ namespace DevOpsMetrics.Web.Controllers
 
         public async Task<IActionResult> DeploymentFrequency()
         {
-            int numberOfItems = 20;
+            int maxNumberOfItems = 20;
             int numberOfDays = 30;
             bool getSampleData = true;
             ServiceApiClient serviceApiClient = new ServiceApiClient(_configuration);

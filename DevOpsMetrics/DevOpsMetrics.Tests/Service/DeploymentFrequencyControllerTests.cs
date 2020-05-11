@@ -49,10 +49,11 @@ namespace DevOpsMetrics.Tests.Service
             string buildName = "SamLearnsAzure.CI";
             string buildId = "3673"; //SamLearnsAzure.CI
             int numberOfDays = 7;
+            int maxNumberOfItems = 20;
             DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays);
+            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.AreEqual(true, model.IsAzureDevOps);
@@ -83,10 +84,11 @@ namespace DevOpsMetrics.Tests.Service
             string workflowName = "samsfeatureflags CI/CD";
             string workflowId = "108084";
             int numberOfDays = 7;
+            int maxNumberOfItems = 20;
             DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays);
+            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.AreEqual(false, model.IsAzureDevOps);
@@ -117,9 +119,10 @@ namespace DevOpsMetrics.Tests.Service
             string buildName = "SamLearnsAzure.CI";
             string buildId = "3673"; //SamLearnsAzure.CI
             int numberOfDays = 7;
+            int maxNumberOfItems = 20;
 
             //Act
-            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}";
+            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
             TestResponse<DeploymentFrequencyModel> httpResponse = new TestResponse<DeploymentFrequencyModel>();
             DeploymentFrequencyModel model = await httpResponse.GetResponse(Client, url);
 
@@ -152,9 +155,10 @@ namespace DevOpsMetrics.Tests.Service
             string workflowName = "samsfeatureflags CI/CD";
             string workflowId = "108084";
             int numberOfDays = 7;
+            int maxNumberOfItems = 20;
 
             //Act
-            string url = $"/api/DeploymentFrequency/GetGitHubDeploymentFrequency?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&numberOfDays={numberOfDays}";
+            string url = $"/api/DeploymentFrequency/GetGitHubDeploymentFrequency?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
             TestResponse<DeploymentFrequencyModel> httpResponse = new TestResponse<DeploymentFrequencyModel>();
             DeploymentFrequencyModel model = await httpResponse.GetResponse(Client, url);
 
