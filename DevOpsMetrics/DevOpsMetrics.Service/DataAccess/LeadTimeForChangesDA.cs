@@ -168,8 +168,8 @@ namespace DevOpsMetrics.Service.DataAccess
                         commits.Add(new Commit
                         {
                             commitId = item.sha,
-                            name = item.committer.name,
-                            date = item.committer.date
+                            name = item.commit.committer.name,
+                            date = item.commit.committer.date
                         });
                     }
 
@@ -177,13 +177,13 @@ namespace DevOpsMetrics.Service.DataAccess
                     DateTime maxTime = DateTime.MinValue;
                     foreach (GitHubPRCommit pullRequestCommit in pullRequestCommits)
                     {
-                        if (minTime > pullRequestCommit.committer.date)
+                        if (minTime > pullRequestCommit.commit.committer.date)
                         {
-                            minTime = pullRequestCommit.committer.date;
+                            minTime = pullRequestCommit.commit.committer.date;
                         }
-                        if (maxTime < pullRequestCommit.committer.date)
+                        if (maxTime < pullRequestCommit.commit.committer.date)
                         {
-                            maxTime = pullRequestCommit.committer.date;
+                            maxTime = pullRequestCommit.commit.committer.date;
                         }
                     }
                     foreach (GitHubActionsRun branchBuild in branchBuilds)

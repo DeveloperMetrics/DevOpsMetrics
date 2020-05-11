@@ -44,7 +44,7 @@ namespace DevOpsMetrics.Web.Controllers
             string clientSecret2 = "";
             string owner2 = "samsmithnz";
             string repo2 = "DevOpsMetrics";
-            string ghbranch2 = "AddingWebsite";
+            string ghbranch2 = "master";
             string workflowId2 = "1162561";
             LeadTimeForChangesModel newItem2 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, clientId2, clientSecret2, owner2, repo2, ghbranch2, workflowId2);
             items.Add(newItem2);
