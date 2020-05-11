@@ -59,7 +59,8 @@
         {
             deploymentsPerDayAdjusted = Model.DeploymentsPerDayMetric * 30;
             deploymentsPerDayUnit = "times per month";
-        }}
+        }
+    }
     @*<b>Deployment frequency:</b> @Model.DeploymentsPerDayMetric.ToString("0.00") per day (last 30 days)<br />*@
     <b>Deployment frequency:</b> @deploymentsPerDayAdjusted.ToString("0.00") @deploymentsPerDayUnit (last 30 days)<br />
     <b>Deployment frequency ranking:</b> @Model.DeploymentsPerDayMetricDescription
