@@ -33,6 +33,34 @@
 </div>
 <br />
 <div class="metricSpan">
-    <b>Deployment frequency:</b> @Model.DeploymentsPerDayMetric.ToString("0.00") per day (last 30 days)<br />
+    @{
+        float dailyDeployment = 1f;
+        float weeklyDeployment = 1f / 7f;
+        float monthlyDeployment = 1f / 30f;
+
+        float deploymentsPerDayAdjusted = 0f;
+        string deploymentsPerDayUnit = "";
+        if (Model.DeploymentsPerDayMetric > dailyDeployment) //NOTE: Does not capture on-demand deployments
+        {
+            deploymentsPerDayAdjusted = Model.DeploymentsPerDayMetric;
+            deploymentsPerDayUnit = "per day";
+        }
+        else if (Model.DeploymentsPerDayMetric <= dailyDeployment && Model.DeploymentsPerDayMetric >= weeklyDeployment)
+        {
+            deploymentsPerDayAdjusted = Model.DeploymentsPerDayMetric * 7;
+            deploymentsPerDayUnit = "times per week";
+        }
+        else if (Model.DeploymentsPerDayMetric < weeklyDeployment && Model.DeploymentsPerDayMetric >= monthlyDeployment)
+        {
+            deploymentsPerDayAdjusted = Model.DeploymentsPerDayMetric * 30;
+            deploymentsPerDayUnit = "times per month";
+        }
+        else if (Model.DeploymentsPerDayMetric < monthlyDeployment)
+        {
+            deploymentsPerDayAdjusted = Model.DeploymentsPerDayMetric * 30;
+            deploymentsPerDayUnit = "times per month";
+        }}
+    @*<b>Deployment frequency:</b> @Model.DeploymentsPerDayMetric.ToString("0.00") per day (last 30 days)<br />*@
+    <b>Deployment frequency:</b> @deploymentsPerDayAdjusted.ToString("0.00") @deploymentsPerDayUnit (last 30 days)<br />
     <b>Deployment frequency ranking:</b> @Model.DeploymentsPerDayMetricDescription
 </div>

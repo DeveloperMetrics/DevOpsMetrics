@@ -15,11 +15,31 @@
         </div>
     }
 </div>
-@*<div class="row">
-        <div class="col-md-12">
-            What am I looking at?
-            Deployment Frequency is a high performing DevOps metric. This page helps us to measure it across various projects in both Azure DevOps and GitHub
-            - How does it work? We look at the number of successful pipeline runs
-            - Assumptions/things we can't currently measure: The build is multi-stage - and leads to a deployment in a production environment. We only look at the master branch, ignoring feature branches (as these probably aren't deploying to production')
-        </div>
-    </div>*@
+<div class="row">
+    <div class="col-md-12" style="font-size: 8pt;">
+        What am I looking at?<br />
+        Deployment Frequency is a high performing DevOps metric. This page helps us to measure it across various projects in both Azure DevOps and GitHub<br />
+        - How does it work? We look at the number of successful pipeline runs<br />
+        - Assumptions/things we can't currently measure: The build is multi-stage, and leads to a deployment in a production environment. We only look at the master branch, ignoring feature branches (as these probably aren't deploying to production')<br />
+    </div>
+    <div class="col-md-12" style="font-size: 8pt;">
+        <table class="table">
+            <tr>
+                <td>Elite</td>
+                <td>Multiple deploys per day</td>
+            </tr>
+            <tr>
+                <td>High</td>
+                <td> Between once per day and once per week</td>
+            </tr>
+            <tr>
+                <td>Medium</td>
+                <td> Between once per week and once per month</td>
+            </tr>
+            <tr>
+                <td>Low</td>
+                <td> Between once per month and once every six months</td>
+            </tr>
+        </table>
+    </div>
+</div>
