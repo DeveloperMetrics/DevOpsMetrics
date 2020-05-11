@@ -36,7 +36,7 @@ namespace DevOpsMetrics.Web.Controllers
             string repositoryId = "SamLearnsAzure";
             string azBranch = "refs/heads/master";
             string buildId = "3673"; //SamLearnsAzure.CI
-            LeadTimeForChangesModel newItem1 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, repositoryId, azBranch, buildId, numberOfDays);
+            LeadTimeForChangesModel newItem1 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, repositoryId, azBranch, buildId, numberOfDays, maxNumberOfItems);
             items.Add(newItem1);
 
             //GitHub 2
@@ -46,7 +46,7 @@ namespace DevOpsMetrics.Web.Controllers
             string repo2 = "DevOpsMetrics";
             string ghbranch2 = "master";
             string workflowId2 = "1162561";
-            LeadTimeForChangesModel newItem2 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, clientId2, clientSecret2, owner2, repo2, ghbranch2, workflowId2, numberOfDays);
+            LeadTimeForChangesModel newItem2 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, clientId2, clientSecret2, owner2, repo2, ghbranch2, workflowId2, numberOfDays, maxNumberOfItems);
             items.Add(newItem2);
 
             return View(items);
@@ -68,7 +68,7 @@ namespace DevOpsMetrics.Web.Controllers
             string azBranch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             string buildId = "83"; //"3673"; //SamLearnsAzure.CI
-            DeploymentFrequencyModel newItem1 = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, azBranch, buildName, buildId, numberOfDays);
+            DeploymentFrequencyModel newItem1 = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, azBranch, buildName, buildId, numberOfDays, maxNumberOfItems);
             if (newItem1 != null)
             {
                 items.Add(newItem1);
@@ -82,7 +82,7 @@ namespace DevOpsMetrics.Web.Controllers
             string azBranch2 = "refs/heads/master";
             string buildName2 = "PartsUnlimited.CI";
             string buildId2 = "75"; //"3673"; //SamLearnsAzure.CI
-            DeploymentFrequencyModel newItem2 = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken2, organization2, project2, azBranch2, buildName2, buildId2, numberOfDays);
+            DeploymentFrequencyModel newItem2 = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken2, organization2, project2, azBranch2, buildName2, buildId2, numberOfDays, maxNumberOfItems);
             if (newItem2 != null)
             {
                 items.Add(newItem2);
@@ -97,7 +97,7 @@ namespace DevOpsMetrics.Web.Controllers
             string ghbranch = "master";
             string workflowName = "SamsFeatureFlags.CI";
             string workflowId = "108084";
-            DeploymentFrequencyModel newItem3 = await serviceApiClient.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, ghbranch, workflowName, workflowId, numberOfDays);
+            DeploymentFrequencyModel newItem3 = await serviceApiClient.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, ghbranch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
             if (newItem3 != null)
             {
                 items.Add(newItem3);
@@ -112,7 +112,7 @@ namespace DevOpsMetrics.Web.Controllers
             string ghbranch2 = "AddingWebsite";
             string workflowName2 = "DevOpsMetrics.CI";
             string workflowId2 = "1162561";
-            DeploymentFrequencyModel newItem4 = await serviceApiClient.GetGitHubDeploymentFrequency(getSampleData, clientId2, clientSecret2, owner2, repo2, ghbranch2, workflowName2, workflowId2, numberOfDays);
+            DeploymentFrequencyModel newItem4 = await serviceApiClient.GetGitHubDeploymentFrequency(getSampleData, clientId2, clientSecret2, owner2, repo2, ghbranch2, workflowName2, workflowId2, numberOfDays, maxNumberOfItems);
             if (newItem4 != null)
             {
                 items.Add(newItem4);
