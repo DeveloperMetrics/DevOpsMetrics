@@ -48,10 +48,11 @@ namespace DevOpsMetrics.Tests.Service
             string repositoryId = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildId = "3673"; //SamLearnsAzure.CI
+            int numberOfDays = 7;
             LeadTimeForChangesController controller = new LeadTimeForChangesController();
 
             //Act
-            LeadTimeForChangesModel model = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, repositoryId, branch, buildId);
+            LeadTimeForChangesModel model = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, repositoryId, branch, buildId,  numberOfDays);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -84,9 +85,10 @@ namespace DevOpsMetrics.Tests.Service
             string repositoryId = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildId = "3673"; //SamLearnsAzure.CI
+            int numberOfDays = 7;
 
             //Act            
-            string url = $"/api/LeadTimeForChanges/GetAzureDevOpsLeadTimeForChanges?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&repositoryId={repositoryId}&branch={branch}&buildId={buildId}";
+            string url = $"/api/LeadTimeForChanges/GetAzureDevOpsLeadTimeForChanges?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&repositoryId={repositoryId}&branch={branch}&buildId={buildId}&numberOfDays={numberOfDays}";
             TestResponse<LeadTimeForChangesModel> httpResponse = new TestResponse<LeadTimeForChangesModel>();
             LeadTimeForChangesModel model = await httpResponse.GetResponse(Client, url);
 
@@ -122,10 +124,11 @@ namespace DevOpsMetrics.Tests.Service
             string repo = "devopsmetrics";
             string branch = "master";
             string workflowId = "1162561";
+            int numberOfDays = 7;
             LeadTimeForChangesController controller = new LeadTimeForChangesController();
 
             //Act
-            LeadTimeForChangesModel model = await controller.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret, owner, repo, branch, workflowId);
+            LeadTimeForChangesModel model = await controller.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret, owner, repo, branch, workflowId, numberOfDays);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -158,9 +161,10 @@ namespace DevOpsMetrics.Tests.Service
             string repo = "devopsmetrics";
             string branch = "master";
             string workflowId = "1162561";
+            int numberOfDays = 7;
 
             //Act
-            string url = $"/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowId={workflowId}";
+            string url = $"/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowId={workflowId}&numberOfDays={numberOfDays}";
             TestResponse<LeadTimeForChangesModel> httpResponse = new TestResponse<LeadTimeForChangesModel>();
             LeadTimeForChangesModel model = await httpResponse.GetResponse(Client, url);
 

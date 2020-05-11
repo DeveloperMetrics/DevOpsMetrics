@@ -34,10 +34,11 @@ namespace DevOpsMetrics.Tests.Service
             string repositoryId = "SamLearnsAzure";
             string masterBranch = "refs/heads/master";
             string buildId = "3673"; //SamLearnsAzure.CI
+            int numberOfDays = 7;
 
             //Act
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-            LeadTimeForChangesModel model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, organization, project, repositoryId, masterBranch, buildId);
+            LeadTimeForChangesModel model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, organization, project, repositoryId, masterBranch, buildId, numberOfDays);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -50,7 +51,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("abc", model.PullRequests[0].Commits[0].commitId);
             Assert.IsTrue(model.PullRequests[0].Commits[0].date >= DateTime.MinValue);
             Assert.AreEqual("name1", model.PullRequests[0].Commits[0].name);
-            Assert.AreEqual(1, Math.Round(model.PullRequests[0].Duration.TotalMinutes,0));
+            Assert.AreEqual(1, Math.Round(model.PullRequests[0].Duration.TotalMinutes, 0));
             Assert.AreEqual(33f, model.PullRequests[0].DurationPercent);
             Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
             Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
@@ -69,10 +70,11 @@ namespace DevOpsMetrics.Tests.Service
             string repo = "devopsmetrics";
             string masterBranch = "master";
             string workflowId = "1162561";
+            int numberOfDays = 7;
 
             //Act
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-            LeadTimeForChangesModel model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, owner, repo, masterBranch, workflowId);
+            LeadTimeForChangesModel model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, owner, repo, masterBranch, workflowId, numberOfDays);
 
             //Assert
             Assert.IsTrue(model != null);

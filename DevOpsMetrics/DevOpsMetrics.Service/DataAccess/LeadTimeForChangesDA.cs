@@ -1,21 +1,18 @@
 ﻿using DevOpsMetrics.Core;
-using DevOpsMetrics.Service.Models;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.DataAccess
 {
     public class LeadTimeForChangesDA
     {
-        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string masterBranch, string buildId)
+        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string masterBranch, string buildId, int numberOfDays)
         {
-            int numberOfDays = 30;
             LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
             List<PullRequestModel> pullRequests = new List<PullRequestModel>();
             if (getSampleData == false)
@@ -125,9 +122,8 @@ namespace DevOpsMetrics.Service.DataAccess
             }
         }
 
-        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string masterBranch, string workflowId)
+        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string masterBranch, string workflowId, int numberOfDays)
         {
-            int numberOfDays = 30;
             LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
             List<PullRequestModel> pullRequests = new List<PullRequestModel>();
             if (getSampleData == false)
