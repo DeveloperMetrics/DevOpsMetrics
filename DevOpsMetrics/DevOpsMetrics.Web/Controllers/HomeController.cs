@@ -56,7 +56,7 @@ namespace DevOpsMetrics.Web.Controllers
         {
             int numberOfDeployments = 20;
             int numberOfDays = 30;
-            bool getSampleData = true;
+            bool getSampleData = false;
             ServiceApiClient serviceApiClient = new ServiceApiClient(_configuration);
             List<DeploymentFrequencyModel> items = new List<DeploymentFrequencyModel>();
             

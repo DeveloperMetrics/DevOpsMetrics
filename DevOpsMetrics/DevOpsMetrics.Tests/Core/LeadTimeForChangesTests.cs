@@ -25,9 +25,9 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessLeadTimeForChanges(leadTimeForChangesList, pipelineName, numberOfDays);
-
+  
             //Assert
-            Assert.AreEqual(0.03125f, result);
+            Assert.AreEqual(1.3333, Math.Round((double)result, 4));
         }
 
         [TestMethod]
@@ -60,14 +60,17 @@ namespace DevOpsMetrics.Tests.Core
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-2), new TimeSpan(1, 0, 0)),
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-3),new TimeSpan(0, 40, 0)),
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-4), new TimeSpan(0, 50, 0)),
-                new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-14),  new TimeSpan(12, 0, 0)) //this record should be out of range
+                new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-34),  new TimeSpan(12, 0, 0)) //this record should be out of range
             };
 
             //Act
             float result = metrics.ProcessLeadTimeForChanges(leadTimeForChangesList, pipelineName, numberOfDays);
+            string rating = metrics.GetLeadTimeForChangesRating(result);
 
             //Assert
-            Assert.AreEqual(0.119791664f, result);
+            Assert.AreEqual(0.9524, Math.Round((double)result, 4));
+            Assert.AreEqual("High", rating);
+
         }
 
       }

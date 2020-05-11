@@ -66,7 +66,7 @@ namespace DevOpsMetrics.Tests.Core
             float result = metrics.ProcessDeploymentFrequency(deploymentFrequencyList, pipelineName, numberOfDays);
 
             //Assert
-            Assert.AreEqual(0.71428573f, result);
+            Assert.AreEqual(0.7143f, result);
         }
 
         [TestMethod]

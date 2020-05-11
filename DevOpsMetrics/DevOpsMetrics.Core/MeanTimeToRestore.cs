@@ -52,6 +52,8 @@ namespace DevOpsMetrics.Core
                 meanTimeForChanges = (float)totalMinutes / (float)items.Count;
             }
 
+            meanTimeForChanges = (float)Math.Round((double)meanTimeForChanges, 4);
+
             return meanTimeForChanges;
         }
 

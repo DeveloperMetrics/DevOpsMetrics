@@ -33,19 +33,6 @@
 </div>
 <br />
 <div class="metricSpan">
-    <b>Lead time for changes:</b> @Model.AverageLeadTimeForChanges.ToString("0.0") hours<br />
+    <b>Lead time for changes:</b> @Model.AverageLeadTimeForChanges.ToString("0.0") hours (over last 30 days)<br />
     <b>Lead time for changes ranking:</b> @Model.AverageLeadTimeForChangesRating
 </div>
-
-@*<div>
-        <h4><img src="~/images/AzureDevops-icon.png" style="width:32px;" />&nbsp; Azure DevOps - @Model.ProjectName</h4>
-        @foreach (LeadTimeForChangesModel item in Model.LeadTimeForChangesList)
-        {
-            <div class="metricSpan">
-                <b>Branch:</b> @item.Branch<br />
-                <b>Lead time for changes:</b> @item.Duration.TotalHours hours<br />
-                <b>Lead time for changes ranking:</b> ????
-            </div>
-        }
-    </div>
-    <br />*@

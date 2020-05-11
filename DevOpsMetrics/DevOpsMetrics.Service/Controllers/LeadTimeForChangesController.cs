@@ -12,7 +12,7 @@ namespace DevOpsMetrics.Service.Controllers
     {
 
         [HttpGet("GetAzureDevOpsLeadTimeForChanges")]
-        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string branch, string buildId)
+        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string branch, string buildId, int numberOfDays = 30)
         {
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
             LeadTimeForChangesModel leadTimeForChanges = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, organization, project, repositoryId, branch, buildId);
@@ -20,7 +20,7 @@ namespace DevOpsMetrics.Service.Controllers
         }
 
         [HttpGet("GetGitHubLeadTimeForChanges")]
-        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimeForChanges(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowId)
+        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimeForChanges(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowId, int numberOfDays = 30)
         {
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
             LeadTimeForChangesModel leadTimeForChanges = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, owner, repo, branch, workflowId);

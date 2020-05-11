@@ -39,17 +39,19 @@ namespace DevOpsMetrics.Core
             List<KeyValuePair<DateTime, TimeSpan>> items = GetLeadTimeForChanges(pipelineName, numberOfDays);
 
             //Add up the total minutes
-            double totalDays= 0;
+            double totalHours = 0;
             foreach (KeyValuePair<DateTime, TimeSpan> item in items)
             {
-                totalDays += item.Value.TotalDays;
+                totalHours += item.Value.TotalHours;
             }
             //Calculate the lead time for changes per day
             float leadTimeForChanges = 0;
             if (items.Count > 0)
             {
-                leadTimeForChanges = (float)totalDays / (float)items.Count;
+                leadTimeForChanges = (float)items.Count / (float)totalHours;
             }
+
+            leadTimeForChanges = (float)Math.Round((double)leadTimeForChanges, 4);
 
             return leadTimeForChanges;
         }
