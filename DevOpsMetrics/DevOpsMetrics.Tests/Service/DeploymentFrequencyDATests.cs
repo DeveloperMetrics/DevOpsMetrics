@@ -34,7 +34,7 @@ namespace DevOpsMetrics.Tests.Service
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             string buildId = "3673"; //SamLearnsAzure.CI
-            int numberOfDays = 7;
+            int numberOfDays = 30;
 
             //Act
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
@@ -58,7 +58,7 @@ namespace DevOpsMetrics.Tests.Service
             string branch = "master";
             string workflowName = "samsfeatureflags CI/CD";
             string workflowId = "108084";
-            int numberOfDays = 7;
+            int numberOfDays = 30;
 
             //Act
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();

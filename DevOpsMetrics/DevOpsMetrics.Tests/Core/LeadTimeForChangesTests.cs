@@ -27,7 +27,7 @@ namespace DevOpsMetrics.Tests.Core
             float result = metrics.ProcessLeadTimeForChanges(leadTimeForChangesList, pipelineName, numberOfDays);
 
             //Assert
-            Assert.AreEqual(45f, result);
+            Assert.AreEqual(0.03125f, result);
         }
 
         [TestMethod]
@@ -52,7 +52,7 @@ namespace DevOpsMetrics.Tests.Core
             //Arrange
             LeadTimeForChanges metrics = new LeadTimeForChanges();
             string pipelineName = "TestPipeline.CI";
-            int numberOfDays = 7;
+            int numberOfDays = 30;
             List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, new TimeSpan(2, 0, 0)),
@@ -67,7 +67,7 @@ namespace DevOpsMetrics.Tests.Core
             float result = metrics.ProcessLeadTimeForChanges(leadTimeForChangesList, pipelineName, numberOfDays);
 
             //Assert
-            Assert.AreEqual(63f, result);
+            Assert.AreEqual(0.119791664f, result);
         }
 
       }

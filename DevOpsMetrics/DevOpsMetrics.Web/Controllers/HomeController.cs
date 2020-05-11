@@ -24,7 +24,7 @@ namespace DevOpsMetrics.Web.Controllers
         public async Task<IActionResult> Index()
         {
             int numberOfDeployments = 20;
-            int numberOfDays = 7;
+            int numberOfDays = 30;
             bool getSampleData = false;
             ServiceApiClient serviceAPIClient = new ServiceApiClient(_configuration);
             List<LeadTimeForChangesModel> items = new List<LeadTimeForChangesModel>();
@@ -55,7 +55,7 @@ namespace DevOpsMetrics.Web.Controllers
         public async Task<IActionResult> DeploymentFrequency()
         {
             int numberOfDeployments = 20;
-            int numberOfDays = 7;
+            int numberOfDays = 30;
             bool getSampleData = true;
             ServiceApiClient serviceApiClient = new ServiceApiClient(_configuration);
             List<DeploymentFrequencyModel> items = new List<DeploymentFrequencyModel>();

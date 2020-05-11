@@ -48,7 +48,7 @@ namespace DevOpsMetrics.Tests.Service
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             string buildId = "3673"; //SamLearnsAzure.CI
-            int numberOfDays = 7;
+            int numberOfDays = 30;
             DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
@@ -82,7 +82,7 @@ namespace DevOpsMetrics.Tests.Service
             string branch = "master";
             string workflowName = "samsfeatureflags CI/CD";
             string workflowId = "108084";
-            int numberOfDays = 7;
+            int numberOfDays = 30;
             DeploymentFrequencyController controller = new DeploymentFrequencyController();
 
             //Act
@@ -116,7 +116,7 @@ namespace DevOpsMetrics.Tests.Service
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             string buildId = "3673"; //SamLearnsAzure.CI
-            int numberOfDays = 7;
+            int numberOfDays = 30;
 
             //Act
             string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}";
@@ -151,7 +151,7 @@ namespace DevOpsMetrics.Tests.Service
             string branch = "master";
             string workflowName = "samsfeatureflags CI/CD";
             string workflowId = "108084";
-            int numberOfDays = 7;
+            int numberOfDays = 30;
 
             //Act
             string url = $"/api/DeploymentFrequency/GetGitHubDeploymentFrequency?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&numberOfDays={numberOfDays}";
