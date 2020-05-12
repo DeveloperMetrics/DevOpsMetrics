@@ -54,6 +54,7 @@ namespace DevOpsMetrics.Web.Controllers
 
         public async Task<IActionResult> DeploymentFrequency()
         {
+            //TODO: Move variables to a configuration file or database
             int maxNumberOfItems = 20;
             int numberOfDays = 30;
             bool getSampleData = false;
@@ -61,7 +62,6 @@ namespace DevOpsMetrics.Web.Controllers
             List<DeploymentFrequencyModel> items = new List<DeploymentFrequencyModel>();
 
             //Azure DevOps 1
-            //TODO: Move variables
             string patToken = _configuration["AppSettings:PatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
@@ -75,7 +75,6 @@ namespace DevOpsMetrics.Web.Controllers
             }
 
             //Azure DevOps 2
-            //TODO: Move variables
             string patToken2 = _configuration["AppSettings:PatToken"];
             string organization2 = "samsmithnz";
             string project2 = "PartsUnlimited";
@@ -89,7 +88,6 @@ namespace DevOpsMetrics.Web.Controllers
             }
 
             //GitHub 1
-            //TODO: Move variables
             string clientId = "";
             string clientSecret = "";
             string owner = "samsmithnz";
@@ -104,7 +102,6 @@ namespace DevOpsMetrics.Web.Controllers
             }
 
             //GitHub 2
-            //TODO: Move variables
             string clientId2 = "";
             string clientSecret2 = "";
             string owner2 = "samsmithnz";

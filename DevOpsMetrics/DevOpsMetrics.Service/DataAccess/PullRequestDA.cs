@@ -28,7 +28,7 @@ namespace DevOpsMetrics.Service.DataAccess
         {
             //https://developer.GitHub.com/v3/pulls/#list-pull-requests
             //GET /repos/:owner/:repo/pulls
-            string url = $"https://api.github.com/repos/{owner}/{repo}/pulls?state=all&head={branch}";
+            string url = $"https://api.github.com/repos/{owner}/{repo}/pulls?state=all&head={branch}&per_page=100";
             string response = await MessageUtility.SendGitHubMessage(url, clientId, clientSecret);
             
             List<GitHubPR> prs = new List<GitHubPR>();
@@ -55,7 +55,7 @@ namespace DevOpsMetrics.Service.DataAccess
         {
             //https://developer.GitHub.com/v3/pulls/#list-commits-on-a-pull-request
             //GET /repos/:owner/:repo/pulls/:pull_number/commits
-            string url = $"https://api.github.com/repos/{owner}/{repo}/pulls/{pull_number}/commits";
+            string url = $"https://api.github.com/repos/{owner}/{repo}/pulls/{pull_number}/commits?per_page=100";
             string response = await MessageUtility.SendGitHubMessage(url, clientId, clientSecret);
 
             List<GitHubPRCommit> commits = new List<GitHubPRCommit>();

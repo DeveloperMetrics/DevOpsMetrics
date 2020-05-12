@@ -39,7 +39,7 @@ namespace DevOpsMetrics.Service.DataAccess
         public async Task<List<GitHubActionsRun>> GetGitHubActionRuns(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowId)
         {
             List<GitHubActionsRun> runs = new List<GitHubActionsRun>();
-            string url = $"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflowId}/runs";
+            string url = $"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflowId}/runs?per_page=100";
             string response = await MessageUtility.SendGitHubMessage(url, clientId, clientSecret);
             if (string.IsNullOrEmpty(response) == false)
             {
