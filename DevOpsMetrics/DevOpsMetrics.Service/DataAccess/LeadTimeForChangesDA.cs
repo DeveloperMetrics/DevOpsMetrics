@@ -94,6 +94,20 @@ namespace DevOpsMetrics.Service.DataAccess
                     pullRequests.Add(pullRequest);
                 }
 
+                float maxPullRequestDuration = 0f;
+                foreach (PullRequestModel item in pullRequests)
+                {
+                    if (item.Duration.TotalMinutes > maxPullRequestDuration)
+                    {
+                        maxPullRequestDuration = (float)item.Duration.TotalMinutes;
+                    }
+                }
+                foreach (PullRequestModel item in pullRequests)
+                {
+                    float interiumResult = (((float)item.Duration.TotalMinutes / maxPullRequestDuration) * 100f);
+                    item.DurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+                }
+
                 float leadTime = leadTimeForChanges.ProcessLeadTimeForChanges(leadTimeForChangesList, project, numberOfDays);
 
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
@@ -222,7 +236,6 @@ namespace DevOpsMetrics.Service.DataAccess
                     float interiumResult = (((float)item.Duration.TotalMinutes / maxPullRequestDuration) * 100f);
                     item.DurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
-
 
                 float leadTime = leadTimeForChanges.ProcessLeadTimeForChanges(leadTimeForChangesList, repo, numberOfDays);
 

@@ -27,7 +27,7 @@ namespace DevOpsMetrics.Tests.Service
         public async Task AzLeadTimeForChangesDAIntegrationTest()
         {
             //Arrange
-            bool getSampleData = true;
+            bool getSampleData = false;
             string patToken = Configuration["AppSettings:PatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";

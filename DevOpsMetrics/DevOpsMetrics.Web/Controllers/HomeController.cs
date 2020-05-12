@@ -24,8 +24,9 @@ namespace DevOpsMetrics.Web.Controllers
         public async Task<IActionResult> Index()
         {
             int maxNumberOfItems = 20;
-            int numberOfDays = 30;
+            int numberOfDays = 60;
             bool getSampleData = false;
+            bool getSampleData2 = true;
             ServiceApiClient serviceAPIClient = new ServiceApiClient(_configuration);
             List<LeadTimeForChangesModel> items = new List<LeadTimeForChangesModel>();
 
@@ -46,7 +47,7 @@ namespace DevOpsMetrics.Web.Controllers
             string repo2 = "DevOpsMetrics";
             string ghbranch2 = "master";
             string workflowId2 = "1162561";
-            LeadTimeForChangesModel newItem2 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, clientId2, clientSecret2, owner2, repo2, ghbranch2, workflowId2, numberOfDays, maxNumberOfItems);
+            LeadTimeForChangesModel newItem2 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData2, clientId2, clientSecret2, owner2, repo2, ghbranch2, workflowId2, numberOfDays, maxNumberOfItems);
             items.Add(newItem2);
 
             return View(items);
