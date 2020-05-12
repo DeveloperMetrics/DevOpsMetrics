@@ -119,7 +119,7 @@ namespace DevOpsMetrics.Tests.Service
         public async Task GHLeadTimeControllerIntegrationTest()
         {
             //Arrange
-            bool getSampleData = false;
+            bool getSampleData = true;
             string clientId = "";
             string clientSecret = "";
             string owner = "samsmithnz";
