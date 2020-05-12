@@ -55,7 +55,7 @@ namespace DevOpsMetrics.Tests.Service
             string clientId = "";
             string clientSecret = "";
             string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
+            string repo = "DevOpsMetrics";
             string branch = "master";
             string workflowName = "samsfeatureflags CI/CD";
             string workflowId = "108084";
