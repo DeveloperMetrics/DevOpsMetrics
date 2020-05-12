@@ -25,7 +25,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessLeadTimeForChanges(leadTimeForChangesList, pipelineName, numberOfDays);
-  
+
             //Assert
             Assert.AreEqual(0.75, Math.Round((double)result, 4));
         }
@@ -47,12 +47,12 @@ namespace DevOpsMetrics.Tests.Core
         }
 
         [TestMethod]
-        public void LeadTimeForChangesFiveSevenDaysTest()
+        public void LeadTimeForChangesFiveSevenDaysEliteTest()
         {
             //Arrange
             LeadTimeForChanges metrics = new LeadTimeForChanges();
             string pipelineName = "TestPipeline.CI";
-            int numberOfDays = 30;
+            int numberOfDays = 7;
             List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, new TimeSpan(2, 0, 0)),
@@ -70,8 +70,73 @@ namespace DevOpsMetrics.Tests.Core
             //Assert
             Assert.AreEqual(1.05, Math.Round((double)result, 4));
             Assert.AreEqual("Elite", rating);
-
         }
 
-      }
+        [TestMethod]
+        public void LeadTimeForChangesFiveSevenDaysHighTest()
+        {
+            //Arrange
+            LeadTimeForChanges metrics = new LeadTimeForChanges();
+            string pipelineName = "TestPipeline.CI";
+            int numberOfDays = 7;
+            List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>
+            {
+                new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, new TimeSpan(2, 0, 0,0,0)),
+                new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-34),  new TimeSpan(12, 0, 0)) //this record should be out of range
+            };
+
+            //Act
+            float result = metrics.ProcessLeadTimeForChanges(leadTimeForChangesList, pipelineName, numberOfDays);
+            string rating = metrics.GetLeadTimeForChangesRating(result);
+
+            //Assert
+            Assert.AreEqual(48.00, Math.Round((double)result, 4));
+            Assert.AreEqual("High", rating);
+        }
+
+        [TestMethod]
+        public void LeadTimeForChangesFiveSevenDaysMediumTest()
+        {
+            //Arrange
+            LeadTimeForChanges metrics = new LeadTimeForChanges();
+            string pipelineName = "TestPipeline.CI";
+            int numberOfDays = 7;
+            List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>
+            {
+                new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, new TimeSpan(8, 0, 0,0,0)),
+                new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-34),  new TimeSpan(12, 0, 0)) //this record should be out of range
+            };
+
+            //Act
+            float result = metrics.ProcessLeadTimeForChanges(leadTimeForChangesList, pipelineName, numberOfDays);
+            string rating = metrics.GetLeadTimeForChangesRating(result);
+
+            //Assert
+            Assert.AreEqual((24*8), Math.Round((double)result, 4));
+            Assert.AreEqual("Medium", rating);
+        }
+
+        [TestMethod]
+        public void LeadTimeForChangesFiveSevenDaysLowTest()
+        {
+            //Arrange
+            LeadTimeForChanges metrics = new LeadTimeForChanges();
+            string pipelineName = "TestPipeline.CI";
+            int numberOfDays = 7;
+            List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>
+            {
+                new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, new TimeSpan(31, 0, 0,0,0)),
+                new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-34),  new TimeSpan(12, 0, 0)) //this record should be out of range
+            };
+
+            //Act
+            float result = metrics.ProcessLeadTimeForChanges(leadTimeForChangesList, pipelineName, numberOfDays);
+            string rating = metrics.GetLeadTimeForChangesRating(result);
+
+            //Assert
+            Assert.AreEqual((24 * 31), Math.Round((double)result, 4));
+            Assert.AreEqual("Low", rating);
+        }
+
+    }
 }
