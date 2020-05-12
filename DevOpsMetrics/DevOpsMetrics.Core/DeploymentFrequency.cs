@@ -46,6 +46,8 @@ namespace DevOpsMetrics.Core
                 deploymentsPerDay = (float)items.Count / (float)numberOfDays;
             }
 
+            deploymentsPerDay = (float)Math.Round((double)deploymentsPerDay, 4);
+
             return deploymentsPerDay;
         }
 

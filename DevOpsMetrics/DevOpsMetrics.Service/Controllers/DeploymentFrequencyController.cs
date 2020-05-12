@@ -1,9 +1,6 @@
 ﻿using DevOpsMetrics.Service.DataAccess;
-using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
-using DevOpsMetrics.Service.Models.GitHub;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.Controllers
@@ -13,18 +10,18 @@ namespace DevOpsMetrics.Service.Controllers
     public class DeploymentFrequencyController : ControllerBase
     {
         [HttpGet("GetAzureDevOpsDeploymentFrequency")]
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems = 20)
         {
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays);
+            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
             return model;
         }
 
         [HttpGet("GetGitHubDeploymentFrequency")]
-        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems = 20)
         {
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays);
+            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
             return model;
         }
     }

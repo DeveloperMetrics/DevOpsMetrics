@@ -12,8 +12,9 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class DeploymentFrequencyDA
     {
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems)
         {
+            Utility<Build> utility = new Utility<Build>();
             if (getSampleData == false)
             {
                 float deploymentsPerDay = 0;
@@ -31,7 +32,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     Newtonsoft.Json.Linq.JArray value = buildListObject.value;
                     IEnumerable<AzureDevOpsBuild> azureDevOpsBuilds = JsonConvert.DeserializeObject<List<AzureDevOpsBuild>>(value.ToString());
                     azureDevOpsBuilds = ProcessAzureDevOpsBuilds(azureDevOpsBuilds.ToList());
-                    
+
                     List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
                     foreach (AzureDevOpsBuild item in azureDevOpsBuilds)
                     {
@@ -63,7 +64,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     IsAzureDevOps = true,
                     DeploymentName = buildName,
-                    BuildList = builds,
+                    BuildList = utility.GetLastNItems(builds, maxNumberOfItems),
                     DeploymentsPerDayMetric = deploymentsPerDay,
                     DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
                 };
@@ -75,7 +76,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     IsAzureDevOps = true,
                     DeploymentName = buildName,
-                    BuildList = GetSampleAzureDevOpsBuilds(),
+                    BuildList = utility.GetLastNItems(GetSampleAzureDevOpsBuilds(), maxNumberOfItems),
                     DeploymentsPerDayMetric = 10f,
                     DeploymentsPerDayMetricDescription = "Elite"
                 };
@@ -83,9 +84,9 @@ namespace DevOpsMetrics.Service.DataAccess
             }
         }
 
-        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays)
+        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems)
         {
-
+            Utility<Build> utility = new Utility<Build>();
             if (getSampleData == false)
             {
                 float deploymentsPerDay = 0;
@@ -131,7 +132,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     IsAzureDevOps = false,
                     DeploymentName = workflowName,
-                    BuildList = builds,
+                    BuildList = utility.GetLastNItems(builds, maxNumberOfItems),
                     DeploymentsPerDayMetric = deploymentsPerDay,
                     DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
                 };
@@ -143,7 +144,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     IsAzureDevOps = false,
                     DeploymentName = workflowName,
-                    BuildList = GetSampleGitHubBuilds(),
+                    BuildList = utility.GetLastNItems(GetSampleGitHubBuilds(), maxNumberOfItems),
                     DeploymentsPerDayMetric = 10f,
                     DeploymentsPerDayMetricDescription = "Elite"
                 };

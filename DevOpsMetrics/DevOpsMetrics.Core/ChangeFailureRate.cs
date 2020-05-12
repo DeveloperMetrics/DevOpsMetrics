@@ -55,6 +55,8 @@ namespace DevOpsMetrics.Core
                 changeFailureRate = (float)successfulCount / (float)items.Count;
             }
 
+            changeFailureRate = (float)Math.Round((double)changeFailureRate, 4);
+
             return changeFailureRate;
         }
 
