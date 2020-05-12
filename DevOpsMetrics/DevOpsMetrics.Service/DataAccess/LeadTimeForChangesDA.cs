@@ -288,7 +288,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     Commits = CreateCommitsSample(1),
                     DurationPercent = 33,
                     StartDateTime = DateTime.Now.AddDays(-7),
-                    EndDateTime = DateTime.Now.AddDays(-7).AddMinutes(1),
+                    EndDateTime = DateTime.Now.AddDays(-7).AddHours(1),
                     Url = url
                 });
             prs.Add(

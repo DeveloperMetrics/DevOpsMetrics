@@ -27,7 +27,7 @@ namespace DevOpsMetrics.Tests.Core
             float result = metrics.ProcessLeadTimeForChanges(leadTimeForChangesList, pipelineName, numberOfDays);
   
             //Assert
-            Assert.AreEqual(1.3333, Math.Round((double)result, 4));
+            Assert.AreEqual(0.75, Math.Round((double)result, 4));
         }
 
         [TestMethod]
@@ -68,8 +68,8 @@ namespace DevOpsMetrics.Tests.Core
             string rating = metrics.GetLeadTimeForChangesRating(result);
 
             //Assert
-            Assert.AreEqual(0.9524, Math.Round((double)result, 4));
-            Assert.AreEqual("High", rating);
+            Assert.AreEqual(1.05, Math.Round((double)result, 4));
+            Assert.AreEqual("Elite", rating);
 
         }
 

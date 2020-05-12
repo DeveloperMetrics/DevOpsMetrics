@@ -16,6 +16,13 @@ namespace DevOpsMetrics.Core
             DeploymentFrequencyList = new List<KeyValuePair<DateTime, DateTime>>();
         }
 
+        /// <summary>
+        /// Add and calculate a deployment frequency list to return the frequency of deployments
+        /// </summary>
+        /// <param name="deploymentFrequencyList"></param>
+        /// <param name="pipelineName"></param>
+        /// <param name="numberOfDays"></param>
+        /// <returns></returns>
         public float ProcessDeploymentFrequency(List<KeyValuePair<DateTime, DateTime>> deploymentFrequencyList, string pipelineName, int numberOfDays)
         {
             if (deploymentFrequencyList != null)

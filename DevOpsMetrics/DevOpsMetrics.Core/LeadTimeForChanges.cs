@@ -48,7 +48,7 @@ namespace DevOpsMetrics.Core
             float leadTimeForChanges = 0;
             if (items.Count > 0)
             {
-                leadTimeForChanges = (float)items.Count / (float)totalHours;
+                leadTimeForChanges = (float)totalHours / (float)items.Count;
             }
 
             leadTimeForChanges = (float)Math.Round((double)leadTimeForChanges, 4);
