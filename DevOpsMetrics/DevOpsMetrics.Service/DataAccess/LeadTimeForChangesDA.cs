@@ -256,7 +256,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     ProjectName = repo,
                     IsAzureDevOps = false,
-                    AverageLeadTimeForChanges = 12f,
+                    AverageLeadTimeForChanges = 20.33f,
                     AverageLeadTimeForChangesRating = "Elite",
                     PullRequests = CreatePullRequestsSample(false),
                 };
