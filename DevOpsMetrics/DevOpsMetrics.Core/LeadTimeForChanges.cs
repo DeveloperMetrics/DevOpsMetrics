@@ -69,7 +69,11 @@ namespace DevOpsMetrics.Core
             float monthlyDeployment = 24f * 30f;
 
             string result = "";
-            if (leadTimeForChangesInHours < dailyDeployment) //less than one day
+            if (leadTimeForChangesInHours <= 0f) //no rating
+            {
+                result = "None";
+            }
+            else if (leadTimeForChangesInHours < dailyDeployment) //less than one day
             {
                 result = "Elite";
             }

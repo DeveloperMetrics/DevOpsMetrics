@@ -59,7 +59,7 @@ namespace DevOpsMetrics.Web.Controllers
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
+            string repo = "SamsFeatureFlags";
             string ghbranch = "master";
             //string workflowName = "SamsFeatureFlags.CI";
             string workflowId = "108084";
@@ -125,7 +125,7 @@ namespace DevOpsMetrics.Web.Controllers
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
+            string repo = "SamsFeatureFlags";
             string ghbranch = "master";
             string workflowName = "SamsFeatureFlags.CI";
             string workflowId = "108084";
@@ -191,7 +191,7 @@ namespace DevOpsMetrics.Web.Controllers
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
+            string repo = "SamsFeatureFlags";
             string ghbranch = "master";
             //string workflowName = "SamsFeatureFlags.CI";
             string workflowId = "108084";

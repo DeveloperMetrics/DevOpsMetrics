@@ -72,7 +72,11 @@ namespace DevOpsMetrics.Core
             float monthlyDeployment = 1f / 30f;
 
             string result = "";
-            if (deploymentsPerDay > dailyDeployment) //NOTE: Does not capture on-demand deployments
+            if (deploymentsPerDay <= 0f) 
+            {
+                result = "None";
+            }
+            else if (deploymentsPerDay > dailyDeployment) //NOTE: Does not capture on-demand deployments
             {
                 result = "Elite";
             }

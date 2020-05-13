@@ -19,7 +19,19 @@
 @* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
 <div class="chartContainer vertical flat">
     <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.DeploymentName</h4>
-    @if (Model.RateLimitHit == false)
+    @if (Model.RateLimitHit == true)
+    {
+        <div style="height:100px">
+            <span>API rate limit has been reached, please try again later</span>
+        </div>
+    }
+    else if (Model.BuildList.Count == 0)
+    {
+        <div style="height:100px">
+            <span>There is no data to display for this period</span>
+        </div>
+    }
+    else
     {
         foreach (Build item in Model.BuildList)
         {
@@ -33,10 +45,6 @@
                 </div>
             </a>
         }
-    }
-    else
-    {
-        <span>API rate limit has been reached, please try again later</span>
     }
 </div>
 <br />
