@@ -114,8 +114,8 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     ProjectName = project,
                     IsAzureDevOps = true,
-                    AverageLeadTimeForChanges = leadTime,
-                    AverageLeadTimeForChangesRating = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
+                    LeadTimeForChangesMetric = leadTime,
+                    LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
                     PullRequests = pullRequests,
                 };
 
@@ -127,8 +127,8 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     ProjectName = project,
                     IsAzureDevOps = true,
-                    AverageLeadTimeForChanges = 12f,
-                    AverageLeadTimeForChangesRating = "Elite",
+                    LeadTimeForChangesMetric = 12f,
+                    LeadTimeForChangesMetricDescription = "Elite",
                     PullRequests = CreatePullRequestsSample(true),
                 };
 
@@ -243,8 +243,8 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     ProjectName = repo,
                     IsAzureDevOps = false,
-                    AverageLeadTimeForChanges = leadTime,
-                    AverageLeadTimeForChangesRating = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
+                    LeadTimeForChangesMetric = leadTime,
+                    LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
                     PullRequests = pullRequests,
                 };
 
@@ -256,8 +256,8 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     ProjectName = repo,
                     IsAzureDevOps = false,
-                    AverageLeadTimeForChanges = 20.33f,
-                    AverageLeadTimeForChangesRating = "Elite",
+                    LeadTimeForChangesMetric = 20.33f,
+                    LeadTimeForChangesMetricDescription = "Elite",
                     PullRequests = CreatePullRequestsSample(false),
                 };
 

@@ -8,6 +8,7 @@ namespace DevOpsMetrics.Service.Models.Common
         public string DeploymentName { get; set; }
         public bool IsAzureDevOps { get; set; }
         public List<Build> BuildList { get; set; }
+       
         private float _deploymentsPerDayMetric;
         public float DeploymentsPerDayMetric
         {
