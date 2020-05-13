@@ -6,6 +6,7 @@ namespace DevOpsMetrics.Service.Models.Common
     public class LeadTimeForChangesModel
     {
         public string ProjectName { get; set; }
+        public int NumberOfDays { get; set; }
         public bool IsAzureDevOps { get; set; }
         public List<PullRequestModel> PullRequests { get; set; }
 

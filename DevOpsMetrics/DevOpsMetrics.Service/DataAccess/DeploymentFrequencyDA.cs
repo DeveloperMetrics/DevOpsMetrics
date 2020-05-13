@@ -66,7 +66,8 @@ namespace DevOpsMetrics.Service.DataAccess
                     DeploymentName = buildName,
                     BuildList = utility.GetLastNItems(builds, maxNumberOfItems),
                     DeploymentsPerDayMetric = deploymentsPerDay,
-                    DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
+                    DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
+                    NumberOfDays = numberOfDays
                 };
                 return model;
             }
@@ -78,8 +79,9 @@ namespace DevOpsMetrics.Service.DataAccess
                     DeploymentName = buildName,
                     BuildList = utility.GetLastNItems(GetSampleAzureDevOpsBuilds(), maxNumberOfItems),
                     DeploymentsPerDayMetric = 10f,
-                    DeploymentsPerDayMetricDescription = "Elite"
-                };
+                    DeploymentsPerDayMetricDescription = "Elite",
+                    NumberOfDays = numberOfDays
+    };
                 return model;
             }
         }
@@ -134,7 +136,8 @@ namespace DevOpsMetrics.Service.DataAccess
                     DeploymentName = workflowName,
                     BuildList = utility.GetLastNItems(builds, maxNumberOfItems),
                     DeploymentsPerDayMetric = deploymentsPerDay,
-                    DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
+                    DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
+                    NumberOfDays = numberOfDays
                 };
                 return model;
             }
@@ -146,7 +149,8 @@ namespace DevOpsMetrics.Service.DataAccess
                     DeploymentName = workflowName,
                     BuildList = utility.GetLastNItems(GetSampleGitHubBuilds(), maxNumberOfItems),
                     DeploymentsPerDayMetric = 10f,
-                    DeploymentsPerDayMetricDescription = "Elite"
+                    DeploymentsPerDayMetricDescription = "Elite",
+                    NumberOfDays = numberOfDays
                 };
                 return model;
             }

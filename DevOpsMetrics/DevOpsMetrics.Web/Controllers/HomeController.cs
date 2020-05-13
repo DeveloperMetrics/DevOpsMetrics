@@ -42,7 +42,6 @@ namespace DevOpsMetrics.Web.Controllers
                 items.Add(newItem1);
             }
 
-
             //Azure DevOps 2
             string patToken2 = _configuration["AppSettings:PatToken"];
             string organization2 = "samsmithnz";

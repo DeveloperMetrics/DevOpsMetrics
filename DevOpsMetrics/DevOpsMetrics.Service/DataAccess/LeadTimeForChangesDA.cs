@@ -117,6 +117,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     LeadTimeForChangesMetric = leadTime,
                     LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
                     PullRequests = pullRequests,
+                    NumberOfDays = numberOfDays
                 };
 
                 return model;
@@ -130,6 +131,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     LeadTimeForChangesMetric = 12f,
                     LeadTimeForChangesMetricDescription = "Elite",
                     PullRequests = CreatePullRequestsSample(true),
+                    NumberOfDays = numberOfDays
                 };
 
                 return model;
@@ -246,6 +248,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     LeadTimeForChangesMetric = leadTime,
                     LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
                     PullRequests = pullRequests,
+                    NumberOfDays = numberOfDays
                 };
 
                 return model;
@@ -259,6 +262,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     LeadTimeForChangesMetric = 20.33f,
                     LeadTimeForChangesMetricDescription = "Elite",
                     PullRequests = CreatePullRequestsSample(false),
+                    NumberOfDays = numberOfDays
                 };
 
                 return model;
