@@ -25,7 +25,7 @@ namespace DevOpsMetrics.Web.Controllers
         {
             int maxNumberOfItems = 20;
             int numberOfDays = 60;
-            bool getSampleData = false;
+            bool getSampleData = true;
             ServiceApiClient serviceAPIClient = new ServiceApiClient(Configuration);
             List<LeadTimeForChangesModel> items = new List<LeadTimeForChangesModel>();
 
@@ -90,8 +90,8 @@ namespace DevOpsMetrics.Web.Controllers
         {
             //TODO: Move variables to a configuration file or database
             int maxNumberOfItems = 20;
-            int numberOfDays = 30;
-            bool getSampleData = false;
+            int numberOfDays = 60;
+            bool getSampleData = true;
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             List<DeploymentFrequencyModel> items = new List<DeploymentFrequencyModel>();
 
