@@ -152,7 +152,6 @@ namespace DevOpsMetrics.Web.Controllers
             return View(items);
         }
 
-
         public async Task<IActionResult> LeadTimeForChanges()
         {
             int maxNumberOfItems = 20;

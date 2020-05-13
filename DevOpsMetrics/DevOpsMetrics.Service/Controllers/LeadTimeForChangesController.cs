@@ -10,7 +10,6 @@ namespace DevOpsMetrics.Service.Controllers
     [ApiController]
     public class LeadTimeForChangesController : ControllerBase
     {
-
         [HttpGet("GetAzureDevOpsLeadTimeForChanges")]
         public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string branch, string buildId, int numberOfDays, int maxNumberOfItems = 20)
         {
@@ -57,6 +56,5 @@ namespace DevOpsMetrics.Service.Controllers
             return model;
 
         }
-
     }
 }
