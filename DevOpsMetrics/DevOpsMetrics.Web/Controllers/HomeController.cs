@@ -26,7 +26,7 @@ namespace DevOpsMetrics.Web.Controllers
             int maxNumberOfItems = 20;
             int numberOfDays = 60;
             bool getSampleData = false;
-            bool getSampleData2 = true;
+            bool getSampleData2 = false;
             ServiceApiClient serviceAPIClient = new ServiceApiClient(_configuration);
             List<LeadTimeForChangesModel> items = new List<LeadTimeForChangesModel>();
 

@@ -205,7 +205,7 @@ namespace DevOpsMetrics.Tests.Service
             string repositoryId = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildId = "3673"; //SamLearnsAzure.CI
-            int numberOfDays = 7;
+            int numberOfDays = 30;
             int maxNumberOfItems = 20;
 
             //Act            
