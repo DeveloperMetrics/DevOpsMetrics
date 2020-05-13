@@ -200,20 +200,24 @@ namespace DevOpsMetrics.Tests.Service
             DeploymentFrequencyModel model = await httpResponse.GetResponse(Client, url);
 
             //Assert
-            Assert.AreEqual(true, model.IsAzureDevOps);
-            Assert.AreEqual(buildName, model.DeploymentName);
-            Assert.IsTrue(model.DeploymentsPerDayMetric >= 0f);
-            Assert.IsTrue(string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription) == false);
-            Assert.IsTrue(model.BuildList.Count >= 0);
-            if (model.BuildList.Count > 0)
+            Assert.IsTrue(model != null);
+            if (model.RateLimitHit == false)
             {
-                Assert.IsTrue(model.BuildList[0].BuildDurationPercent >= 0f);
-                Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].BuildNumber) == false);
-                Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Branch) == false);
-                Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Status) == false);
-                Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Url) == false);
-                Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
-                Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
+                Assert.AreEqual(true, model.IsAzureDevOps);
+                Assert.AreEqual(buildName, model.DeploymentName);
+                Assert.IsTrue(model.DeploymentsPerDayMetric >= 0f);
+                Assert.IsTrue(string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription) == false);
+                Assert.IsTrue(model.BuildList.Count >= 0);
+                if (model.BuildList.Count > 0)
+                {
+                    Assert.IsTrue(model.BuildList[0].BuildDurationPercent >= 0f);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].BuildNumber) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Branch) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Status) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Url) == false);
+                    Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
+                    Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
+                }
             }
         }
 
@@ -239,20 +243,24 @@ namespace DevOpsMetrics.Tests.Service
             DeploymentFrequencyModel model = await httpResponse.GetResponse(Client, url);
 
             //Assert
-            Assert.AreEqual(false, model.IsAzureDevOps);
-            Assert.AreEqual(workflowName, model.DeploymentName);
-            Assert.IsTrue(model.DeploymentsPerDayMetric >= 0f);
-            Assert.IsTrue(string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription) == false);
-            Assert.IsTrue(model.BuildList.Count >= 0);
-            if (model.BuildList.Count > 0)
+            Assert.IsTrue(model != null);
+            if (model.RateLimitHit == false)
             {
-                Assert.IsTrue(model.BuildList[0].BuildDurationPercent >= 0f);
-                Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].BuildNumber) == false);
-                Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Branch) == false);
-                Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Status) == false);
-                Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Url) == false);
-                Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
-                Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
+                Assert.AreEqual(false, model.IsAzureDevOps);
+                Assert.AreEqual(workflowName, model.DeploymentName);
+                Assert.IsTrue(model.DeploymentsPerDayMetric >= 0f);
+                Assert.IsTrue(string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription) == false);
+                Assert.IsTrue(model.BuildList.Count >= 0);
+                if (model.BuildList.Count > 0)
+                {
+                    Assert.IsTrue(model.BuildList[0].BuildDurationPercent >= 0f);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].BuildNumber) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Branch) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Status) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Url) == false);
+                    Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
+                    Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
+                }
             }
         }
 

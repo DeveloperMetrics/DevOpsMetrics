@@ -26,7 +26,6 @@ namespace DevOpsMetrics.Web.Controllers
             int maxNumberOfItems = 20;
             int numberOfDays = 60;
             bool getSampleData = false;
-            bool getSampleData2 = false;
             ServiceApiClient serviceAPIClient = new ServiceApiClient(_configuration);
             List<LeadTimeForChangesModel> items = new List<LeadTimeForChangesModel>();
 
@@ -38,7 +37,38 @@ namespace DevOpsMetrics.Web.Controllers
             string azBranch = "refs/heads/master";
             string buildId = "3673"; //SamLearnsAzure.CI
             LeadTimeForChangesModel newItem1 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, repositoryId, azBranch, buildId, numberOfDays, maxNumberOfItems);
-            items.Add(newItem1);
+            if (newItem1 != null)
+            {
+                items.Add(newItem1);
+            }
+
+
+            //Azure DevOps 2
+            string patToken2 = _configuration["AppSettings:PatToken"];
+            string organization2 = "samsmithnz";
+            string project2 = "PartsUnlimited";
+            string repositoryId2 = "PartsUnlimited";
+            string azBranch2 = "refs/heads/master";
+            string buildId2 = "75"; //SamLearnsAzure.CI
+            LeadTimeForChangesModel newItem2 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken2, organization2, project2, repositoryId2, azBranch2, buildId2, numberOfDays, maxNumberOfItems);
+            if (newItem2 != null)
+            {
+                items.Add(newItem2);
+            }
+
+            //GitHub 1
+            string clientId = "";
+            string clientSecret = "";
+            string owner = "samsmithnz";
+            string repo = "samsfeatureflags";
+            string ghbranch = "master";
+            //string workflowName = "SamsFeatureFlags.CI";
+            string workflowId = "108084";
+            LeadTimeForChangesModel newItem3 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret, owner, repo, ghbranch, workflowId, numberOfDays, maxNumberOfItems);
+            if (newItem3 != null)
+            {
+                items.Add(newItem3);
+            }
 
             //GitHub 2
             string clientId2 = "";
@@ -46,9 +76,13 @@ namespace DevOpsMetrics.Web.Controllers
             string owner2 = "samsmithnz";
             string repo2 = "DevOpsMetrics";
             string ghbranch2 = "master";
+            //string workflowName2 = "DevOpsMetrics.CI";
             string workflowId2 = "1162561";
-            LeadTimeForChangesModel newItem2 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData2, clientId2, clientSecret2, owner2, repo2, ghbranch2, workflowId2, numberOfDays, maxNumberOfItems);
-            items.Add(newItem2);
+            LeadTimeForChangesModel newItem4 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, clientId2, clientSecret2, owner2, repo2, ghbranch2, workflowId2, numberOfDays, maxNumberOfItems);
+            if (newItem4 != null)
+            {
+                items.Add(newItem4);
+            }
 
             return View(items);
         }
@@ -81,7 +115,7 @@ namespace DevOpsMetrics.Web.Controllers
             string project2 = "PartsUnlimited";
             string azBranch2 = "refs/heads/master";
             string buildName2 = "PartsUnlimited.CI";
-            string buildId2 = "75"; //"3673"; //SamLearnsAzure.CI
+            string buildId2 = "75"; //SamLearnsAzure.CI
             DeploymentFrequencyModel newItem2 = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken2, organization2, project2, azBranch2, buildName2, buildId2, numberOfDays, maxNumberOfItems);
             if (newItem2 != null)
             {
@@ -120,9 +154,70 @@ namespace DevOpsMetrics.Web.Controllers
         }
 
 
-        public IActionResult LeadTimeForChanges()
+        public async Task<IActionResult> LeadTimeForChanges()
         {
-            return View(Index());
+            int maxNumberOfItems = 20;
+            int numberOfDays = 60;
+            bool getSampleData = false;
+            ServiceApiClient serviceAPIClient = new ServiceApiClient(_configuration);
+            List<LeadTimeForChangesModel> items = new List<LeadTimeForChangesModel>();
+
+            //Azure DevOps 1
+            string patToken = _configuration["AppSettings:PatToken"];
+            string organization = "samsmithnz";
+            string project = "SamLearnsAzure";
+            string repositoryId = "SamLearnsAzure";
+            string azBranch = "refs/heads/master";
+            string buildId = "3673"; //SamLearnsAzure.CI
+            LeadTimeForChangesModel newItem1 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, repositoryId, azBranch, buildId, numberOfDays, maxNumberOfItems);
+            if (newItem1 != null)
+            {
+                items.Add(newItem1);
+            }
+
+
+            //Azure DevOps 2
+            string patToken2 = _configuration["AppSettings:PatToken"];
+            string organization2 = "samsmithnz";
+            string project2 = "PartsUnlimited";
+            string repositoryId2 = "PartsUnlimited";
+            string azBranch2 = "refs/heads/master";
+            string buildId2 = "75"; //SamLearnsAzure.CI
+            LeadTimeForChangesModel newItem2 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken2, organization2, project2, repositoryId2, azBranch2, buildId2, numberOfDays, maxNumberOfItems);
+            if (newItem2 != null)
+            {
+                items.Add(newItem2);
+            }
+
+            //GitHub 1
+            string clientId = "";
+            string clientSecret = "";
+            string owner = "samsmithnz";
+            string repo = "samsfeatureflags";
+            string ghbranch = "master";
+            //string workflowName = "SamsFeatureFlags.CI";
+            string workflowId = "108084";
+            LeadTimeForChangesModel newItem3 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret, owner, repo, ghbranch, workflowId, numberOfDays, maxNumberOfItems);
+            if (newItem3 != null)
+            {
+                items.Add(newItem3);
+            }
+
+            //GitHub 2
+            string clientId2 = "";
+            string clientSecret2 = "";
+            string owner2 = "samsmithnz";
+            string repo2 = "DevOpsMetrics";
+            string ghbranch2 = "master";
+            //string workflowName2 = "DevOpsMetrics.CI";
+            string workflowId2 = "1162561";
+            LeadTimeForChangesModel newItem4 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, clientId2, clientSecret2, owner2, repo2, ghbranch2, workflowId2, numberOfDays, maxNumberOfItems);
+            if (newItem4 != null)
+            {
+                items.Add(newItem4);
+            }
+
+            return View(items);
         }
 
         public IActionResult Privacy()

@@ -24,6 +24,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 }
                 using (HttpResponseMessage response = await client.GetAsync(url))
                 {
+                    //Throw a response exception
                     response.EnsureSuccessStatusCode();
                     if (response.IsSuccessStatusCode)
                     {
@@ -54,12 +55,22 @@ namespace DevOpsMetrics.Service.DataAccess
                 }
                 using (HttpResponseMessage response = await client.GetAsync(url))
                 {
+                    //Throw a response exception
                     response.EnsureSuccessStatusCode();
                     if (response.IsSuccessStatusCode)
                     {
                         responseBody = await response.Content.ReadAsStringAsync();
                         Console.WriteLine(responseBody);
                     }
+                    //else if (response.ReasonPhrase == "rate limit exceeded")
+                    //{
+                    //    //This is an error we want to bubble up in a user friendly way (i.e., not a 500)
+                    //}
+                    //else
+                    //{
+                    //    //Throw a response exception
+                    //    response.EnsureSuccessStatusCode();
+                    //}
                 }
             }
             return responseBody;

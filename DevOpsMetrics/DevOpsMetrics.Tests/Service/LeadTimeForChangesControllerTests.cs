@@ -215,27 +215,30 @@ namespace DevOpsMetrics.Tests.Service
 
             //Assert
             Assert.IsTrue(model != null);
-            Assert.AreEqual(project, model.ProjectName);
-            Assert.IsTrue(model.PullRequests.Count >= 0);
-            if (model.PullRequests.Count > 0)
+            if (model.RateLimitHit == false)
             {
-                Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].PullRequestId) == false);
-                Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Branch) == false);
-                Assert.IsTrue(model.PullRequests[0].BuildCount >= 0);
-                Assert.IsTrue(model.PullRequests[0].Commits.Count > 0);
-                if (model.PullRequests[0].Commits.Count > 0)
+                Assert.AreEqual(project, model.ProjectName);
+                Assert.IsTrue(model.PullRequests.Count >= 0);
+                if (model.PullRequests.Count > 0)
                 {
-                    Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Commits[0].commitId) == false);
-                    Assert.IsTrue(model.PullRequests[0].Commits[0].date >= DateTime.MinValue);
-                    Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Commits[0].name) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].PullRequestId) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Branch) == false);
+                    Assert.IsTrue(model.PullRequests[0].BuildCount >= 0);
+                    Assert.IsTrue(model.PullRequests[0].Commits.Count > 0);
+                    if (model.PullRequests[0].Commits.Count > 0)
+                    {
+                        Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Commits[0].commitId) == false);
+                        Assert.IsTrue(model.PullRequests[0].Commits[0].date >= DateTime.MinValue);
+                        Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Commits[0].name) == false);
+                    }
+                    Assert.IsTrue(Math.Round(model.PullRequests[0].Duration.TotalMinutes, 0) >= 0);
+                    Assert.IsTrue(model.PullRequests[0].DurationPercent >= 0);
+                    Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
+                    Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
                 }
-                Assert.IsTrue(Math.Round(model.PullRequests[0].Duration.TotalMinutes, 0) >= 0);
-                Assert.IsTrue(model.PullRequests[0].DurationPercent >= 0);
-                Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
-                Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
+                Assert.IsTrue(model.LeadTimeForChangesMetric >= 0);
+                Assert.IsTrue(string.IsNullOrEmpty(model.LeadTimeForChangesMetricDescription) == false);
             }
-            Assert.IsTrue(model.LeadTimeForChangesMetric >= 0);
-            Assert.IsTrue(string.IsNullOrEmpty(model.LeadTimeForChangesMetricDescription) == false);
         }
 
         [TestCategory("APITest")]
@@ -260,27 +263,30 @@ namespace DevOpsMetrics.Tests.Service
 
             //Assert
             Assert.IsTrue(model != null);
-            Assert.AreEqual(repo, model.ProjectName);
-            Assert.IsTrue(model.PullRequests.Count >= 0);
-            if (model.PullRequests.Count > 0)
+            if (model.RateLimitHit == false)
             {
-                Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].PullRequestId) == false);
-                Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Branch) == false);
-                Assert.IsTrue(model.PullRequests[0].BuildCount >= 0);
-                Assert.IsTrue(model.PullRequests[0].Commits.Count > 0);
-                if (model.PullRequests[0].Commits.Count > 0)
+                Assert.AreEqual(repo, model.ProjectName);
+                Assert.IsTrue(model.PullRequests.Count >= 0);
+                if (model.PullRequests.Count > 0)
                 {
-                    Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Commits[0].commitId) == false);
-                    Assert.IsTrue(model.PullRequests[0].Commits[0].date >= DateTime.MinValue);
-                    Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Commits[0].name) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].PullRequestId) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Branch) == false);
+                    Assert.IsTrue(model.PullRequests[0].BuildCount >= 0);
+                    Assert.IsTrue(model.PullRequests[0].Commits.Count > 0);
+                    if (model.PullRequests[0].Commits.Count > 0)
+                    {
+                        Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Commits[0].commitId) == false);
+                        Assert.IsTrue(model.PullRequests[0].Commits[0].date >= DateTime.MinValue);
+                        Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Commits[0].name) == false);
+                    }
+                    Assert.IsTrue(Math.Round(model.PullRequests[0].Duration.TotalMinutes, 0) >= 0);
+                    Assert.IsTrue(model.PullRequests[0].DurationPercent >= 0);
+                    Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
+                    Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
                 }
-                Assert.IsTrue(Math.Round(model.PullRequests[0].Duration.TotalMinutes, 0) >= 0);
-                Assert.IsTrue(model.PullRequests[0].DurationPercent >= 0);
-                Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
-                Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
+                Assert.IsTrue(model.LeadTimeForChangesMetric >= 0);
+                Assert.IsTrue(string.IsNullOrEmpty(model.LeadTimeForChangesMetricDescription) == false);
             }
-            Assert.IsTrue(model.LeadTimeForChangesMetric >= 0);
-            Assert.IsTrue(string.IsNullOrEmpty(model.LeadTimeForChangesMetricDescription) == false);
         }
 
     }
