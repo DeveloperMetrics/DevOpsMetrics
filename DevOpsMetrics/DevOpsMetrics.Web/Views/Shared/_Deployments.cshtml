@@ -39,8 +39,11 @@
     }
 </div>
 <br />
-<div class="metricSpan">
-    @*<b>Deployment frequency:</b> @Model.DeploymentsPerDayMetric.ToString("0.00") per day (last 30 days)<br />*@
-    <b>Deployment frequency:</b> @Model.DeploymentsToDisplayMetric.ToString("0.00") @Model.DeploymentsToDisplayUnit (last 30 days)<br />
-    <b>Deployment frequency ranking:</b> @Model.DeploymentsPerDayMetricDescription
-</div>
+@if (Model.RateLimitHit == false)
+{
+    <div class="metricSpan">
+        @*<b>Deployment frequency:</b> @Model.DeploymentsPerDayMetric.ToString("0.00") per day (last 30 days)<br />*@
+        <b>Deployment frequency:</b> @Model.DeploymentsToDisplayMetric.ToString("0.00") @Model.DeploymentsToDisplayUnit (last @Model.NumberOfDays days)<br />
+        <b>Deployment frequency ranking:</b> @Model.DeploymentsPerDayMetricDescription
+    </div>
+}
