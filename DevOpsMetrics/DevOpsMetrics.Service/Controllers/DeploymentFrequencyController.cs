@@ -47,7 +47,7 @@ namespace DevOpsMetrics.Service.Controllers
             {
                 if (ex.Message == "Response status code does not indicate success: 403 (rate limit exceeded).")
                 {
-                    model.DeploymentName = buildName;
+                    model.DeploymentName = workflowName;
                     model.RateLimitHit = true;
                 }
                 else
