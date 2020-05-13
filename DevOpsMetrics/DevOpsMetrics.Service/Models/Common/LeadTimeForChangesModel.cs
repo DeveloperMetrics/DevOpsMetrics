@@ -19,7 +19,7 @@ namespace DevOpsMetrics.Service.Models.Common
             {
                 _leadTimeForChangesMetric = value;
                 LeadTimeForChangesMetricDisplayMetric = value;
-                LeadTimeForChangesMetricDisplayUnit = "per day";
+                LeadTimeForChangesMetricDisplayUnit = "hours";
             }
         }
 

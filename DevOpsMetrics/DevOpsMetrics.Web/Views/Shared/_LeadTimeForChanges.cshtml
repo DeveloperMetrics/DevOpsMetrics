@@ -33,6 +33,6 @@
 </div>
 <br />
 <div class="metricSpan">
-    <b>Lead time for changes:</b> @Model.AverageLeadTimeForChanges.ToString("0.0") hours (over last 30 days)<br />
-    <b>Lead time for changes ranking:</b> @Model.AverageLeadTimeForChangesRating
+    <b>Lead time for changes:</b> @Model.LeadTimeForChangesMetricDisplayMetric.ToString("0.0") @Model.LeadTimeForChangesMetricDisplayUnit (over last 30 days)<br />
+    <b>Lead time for changes ranking:</b> @Model.LeadTimeForChangesMetricDescription
 </div>
