@@ -12,13 +12,13 @@ namespace DevOpsMetrics.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IConfiguration _configuration;
-        private readonly ILogger<HomeController> _logger;
+        private readonly IConfiguration Configuration;
+        private readonly ILogger<HomeController> Logger;
 
         public HomeController(IConfiguration configuration, ILogger<HomeController> logger)
         {
-            _configuration = configuration;
-            _logger = logger;
+            Configuration = configuration;
+            Logger = logger;
         }
 
         public async Task<IActionResult> Index()
@@ -26,11 +26,11 @@ namespace DevOpsMetrics.Web.Controllers
             int maxNumberOfItems = 20;
             int numberOfDays = 60;
             bool getSampleData = false;
-            ServiceApiClient serviceAPIClient = new ServiceApiClient(_configuration);
+            ServiceApiClient serviceAPIClient = new ServiceApiClient(Configuration);
             List<LeadTimeForChangesModel> items = new List<LeadTimeForChangesModel>();
 
             //Azure DevOps 1
-            string patToken = _configuration["AppSettings:PatToken"];
+            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string repositoryId = "SamLearnsAzure";
@@ -43,7 +43,7 @@ namespace DevOpsMetrics.Web.Controllers
             }
 
             //Azure DevOps 2
-            string patToken2 = _configuration["AppSettings:PatToken"];
+            string patToken2 = Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization2 = "samsmithnz";
             string project2 = "PartsUnlimited";
             string repositoryId2 = "PartsUnlimited";
@@ -56,8 +56,8 @@ namespace DevOpsMetrics.Web.Controllers
             }
 
             //GitHub 1
-            string clientId = "";
-            string clientSecret = "";
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
             string ghbranch = "master";
@@ -70,8 +70,8 @@ namespace DevOpsMetrics.Web.Controllers
             }
 
             //GitHub 2
-            string clientId2 = "";
-            string clientSecret2 = "";
+            string clientId2 = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret2 = Configuration["AppSettings:GitHubClientSecret"];
             string owner2 = "samsmithnz";
             string repo2 = "DevOpsMetrics";
             string ghbranch2 = "master";
@@ -92,11 +92,11 @@ namespace DevOpsMetrics.Web.Controllers
             int maxNumberOfItems = 20;
             int numberOfDays = 30;
             bool getSampleData = false;
-            ServiceApiClient serviceApiClient = new ServiceApiClient(_configuration);
+            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             List<DeploymentFrequencyModel> items = new List<DeploymentFrequencyModel>();
 
             //Azure DevOps 1
-            string patToken = _configuration["AppSettings:PatToken"];
+            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string azBranch = "refs/heads/master";
@@ -109,7 +109,7 @@ namespace DevOpsMetrics.Web.Controllers
             }
 
             //Azure DevOps 2
-            string patToken2 = _configuration["AppSettings:PatToken"];
+            string patToken2 = Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization2 = "samsmithnz";
             string project2 = "PartsUnlimited";
             string azBranch2 = "refs/heads/master";
@@ -122,8 +122,8 @@ namespace DevOpsMetrics.Web.Controllers
             }
 
             //GitHub 1
-            string clientId = "";
-            string clientSecret = "";
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
             string ghbranch = "master";
@@ -136,8 +136,8 @@ namespace DevOpsMetrics.Web.Controllers
             }
 
             //GitHub 2
-            string clientId2 = "";
-            string clientSecret2 = "";
+            string clientId2 = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret2 = Configuration["AppSettings:GitHubClientSecret"];
             string owner2 = "samsmithnz";
             string repo2 = "DevOpsMetrics";
             string ghbranch2 = "master";
@@ -158,11 +158,11 @@ namespace DevOpsMetrics.Web.Controllers
             int maxNumberOfItems = 20;
             int numberOfDays = 60;
             bool getSampleData = false;
-            ServiceApiClient serviceAPIClient = new ServiceApiClient(_configuration);
+            ServiceApiClient serviceAPIClient = new ServiceApiClient(Configuration);
             List<LeadTimeForChangesModel> items = new List<LeadTimeForChangesModel>();
 
             //Azure DevOps 1
-            string patToken = _configuration["AppSettings:PatToken"];
+            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string repositoryId = "SamLearnsAzure";
@@ -176,7 +176,7 @@ namespace DevOpsMetrics.Web.Controllers
 
 
             //Azure DevOps 2
-            string patToken2 = _configuration["AppSettings:PatToken"];
+            string patToken2 = Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization2 = "samsmithnz";
             string project2 = "PartsUnlimited";
             string repositoryId2 = "PartsUnlimited";
@@ -189,8 +189,8 @@ namespace DevOpsMetrics.Web.Controllers
             }
 
             //GitHub 1
-            string clientId = "";
-            string clientSecret = "";
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
             string ghbranch = "master";
@@ -203,8 +203,8 @@ namespace DevOpsMetrics.Web.Controllers
             }
 
             //GitHub 2
-            string clientId2 = "";
-            string clientSecret2 = "";
+            string clientId2 = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret2 = Configuration["AppSettings:GitHubClientSecret"];
             string owner2 = "samsmithnz";
             string repo2 = "DevOpsMetrics";
             string ghbranch2 = "master";

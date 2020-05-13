@@ -76,8 +76,8 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            string clientId = "";
-            string clientSecret = "";
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
             string branch = "master";
@@ -111,7 +111,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            string patToken = Configuration["AppSettings:PatToken"];
+            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
@@ -146,8 +146,8 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            string clientId = "";
-            string clientSecret = "";
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
             string branch = "master";
@@ -185,7 +185,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = false;
-            string patToken = Configuration["AppSettings:PatToken"];
+            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
@@ -227,8 +227,8 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = false;
-            string clientId = "";
-            string clientSecret = "";
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
             string branch = "master";
