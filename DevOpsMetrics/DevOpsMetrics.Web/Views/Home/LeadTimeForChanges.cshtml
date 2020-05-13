@@ -16,33 +16,37 @@
 
 <div class="row">
     <div class="col-md-12" style="font-size: 8pt;">
-        <b>What am I looking at?</b><br />
-        Deployment Frequency is a high performing DevOps metric. This page helps us to measure it across various projects in both Azure DevOps and GitHub<br />
-        <b>How does it work?</b><br />
-        We look at the number of successful pipeline runs<br />
-        <b>Assumptions/things we can't currently measure:</b><br />
-        The build is multi-stage, and leads to a deployment in a production environment. We only look at the master branch, ignoring feature branches (as these probably aren't deploying to production')<br />
-        <br />
-    </div>
-    <div class="col-md-12" style="font-size: 8pt;">
-        <b>Deployment frequency rating table</b><br />
-        <table class="table">
+        <hr />
+        <b>Lead time for changes performance rating table</b><br />
+        <table class="table table-bordered">
             <tr>
-                <td>Elite</td>
-                <td>Multiple deploys per day</td>
+                <th>Description</th>
+                <th>Elite</th>
+                <th>High</th>
+                <th>Medium</th>
+                <th>Low</th>
             </tr>
             <tr>
-                <td>High</td>
-                <td> Between once per day and once per week</td>
-            </tr>
-            <tr>
-                <td>Medium</td>
-                <td> Between once per week and once per month</td>
-            </tr>
-            <tr>
-                <td>Low</td>
-                <td> Between once per month and once every six months</td>
+                <td>For the primary application or service you work on, what is the lead time for changes - how long does it take to go from code committed to code successfully running in production</td>
+                <td>Less than one day</td>
+                <td>Between one day and one week</td>
+                <td>Between one week and one month</td>
+                <td>Between one month and six months</td>
             </tr>
         </table>
+    </div>
+    <div class="col-md-12" style="font-size: 8pt;">
+        <hr />
+        <b>FAQ</b><br />
+        <b>What am I looking at?</b><br />
+        Lead time for changes is a high performing DevOps metric to measure the time it takes to change a line of code and deploy it to production. This page helps us to measure it across various projects in both Azure DevOps and GitHub<br />
+        <b>How does it work?</b><br />
+        We look at the number of pull requests completed, and within each pull request, the duration between the first and last commits.<br />
+        <b>Assumptions/things we can't currently measure:</b><br />
+        - As development is variable, we start at the commit. This means we are not including planning or development time<br />
+        - We currently just count the pull request time. Later we will include the deployment time, but for now assume that this metric is captured by the deployment frequency metric.
+        - We assume that the user requires pull requests to merge work into the master branch.
+        - We assume we are following a git flow process, creating feature branches and merging back to the master branch, which is deployed to production on the completion of pull requests
+        <br />
     </div>
 </div>

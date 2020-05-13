@@ -90,7 +90,7 @@ namespace DevOpsMetrics.Web.Controllers
         {
             //TODO: Move variables to a configuration file or database
             int maxNumberOfItems = 20;
-            int numberOfDays = 30;
+            int numberOfDays = 60;
             bool getSampleData = false;
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             List<DeploymentFrequencyModel> items = new List<DeploymentFrequencyModel>();
