@@ -94,15 +94,30 @@ namespace DevOpsMetrics.Service.DataAccess
                     pullRequests.Add(pullRequest);
                 }
 
+                float maxPullRequestDuration = 0f;
+                foreach (PullRequestModel item in pullRequests)
+                {
+                    if (item.Duration.TotalMinutes > maxPullRequestDuration)
+                    {
+                        maxPullRequestDuration = (float)item.Duration.TotalMinutes;
+                    }
+                }
+                foreach (PullRequestModel item in pullRequests)
+                {
+                    float interiumResult = (((float)item.Duration.TotalMinutes / maxPullRequestDuration) * 100f);
+                    item.DurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+                }
+
                 float leadTime = leadTimeForChanges.ProcessLeadTimeForChanges(leadTimeForChangesList, project, numberOfDays);
 
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
                     ProjectName = project,
                     IsAzureDevOps = true,
-                    AverageLeadTimeForChanges = leadTime,
-                    AverageLeadTimeForChangesRating = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
+                    LeadTimeForChangesMetric = leadTime,
+                    LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
                     PullRequests = pullRequests,
+                    NumberOfDays = numberOfDays
                 };
 
                 return model;
@@ -113,9 +128,10 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     ProjectName = project,
                     IsAzureDevOps = true,
-                    AverageLeadTimeForChanges = 12f,
-                    AverageLeadTimeForChangesRating = "Elite",
+                    LeadTimeForChangesMetric = 12f,
+                    LeadTimeForChangesMetricDescription = "Elite",
                     PullRequests = CreatePullRequestsSample(true),
+                    NumberOfDays = numberOfDays
                 };
 
                 return model;
@@ -223,16 +239,16 @@ namespace DevOpsMetrics.Service.DataAccess
                     item.DurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
 
-
                 float leadTime = leadTimeForChanges.ProcessLeadTimeForChanges(leadTimeForChangesList, repo, numberOfDays);
 
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
                     ProjectName = repo,
                     IsAzureDevOps = false,
-                    AverageLeadTimeForChanges = leadTime,
-                    AverageLeadTimeForChangesRating = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
+                    LeadTimeForChangesMetric = leadTime,
+                    LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
                     PullRequests = pullRequests,
+                    NumberOfDays = numberOfDays
                 };
 
                 return model;
@@ -243,9 +259,10 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     ProjectName = repo,
                     IsAzureDevOps = false,
-                    AverageLeadTimeForChanges = 12f,
-                    AverageLeadTimeForChangesRating = "Elite",
+                    LeadTimeForChangesMetric = 20.33f,
+                    LeadTimeForChangesMetricDescription = "Elite",
                     PullRequests = CreatePullRequestsSample(false),
+                    NumberOfDays = numberOfDays
                 };
 
                 return model;
@@ -275,7 +292,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     Commits = CreateCommitsSample(1),
                     DurationPercent = 33,
                     StartDateTime = DateTime.Now.AddDays(-7),
-                    EndDateTime = DateTime.Now.AddDays(-7).AddMinutes(1),
+                    EndDateTime = DateTime.Now.AddDays(-7).AddHours(1),
                     Url = url
                 });
             prs.Add(

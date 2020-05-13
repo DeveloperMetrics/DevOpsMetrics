@@ -14,7 +14,13 @@ namespace DevOpsMetrics.Service.Models.Common
         {
             get
             {
-                return EndDateTime - StartDateTime;
+                TimeSpan duration =  EndDateTime - StartDateTime;
+                if (duration.TotalMinutes < 60)
+                {
+                    //If it's less than 60 minutes, round up to one hour, since we only measure this metric in hours.
+                    duration = new TimeSpan(1, 0, 0);
+                }
+                return duration;
             }
         }
         public int DurationPercent { get; set; } 

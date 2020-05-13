@@ -48,7 +48,7 @@ namespace DevOpsMetrics.Core
             float leadTimeForChanges = 0;
             if (items.Count > 0)
             {
-                leadTimeForChanges = (float)items.Count / (float)totalHours;
+                leadTimeForChanges = (float)totalHours / (float)items.Count ;
             }
 
             leadTimeForChanges = (float)Math.Round((double)leadTimeForChanges, 4);
@@ -62,26 +62,26 @@ namespace DevOpsMetrics.Core
             return LeadTimeForChangesList.Where(x => x.Key > DateTime.Now.AddDays(-numberOfDays)).ToList();
         }
 
-        public string GetLeadTimeForChangesRating(float leadTimeForChanges)
+        public string GetLeadTimeForChangesRating(float leadTimeForChangesInHours)
         {
-            float dailyDeployment = 1f;
-            float weeklyDeployment = 1f / 7f;
-            float monthlyDeployment = 1f / 30f;
+            float dailyDeployment = 24f;
+            float weeklyDeployment = 24f * 7f;
+            float monthlyDeployment = 24f * 30f;
 
             string result = "";
-            if (leadTimeForChanges > dailyDeployment) //less than one day
+            if (leadTimeForChangesInHours < dailyDeployment) //less than one day
             {
                 result = "Elite";
             }
-            else if (leadTimeForChanges <= dailyDeployment && leadTimeForChanges >= weeklyDeployment) //between one day and one week
+            else if (leadTimeForChangesInHours >= dailyDeployment && leadTimeForChangesInHours <= weeklyDeployment) //between one day and one week
             {
                 result = "High";
             }
-            else if (leadTimeForChanges < weeklyDeployment && leadTimeForChanges >= monthlyDeployment) //between one week and one month
+            else if (leadTimeForChangesInHours > weeklyDeployment && leadTimeForChangesInHours <= monthlyDeployment) //between one week and one month
             {
                 result = "Medium";
             }
-            else if (leadTimeForChanges < monthlyDeployment) //more than one month
+            else if (leadTimeForChangesInHours > monthlyDeployment) //more than one month
             {
                 result = "Low";
             }

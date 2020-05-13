@@ -22,16 +22,17 @@ namespace DevOpsMetrics.Service.DataAccess
                 dynamic jsonObj = JsonConvert.DeserializeObject(response);
                 Newtonsoft.Json.Linq.JArray value = jsonObj.value;
                 builds = JsonConvert.DeserializeObject<List<AzureDevOpsBuild>>(value.ToString());
+
+                //construct and add in the Url to each build
+                foreach (AzureDevOpsBuild item in builds)
+                {
+                    item.url = $"https://dev.azure.com/{organization}/{project}/_build/results?buildId={item.id}&view=results";
+                }
+
+                //sort the list
+                builds = builds.OrderBy(o => o.queueTime).ToList();
             }
 
-            //construct and add in the Url to each build
-            foreach (AzureDevOpsBuild item in builds)
-            {
-                item.url = $"https://dev.azure.com/{organization}/{project}/_build/results?buildId={item.id}&view=results";
-            }
-
-            //sort the list
-            builds = builds.OrderBy(o => o.queueTime).ToList();
 
             return builds;
         }
@@ -46,10 +47,10 @@ namespace DevOpsMetrics.Service.DataAccess
                 dynamic jsonObj = JsonConvert.DeserializeObject(response);
                 Newtonsoft.Json.Linq.JArray value = jsonObj.workflow_runs;
                 runs = JsonConvert.DeserializeObject<List<GitHubActionsRun>>(value.ToString());
-            }
 
-            //sort the list
-            runs = runs.OrderBy(o => o.created_at).ToList();
+                //sort the list
+                runs = runs.OrderBy(o => o.created_at).ToList();
+            }
 
             return runs;
         }

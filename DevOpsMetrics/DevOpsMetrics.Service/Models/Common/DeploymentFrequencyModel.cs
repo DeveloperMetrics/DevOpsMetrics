@@ -6,8 +6,10 @@ namespace DevOpsMetrics.Service.Models.Common
     public class DeploymentFrequencyModel
     {
         public string DeploymentName { get; set; }
+        public int NumberOfDays { get; set; }
         public bool IsAzureDevOps { get; set; }
         public List<Build> BuildList { get; set; }
+       
         private float _deploymentsPerDayMetric;
         public float DeploymentsPerDayMetric
         {
@@ -47,5 +49,6 @@ namespace DevOpsMetrics.Service.Models.Common
         public float DeploymentsToDisplayMetric { get; set; }
         public string DeploymentsToDisplayUnit { get; set; }
         public string DeploymentsPerDayMetricDescription { get; set; }
-    }
+        public bool RateLimitHit { get; set; }
+}
 }

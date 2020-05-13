@@ -116,7 +116,6 @@ namespace DevOpsMetrics.Tests.Core
             string MediumResult = metrics.GetDeploymentFrequencyRating(monthlyDeployment);
 
             //Assert
-
             Assert.AreEqual("Medium", MediumResult);
 
         }
@@ -131,7 +130,6 @@ namespace DevOpsMetrics.Tests.Core
             float monthlyDeployment = 1f / 30f;
 
             //Act
-
             string LowResult = metrics.GetDeploymentFrequencyRating(monthlyDeployment - 0.01f);
 
             //Assert
@@ -148,7 +146,6 @@ namespace DevOpsMetrics.Tests.Core
             //float monthlyDeployment = 1f / 30f;
 
             //Act
-
             string LowResult = metrics.GetDeploymentFrequencyRating(0f);
 
             //Assert

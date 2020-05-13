@@ -24,11 +24,11 @@ namespace DevOpsMetrics.Service.DataAccess
                 ////Gets a list of builds
                 //GET https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1      
                 string url = $"https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1&queryOrder=BuildQueryOrder,finishTimeDescending";
-                string buildListResponse = await MessageUtility.SendAzureDevOpsMessage(url, patToken);
+                string response = await MessageUtility.SendAzureDevOpsMessage(url, patToken);
                 //Console.WriteLine(buildListResponse);
-                if (string.IsNullOrEmpty(buildListResponse) == false)
+                if (string.IsNullOrEmpty(response) == false)
                 {
-                    dynamic buildListObject = JsonConvert.DeserializeObject(buildListResponse);
+                    dynamic buildListObject = JsonConvert.DeserializeObject(response);
                     Newtonsoft.Json.Linq.JArray value = buildListObject.value;
                     IEnumerable<AzureDevOpsBuild> azureDevOpsBuilds = JsonConvert.DeserializeObject<List<AzureDevOpsBuild>>(value.ToString());
                     azureDevOpsBuilds = ProcessAzureDevOpsBuilds(azureDevOpsBuilds.ToList());
@@ -66,7 +66,8 @@ namespace DevOpsMetrics.Service.DataAccess
                     DeploymentName = buildName,
                     BuildList = utility.GetLastNItems(builds, maxNumberOfItems),
                     DeploymentsPerDayMetric = deploymentsPerDay,
-                    DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
+                    DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
+                    NumberOfDays = numberOfDays
                 };
                 return model;
             }
@@ -78,8 +79,9 @@ namespace DevOpsMetrics.Service.DataAccess
                     DeploymentName = buildName,
                     BuildList = utility.GetLastNItems(GetSampleAzureDevOpsBuilds(), maxNumberOfItems),
                     DeploymentsPerDayMetric = 10f,
-                    DeploymentsPerDayMetricDescription = "Elite"
-                };
+                    DeploymentsPerDayMetricDescription = "Elite",
+                    NumberOfDays = numberOfDays
+    };
                 return model;
             }
         }
@@ -134,7 +136,8 @@ namespace DevOpsMetrics.Service.DataAccess
                     DeploymentName = workflowName,
                     BuildList = utility.GetLastNItems(builds, maxNumberOfItems),
                     DeploymentsPerDayMetric = deploymentsPerDay,
-                    DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay)
+                    DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
+                    NumberOfDays = numberOfDays
                 };
                 return model;
             }
@@ -146,7 +149,8 @@ namespace DevOpsMetrics.Service.DataAccess
                     DeploymentName = workflowName,
                     BuildList = utility.GetLastNItems(GetSampleGitHubBuilds(), maxNumberOfItems),
                     DeploymentsPerDayMetric = 10f,
-                    DeploymentsPerDayMetricDescription = "Elite"
+                    DeploymentsPerDayMetricDescription = "Elite",
+                    NumberOfDays = numberOfDays
                 };
                 return model;
             }

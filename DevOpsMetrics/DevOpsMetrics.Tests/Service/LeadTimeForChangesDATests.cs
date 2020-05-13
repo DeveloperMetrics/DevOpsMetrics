@@ -28,7 +28,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            string patToken = Configuration["AppSettings:PatToken"];
+            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string repositoryId = "SamLearnsAzure";
@@ -52,12 +52,12 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("abc", model.PullRequests[0].Commits[0].commitId);
             Assert.IsTrue(model.PullRequests[0].Commits[0].date >= DateTime.MinValue);
             Assert.AreEqual("name1", model.PullRequests[0].Commits[0].name);
-            Assert.AreEqual(1, Math.Round(model.PullRequests[0].Duration.TotalMinutes, 0));
+            Assert.AreEqual(60, Math.Round(model.PullRequests[0].Duration.TotalMinutes, 0));
             Assert.AreEqual(33f, model.PullRequests[0].DurationPercent);
             Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
             Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
-            Assert.AreEqual(12f, model.AverageLeadTimeForChanges);
-            Assert.AreEqual("Elite", model.AverageLeadTimeForChangesRating);
+            Assert.AreEqual(12f, model.LeadTimeForChangesMetric);
+            Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
         }
 
         [TestMethod]
@@ -65,8 +65,8 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            string clientId = "";
-            string clientSecret = "";
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "devopsmetrics";
             string masterBranch = "master";
@@ -89,12 +89,12 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("abc", model.PullRequests[0].Commits[0].commitId);
             Assert.IsTrue(model.PullRequests[0].Commits[0].date >= DateTime.MinValue);
             Assert.AreEqual("name1", model.PullRequests[0].Commits[0].name);
-            Assert.AreEqual(1, Math.Round(model.PullRequests[0].Duration.TotalMinutes, 0));
+            Assert.AreEqual(60, Math.Round(model.PullRequests[0].Duration.TotalMinutes, 0));
             Assert.AreEqual(33f, model.PullRequests[0].DurationPercent);
             Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
             Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
-            Assert.AreEqual(12f, model.AverageLeadTimeForChanges);
-            Assert.AreEqual("Elite", model.AverageLeadTimeForChangesRating);
+            Assert.AreEqual(20.33f, model.LeadTimeForChangesMetric);
+            Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
         }
 
 

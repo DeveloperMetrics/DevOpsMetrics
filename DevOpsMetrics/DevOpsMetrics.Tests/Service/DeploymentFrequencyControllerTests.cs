@@ -76,8 +76,8 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            string clientId = "";
-            string clientSecret = "";
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
             string branch = "master";
@@ -105,14 +105,13 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
         }
 
-
         [TestCategory("APITest")]
         [TestMethod]
         public async Task AzDeploymentsControllerAPIIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
-            string patToken = Configuration["AppSettings:PatToken"];
+            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
@@ -147,8 +146,8 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            string clientId = "";
-            string clientSecret = "";
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "samsfeatureflags";
             string branch = "master";
@@ -175,6 +174,94 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://GitHub.com/samsmithnz/devopsmetrics/1", model.BuildList[0].Url);
             Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
             Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
+        }
+
+
+
+
+        [TestCategory("APITest")]
+        [TestMethod]
+        public async Task AzDeploymentsControllerAPILiveIntegrationTest()
+        {
+            //Arrange
+            bool getSampleData = false;
+            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
+            string organization = "samsmithnz";
+            string project = "SamLearnsAzure";
+            string branch = "refs/heads/master";
+            string buildName = "SamLearnsAzure.CI";
+            string buildId = "3673"; //SamLearnsAzure.CI
+            int numberOfDays = 7;
+            int maxNumberOfItems = 20;
+
+            //Act
+            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+            TestResponse<DeploymentFrequencyModel> httpResponse = new TestResponse<DeploymentFrequencyModel>();
+            DeploymentFrequencyModel model = await httpResponse.GetResponse(Client, url);
+
+            //Assert
+            Assert.IsTrue(model != null);
+            if (model.RateLimitHit == false)
+            {
+                Assert.AreEqual(true, model.IsAzureDevOps);
+                Assert.AreEqual(buildName, model.DeploymentName);
+                Assert.IsTrue(model.DeploymentsPerDayMetric >= 0f);
+                Assert.IsTrue(string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription) == false);
+                Assert.IsTrue(model.BuildList.Count >= 0);
+                if (model.BuildList.Count > 0)
+                {
+                    Assert.IsTrue(model.BuildList[0].BuildDurationPercent >= 0f);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].BuildNumber) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Branch) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Status) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Url) == false);
+                    Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
+                    Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
+                }
+            }
+        }
+
+        [TestCategory("APITest")]
+        [TestMethod]
+        public async Task GHDeploymentsControllerAPILiveIntegrationTest()
+        {
+            //Arrange
+            bool getSampleData = false;
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
+            string owner = "samsmithnz";
+            string repo = "samsfeatureflags";
+            string branch = "master";
+            string workflowName = "samsfeatureflags CI/CD";
+            string workflowId = "108084";
+            int numberOfDays = 7;
+            int maxNumberOfItems = 20;
+
+            //Act
+            string url = $"/api/DeploymentFrequency/GetGitHubDeploymentFrequency?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+            TestResponse<DeploymentFrequencyModel> httpResponse = new TestResponse<DeploymentFrequencyModel>();
+            DeploymentFrequencyModel model = await httpResponse.GetResponse(Client, url);
+
+            //Assert
+            Assert.IsTrue(model != null);
+            if (model.RateLimitHit == false)
+            {
+                Assert.AreEqual(false, model.IsAzureDevOps);
+                Assert.AreEqual(workflowName, model.DeploymentName);
+                Assert.IsTrue(model.DeploymentsPerDayMetric >= 0f);
+                Assert.IsTrue(string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription) == false);
+                Assert.IsTrue(model.BuildList.Count >= 0);
+                if (model.BuildList.Count > 0)
+                {
+                    Assert.IsTrue(model.BuildList[0].BuildDurationPercent >= 0f);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].BuildNumber) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Branch) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Status) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Url) == false);
+                    Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
+                    Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
+                }
+            }
         }
 
     }

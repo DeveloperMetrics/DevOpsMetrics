@@ -67,6 +67,7 @@ jobs:
       with:
         app-name: devopsmetrics-prod-eu-service
         package: serviceapp  
+    - run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --resource-group "devopsmetrics" --settings "AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" GitHubClientSecret="${{ secrets.GitHubClientId }}" GitHubClientId="${{ secrets.GitHubClientSecret }}" 
     - name: Deploy website to Azure WebApp
       uses: Azure/webapps-deploy@v1
       with:

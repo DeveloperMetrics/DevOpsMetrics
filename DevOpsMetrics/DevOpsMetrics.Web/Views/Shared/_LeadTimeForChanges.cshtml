@@ -18,21 +18,31 @@
 
 <div class="chartContainer vertical flat">
     <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ProjectName</h4>
-    @foreach (PullRequestModel item in Model.PullRequests)
+    @if (Model.RateLimitHit == false)
     {
-        <a href="@item.Url" target="_blank">
-            <div class="progress-bar">
-                <div class="progress-track" title="PR #@item.PullRequestId branch @item.Branch had @item.Commits.Count commits over @item.Duration.TotalHours.ToString("0.0") hours">
-                    <div class="progress-fill inProgress">
-                        <span>@item.DurationPercent.ToString("0")%</span>
+        foreach (PullRequestModel item in Model.PullRequests)
+        {
+            <a href="@item.Url" target="_blank">
+                <div class="progress-bar">
+                    <div class="progress-track" title="PR #@item.PullRequestId branch @item.Branch had @item.Commits.Count commits over @item.Duration.TotalHours.ToString("0.0") hours">
+                        <div class="progress-fill inProgress">
+                            <span>@item.DurationPercent.ToString("0")%</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </a>
+            </a>
+        }
+    }
+    else
+    {
+        <span>API rate limit has been reached, please try again later</span>
     }
 </div>
 <br />
-<div class="metricSpan">
-    <b>Lead time for changes:</b> @Model.AverageLeadTimeForChanges.ToString("0.0") hours (over last 30 days)<br />
-    <b>Lead time for changes ranking:</b> @Model.AverageLeadTimeForChangesRating
-</div>
+@if (Model.RateLimitHit == false)
+{
+    <div class="metricSpan">
+        <b>Lead time for changes:</b> @Model.LeadTimeForChangesMetricDisplayMetric.ToString("0.0") @Model.LeadTimeForChangesMetricDisplayUnit (over last @Model.NumberOfDays days)<br />
+        <b>Lead time for changes ranking:</b> @Model.LeadTimeForChangesMetricDescription
+    </div>
+}

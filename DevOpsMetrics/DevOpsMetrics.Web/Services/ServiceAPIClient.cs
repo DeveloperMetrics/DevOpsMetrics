@@ -10,40 +10,40 @@ namespace DevOpsMetrics.Web.Services
 {
     public class ServiceApiClient
     {
-        private readonly IConfiguration _configuration;
-        private readonly HttpClient _client;
+        private readonly IConfiguration Configuration;
+        private readonly HttpClient Client;
 
         public ServiceApiClient(IConfiguration configuration)
         {
-            _configuration = configuration;
-            _client = new HttpClient
+            Configuration = configuration;
+            Client = new HttpClient
             {
-                BaseAddress = new Uri(_configuration["AppSettings:WebServiceURL"])
+                BaseAddress = new Uri(Configuration["AppSettings:WebServiceURL"])
             };
         }
 
         public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems)
         {
             string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
-            return await GetResponse<DeploymentFrequencyModel>(_client, url);
+            return await GetResponse<DeploymentFrequencyModel>(Client, url);
         }
 
         public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems)
         {
             string url = $"/api/DeploymentFrequency/GetGitHubDeploymentFrequency?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
-            return await GetResponse<DeploymentFrequencyModel>(_client, url);
+            return await GetResponse<DeploymentFrequencyModel>(Client, url);
         }
 
         public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string branch, string buildId, int numberOfDays, int maxNumberOfItems)
         {
             string url = $"/api/LeadTimeForChanges/GetAzureDevOpsLeadTimeForChanges?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&repositoryId={repositoryId}&branch={branch}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
-            return await GetResponse<LeadTimeForChangesModel>(_client, url);
+            return await GetResponse<LeadTimeForChangesModel>(Client, url);
         }
 
         public async Task<LeadTimeForChangesModel> GetGitHubLeadTimeForChanges(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowId, int numberOfDays, int maxNumberOfItems)
         {
             string url = $"/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
-            return await GetResponse<LeadTimeForChangesModel>(_client, url);
+            return await GetResponse<LeadTimeForChangesModel>(Client, url);
         }
 
         private async Task<T> GetResponse<T>(HttpClient client, string url)
