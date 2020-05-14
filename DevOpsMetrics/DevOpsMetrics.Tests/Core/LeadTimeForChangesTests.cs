@@ -138,5 +138,22 @@ namespace DevOpsMetrics.Tests.Core
             Assert.AreEqual("Low", rating);
         }
 
+
+
+        [TestMethod]
+        public void LeadTimeForChangesFiveSevenDaysNoneTest()
+        {
+            //Arrange
+            LeadTimeForChanges metrics = new LeadTimeForChanges();
+            
+            //Act
+            float result = 0f;
+            string rating = metrics.GetLeadTimeForChangesRating(result);
+
+            //Assert
+            Assert.AreEqual(0f, result);
+            Assert.AreEqual("None", rating);
+        }
+
     }
 }

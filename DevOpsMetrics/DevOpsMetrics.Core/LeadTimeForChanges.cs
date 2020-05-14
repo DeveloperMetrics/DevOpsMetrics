@@ -38,7 +38,7 @@ namespace DevOpsMetrics.Core
         {
             List<KeyValuePair<DateTime, TimeSpan>> items = GetLeadTimeForChanges(pipelineName, numberOfDays);
 
-            //Add up the total minutes
+            //Add up the total hours
             double totalHours = 0;
             foreach (KeyValuePair<DateTime, TimeSpan> item in items)
             {
@@ -69,7 +69,11 @@ namespace DevOpsMetrics.Core
             float monthlyDeployment = 24f * 30f;
 
             string result = "";
-            if (leadTimeForChangesInHours < dailyDeployment) //less than one day
+            if (leadTimeForChangesInHours <= 0f) //no rating
+            {
+                result = "None";
+            }
+            else if (leadTimeForChangesInHours < dailyDeployment) //less than one day
             {
                 result = "Elite";
             }

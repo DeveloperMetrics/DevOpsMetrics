@@ -137,19 +137,16 @@ namespace DevOpsMetrics.Tests.Core
         }
 
         [TestMethod]
-        public void DeploymentFrequencyRatingZeroLowTest()
+        public void DeploymentFrequencyRatingZeroNoneTest()
         {
             //Arrange
             DeploymentFrequency metrics = new DeploymentFrequency();
-            //float dailyDeployment = 1f;
-            //float weeklyDeployment = 1f / 7f;
-            //float monthlyDeployment = 1f / 30f;
 
             //Act
             string LowResult = metrics.GetDeploymentFrequencyRating(0f);
 
             //Assert
-            Assert.AreEqual("Low", LowResult);
+            Assert.AreEqual("None", LowResult);
         }
 
     }

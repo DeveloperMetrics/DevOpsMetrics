@@ -19,7 +19,19 @@
 @* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
 <div class="chartContainer vertical flat">
     <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ProjectName</h4>
-    @if (Model.RateLimitHit == false)
+    @if (Model.RateLimitHit == true)
+    {
+        <div style="height:100px">
+            <span>API rate limit has been reached, please try again later</span>
+        </div>
+    }
+    else if (Model.PullRequests.Count == 0)
+    {
+        <div style="height:100px">
+            <span>There is no data to display for this period</span>
+        </div>
+    }
+    else
     {
         foreach (PullRequestModel item in Model.PullRequests)
         {
@@ -34,16 +46,14 @@
             </a>
         }
     }
-    else
-    {
-        <span>API rate limit has been reached, please try again later</span>
-    }
 </div>
 <br />
 @if (Model.RateLimitHit == false)
 {
     <div class="metricSpan">
-        <b>Lead time for changes:</b> @Model.LeadTimeForChangesMetricDisplayMetric.ToString("0.0") @Model.LeadTimeForChangesMetricDisplayUnit (over last @Model.NumberOfDays days)<br />
-        <b>Lead time for changes ranking:</b> @Model.LeadTimeForChangesMetricDescription
+        <b>Average build time:</b> @Model.AverageBuildHours.ToString("0.0") hours (over last @Model.NumberOfDays days)<br />
+        <b>Average pull request time:</b> @Model.AveragePullRequestHours.ToString("0.0") hours (over last @Model.NumberOfDays days)<br />
+        <b>Average Lead time for changes:</b> @Model.LeadTimeForChangesMetricDisplayMetric.ToString("0.0") @Model.LeadTimeForChangesMetricDisplayUnit (over last @Model.NumberOfDays days)<br />
+        <b>Average Lead time for changes ranking:</b> @Model.LeadTimeForChangesMetricDescription
     </div>
 }

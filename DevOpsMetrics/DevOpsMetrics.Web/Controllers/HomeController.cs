@@ -59,7 +59,7 @@ namespace DevOpsMetrics.Web.Controllers
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
+            string repo = "SamsFeatureFlags";
             string ghbranch = "master";
             //string workflowName = "SamsFeatureFlags.CI";
             string workflowId = "108084";
@@ -90,7 +90,7 @@ namespace DevOpsMetrics.Web.Controllers
         {
             //TODO: Move variables to a configuration file or database
             int maxNumberOfItems = 20;
-            int numberOfDays = 60;
+            int numberOfDays = 30;
             bool getSampleData = false;
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             List<DeploymentFrequencyModel> items = new List<DeploymentFrequencyModel>();
@@ -125,7 +125,7 @@ namespace DevOpsMetrics.Web.Controllers
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
+            string repo = "SamsFeatureFlags";
             string ghbranch = "master";
             string workflowName = "SamsFeatureFlags.CI";
             string workflowId = "108084";
@@ -191,7 +191,7 @@ namespace DevOpsMetrics.Web.Controllers
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
+            string repo = "SamsFeatureFlags";
             string ghbranch = "master";
             //string workflowName = "SamsFeatureFlags.CI";
             string workflowId = "108084";

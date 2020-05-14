@@ -96,7 +96,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 List<Build> builds = new List<Build>();
 
                 //Lists the workflows in a repository. 
-                string url = $"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflowId}/runs";
+                string url = $"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflowId}/runs?branch={branch}&per_page=100";
                 string runListResponse = await MessageUtility.SendGitHubMessage(url, clientId, clientSecret);
                 if (string.IsNullOrEmpty(runListResponse) == false)
                 {

@@ -17,16 +17,17 @@ More information in a blog post here: https://samlearnsazure.blog/2020/04/30/hig
   - How does it work? We look at the number of successful pipeline runs. 
   - Assumptions/things we can't currently measure: 
     - The build is multi-stage - and leads to a deployment in a production environment    
-![Deployment Frequency](https://GitHub.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/DeploymentFrequencyDemo.png)
+![Deployment Frequency](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/DeploymentFrequencyDemo.png)
 
 - Lead time for changes, in both Azure DevOps and GitHub:
   - How does it work? We look at the number of successful pipeline runs and match it with Pull Requests 
   - Assumptions/things we can't currently measure: 
     - The project is using a git flow with Pull Requests. 
-    - We are measuring the commit duration time in the pull requests. 
+    - We are measuring the commit duration time in the pull requests, and add this to the average build time for the same time perdio. 
     - We measure the time between commits in the Pull Request. If the duration between commits is 5 days, the lead time for changes is 5 days. We may need to consider the wait time for policies/reviews/etc in Pull Requests too. 
-    - Commits force-pushed to master are not currently captured. The build deploys to production
-[No screenshot yet]
+    - Commits force-pushed to master are not currently captured. 
+    - The build deploys to production
+![Lead time for changes](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/LeadTimeForChanges.png)
 
 # Architecture
 Uses .Net CORE 3.1 & MSTest. A GitHub action runs the CI/CD process. 
