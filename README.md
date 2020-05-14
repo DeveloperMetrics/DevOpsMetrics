@@ -17,7 +17,7 @@ More information in a blog post here: https://samlearnsazure.blog/2020/04/30/hig
   - How does it work? We look at the number of successful pipeline runs. 
   - Assumptions/things we can't currently measure: 
     - The build is multi-stage - and leads to a deployment in a production environment    
-![Deployment Frequency](https://GitHub.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/DeploymentFrequencyDemo.png)
+![Deployment Frequency](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/DeploymentFrequencyDemo.png)
 
 - Lead time for changes, in both Azure DevOps and GitHub:
   - How does it work? We look at the number of successful pipeline runs and match it with Pull Requests 
