@@ -70,6 +70,8 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(33f, model.PullRequests[0].DurationPercent);
             Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
             Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
+            Assert.AreEqual(1f, model.AverageBuildHours);
+            Assert.AreEqual(12f, model.AveragePullRequestHours);
             Assert.AreEqual(13f, model.LeadTimeForChangesMetric);
             Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
         }
@@ -111,6 +113,8 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(33f, model.PullRequests[0].DurationPercent);
             Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
             Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
+            Assert.AreEqual(1f, model.AverageBuildHours);
+            Assert.AreEqual(20.33f, model.AveragePullRequestHours);
             Assert.AreEqual(21.33f, model.LeadTimeForChangesMetric);
             Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
         }
@@ -150,6 +154,8 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(33f, model.PullRequests[0].DurationPercent);
             Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
             Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
+            Assert.AreEqual(1f, model.AverageBuildHours);
+            Assert.AreEqual(12f, model.AveragePullRequestHours);
             Assert.AreEqual(13f, model.LeadTimeForChangesMetric);
             Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
         }
@@ -189,6 +195,8 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(33f, model.PullRequests[0].DurationPercent);
             Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
             Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
+            Assert.AreEqual(1f, model.AverageBuildHours);
+            Assert.AreEqual(20.33f, model.AveragePullRequestHours);
             Assert.AreEqual(21.33f, model.LeadTimeForChangesMetric);
             Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
         }
@@ -236,6 +244,8 @@ namespace DevOpsMetrics.Tests.Service
                     Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
                     Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
                 }
+                Assert.IsTrue(model.AverageBuildHours >= 0);
+                Assert.IsTrue(model.AveragePullRequestHours >= 0);
                 Assert.IsTrue(model.LeadTimeForChangesMetric >= 0);
                 Assert.IsTrue(string.IsNullOrEmpty(model.LeadTimeForChangesMetricDescription) == false);
             }
@@ -284,6 +294,8 @@ namespace DevOpsMetrics.Tests.Service
                     Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
                     Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
                 }
+                Assert.IsTrue(model.AverageBuildHours >= 0);
+                Assert.IsTrue(model.AveragePullRequestHours >= 0);
                 Assert.IsTrue(model.LeadTimeForChangesMetric >= 0);
                 Assert.IsTrue(string.IsNullOrEmpty(model.LeadTimeForChangesMetricDescription) == false);
             }
