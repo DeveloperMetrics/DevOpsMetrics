@@ -125,7 +125,11 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     totalHours += (item.finishTime - item.queueTime).TotalHours;
                 }
-                float averageBuildHours = (float)totalHours / (float)masterBranchBuilds.Count;
+                float averageBuildHours = 0;
+                if (masterBranchBuilds.Count > 0)
+                {
+                    averageBuildHours = (float)totalHours / (float)masterBranchBuilds.Count;
+                }
 
                 //Calculate the lead time for changes value, in hours
                 float leadTime = leadTimeForChanges.ProcessLeadTimeForChanges(leadTimeForChangesList, project, numberOfDays);
@@ -135,7 +139,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     ProjectName = project,
                     IsAzureDevOps = true,
                     AverageBuildHours = averageBuildHours,
-                    LeadTimeForChangesMetric = leadTime,
+                    LeadTimeForChangesMetric = leadTime + averageBuildHours,
                     LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
                     PullRequests = pullRequests,
                     NumberOfDays = numberOfDays
@@ -150,7 +154,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     ProjectName = project,
                     IsAzureDevOps = true,
                     AverageBuildHours = 1f,
-                    LeadTimeForChangesMetric = 12f,
+                    LeadTimeForChangesMetric = 12f + 1f,
                     LeadTimeForChangesMetricDescription = "Elite",
                     PullRequests = CreatePullRequestsSample(true),
                     NumberOfDays = numberOfDays
@@ -292,7 +296,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     ProjectName = repo,
                     IsAzureDevOps = false,
                     AverageBuildHours = averageBuildHours,
-                    LeadTimeForChangesMetric = leadTime,
+                    LeadTimeForChangesMetric = leadTime + averageBuildHours,
                     LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
                     PullRequests = pullRequests,
                     NumberOfDays = numberOfDays
@@ -307,7 +311,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     ProjectName = repo,
                     IsAzureDevOps = false,
                     AverageBuildHours = 1f,
-                    LeadTimeForChangesMetric = 20.33f,
+                    LeadTimeForChangesMetric = 20.33f + 1f,
                     LeadTimeForChangesMetricDescription = "Elite",
                     PullRequests = CreatePullRequestsSample(false),
                     NumberOfDays = numberOfDays

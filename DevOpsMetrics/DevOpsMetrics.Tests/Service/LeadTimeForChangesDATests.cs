@@ -56,7 +56,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(33f, model.PullRequests[0].DurationPercent);
             Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
             Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
-            Assert.AreEqual(12f, model.LeadTimeForChangesMetric);
+            Assert.AreEqual(13f, model.LeadTimeForChangesMetric);
             Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
         }
 
@@ -93,7 +93,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(33f, model.PullRequests[0].DurationPercent);
             Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
             Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
-            Assert.AreEqual(20.33f, model.LeadTimeForChangesMetric);
+            Assert.AreEqual(21.33f, model.LeadTimeForChangesMetric);
             Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
         }
 

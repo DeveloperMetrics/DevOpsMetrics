@@ -23,9 +23,10 @@ More information in a blog post here: https://samlearnsazure.blog/2020/04/30/hig
   - How does it work? We look at the number of successful pipeline runs and match it with Pull Requests 
   - Assumptions/things we can't currently measure: 
     - The project is using a git flow with Pull Requests. 
-    - We are measuring the commit duration time in the pull requests. 
+    - We are measuring the commit duration time in the pull requests, and add this to the average build time for the same time perdio. 
     - We measure the time between commits in the Pull Request. If the duration between commits is 5 days, the lead time for changes is 5 days. We may need to consider the wait time for policies/reviews/etc in Pull Requests too. 
-    - Commits force-pushed to master are not currently captured. The build deploys to production
+    - Commits force-pushed to master are not currently captured. 
+    - The build deploys to production
 [No screenshot yet]
 
 # Architecture
