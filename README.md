@@ -27,7 +27,7 @@ More information in a blog post here: https://samlearnsazure.blog/2020/04/30/hig
     - We measure the time between commits in the Pull Request. If the duration between commits is 5 days, the lead time for changes is 5 days. We may need to consider the wait time for policies/reviews/etc in Pull Requests too. 
     - Commits force-pushed to master are not currently captured. 
     - The build deploys to production
-[No screenshot yet]
+![Lead time for changes](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/LeadTimeForChanges.png)
 
 # Architecture
 Uses .Net CORE 3.1 & MSTest. A GitHub action runs the CI/CD process. 
