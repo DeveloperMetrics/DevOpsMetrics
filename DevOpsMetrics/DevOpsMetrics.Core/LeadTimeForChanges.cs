@@ -38,7 +38,7 @@ namespace DevOpsMetrics.Core
         {
             List<KeyValuePair<DateTime, TimeSpan>> items = GetLeadTimeForChanges(pipelineName, numberOfDays);
 
-            //Add up the total minutes
+            //Add up the total hours
             double totalHours = 0;
             foreach (KeyValuePair<DateTime, TimeSpan> item in items)
             {

@@ -246,7 +246,7 @@ namespace DevOpsMetrics.Tests.Service
         public async Task GHLeadTimeControllerAPILiveIntegrationTest()
         {
             //Arrange
-            bool getSampleData = false;
+            bool getSampleData = true;
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";

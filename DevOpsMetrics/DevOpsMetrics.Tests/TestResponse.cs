@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,11 +16,11 @@ namespace DevOpsMetrics.Tests
             T obj = default;
             if (client != null && url != null)
             {
+                Debug.WriteLine("Running url: " + client.BaseAddress.ToString() + url);
                 using (HttpResponseMessage response = await client.GetAsync(url))
                 {
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    //Console.WriteLine(responseBody);
                     if (string.IsNullOrEmpty(responseBody) == false)
                     {
                         obj = JsonConvert.DeserializeObject<T>(responseBody);

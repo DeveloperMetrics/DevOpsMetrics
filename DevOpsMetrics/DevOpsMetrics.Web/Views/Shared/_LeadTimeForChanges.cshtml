@@ -51,7 +51,11 @@
 @if (Model.RateLimitHit == false)
 {
     <div class="metricSpan">
-        <b>Lead time for changes:</b> @Model.LeadTimeForChangesMetricDisplayMetric.ToString("0.0") @Model.LeadTimeForChangesMetricDisplayUnit (over last @Model.NumberOfDays days)<br />
-        <b>Lead time for changes ranking:</b> @Model.LeadTimeForChangesMetricDescription
+        @*
+            <b>Avg build time:</b> @Model.BuildTime.ToString("0.0") @Model.LeadTimeForChangesMetricDisplayUnit (over last @Model.NumberOfDays days)<br />
+            <b>Avg pull request time:</b> @Model.PullRequestTime.ToString("0.0") @Model.LeadTimeForChangesMetricDisplayUnit (over last @Model.NumberOfDays days)<br />
+        *@
+        <b>Avg Lead time for changes:</b> @Model.LeadTimeForChangesMetricDisplayMetric.ToString("0.0") @Model.LeadTimeForChangesMetricDisplayUnit (over last @Model.NumberOfDays days)<br />
+        <b>Avg Lead time for changes ranking:</b> @Model.LeadTimeForChangesMetricDescription
     </div>
 }

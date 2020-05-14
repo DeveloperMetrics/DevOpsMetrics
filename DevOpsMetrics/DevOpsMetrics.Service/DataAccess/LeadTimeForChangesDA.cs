@@ -21,18 +21,28 @@ namespace DevOpsMetrics.Service.DataAccess
                 BuildsDA buildsDA = new BuildsDA();
                 initialBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, organization, project, masterBranch, buildId);
 
-                //Filter out all branches that aren't a master build
-                List<AzureDevOpsBuild> builds = new List<AzureDevOpsBuild>();
+                //Process all builds, filtering by master and feature branchs
+                List<AzureDevOpsBuild> masterBranchBuilds = new List<AzureDevOpsBuild>();
+                List<AzureDevOpsBuild> featureBranchBuilds = new List<AzureDevOpsBuild>();
                 List<string> branches = new List<string>();
                 foreach (AzureDevOpsBuild item in initialBuilds)
                 {
-                    if (item.status == "completed" && item.sourceBranch != masterBranch && item.sourceBranch == "refs/pull/445/merge")
+                    if (item.status == "completed")
                     {
-                        builds.Add(item);
-                        //Load all of the branches
-                        if (branches.Contains(item.sourceBranch) == false)
+                        if (item.sourceBranch == masterBranch)
                         {
-                            branches.Add(item.sourceBranch);
+                            //Save the master branch
+                            masterBranchBuilds.Add(item);
+                        }
+                        else
+                        {
+                            //Save the feature branches
+                            featureBranchBuilds.Add(item);
+                            //Record all unique branches
+                            if (branches.Contains(item.sourceBranch) == false)
+                            {
+                                branches.Add(item.sourceBranch);
+                            }
                         }
                     }
                 }
@@ -41,7 +51,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>();
                 foreach (string branch in branches)
                 {
-                    List<AzureDevOpsBuild> branchBuilds = builds.Where(a => a.sourceBranch == branch).ToList();
+                    List<AzureDevOpsBuild> branchBuilds = featureBranchBuilds.Where(a => a.sourceBranch == branch).ToList();
                     string pullRequestId = branch.Replace("refs/pull/", "").Replace("/merge", "");
                     PullRequestDA pullRequestDA = new PullRequestDA();
                     List<AzureDevOpsPRCommit> pullRequestCommits = await pullRequestDA.GetAzureDevOpsPullRequestCommits(patToken, organization, project, repositoryId, pullRequestId);
@@ -108,12 +118,23 @@ namespace DevOpsMetrics.Service.DataAccess
                     item.DurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
 
+                //Filter out builds on the master branch older than the number of days
+                masterBranchBuilds = masterBranchBuilds.Where(x => x.queueTime > DateTime.Now.AddDays(-numberOfDays)).ToList();
+                double totalHours = 0;
+                foreach (AzureDevOpsBuild item in masterBranchBuilds)
+                {
+                    totalHours += (item.finishTime - item.queueTime).TotalHours;
+                }
+                float averageBuildHours = (float)totalHours / (float)masterBranchBuilds.Count;
+
+                //Calculate the lead time for changes value, in hours
                 float leadTime = leadTimeForChanges.ProcessLeadTimeForChanges(leadTimeForChangesList, project, numberOfDays);
 
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
                     ProjectName = project,
                     IsAzureDevOps = true,
+                    AverageBuildHours = averageBuildHours,
                     LeadTimeForChangesMetric = leadTime,
                     LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
                     PullRequests = pullRequests,
@@ -128,6 +149,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     ProjectName = project,
                     IsAzureDevOps = true,
+                    AverageBuildHours = 1f,
                     LeadTimeForChangesMetric = 12f,
                     LeadTimeForChangesMetricDescription = "Elite",
                     PullRequests = CreatePullRequestsSample(true),
@@ -148,18 +170,28 @@ namespace DevOpsMetrics.Service.DataAccess
                 BuildsDA buildsDA = new BuildsDA();
                 initialRuns = await buildsDA.GetGitHubActionRuns(getSampleData, clientId, clientSecret, owner, repo, masterBranch, workflowId);
 
-                //Filter out all branches that aren't a master build
-                List<GitHubActionsRun> runs = new List<GitHubActionsRun>();
+                //Process all builds, filtering by master and feature branchs
+                List<GitHubActionsRun> masterBranchRuns = new List<GitHubActionsRun>();
+                List<GitHubActionsRun> featureBranchRuns = new List<GitHubActionsRun>();
                 List<string> branches = new List<string>();
                 foreach (GitHubActionsRun item in initialRuns)
                 {
-                    if (item.status == "completed" && item.head_branch != masterBranch)//&& item.head_branch == "refs/pull/445/merge")
+                    if (item.status == "completed")
                     {
-                        runs.Add(item);
-                        //Load all of the branches
-                        if (branches.Contains(item.head_branch) == false)
+                        if (item.head_branch == masterBranch)
                         {
-                            branches.Add(item.head_branch);
+                            //Save the master branch
+                            //           masterBranchRuns.Add(item);
+                        }
+                        else
+                        {
+                            //Save the feature branches
+                            featureBranchRuns.Add(item);
+                            //Record all unique branches       
+                            if (branches.Contains(item.head_branch) == false)
+                            {
+                                branches.Add(item.head_branch);
+                            }
                         }
                     }
                 }
@@ -168,7 +200,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>();
                 foreach (string branch in branches)
                 {
-                    List<GitHubActionsRun> branchBuilds = runs.Where(a => a.head_branch == branch).ToList();
+                    List<GitHubActionsRun> branchBuilds = featureBranchRuns.Where(a => a.head_branch == branch).ToList();
                     //This is messy. In Azure DevOps we could get the build trigger/pull request id. In GitHub we cannot. 
                     //Instead we get the pull request id by searching pull requests by branch
                     PullRequestDA pullRequestDA = new PullRequestDA();
@@ -239,12 +271,27 @@ namespace DevOpsMetrics.Service.DataAccess
                     item.DurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
 
+                //Filter out builds on the master branch older than the number of days
+                masterBranchRuns = masterBranchRuns.Where(x => x.created_at > DateTime.Now.AddDays(-numberOfDays)).ToList();
+                double totalHours = 0;
+                foreach (GitHubActionsRun item in masterBranchRuns)
+                {
+                    totalHours += (item.updated_at - item.created_at).TotalHours;
+                }
+                float averageBuildHours = 0;
+                if (masterBranchRuns.Count > 0)
+                {
+                    averageBuildHours = (float)totalHours / (float)masterBranchRuns.Count;
+                }
+
+                //Calculate the lead time for changes value, in hours
                 float leadTime = leadTimeForChanges.ProcessLeadTimeForChanges(leadTimeForChangesList, repo, numberOfDays);
 
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
                     ProjectName = repo,
                     IsAzureDevOps = false,
+                    AverageBuildHours = averageBuildHours,
                     LeadTimeForChangesMetric = leadTime,
                     LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
                     PullRequests = pullRequests,
@@ -259,6 +306,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     ProjectName = repo,
                     IsAzureDevOps = false,
+                    AverageBuildHours = 1f,
                     LeadTimeForChangesMetric = 20.33f,
                     LeadTimeForChangesMetricDescription = "Elite",
                     PullRequests = CreatePullRequestsSample(false),

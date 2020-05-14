@@ -9,7 +9,7 @@ namespace DevOpsMetrics.Service.Models.Common
         public int NumberOfDays { get; set; }
         public bool IsAzureDevOps { get; set; }
         public List<PullRequestModel> PullRequests { get; set; }
-
+        public float AverageBuildHours { get; set; }
         private float _leadTimeForChangesMetric;
         public float LeadTimeForChangesMetric {
             get
