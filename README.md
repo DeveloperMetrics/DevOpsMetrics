@@ -16,17 +16,17 @@ More information in a blog post here: https://samlearnsazure.blog/2020/04/30/hig
 - Deployment Frequency, in both Azure DevOps and GitHub:
   - How does it work? We look at the number of successful pipeline runs. 
   - Assumptions/things we can't currently measure: 
-    - The build is multi-stage - and leads to a deployment in a production environment    
+      - The build is multi-stage, and leads to a deployment in a production environment.
+      - We only look at a single branch (usually the master branch), hence we ignore feature branches (as these probably aren't deploying to production')
 ![Deployment Frequency](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/DeploymentFrequencyDemo.png)
 
 - Lead time for changes, in both Azure DevOps and GitHub:
   - How does it work? We look at the number of successful pipeline runs and match it with Pull Requests 
-  - Assumptions/things we can't currently measure: 
-    - The project is using a git flow with Pull Requests. 
-    - We are measuring the commit duration time in the pull requests, and add this to the average build time for the same time perdio. 
-    - We measure the time between commits in the Pull Request. If the duration between commits is 5 days, the lead time for changes is 5 days. We may need to consider the wait time for policies/reviews/etc in Pull Requests too. 
-    - Commits force-pushed to master are not currently captured. 
-    - The build deploys to production
+  - Assumptions/things we can't currently measure:
+      - We currently count the pull request and deployment durations, averaging them for the time period to create the lead time for changes metric.
+      - We start measuring at the first commit for a branch. Development is variable that depends on the task, and doesn't help with this measurement.
+      - We assume we are following a git flow process, creating feature branches and merging back to the master branch, which is deployed to production on the completion of pull requests
+      - We assume that the user requires pull requests to merge work into the master branch - we are looking at all work that is not on this master branch - hence we currently only support one master branch.
 ![Lead time for changes](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/LeadTimeForChanges.png)
 
 # Architecture

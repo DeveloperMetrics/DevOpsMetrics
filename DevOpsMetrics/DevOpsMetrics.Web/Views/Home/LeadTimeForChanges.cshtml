@@ -41,12 +41,12 @@
         <b>What am I looking at?</b><br />
         Lead time for changes is a high performing DevOps metric to measure the time it takes to change a line of code and deploy it to production. This page helps us to measure it across various projects in both Azure DevOps and GitHub<br />
         <b>How does it work?</b><br />
-        We look at the number of pull requests completed, and within each pull request, the duration between the first and last commits.<br />
+        We look at the number of pull requests completed, and within each pull request, the duration between the first and last commits, adding this to the average build time for the time period<br />
         <b>Assumptions/things we can't currently measure:</b><br />
-        - As development is variable, we start at the commit. This means we are not including planning or development time<br />
-        - We currently just count the pull request and deployment time, averaging them for the time period to create the lead time for changes.
-        - We assume that the user requires pull requests to merge work into the master branch.
-        - We assume we are following a git flow process, creating feature branches and merging back to the master branch, which is deployed to production on the completion of pull requests
+        - We currently count the pull request and deployment durations, averaging them for the time period to create the lead time for changes metric.<br />
+        - We start measuring at the first commit for a branch. Development is variable that depends on the task, and doesn't help with this measurement.<br />
+        - We assume we are following a git flow process, creating feature branches and merging back to the master branch, which is deployed to production on the completion of pull requests<br />
+        - We assume that the user requires pull requests to merge work into the master branch - we are looking at all work that is not on this master branch - hence we currently only support one master branch.<br />
         <br />
     </div>
 </div>
