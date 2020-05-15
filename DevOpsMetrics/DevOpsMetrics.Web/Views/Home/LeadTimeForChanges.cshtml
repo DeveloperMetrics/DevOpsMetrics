@@ -44,7 +44,7 @@
         We look at the number of pull requests completed, and within each pull request, the duration between the first and last commits.<br />
         <b>Assumptions/things we can't currently measure:</b><br />
         - As development is variable, we start at the commit. This means we are not including planning or development time<br />
-        - We currently just count the pull request time. Later we will include the deployment time, but for now assume that this metric is captured by the deployment frequency metric.
+        - We currently just count the pull request and deployment time, averaging them for the time period to create the lead time for changes.
         - We assume that the user requires pull requests to merge work into the master branch.
         - We assume we are following a git flow process, creating feature branches and merging back to the master branch, which is deployed to production on the completion of pull requests
         <br />
