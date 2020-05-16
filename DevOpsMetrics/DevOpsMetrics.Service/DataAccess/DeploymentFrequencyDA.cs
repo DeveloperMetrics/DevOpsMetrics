@@ -12,6 +12,7 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class DeploymentFrequencyDA
     {
+
         public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems)
         {
             Utility<Build> utility = new Utility<Build>();
@@ -20,45 +21,38 @@ namespace DevOpsMetrics.Service.DataAccess
                 float deploymentsPerDay = 0;
                 DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
                 List<Build> builds = new List<Build>();
+                BuildsDA buildsDA = new BuildsDA();
 
-                ////Gets a list of builds
-                //GET https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1      
-                string url = $"https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1&queryOrder=BuildQueryOrder,finishTimeDescending";
-                string response = await MessageUtility.SendAzureDevOpsMessage(url, patToken);
-                //Console.WriteLine(buildListResponse);
-                if (string.IsNullOrEmpty(response) == false)
+                //Gets a list of builds
+                List<AzureDevOpsBuild> azureDevOpsBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, organization, project, branch, buildId);
+                List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
+
+                //Translate the Azure DevOps build to a generic build object
+                foreach (AzureDevOpsBuild item in azureDevOpsBuilds)
                 {
-                    dynamic buildListObject = JsonConvert.DeserializeObject(response);
-                    Newtonsoft.Json.Linq.JArray value = buildListObject.value;
-                    IEnumerable<AzureDevOpsBuild> azureDevOpsBuilds = JsonConvert.DeserializeObject<List<AzureDevOpsBuild>>(value.ToString());
-                    azureDevOpsBuilds = ProcessAzureDevOpsBuilds(azureDevOpsBuilds.ToList());
-
-                    List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
-                    foreach (AzureDevOpsBuild item in azureDevOpsBuilds)
+                    //Only return completed builds on the target branch
+                    if (item.status == "completed" && item.sourceBranch == branch && item.queueTime > DateTime.Now.AddDays(-numberOfDays))
                     {
-                        //Only return completed builds on the target branch
-                        if (item.status == "completed" && item.sourceBranch == branch && item.queueTime > DateTime.Now.AddDays(-numberOfDays))
-                        {
-                            KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.queueTime, item.queueTime);
-                            dateList.Add(newItem);
-                            builds.Add(
-                                new Build
-                                {
-                                    Id = item.id,
-                                    Branch = item.sourceBranch,
-                                    BuildNumber = item.buildNumber,
-                                    StartTime = item.queueTime,
-                                    EndTime = item.finishTime,
-                                    BuildDurationPercent = item.buildDurationPercent,
-                                    Status = item.status,
-                                    Url = item.url
-                                }
-                            );
-                        }
+                        KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.queueTime, item.queueTime);
+                        dateList.Add(newItem);
+                        builds.Add(
+                            new Build
+                            {
+                                Id = item.id,
+                                Branch = item.sourceBranch,
+                                BuildNumber = item.buildNumber,
+                                StartTime = item.queueTime,
+                                EndTime = item.finishTime,
+                                BuildDurationPercent = item.buildDurationPercent,
+                                Status = item.status,
+                                Url = item.url
+                            }
+                        );
                     }
-
-                    deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
                 }
+
+                deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
+
 
                 DeploymentFrequencyModel model = new DeploymentFrequencyModel
                 {
@@ -81,9 +75,17 @@ namespace DevOpsMetrics.Service.DataAccess
                     DeploymentsPerDayMetric = 10f,
                     DeploymentsPerDayMetricDescription = "Elite",
                     NumberOfDays = numberOfDays
-    };
+                };
                 return model;
             }
+        }
+
+        public async Task<int> RefreshAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems)
+        {
+            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
+            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
+
+            return model.BuildList.Count;
         }
 
         public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems)
@@ -94,42 +96,35 @@ namespace DevOpsMetrics.Service.DataAccess
                 float deploymentsPerDay = 0;
                 DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
                 List<Build> builds = new List<Build>();
+                BuildsDA buildsDA = new BuildsDA();
 
                 //Lists the workflows in a repository. 
-                string url = $"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflowId}/runs?branch={branch}&per_page=100";
-                string runListResponse = await MessageUtility.SendGitHubMessage(url, clientId, clientSecret);
-                if (string.IsNullOrEmpty(runListResponse) == false)
+                List<GitHubActionsRun> gitHubRuns = await buildsDA.GetGitHubActionRuns(getSampleData, clientId, clientSecret, owner, repo, branch, workflowId);
+                List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
+                foreach (GitHubActionsRun item in gitHubRuns)
                 {
-                    dynamic buildListObject = JsonConvert.DeserializeObject(runListResponse);
-                    Newtonsoft.Json.Linq.JArray workflow_runs = buildListObject.workflow_runs;
-                    IEnumerable<GitHubActionsRun> gitHubRuns = JsonConvert.DeserializeObject<List<GitHubActionsRun>>(workflow_runs.ToString());
-                    gitHubRuns = ProcessGitHubRuns(gitHubRuns.ToList());
-
-                    List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
-                    foreach (GitHubActionsRun item in gitHubRuns)
+                    if (item.status == "completed" && item.head_branch == branch && item.created_at > DateTime.Now.AddDays(-numberOfDays))
                     {
-                        if (item.status == "completed" && item.head_branch == branch && item.created_at > DateTime.Now.AddDays(-numberOfDays))
-                        {
-                            KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.created_at, item.created_at);
-                            dateList.Add(newItem);
-                            builds.Add(
-                                new Build
-                                {
-                                    Id = item.run_number,
-                                    Branch = item.head_branch,
-                                    BuildNumber = item.run_number,
-                                    StartTime = item.created_at,
-                                    EndTime = item.updated_at,
-                                    BuildDurationPercent = item.buildDurationPercent,
-                                    Status = item.status,
-                                    Url = item.html_url
-                                }
-                            );
-                        }
+                        KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.created_at, item.created_at);
+                        dateList.Add(newItem);
+                        builds.Add(
+                            new Build
+                            {
+                                Id = item.run_number,
+                                Branch = item.head_branch,
+                                BuildNumber = item.run_number,
+                                StartTime = item.created_at,
+                                EndTime = item.updated_at,
+                                BuildDurationPercent = item.buildDurationPercent,
+                                Status = item.status,
+                                Url = item.html_url
+                            }
+                        );
                     }
-
-                    deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
                 }
+
+                deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
+
                 DeploymentFrequencyModel model = new DeploymentFrequencyModel
                 {
                     IsAzureDevOps = false,
@@ -156,40 +151,12 @@ namespace DevOpsMetrics.Service.DataAccess
             }
         }
 
-        private static List<AzureDevOpsBuild> ProcessAzureDevOpsBuilds(List<AzureDevOpsBuild> azList)
+        public async Task<int> RefreshGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems)
         {
-            float maxBuildDuration = 0f;
-            foreach (AzureDevOpsBuild item in azList)
-            {
-                if (item.buildDuration > maxBuildDuration)
-                {
-                    maxBuildDuration = item.buildDuration;
-                }
-            }
-            foreach (AzureDevOpsBuild item in azList)
-            {
-                float interiumResult = ((item.buildDuration / maxBuildDuration) * 100f);
-                item.buildDurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
-            }
-            return azList;
-        }
+            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
+            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
 
-        private static List<GitHubActionsRun> ProcessGitHubRuns(List<GitHubActionsRun> ghList)
-        {
-            float maxBuildDuration = 0f;
-            foreach (GitHubActionsRun item in ghList)
-            {
-                if (item.buildDuration > maxBuildDuration)
-                {
-                    maxBuildDuration = item.buildDuration;
-                }
-            }
-            foreach (GitHubActionsRun item in ghList)
-            {
-                float interiumResult = ((item.buildDuration / maxBuildDuration) * 100f);
-                item.buildDurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
-            }
-            return ghList;
+            return model.BuildList.Count;
         }
 
         private List<Build> GetSampleAzureDevOpsBuilds()

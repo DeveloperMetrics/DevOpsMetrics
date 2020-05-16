@@ -23,10 +23,21 @@ namespace DevOpsMetrics.Service.DataAccess
                 Newtonsoft.Json.Linq.JArray value = jsonObj.value;
                 builds = JsonConvert.DeserializeObject<List<AzureDevOpsBuild>>(value.ToString());
 
-                //construct and add in the Url to each build
+                //We need to do some post processing and loop over the list a couple times to find the max build duration, construct a usable url, and calculate a build duration percentage
+                float maxBuildDuration = 0f;
                 foreach (AzureDevOpsBuild item in builds)
                 {
+                    //construct and add in the Url to each build
                     item.url = $"https://dev.azure.com/{organization}/{project}/_build/results?buildId={item.id}&view=results";
+                    if (item.buildDuration > maxBuildDuration)
+                    {
+                        maxBuildDuration = item.buildDuration;
+                    }
+                }
+                foreach (AzureDevOpsBuild item in builds)
+                {
+                    float interiumResult = ((item.buildDuration / maxBuildDuration) * 100f);
+                    item.buildDurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
 
                 //sort the list
@@ -47,6 +58,21 @@ namespace DevOpsMetrics.Service.DataAccess
                 dynamic jsonObj = JsonConvert.DeserializeObject(response);
                 Newtonsoft.Json.Linq.JArray value = jsonObj.workflow_runs;
                 runs = JsonConvert.DeserializeObject<List<GitHubActionsRun>>(value.ToString());
+
+                //We need to do some post processing and loop over the list a couple times to find the max build duration, and calculate a build duration percentage
+                float maxBuildDuration = 0f;
+                foreach (GitHubActionsRun item in runs)
+                {
+                    if (item.buildDuration > maxBuildDuration)
+                    {
+                        maxBuildDuration = item.buildDuration;
+                    }
+                }
+                foreach (GitHubActionsRun item in runs)
+                {
+                    float interiumResult = ((item.buildDuration / maxBuildDuration) * 100f);
+                    item.buildDurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+                }
 
                 //sort the list
                 runs = runs.OrderBy(o => o.created_at).ToList();

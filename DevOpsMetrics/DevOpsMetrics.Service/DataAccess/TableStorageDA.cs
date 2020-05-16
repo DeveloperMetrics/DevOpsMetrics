@@ -1,0 +1,103 @@
+﻿//using Microsoft.Extensions.Configuration;
+//using Microsoft.Azure.Cosmos.Table;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Threading.Tasks;
+
+//namespace DevOpsMetrics.Service.DataAccess
+//{
+//    public class TableStorageDA<T>
+//    {
+
+//        private readonly IConfiguration Configuration;
+
+//        public TableStorageDA(IConfiguration configuration)
+//        {
+//            Configuration = configuration;
+//        }
+
+//        private CloudTable CreateConnection(string tableName)
+//        {
+//            string name = Configuration["AzureStorageAccountName"];
+//            string accessKey = Configuration["AzureStorageAccountAccessKey"];
+//            CloudStorageAccount storageAccount = new CloudStorageAccount(new StorageCredentials(name, accessKey), true);
+
+//            // Create the table client.
+//            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
+
+//            // Get a reference to a table named "items"
+//            CloudTable itemsTable = tableClient.GetTableReference(tableName);
+
+//            return itemsTable;
+//        }
+
+//        public async Task<IEnumerable<T>> GetItems(string tableName)
+//        {
+//            CloudTable itemsTable = CreateConnection(tableName);
+
+//            // Construct the query operation for all customer entities where PartitionKey="Smith".
+//            TableQuery<T> query = new TableQuery<T>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "Item"));
+
+//            // execute the query on the table
+//            TableQuerySegment<T> resultSegment = await itemsTable.ExecuteQuerySegmentedAsync<T>(query, null);
+
+//            //Convert the array into a list and sort by Name
+//            List<T> results = resultSegment.Results.ToList<T>();
+//            results.Sort((x, y) => x.Name.CompareTo(y.Name));
+
+//            return results;
+//        }
+
+//        public async Task<T> GetItem(string tableName, string name)
+//        {
+//            CloudTable itemsTable = CreateConnection(tableName);
+
+//            // Create a retrieve operation that takes a customer entity.
+//            TableOperation retrieveOperation = TableOperation.Retrieve<T>("Item", name);
+
+//            // Execute the retrieve operation.
+//            TableResult retrievedResult = await itemsTable.ExecuteAsync(retrieveOperation);
+
+//            return (T)retrievedResult.Result;
+//        }
+
+//        public async Task<bool> SaveItem(string tableName, T item)
+//        {
+//            CloudTable itemsTable = CreateConnection(tableName);
+
+//            // Create the TableOperation that inserts the customer entity.
+//            TableOperation insertOperation = TableOperation.InsertOrMerge(item);
+
+//            // Execute the insert operation.
+//            await itemsTable.ExecuteAsync(insertOperation);
+//            return true;
+//        }
+
+//        public async Task<bool> DeleteItem(string tableName, string name)
+//        {
+//            CloudTable itemsTable = CreateConnection(tableName);
+
+//            // Create a retrieve operation that expects a customer entity.
+//            TableOperation retrieveOperation = TableOperation.Retrieve<T>("Item", name);
+
+//            // Execute the operation.
+//            TableResult retrievedResult = await itemsTable.ExecuteAsync(retrieveOperation);
+
+//            // Assign the result to a CustomerEntity object.
+//            T deleteEntity = (T)retrievedResult.Result;
+
+//            if (deleteEntity != null)
+//            {
+//                // Create the TableOperation that inserts the customer entity.
+//                TableOperation deleteOperation = TableOperation.Delete(deleteEntity);
+
+//                // Execute the delete operation.
+//                await itemsTable.ExecuteAsync(deleteOperation);
+//            }
+//            return true;
+//        }
+
+
+//    }
+//}

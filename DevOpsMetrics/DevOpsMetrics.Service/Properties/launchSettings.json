@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/deploymentfrequency/GetDeploymentFrequency",
+      "launchUrl": "api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

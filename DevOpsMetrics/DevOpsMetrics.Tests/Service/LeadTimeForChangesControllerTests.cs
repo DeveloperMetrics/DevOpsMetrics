@@ -26,6 +26,7 @@ namespace DevOpsMetrics.Tests.Service
             IConfigurationBuilder config = new ConfigurationBuilder()
                .SetBasePath(AppContext.BaseDirectory)
                .AddJsonFile("appsettings.json");
+            config.AddUserSecrets<LeadTimeForChangesControllerTests>();
             Configuration = config.Build();
 
             //Setup the test server
@@ -50,7 +51,7 @@ namespace DevOpsMetrics.Tests.Service
             string buildId = "3673"; //SamLearnsAzure.CI
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            LeadTimeForChangesController controller = new LeadTimeForChangesController();
+            LeadTimeForChangesController controller = new LeadTimeForChangesController(Configuration);
 
             //Act
             LeadTimeForChangesModel model = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, repositoryId, branch, buildId, numberOfDays, maxNumberOfItems);
@@ -93,7 +94,7 @@ namespace DevOpsMetrics.Tests.Service
             string workflowId = "1162561";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
-            LeadTimeForChangesController controller = new LeadTimeForChangesController();
+            LeadTimeForChangesController controller = new LeadTimeForChangesController(Configuration);
 
             //Act
             LeadTimeForChangesModel model = await controller.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret, owner, repo, branch, workflowId, numberOfDays, maxNumberOfItems);

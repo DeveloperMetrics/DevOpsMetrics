@@ -1,6 +1,7 @@
 ﻿using DevOpsMetrics.Service.DataAccess;
 using DevOpsMetrics.Service.Models.Common;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 
@@ -10,6 +11,25 @@ namespace DevOpsMetrics.Service.Controllers
     [ApiController]
     public class LeadTimeForChangesController : ControllerBase
     {
+        private IConfiguration Configuration;
+        public LeadTimeForChangesController(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        /// <summary>
+        /// Get lead time for changes from Azure DevOps API
+        /// </summary>
+        /// <param name="getSampleData"></param>
+        /// <param name="patToken"></param>
+        /// <param name="organization"></param>
+        /// <param name="project"></param>
+        /// <param name="repositoryId"></param>
+        /// <param name="branch"></param>
+        /// <param name="buildId"></param>
+        /// <param name="numberOfDays"></param>
+        /// <param name="maxNumberOfItems"></param>
+        /// <returns></returns>
         [HttpGet("GetAzureDevOpsLeadTimeForChanges")]
         public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string branch, string buildId, int numberOfDays, int maxNumberOfItems = 20)
         {
@@ -34,6 +54,19 @@ namespace DevOpsMetrics.Service.Controllers
             return model;
         }
 
+        /// <summary>
+        /// Get lead time for changes from GitHub API
+        /// </summary>
+        /// <param name="getSampleData"></param>
+        /// <param name="clientId"></param>
+        /// <param name="clientSecret"></param>
+        /// <param name="owner"></param>
+        /// <param name="repo"></param>
+        /// <param name="branch"></param>
+        /// <param name="workflowId"></param>
+        /// <param name="numberOfDays"></param>
+        /// <param name="maxNumberOfItems"></param>
+        /// <returns></returns>
         [HttpGet("GetGitHubLeadTimeForChanges")]
         public async Task<LeadTimeForChangesModel> GetGitHubLeadTimeForChanges(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowId, int numberOfDays, int maxNumberOfItems = 20)
         {

@@ -4,10 +4,23 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <UserSecretsId>0e2b71e7-af1c-40d5-a334-1118f60b467e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.1" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.1" />
@@ -17,12 +30,6 @@
   <ItemGroup>
     <ProjectReference Include="..\DevOpsMetrics.Core\DevOpsMetrics.Core.csproj" />
     <ProjectReference Include="..\DevOpsMetrics.Service\DevOpsMetrics.Service.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

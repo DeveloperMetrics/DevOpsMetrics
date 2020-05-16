@@ -26,6 +26,7 @@ namespace DevOpsMetrics.Tests.Service
             IConfigurationBuilder config = new ConfigurationBuilder()
                .SetBasePath(AppContext.BaseDirectory)
                .AddJsonFile("appsettings.json");
+            config.AddUserSecrets<DeploymentFrequencyControllerTests>();
             Configuration = config.Build();
 
             //Setup the test server
@@ -38,7 +39,7 @@ namespace DevOpsMetrics.Tests.Service
 
         [TestCategory("ControllerTest")]
         [TestMethod]
-        public async Task AzDeploymentFrequencyControllerIntegrationTest()
+        public async Task AzDeploymentsControllerIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -50,7 +51,7 @@ namespace DevOpsMetrics.Tests.Service
             string buildId = "3673"; //SamLearnsAzure.CI
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController();
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
@@ -72,7 +73,7 @@ namespace DevOpsMetrics.Tests.Service
 
         [TestCategory("ControllerTest")]
         [TestMethod]
-        public async Task GHDeploymentFrequencyControllerIntegrationTest()
+        public async Task GHDeploymentsControllerIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -85,7 +86,7 @@ namespace DevOpsMetrics.Tests.Service
             string workflowId = "108084";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController();
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
