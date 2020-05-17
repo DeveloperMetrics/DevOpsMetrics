@@ -76,14 +76,14 @@ namespace DevOpsMetrics.Tests.Service
         public async Task GHDeploymentFrequencyDAIntegrationTest()
         {
             //Arrange
-            bool getSampleData = false;
+            bool getSampleData = true;
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "master";
-            string workflowName = "samsfeatureflags CI/CD";
-            string workflowId = "108084";
+            string workflowName = "DevOpsMetrics CI/CD";
+            string workflowId = "1162561";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
 
@@ -109,14 +109,14 @@ namespace DevOpsMetrics.Tests.Service
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "master";
-            string workflowName = "samsfeatureflags CI/CD";
-            string workflowId = "108084";
+            string workflowName = "DevOpsMetrics CI/CD";
+            string workflowId = "1162561";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
 
             //Act
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            int itemsAdded = await da.RefreshGitHubDeploymentFrequency(clientId, clientSecret, accountName, accountAccessKey, tableName, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+            int itemsAdded = await da.RefreshGitHubDeployments(clientId, clientSecret, accountName, accountAccessKey, tableName, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(itemsAdded >= 0);

@@ -115,7 +115,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 foreach (PullRequestModel item in pullRequests)
                 {
                     float interiumResult = (((float)item.Duration.TotalMinutes / maxPullRequestDuration) * 100f);
-                    item.DurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+                    item.DurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
 
                 //Filter out builds on the master branch older than the number of days
@@ -274,7 +274,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 foreach (PullRequestModel item in pullRequests)
                 {
                     float interiumResult = (((float)item.Duration.TotalMinutes / maxPullRequestDuration) * 100f);
-                    item.DurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+                    item.DurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
 
                 //Filter out builds on the master branch older than the number of days

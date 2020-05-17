@@ -11,7 +11,7 @@ namespace DevOpsMetrics.Service.Models.GitHub
     {
         public GitHubRunsTableItem(string partitionKey, string rowKey, string data)
         {
-            PartitionKey = partitionKey;
+            PartitionKey = Utility.EncodePartitionKey(partitionKey);
             RowKey = rowKey;
             Data = data;
         }

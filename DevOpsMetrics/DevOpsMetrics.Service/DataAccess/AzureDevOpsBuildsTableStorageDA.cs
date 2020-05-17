@@ -39,6 +39,9 @@ namespace DevOpsMetrics.Service.DataAccess
 
         public async Task<AzureDevOpsBuildTableItem> GetItem(string accountName, string accessKey, string tableName, string partitionKey, string rowKey)
         {
+            //prepare the partition key
+            partitionKey = Utility.EncodePartitionKey(partitionKey);
+
             CloudTable itemsTable = CreateConnection(accountName, accessKey, tableName);
 
             // Create a retrieve operation that takes a customer entity.

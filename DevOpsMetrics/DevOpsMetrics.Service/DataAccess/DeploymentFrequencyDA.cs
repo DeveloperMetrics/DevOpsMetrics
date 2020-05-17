@@ -171,7 +171,7 @@ namespace DevOpsMetrics.Service.DataAccess
             }
         }
 
-        public async Task<int> RefreshGitHubDeploymentFrequency(string clientId, string clientSecret, string accountName, string accessKey, string tableName, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems)
+        public async Task<int> RefreshGitHubDeployments(string clientId, string clientSecret, string accountName, string accessKey, string tableName, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems)
         {
             BuildsDA da = new BuildsDA();
             Newtonsoft.Json.Linq.JArray items = await da.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, branch, workflowId);

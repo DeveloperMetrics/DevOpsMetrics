@@ -20,5 +20,6 @@ namespace DevOpsMetrics.Service.DataAccess
                 return newItems;
             }
         }
+
     }
 }

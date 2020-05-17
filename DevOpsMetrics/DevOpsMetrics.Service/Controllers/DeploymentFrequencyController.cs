@@ -140,7 +140,7 @@ namespace DevOpsMetrics.Service.Controllers
             try
             {
                 DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-                numberOfRecordsSaved = await da.RefreshGitHubDeploymentFrequency(clientId, clientSecret, accountName, accountAccessKey, tableName, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+                numberOfRecordsSaved = await da.RefreshGitHubDeployments(clientId, clientSecret, accountName, accountAccessKey, tableName, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
             {

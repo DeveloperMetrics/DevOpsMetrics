@@ -48,7 +48,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 foreach (AzureDevOpsBuild item in builds)
                 {
                     float interiumResult = ((item.buildDuration / maxBuildDuration) * 100f);
-                    item.buildDurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+                    item.buildDurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
 
                 //sort the list
@@ -93,7 +93,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 foreach (GitHubActionsRun item in runs)
                 {
                     float interiumResult = ((item.buildDuration / maxBuildDuration) * 100f);
-                    item.buildDurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+                    item.buildDurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
 
                 //sort the list

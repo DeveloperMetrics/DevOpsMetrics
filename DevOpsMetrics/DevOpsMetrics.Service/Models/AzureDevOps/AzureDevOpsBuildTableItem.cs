@@ -11,7 +11,7 @@ namespace DevOpsMetrics.Service.Models.AzureDevOps
     {
         public AzureDevOpsBuildTableItem(string partitionKey, string rowKey, string data)
         {
-            PartitionKey = partitionKey;
+            PartitionKey = Utility.EncodePartitionKey(partitionKey);
             RowKey = rowKey;
             Data = data;
         }
