@@ -38,6 +38,7 @@ namespace DevOpsMetrics.Service.DataAccess
 
         public async static Task<string> SendGitHubMessage(string url, string clientId, string clientSecret)
         {
+            Console.WriteLine($"Running GitHub url: {url}");
             string responseBody = "";
             if (url.IndexOf("api.github.com") == -1)
             {
@@ -60,7 +61,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     if (response.IsSuccessStatusCode)
                     {
                         responseBody = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine(responseBody);
+                        //Console.WriteLine(responseBody);
                     }
                     //else if (response.ReasonPhrase == "rate limit exceeded")
                     //{

@@ -49,7 +49,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public async Task AzDeploymentFrequencyRefreshDAIntegrationTest()
+        public async Task AzDeploymentsRefreshDAIntegrationTest()
         {
             //Arrange
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
@@ -76,7 +76,7 @@ namespace DevOpsMetrics.Tests.Service
         public async Task GHDeploymentFrequencyDAIntegrationTest()
         {
             //Arrange
-            bool getSampleData = true;
+            bool getSampleData = false;
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
@@ -95,6 +95,31 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription));
             Assert.AreNotEqual("Unknown", model.DeploymentsPerDayMetricDescription);
+        }
+
+        [TestMethod]
+        public async Task GHDeploymentsRefreshDAIntegrationTest()
+        {
+            //Arrange
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
+            string accountName = Configuration["AppSettings:AzureStorageAccountName"];
+            string accountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
+            string tableName = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"];
+            string owner = "samsmithnz";
+            string repo = "DevOpsMetrics";
+            string branch = "master";
+            string workflowName = "samsfeatureflags CI/CD";
+            string workflowId = "108084";
+            int numberOfDays = 30;
+            int maxNumberOfItems = 20;
+
+            //Act
+            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
+            int itemsAdded = await da.RefreshGitHubDeploymentFrequency(clientId, clientSecret, accountName, accountAccessKey, tableName, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+
+            //Assert
+            Assert.IsTrue(itemsAdded >= 0);
         }
 
     }

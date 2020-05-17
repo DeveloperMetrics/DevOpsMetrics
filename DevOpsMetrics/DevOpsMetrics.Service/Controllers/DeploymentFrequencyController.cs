@@ -134,13 +134,13 @@ namespace DevOpsMetrics.Service.Controllers
 
 
         [HttpGet("RefreshGitHubDeploymentFrequency")]
-        public async Task<int> RefreshGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems = 20)
+        public async Task<int> RefreshGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, string accountName, string accountAccessKey, string tableName, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems = 20)
         {
             int numberOfRecordsSaved = 0;
             try
             {
                 DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-                numberOfRecordsSaved = await da.RefreshGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+                numberOfRecordsSaved = await da.RefreshGitHubDeploymentFrequency(clientId, clientSecret, accountName, accountAccessKey, tableName, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
             {

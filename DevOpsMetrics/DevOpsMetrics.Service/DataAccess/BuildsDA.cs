@@ -59,16 +59,27 @@ namespace DevOpsMetrics.Service.DataAccess
             return builds;
         }
 
-        public async Task<List<GitHubActionsRun>> GetGitHubActionRuns(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowId)
+        public async Task<Newtonsoft.Json.Linq.JArray> GetGitHubActionRunsJArray(string clientId, string clientSecret, string owner, string repo, string branch, string workflowId)
         {
-            List<GitHubActionsRun> runs = new List<GitHubActionsRun>();
+            Newtonsoft.Json.Linq.JArray list = null;
             string url = $"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflowId}/runs?per_page=100";
             string response = await MessageUtility.SendGitHubMessage(url, clientId, clientSecret);
             if (string.IsNullOrEmpty(response) == false)
             {
                 dynamic jsonObj = JsonConvert.DeserializeObject(response);
-                Newtonsoft.Json.Linq.JArray value = jsonObj.workflow_runs;
-                runs = JsonConvert.DeserializeObject<List<GitHubActionsRun>>(value.ToString());
+                list = jsonObj.workflow_runs;
+            }
+
+            return list;
+        }
+
+        public async Task<List<GitHubActionsRun>> GetGitHubActionRuns(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowId)
+        {
+            List<GitHubActionsRun> runs = new List<GitHubActionsRun>();
+            Newtonsoft.Json.Linq.JArray list = await GetGitHubActionRunsJArray(clientId,  clientSecret, owner, repo, branch, workflowId);
+            if (list != null)
+            {
+                runs = JsonConvert.DeserializeObject<List<GitHubActionsRun>>(list.ToString());
 
                 //We need to do some post processing and loop over the list a couple times to find the max build duration, and calculate a build duration percentage
                 float maxBuildDuration = 0f;

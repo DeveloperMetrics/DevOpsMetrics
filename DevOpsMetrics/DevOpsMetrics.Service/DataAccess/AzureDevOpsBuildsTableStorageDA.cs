@@ -1,15 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using DevOpsMetrics.Service.Models.AzureDevOps;
 using Microsoft.Azure.Cosmos.Table;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using DevOpsMetrics.Service.Models.AzureDevOps;
-using Newtonsoft.Json.Linq;
 
 namespace DevOpsMetrics.Service.DataAccess
 {
-    public class TableStorageAzureDevOpsBuildsDA
+    public class AzureDevOpsBuildsTableStorageDA
     {
 
         private CloudTable CreateConnection(string accountName, string accessKey, string tableName)

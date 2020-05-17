@@ -81,13 +81,13 @@ namespace DevOpsMetrics.Service.DataAccess
             }
         }
 
-        public async Task<int> RefreshAzureDevOpsDeploymentFrequency(string patToken, string azureStorageAccountName, string azureStorageAccountAccessKey, string tableName, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems)
+        public async Task<int> RefreshAzureDevOpsDeploymentFrequency(string patToken, string accountName, string accessKey, string tableName, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems)
         {
             BuildsDA da = new BuildsDA();
             Newtonsoft.Json.Linq.JArray items = await da.GetAzureDevOpsBuildsJArray(patToken, organization, project, branch, buildId);
 
             int itemsAdded = 0;
-            TableStorageAzureDevOpsBuildsDA tableDA = new TableStorageAzureDevOpsBuildsDA();
+            AzureDevOpsBuildsTableStorageDA tableDA = new AzureDevOpsBuildsTableStorageDA();
             //Check each build to see if it's in storage, adding the items not in storage
             foreach (JToken item in items)
             {
@@ -98,7 +98,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     string partitionKey = buildName;
                     string rowKey = build.buildNumber;
                     AzureDevOpsBuildTableItem newItem = new AzureDevOpsBuildTableItem(partitionKey, rowKey, item.ToString());
-                    if (await tableDA.AddItem(azureStorageAccountName, azureStorageAccountAccessKey, tableName, newItem) == true)
+                    if (await tableDA.AddItem(accountName, accessKey, tableName, newItem) == true)
                     {
                         itemsAdded++;
                     }
@@ -171,12 +171,31 @@ namespace DevOpsMetrics.Service.DataAccess
             }
         }
 
-        public async Task<int> RefreshGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems)
+        public async Task<int> RefreshGitHubDeploymentFrequency(string clientId, string clientSecret, string accountName, string accessKey, string tableName, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems)
         {
-            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+            BuildsDA da = new BuildsDA();
+            Newtonsoft.Json.Linq.JArray items = await da.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, branch, workflowId);
 
-            return model.BuildList.Count;
+            int itemsAdded = 0;
+            GitHubRunsTableStorageDA tableDA = new GitHubRunsTableStorageDA();
+            //Check each build to see if it's in storage, adding the items not in storage
+            foreach (JToken item in items)
+            {
+                GitHubActionsRun build = JsonConvert.DeserializeObject<GitHubActionsRun>(item.ToString());
+
+                if (build.status == "completed")
+                {
+                    string partitionKey = workflowName;
+                    string rowKey = build.run_number;
+                    GitHubRunsTableItem newItem = new GitHubRunsTableItem(partitionKey, rowKey, item.ToString());
+                    if (await tableDA.AddItem(accountName, accessKey, tableName, newItem) == true)
+                    {
+                        itemsAdded++;
+                    }
+                }
+            }
+
+            return itemsAdded;
         }
 
         private List<Build> GetSampleAzureDevOpsBuilds()
