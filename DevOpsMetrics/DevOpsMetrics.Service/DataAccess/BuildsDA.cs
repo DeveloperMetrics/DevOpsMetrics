@@ -12,16 +12,27 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class BuildsDA
     {
-        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsBuilds(string patToken, string organization, string project, string branch, string buildId)
+        public async Task<Newtonsoft.Json.Linq.JArray> GetAzureDevOpsBuildsJArray(string patToken, string organization, string project, string branch, string buildId)
         {
-            List<AzureDevOpsBuild> builds = new List<AzureDevOpsBuild>();
-            string url = $"https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1&queryOrder=BuildQueryOrder,finishTimeDescending";       
+            Newtonsoft.Json.Linq.JArray list = null;
+            string url = $"https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1&queryOrder=BuildQueryOrder,finishTimeDescending";
             string response = await MessageUtility.SendAzureDevOpsMessage(url, patToken);
             if (string.IsNullOrEmpty(response) == false)
             {
                 dynamic jsonObj = JsonConvert.DeserializeObject(response);
-                Newtonsoft.Json.Linq.JArray value = jsonObj.value;
-                builds = JsonConvert.DeserializeObject<List<AzureDevOpsBuild>>(value.ToString());
+                list = jsonObj.value;
+            }
+
+            return list;
+        }
+
+        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsBuilds(string patToken, string organization, string project, string branch, string buildId)
+        {
+            List<AzureDevOpsBuild> builds = new List<AzureDevOpsBuild>();
+            Newtonsoft.Json.Linq.JArray list = await GetAzureDevOpsBuildsJArray(patToken, organization, project, branch, buildId);
+            if (list != null)
+            {
+                builds = JsonConvert.DeserializeObject<List<AzureDevOpsBuild>>(list.ToString());
 
                 //We need to do some post processing and loop over the list a couple times to find the max build duration, construct a usable url, and calculate a build duration percentage
                 float maxBuildDuration = 0f;

@@ -208,7 +208,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = false;
-            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
+            string patToken = "";//Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string repositoryId = "SamLearnsAzure";

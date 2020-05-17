@@ -73,8 +73,12 @@ namespace DevOpsMetrics.Service.Controllers
             int numberOfRecordsSaved = 0;
             try
             {
+                string azureStorageAccountName = Configuration["AppSettings:AzureStorageAccountName"];
+                string azureStorageAccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
+                string azureStorageAccountContainerAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"];
+
                 DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-                numberOfRecordsSaved = await da.RefreshAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
+                numberOfRecordsSaved = await da.RefreshAzureDevOpsDeploymentFrequency(patToken, azureStorageAccountName, azureStorageAccountAccessKey, azureStorageAccountContainerAzureDevOpsBuilds, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
             {
