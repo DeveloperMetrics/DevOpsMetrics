@@ -48,29 +48,29 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreNotEqual("Unknown", model.DeploymentsPerDayMetricDescription);
         }
 
-        [TestMethod]
-        public async Task AzDeploymentsRefreshDAIntegrationTest()
-        {
-            //Arrange
-            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-            string accountName = Configuration["AppSettings:AzureStorageAccountName"];
-            string accountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
-            string tableName = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"];
-            string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildName = "SamLearnsAzure.CI";
-            string buildId = "3673"; //SamLearnsAzure.CI
-            int numberOfDays = 30;
-            int maxNumberOfItems = 20;
+        //[TestMethod]
+        //public async Task AzDeploymentsRefreshDAIntegrationTest()
+        //{
+        //    //Arrange
+        //    string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
+        //    string accountName = Configuration["AppSettings:AzureStorageAccountName"];
+        //    string accountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
+        //    string tableName = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"];
+        //    string organization = "samsmithnz";
+        //    string project = "SamLearnsAzure";
+        //    string branch = "refs/heads/master";
+        //    string buildName = "SamLearnsAzure.CI";
+        //    string buildId = "3673"; //SamLearnsAzure.CI
+        //    int numberOfDays = 30;
+        //    int maxNumberOfItems = 20;
 
-            //Act
-            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            int itemsAdded = await da.RefreshAzureDevOpsDeploymentFrequency(patToken, accountName, accountAccessKey, tableName, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
+        //    //Act
+        //    DeploymentFrequencyDA da = new DeploymentFrequencyDA();
+        //    int itemsAdded = await da.RefreshAzureDevOpsDeploymentFrequency(patToken, accountName, accountAccessKey, tableName, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
 
-            //Assert
-            Assert.IsTrue(itemsAdded >= 0);
-        }
+        //    //Assert
+        //    Assert.IsTrue(itemsAdded >= 0);
+        //}
 
         [TestMethod]
         public async Task GHDeploymentFrequencyDAIntegrationTest()
@@ -97,30 +97,30 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreNotEqual("Unknown", model.DeploymentsPerDayMetricDescription);
         }
 
-        [TestMethod]
-        public async Task GHDeploymentsRefreshDAIntegrationTest()
-        {
-            //Arrange
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            string accountName = Configuration["AppSettings:AzureStorageAccountName"];
-            string accountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
-            string tableName = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"];
-            string owner = "samsmithnz";
-            string repo = "DevOpsMetrics";
-            string branch = "master";
-            string workflowName = "DevOpsMetrics CI/CD";
-            string workflowId = "1162561";
-            int numberOfDays = 30;
-            int maxNumberOfItems = 20;
+        //[TestMethod]
+        //public async Task GHDeploymentsRefreshDAIntegrationTest()
+        //{
+        //    //Arrange
+        //    string clientId = Configuration["AppSettings:GitHubClientId"];
+        //    string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
+        //    string accountName = Configuration["AppSettings:AzureStorageAccountName"];
+        //    string accountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
+        //    string tableName = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"];
+        //    string owner = "samsmithnz";
+        //    string repo = "DevOpsMetrics";
+        //    string branch = "master";
+        //    string workflowName = "DevOpsMetrics CI/CD";
+        //    string workflowId = "1162561";
+        //    int numberOfDays = 30;
+        //    int maxNumberOfItems = 20;
 
-            //Act
-            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            int itemsAdded = await da.RefreshGitHubDeployments(clientId, clientSecret, accountName, accountAccessKey, tableName, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+        //    //Act
+        //    DeploymentFrequencyDA da = new DeploymentFrequencyDA();
+        //    int itemsAdded = await da.RefreshGitHubDeployments(clientId, clientSecret, accountName, accountAccessKey, tableName, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
 
-            //Assert
-            Assert.IsTrue(itemsAdded >= 0);
-        }
+        //    //Assert
+        //    Assert.IsTrue(itemsAdded >= 0);
+        //}
 
     }
 }

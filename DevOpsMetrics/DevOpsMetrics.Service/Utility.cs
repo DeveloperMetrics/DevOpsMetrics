@@ -2,18 +2,27 @@
 {
     public static class Utility
     {
-        public static string EncodePartitionKey(string url)
+        public static string EncodePartitionKey(string text)
         {
-            var keyBytes = System.Text.Encoding.UTF8.GetBytes(url);
-            var base64 = System.Convert.ToBase64String(keyBytes);
-            return base64.Replace('/', '_');
+            text = text.Replace("/", "_");
+
+            //The forward slash(/) character
+            //The backslash(\) character
+            //The number sign(#) character
+            //The question mark (?) character
+
+            //Control characters from U+0000 to U+001F, including:
+            //The horizontal tab(\t) character
+            //The linefeed(\n) character
+            //The carriage return (\r) character
+            //Control characters from U + 007F to U+009F
+
+            return text.Replace("/", "_");
         }
 
-        public static string DecodePartitionKey(string encodedKey)
+        public static string DecodePartitionKey(string text)
         {
-            var base64 = encodedKey.Replace('_', '/');
-            byte[] bytes = System.Convert.FromBase64String(base64);
-            return System.Text.Encoding.UTF8.GetString(bytes);
+            return text.Replace("_", "/");
         }
     }
 }
