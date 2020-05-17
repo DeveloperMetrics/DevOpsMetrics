@@ -20,6 +20,7 @@ namespace DevOpsMetrics.Tests.Service
             IConfigurationBuilder config = new ConfigurationBuilder()
                .SetBasePath(AppContext.BaseDirectory)
                .AddJsonFile("appsettings.json");
+            config.AddUserSecrets<DeploymentFrequencyControllerTests>();
             Configuration = config.Build();
         }
 

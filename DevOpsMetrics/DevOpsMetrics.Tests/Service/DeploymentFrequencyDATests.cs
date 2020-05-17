@@ -20,6 +20,7 @@ namespace DevOpsMetrics.Tests.Service
             IConfigurationBuilder config = new ConfigurationBuilder()
                .SetBasePath(AppContext.BaseDirectory)
                .AddJsonFile("appsettings.json");
+            config.AddUserSecrets<DeploymentFrequencyControllerTests>();
             Configuration = config.Build();
         }
 
@@ -45,6 +46,30 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription));
             Assert.AreNotEqual("Unknown", model.DeploymentsPerDayMetricDescription);
+        }
+
+        [TestMethod]
+        public async Task AzDeploymentFrequencyRefreshDAIntegrationTest()
+        {
+            //Arrange
+            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
+            string accountName = Configuration["AppSettings:AzureStorageAccountName"];
+            string accountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
+            string tableName = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"];
+            string organization = "samsmithnz";
+            string project = "SamLearnsAzure";
+            string branch = "refs/heads/master";
+            string buildName = "SamLearnsAzure.CI";
+            string buildId = "3673"; //SamLearnsAzure.CI
+            int numberOfDays = 30;
+            int maxNumberOfItems = 20;
+
+            //Act
+            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
+            int itemsAdded = await da.RefreshAzureDevOpsDeploymentFrequency(patToken, accountName, accountAccessKey, tableName, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
+
+            //Assert
+            Assert.IsTrue(itemsAdded >= 0);
         }
 
         [TestMethod]

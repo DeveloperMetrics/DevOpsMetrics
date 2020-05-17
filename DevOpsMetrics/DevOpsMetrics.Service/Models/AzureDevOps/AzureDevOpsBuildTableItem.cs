@@ -16,6 +16,10 @@ namespace DevOpsMetrics.Service.Models.AzureDevOps
             Data = data;
         }
 
+        //TableEntity requires an empty constructor
+        public AzureDevOpsBuildTableItem()
+        { }
+
         public string Data { get; set; }
     }
 }

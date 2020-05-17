@@ -47,7 +47,7 @@ namespace DevOpsMetrics.Service.DataAccess
             CloudTable itemsTable = CreateConnection(accountName, accessKey, tableName);
 
             // Create a retrieve operation that takes a customer entity.
-            TableOperation retrieveOperation = TableOperation.Retrieve(partitionKey, rowKey);
+            TableOperation retrieveOperation = TableOperation.Retrieve<AzureDevOpsBuildTableItem>(partitionKey, rowKey);
 
             // Execute the retrieve operation.
             TableResult retrievedResult = await itemsTable.ExecuteAsync(retrieveOperation);

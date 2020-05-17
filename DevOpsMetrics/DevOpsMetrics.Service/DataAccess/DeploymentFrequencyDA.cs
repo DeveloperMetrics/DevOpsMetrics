@@ -93,12 +93,15 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 AzureDevOpsBuild build = JsonConvert.DeserializeObject<AzureDevOpsBuild>(item.ToString());
 
-                string partitionKey = project;
-                string rowKey = build.buildNumber;
-                AzureDevOpsBuildTableItem newItem = new AzureDevOpsBuildTableItem(partitionKey, rowKey, item.ToString());
-                if (await tableDA.AddItem(azureStorageAccountName, azureStorageAccountAccessKey, tableName, newItem) == true)
+                if (build.status == "completed")
                 {
-                    itemsAdded++;
+                    string partitionKey = buildName;
+                    string rowKey = build.buildNumber;
+                    AzureDevOpsBuildTableItem newItem = new AzureDevOpsBuildTableItem(partitionKey, rowKey, item.ToString());
+                    if (await tableDA.AddItem(azureStorageAccountName, azureStorageAccountAccessKey, tableName, newItem) == true)
+                    {
+                        itemsAdded++;
+                    }
                 }
             }
 
