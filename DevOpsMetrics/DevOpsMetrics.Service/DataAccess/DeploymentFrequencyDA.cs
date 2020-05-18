@@ -87,7 +87,7 @@ namespace DevOpsMetrics.Service.DataAccess
             Newtonsoft.Json.Linq.JArray items = await da.GetAzureDevOpsBuildsJArray(patToken, organization, project, branch, buildId);
 
             int itemsAdded = 0;
-            AzureDevOpsBuildsTableStorageDA tableDA = new AzureDevOpsBuildsTableStorageDA();
+            TableStorageDA tableDA = new TableStorageDA(accountName, accessKey, tableName);
             //Check each build to see if it's in storage, adding the items not in storage
             foreach (JToken item in items)
             {
@@ -97,8 +97,8 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     string partitionKey = buildName;
                     string rowKey = build.buildNumber;
-                    AzureDevOpsBuildTableItem newItem = new AzureDevOpsBuildTableItem(partitionKey, rowKey, item.ToString());
-                    if (await tableDA.AddItem(accountName, accessKey, tableName, newItem) == true)
+                    AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
+                    if (await tableDA.AddItem( newItem) == true)
                     {
                         itemsAdded++;
                     }
@@ -177,7 +177,7 @@ namespace DevOpsMetrics.Service.DataAccess
             Newtonsoft.Json.Linq.JArray items = await da.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, branch, workflowId);
 
             int itemsAdded = 0;
-            GitHubRunsTableStorageDA tableDA = new GitHubRunsTableStorageDA();
+            TableStorageDA tableDA = new TableStorageDA(accountName, accessKey, tableName);
             //Check each build to see if it's in storage, adding the items not in storage
             foreach (JToken item in items)
             {
@@ -187,8 +187,8 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     string partitionKey = workflowName;
                     string rowKey = build.run_number;
-                    GitHubRunsTableItem newItem = new GitHubRunsTableItem(partitionKey, rowKey, item.ToString());
-                    if (await tableDA.AddItem(accountName, accessKey, tableName, newItem) == true)
+                    AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
+                    if (await tableDA.AddItem(newItem) == true)
                     {
                         itemsAdded++;
                     }

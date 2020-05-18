@@ -1,34 +1,46 @@
 ﻿using DevOpsMetrics.Service.Models.AzureDevOps;
+using DevOpsMetrics.Service.Models.Common;
 using Microsoft.Azure.Cosmos.Table;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.DataAccess
 {
-    public class AzureDevOpsBuildsTableStorageDA
+    public class TableStorageDA
     {
+        private string AccountName;
+        private string AccessKey;
+        private string TableName;
 
-        private CloudTable CreateConnection(string accountName, string accessKey, string tableName)
+        public TableStorageDA(string accountName, string accessKey, string tableName)
+        {
+            AccountName = accountName;
+            AccessKey = accessKey;
+            TableName = tableName;
+        }
+
+
+        private CloudTable CreateConnection()
         {
             //string name = accountName; // Configuration["accountName"];
             //string accessKey = accessKey; // Configuration["accessKey"];
-            CloudStorageAccount storageAccount = new CloudStorageAccount(new StorageCredentials(accountName, accessKey), true);
+            CloudStorageAccount storageAccount = new CloudStorageAccount(new StorageCredentials(AccountName, AccessKey), true);
 
             // Create the table client.
             CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
 
             // Get a reference to a table named "items"
-            CloudTable itemsTable = tableClient.GetTableReference(tableName);
+            CloudTable itemsTable = tableClient.GetTableReference(TableName);
 
             return itemsTable;
         }
 
-        public async Task<bool> AddItem(string accountName, string accessKey, string tableName, AzureDevOpsBuildTableItem data)
+        public async Task<bool> AddItem(AzureStorageTableModel data)
         {
             //Check if the item exists in storage
-            AzureDevOpsBuildTableItem item = await GetItem(accountName, accessKey, tableName, data.PartitionKey, data.RowKey);
+            AzureStorageTableModel item = await GetItem(data.PartitionKey, data.RowKey);
             if (item == null)
             {
-                await SaveItem(accountName, accessKey, tableName, data);
+                await SaveItem(data);
                 return true; //data saved to table!
             }
             else
@@ -37,25 +49,25 @@ namespace DevOpsMetrics.Service.DataAccess
             }
         }
 
-        public async Task<AzureDevOpsBuildTableItem> GetItem(string accountName, string accessKey, string tableName, string partitionKey, string rowKey)
+        public async Task<AzureStorageTableModel> GetItem(string partitionKey, string rowKey)
         {
             //prepare the partition key
             partitionKey = Utility.EncodePartitionKey(partitionKey);
 
-            CloudTable itemsTable = CreateConnection(accountName, accessKey, tableName);
+            CloudTable itemsTable = CreateConnection();
 
             // Create a retrieve operation that takes a customer entity.
-            TableOperation retrieveOperation = TableOperation.Retrieve<AzureDevOpsBuildTableItem>(partitionKey, rowKey);
+            TableOperation retrieveOperation = TableOperation.Retrieve<AzureStorageTableModel>(partitionKey, rowKey);
 
             // Execute the retrieve operation.
             TableResult retrievedResult = await itemsTable.ExecuteAsync(retrieveOperation);
 
-            return (AzureDevOpsBuildTableItem)retrievedResult.Result;
+            return (AzureStorageTableModel)retrievedResult.Result;
         }
 
-        public async Task<bool> SaveItem(string accountName, string accessKey, string tableName, AzureDevOpsBuildTableItem data)
+        public async Task<bool> SaveItem(AzureStorageTableModel data)
         {
-            CloudTable itemsTable = CreateConnection(accountName, accessKey, tableName);
+            CloudTable itemsTable = CreateConnection();
 
             // Create the TableOperation that inserts the customer entity.
             TableOperation insertOperation = TableOperation.InsertOrMerge(data);

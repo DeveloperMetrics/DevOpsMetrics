@@ -10,7 +10,7 @@ namespace DevOpsMetrics.Tests.Service
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [TestCategory("IntegrationTest")]
     [TestClass]
-    public class DeploymentFrequencyDATests
+    public class AzureTableStorageDATests
     {
         public IConfigurationRoot Configuration;
 
@@ -25,11 +25,13 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public async Task AzDeploymentFrequencyDAIntegrationTest()
+        public async Task AzUpdateBuildsDAIntegrationTest()
         {
             //Arrange
-            bool getSampleData = true;
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
+            string accountName = Configuration["AppSettings:AzureStorageAccountName"];
+            string accountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
+            string tableName = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
@@ -40,21 +42,21 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
+            int itemsAdded = await da.RefreshAzureDevOpsDeploymentFrequency(patToken, accountName, accountAccessKey, tableName, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
 
             //Assert
-            Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
-            Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription));
-            Assert.AreNotEqual("Unknown", model.DeploymentsPerDayMetricDescription);
+            Assert.IsTrue(itemsAdded >= 0);
         }
 
         [TestMethod]
-        public async Task GHDeploymentFrequencyDAIntegrationTest()
+        public async Task GHUpdateBuildsDAIntegrationTest()
         {
             //Arrange
-            bool getSampleData = true;
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
+            string accountName = Configuration["AppSettings:AzureStorageAccountName"];
+            string accountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
+            string tableName = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"];
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "master";
@@ -65,12 +67,10 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+            int itemsAdded = await da.RefreshGitHubDeployments(clientId, clientSecret, accountName, accountAccessKey, tableName, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
 
             //Assert
-            Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
-            Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription));
-            Assert.AreNotEqual("Unknown", model.DeploymentsPerDayMetricDescription);
+            Assert.IsTrue(itemsAdded >= 0);
         }
 
     }
