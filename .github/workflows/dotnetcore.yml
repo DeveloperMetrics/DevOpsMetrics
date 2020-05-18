@@ -19,10 +19,14 @@ jobs:
         dotnet-version: 3.1.101
     
     #Build and test service   
+    - name: Variable Substitution appsettings file for tests
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: 'DevOpsMetrics/DevOpsMetrics.Tests/appsettings.json'
+      env:
+        AppSettings.AzureStorageAccountAccessKey: "${{ secrets.AzureStorageAccessKey }}" 
     - name: Run automated unit and integration tests
       run: dotnet test DevOpsMetrics/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Release --logger trx --collect "Code coverage" --settings:./DevOpsMetrics/DevOpsMetrics.Tests/CodeCoverage.runsettings --  
-      env:
-        AppSettings:AzureStorageAccountAccessKey: "${{ secrets.AzureStorageAccessKey }}" 
 
     #Publish dotnet objects
     - name: .NET Publish Web Service
