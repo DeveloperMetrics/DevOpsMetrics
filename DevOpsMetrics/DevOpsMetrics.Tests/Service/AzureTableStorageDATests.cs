@@ -41,8 +41,8 @@ namespace DevOpsMetrics.Tests.Service
             int maxNumberOfItems = 20;
 
             //Act
-            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            int itemsAdded = await da.RefreshAzureDevOpsDeploymentFrequency(patToken, accountName, accountAccessKey, tableName, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
+            AzureTableStorageDA da = new AzureTableStorageDA();
+            int itemsAdded = await da.UpdateAzureDevOpsBuilds(patToken, accountName, accountAccessKey, tableName, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(itemsAdded >= 0);
@@ -66,8 +66,8 @@ namespace DevOpsMetrics.Tests.Service
             int maxNumberOfItems = 20;
 
             //Act
-            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            int itemsAdded = await da.RefreshGitHubDeployments(clientId, clientSecret, accountName, accountAccessKey, tableName, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+            AzureTableStorageDA da = new AzureTableStorageDA();
+            int itemsAdded = await da.UpdateGitHubActionRuns(clientId, clientSecret, accountName, accountAccessKey, tableName, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(itemsAdded >= 0);
