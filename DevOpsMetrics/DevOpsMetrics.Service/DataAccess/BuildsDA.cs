@@ -1,4 +1,6 @@
 ﻿using DevOpsMetrics.Core;
+using DevOpsMetrics.Service.DataAccess.APIAccess;
+using DevOpsMetrics.Service.DataAccess.TableStorage;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;
@@ -12,24 +14,12 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class BuildsDA
     {
-        public async Task<Newtonsoft.Json.Linq.JArray> GetAzureDevOpsBuildsJArray(string patToken, string organization, string project, string branch, string buildId)
-        {
-            Newtonsoft.Json.Linq.JArray list = null;
-            string url = $"https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1&queryOrder=BuildQueryOrder,finishTimeDescending";
-            string response = await MessageUtility.SendAzureDevOpsMessage(url, patToken);
-            if (string.IsNullOrEmpty(response) == false)
-            {
-                dynamic jsonObj = JsonConvert.DeserializeObject(response);
-                list = jsonObj.value;
-            }
-
-            return list;
-        }
 
         public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsBuilds(string patToken, string organization, string project, string branch, string buildId)
         {
             List<AzureDevOpsBuild> builds = new List<AzureDevOpsBuild>();
-            Newtonsoft.Json.Linq.JArray list = await GetAzureDevOpsBuildsJArray(patToken, organization, project, branch, buildId);
+            AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
+            Newtonsoft.Json.Linq.JArray list = await api.GetAzureDevOpsBuildsJArray(patToken, organization, project, branch, buildId);
             if (list != null)
             {
                 builds = JsonConvert.DeserializeObject<List<AzureDevOpsBuild>>(list.ToString());
@@ -55,28 +45,14 @@ namespace DevOpsMetrics.Service.DataAccess
                 builds = builds.OrderBy(o => o.queueTime).ToList();
             }
 
-
             return builds;
-        }
-
-        public async Task<Newtonsoft.Json.Linq.JArray> GetGitHubActionRunsJArray(string clientId, string clientSecret, string owner, string repo, string branch, string workflowId)
-        {
-            Newtonsoft.Json.Linq.JArray list = null;
-            string url = $"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflowId}/runs?per_page=100";
-            string response = await MessageUtility.SendGitHubMessage(url, clientId, clientSecret);
-            if (string.IsNullOrEmpty(response) == false)
-            {
-                dynamic jsonObj = JsonConvert.DeserializeObject(response);
-                list = jsonObj.workflow_runs;
-            }
-
-            return list;
         }
 
         public async Task<List<GitHubActionsRun>> GetGitHubActionRuns(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowId)
         {
             List<GitHubActionsRun> runs = new List<GitHubActionsRun>();
-            Newtonsoft.Json.Linq.JArray list = await GetGitHubActionRunsJArray(clientId,  clientSecret, owner, repo, branch, workflowId);
+            GitHubAPIAccess api = new GitHubAPIAccess();
+            Newtonsoft.Json.Linq.JArray list = await api.GetGitHubActionRunsJArray(clientId,  clientSecret, owner, repo, branch, workflowId);
             if (list != null)
             {
                 runs = JsonConvert.DeserializeObject<List<GitHubActionsRun>>(list.ToString());

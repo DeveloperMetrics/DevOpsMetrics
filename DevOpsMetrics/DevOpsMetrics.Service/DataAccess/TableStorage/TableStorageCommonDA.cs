@@ -1,23 +1,24 @@
-﻿using DevOpsMetrics.Service.Models.AzureDevOps;
-using DevOpsMetrics.Service.Models.Common;
+﻿using DevOpsMetrics.Service.Models.Common;
 using Microsoft.Azure.Cosmos.Table;
 using System.Threading.Tasks;
 
-namespace DevOpsMetrics.Service.DataAccess
+namespace DevOpsMetrics.Service.DataAccess.TableStorage
 {
-    public class TableStorageDA
+    public class TableStorageCommonDA
     {
         private string AccountName;
         private string AccessKey;
         private string TableName;
 
-        public TableStorageDA(string accountName, string accessKey, string tableName)
+        public TableStorageCommonDA(string accountName, string accessKey, string tableName)
         {
             AccountName = accountName;
             AccessKey = accessKey;
             TableName = tableName;
         }
 
+        public TableStorageCommonDA() 
+        { }
 
         private CloudTable CreateConnection()
         {
@@ -52,7 +53,7 @@ namespace DevOpsMetrics.Service.DataAccess
         public async Task<AzureStorageTableModel> GetItem(string partitionKey, string rowKey)
         {
             //prepare the partition key
-            partitionKey = Utility.EncodePartitionKey(partitionKey);
+            partitionKey = EncodePartitionKey(partitionKey);
 
             CloudTable itemsTable = CreateConnection();
 
@@ -117,6 +118,29 @@ namespace DevOpsMetrics.Service.DataAccess
         ////    }
         ////    return true;
         ////}
+
+        public string EncodePartitionKey(string text)
+        {
+            text = text.Replace("/", "_");
+
+            //The forward slash(/) character
+            //The backslash(\) character
+            //The number sign(#) character
+            //The question mark (?) character
+
+            //Control characters from U+0000 to U+001F, including:
+            //The horizontal tab(\t) character
+            //The linefeed(\n) character
+            //The carriage return (\r) character
+            //Control characters from U + 007F to U+009F
+
+            return text.Replace("/", "_");
+        }
+
+        public string DecodePartitionKey(string text)
+        {
+            return text.Replace("_", "/");
+        }
 
     }
 }

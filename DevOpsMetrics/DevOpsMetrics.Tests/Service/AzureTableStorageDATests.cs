@@ -1,5 +1,4 @@
-﻿using DevOpsMetrics.Service.DataAccess;
-using DevOpsMetrics.Service.Models.Common;
+﻿using DevOpsMetrics.Service.DataAccess.TableStorage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

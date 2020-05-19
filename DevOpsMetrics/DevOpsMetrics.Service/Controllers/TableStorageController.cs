@@ -1,4 +1,5 @@
 ﻿using DevOpsMetrics.Service.DataAccess;
+using DevOpsMetrics.Service.DataAccess.TableStorage;
 using DevOpsMetrics.Service.Models.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;

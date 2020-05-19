@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Cosmos.Table;
+﻿using DevOpsMetrics.Service.DataAccess.TableStorage;
+using Microsoft.Azure.Cosmos.Table;
 
 namespace DevOpsMetrics.Service.Models.Common
 {
@@ -6,7 +7,8 @@ namespace DevOpsMetrics.Service.Models.Common
     {
         public AzureStorageTableModel(string partitionKey, string rowKey, string data)
         {
-            PartitionKey = Utility.EncodePartitionKey(partitionKey);
+            TableStorageCommonDA common = new TableStorageCommonDA();
+            PartitionKey = common.EncodePartitionKey(partitionKey);
             RowKey = rowKey;
             Data = data;
         }
