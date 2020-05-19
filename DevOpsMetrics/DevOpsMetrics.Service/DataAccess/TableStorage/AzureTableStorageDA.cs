@@ -4,18 +4,60 @@ using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Runtime.InteropServices.ComTypes;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.DataAccess.TableStorage
 {
     public class AzureTableStorageDA
     {
+        public string CreateAzureDevOpsBuildPartitionKey(string organization, string project, string buildName)
+        {
+            return organization + "_" + project + "_" + buildName;
+        }
+
+        public string CreateAzureDevOpsPRPartitionKey(string organization, string project)
+        {
+            return organization + "_" + project;
+        }
+
+        public string CreateAzureDevOpsPRCommitPartitionKey(string organization, string project)
+        {
+            return organization + "_" + project;
+        }
+
+        public string CreateGitHubRunPartitionKey(string owner, string repo, string workflowName)
+        {
+            return owner + "_" + repo + "_" + workflowName;
+        }
+
+        public string CreateGitHubPRPartitionKey(string owner, string repo)
+        {
+            return owner + "_" + repo;
+        }
+
+        public string CreateGitHubPRCommitPartitionKey(string owner, string repo)
+        {
+            return owner + "_" + repo;
+        }
+
+        public JArray GetTableStorageItems(string accountName, string accessKey, string tableName, string partitionKey)
+        {
+            TableStorageCommonDA tableDA = new TableStorageCommonDA(accountName, accessKey, tableName);
+            List<AzureStorageTableModel> items = tableDA.GetItems(partitionKey);
+            JArray list = new JArray();
+            foreach (AzureStorageTableModel item in items)
+            {
+                list.Add(JToken.Parse(item.Data));
+            }
+            return list;
+        }
+
         public async Task<int> UpdateAzureDevOpsBuilds(string patToken, string accountName, string accessKey, string tableName, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems)
         {
             BuildsDA da = new BuildsDA();
             AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
-            Newtonsoft.Json.Linq.JArray items = await api.GetAzureDevOpsBuildsJArray(patToken, organization, project, branch, buildId);
+            JArray items = await api.GetAzureDevOpsBuildsJArray(patToken, organization, project, branch, buildId);
 
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new TableStorageCommonDA(accountName, accessKey, tableName);
@@ -26,7 +68,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
 
                 if (build.status == "completed")
                 {
-                    string partitionKey = organization + "_" + project + "_" + buildName;
+                    string partitionKey = CreateAzureDevOpsBuildPartitionKey(organization, project, buildName);
                     string rowKey = build.buildNumber;
                     AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
                     if (await tableDA.AddItem(newItem) == true)
@@ -43,7 +85,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
         {
             PullRequestDA da = new PullRequestDA();
             AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
-            Newtonsoft.Json.Linq.JArray items = await api.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repositoryId);
+            JArray items = await api.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repositoryId);
 
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new TableStorageCommonDA(accountName, accessKey, tableName);
@@ -52,7 +94,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             {
                 AzureDevOpsPR pullRequest = JsonConvert.DeserializeObject<AzureDevOpsPR>(item.ToString());
 
-                string partitionKey = organization + "_" + project;
+                string partitionKey = CreateAzureDevOpsPRPartitionKey(organization, project);
                 string rowKey = pullRequest.PullRequestId;
                 AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
                 if (await tableDA.AddItem(newItem) == true)
@@ -68,7 +110,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
         {
             PullRequestDA da = new PullRequestDA();
             AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
-            Newtonsoft.Json.Linq.JArray items = await api.GetAzureDevOpsPullRequestCommitsJArray(patToken, organization, project, repositoryId, pullRequestId);
+            JArray items = await api.GetAzureDevOpsPullRequestCommitsJArray(patToken, organization, project, repositoryId, pullRequestId);
 
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new TableStorageCommonDA(accountName, accessKey, tableName);
@@ -77,7 +119,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             {
                 AzureDevOpsPRCommit pullRequestCommit = JsonConvert.DeserializeObject<AzureDevOpsPRCommit>(item.ToString());
 
-                string partitionKey = organization + "_" + project;
+                string partitionKey = CreateAzureDevOpsPRCommitPartitionKey(organization, project);
                 string rowKey = pullRequestCommit.commitId;
                 AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
                 if (await tableDA.AddItem(newItem) == true)
@@ -93,7 +135,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
         {
             BuildsDA da = new BuildsDA();
             GitHubAPIAccess api = new GitHubAPIAccess();
-            Newtonsoft.Json.Linq.JArray items = await api.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, branch, workflowId);
+            JArray items = await api.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, branch, workflowId);
 
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new TableStorageCommonDA(accountName, accessKey, tableName);
@@ -104,7 +146,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
 
                 if (build.status == "completed")
                 {
-                    string partitionKey = owner + "_" + repo + "_" + workflowName;
+                    string partitionKey = CreateGitHubRunPartitionKey(owner, repo, workflowName);
                     string rowKey = build.run_number;
                     AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
                     if (await tableDA.AddItem(newItem) == true)
@@ -113,7 +155,6 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                     }
                 }
             }
-
             return itemsAdded;
         }
 
@@ -121,7 +162,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
         {
             PullRequestDA da = new PullRequestDA();
             GitHubAPIAccess api = new GitHubAPIAccess();
-            Newtonsoft.Json.Linq.JArray items = await api.GetGitHubPullRequestsJArray(clientId, clientSecret, owner, repo, branch);
+            JArray items = await api.GetGitHubPullRequestsJArray(clientId, clientSecret, owner, repo, branch);
 
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new TableStorageCommonDA(accountName, accessKey, tableName);
@@ -132,7 +173,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
 
                 if (pr.state == "closed")
                 {
-                    string partitionKey = owner + "_" + repo;
+                    string partitionKey = CreateGitHubPRPartitionKey(owner, repo);
                     string rowKey = pr.number;
                     AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
                     if (await tableDA.AddItem(newItem) == true)
@@ -149,7 +190,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
         {
             PullRequestDA da = new PullRequestDA();
             GitHubAPIAccess api = new GitHubAPIAccess();
-            Newtonsoft.Json.Linq.JArray items = await api.GetGitHubPullRequestCommitsJArray(clientId, clientSecret, owner, repo, pull_number);
+            JArray items = await api.GetGitHubPullRequestCommitsJArray(clientId, clientSecret, owner, repo, pull_number);
 
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new TableStorageCommonDA(accountName, accessKey, tableName);
@@ -160,7 +201,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
 
                 if (build.status == "completed")
                 {
-                    string partitionKey = owner + "_" + repo;
+                    string partitionKey = CreateGitHubPRCommitPartitionKey(owner, repo);
                     string rowKey = pull_number;
                     AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
                     if (await tableDA.AddItem(newItem) == true)
