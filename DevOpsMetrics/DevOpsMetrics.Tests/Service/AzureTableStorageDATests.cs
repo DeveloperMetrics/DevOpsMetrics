@@ -48,6 +48,106 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
+        public async Task AzUpdatePRsDAIntegrationTest()
+        {
+            //Arrange
+            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
+            string accountName = Configuration["AppSettings:AzureStorageAccountName"];
+            string accountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
+            string tableName = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"];
+            string organization = "samsmithnz";
+            string project = "SamLearnsAzure";
+            string repositoryId = "SamLearnsAzure";
+            int numberOfDays = 30;
+            int maxNumberOfItems = 20;
+
+            //Act
+            AzureTableStorageDA da = new AzureTableStorageDA();
+            int itemsAdded = await da.UpdateAzureDevOpsPullRequests(patToken, accountName, accountAccessKey, tableName, organization, project, repositoryId,  numberOfDays, maxNumberOfItems);
+
+            //Assert
+            Assert.IsTrue(itemsAdded >= 0);
+        }
+
+        //[TestMethod]
+        //public async Task AzUpdatePRCommitsDAIntegrationTest()
+        //{
+        //    //Arrange
+        //    string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
+        //    string accountName = Configuration["AppSettings:AzureStorageAccountName"];
+        //    string accountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
+        //    string tableName = Configuration["AppSettings:DevOpsAzureDevOpsPRCommits"];
+        //    string organization = "samsmithnz";
+        //    string project = "SamLearnsAzure";
+        //    string branch = "refs/heads/master";
+        //    string buildName = "SamLearnsAzure.CI";
+        //    string buildId = "3673"; //SamLearnsAzure.CI
+        //    int numberOfDays = 30;
+        //    int maxNumberOfItems = 20;
+
+        //    //Act
+        //    AzureTableStorageDA da = new AzureTableStorageDA();
+        //    string pullRequestId = "";
+        //    string repositoryId = "";
+        //    int itemsAdded = await da.UpdateAzureDevOpsPullRequestCommits(patToken, accountName, accountAccessKey, tableName, organization, project, repositoryId, pullRequestId, numberOfDays, maxNumberOfItems);
+
+        //    //Assert
+        //    Assert.IsTrue(itemsAdded >= 0);
+        //}
+
+        [TestMethod]
+        public async Task GHUpdatePRsDAIntegrationTest()
+        {
+            //Arrange
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
+            string accountName = Configuration["AppSettings:AzureStorageAccountName"];
+            string accountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
+            string tableName = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"];
+            string owner = "samsmithnz";
+            string repo = "DevOpsMetrics";
+            string branch = "master";
+            string workflowName = "DevOpsMetrics CI/CD";
+            string workflowId = "1162561";
+            int numberOfDays = 30;
+            int maxNumberOfItems = 20;
+
+            //Act
+            AzureTableStorageDA da = new AzureTableStorageDA();
+            int itemsAdded = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, accountName, accountAccessKey, tableName, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+
+            //Assert
+            Assert.IsTrue(itemsAdded >= 0);
+        }
+
+        //[TestMethod]
+        //public async Task GHUpdatePRCommitsDAIntegrationTest()
+        //{
+        //    //Arrange
+        //    string clientId = Configuration["AppSettings:GitHubClientId"];
+        //    string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
+        //    string accountName = Configuration["AppSettings:AzureStorageAccountName"];
+        //    string accountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
+        //    string tableName = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"];
+        //    string owner = "samsmithnz";
+        //    string repo = "DevOpsMetrics";
+        //    string branch = "master";
+        //    string workflowName = "DevOpsMetrics CI/CD";
+        //    string workflowId = "1162561";
+        //    int numberOfDays = 30;
+        //    int maxNumberOfItems = 20;
+
+        //    //Act
+        //    AzureTableStorageDA da = new AzureTableStorageDA();
+
+        //    string pullRequestNumber = "";
+        //    int itemsAdded = await da.UpdateGitHubActionPullRequestCommits(clientId, clientSecret, accountName, accountAccessKey, tableName, owner, repo, branch, workflowName, workflowId, pullRequestNumber, numberOfDays, maxNumberOfItems);
+
+        //    //Assert
+        //    Assert.IsTrue(itemsAdded >= 0);
+        //}
+
+        [TestMethod]
         public async Task GHUpdateBuildsDAIntegrationTest()
         {
             //Arrange
