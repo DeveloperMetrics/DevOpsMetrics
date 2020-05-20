@@ -15,11 +15,17 @@ namespace DevOpsMetrics.Service.DataAccess
     public class BuildsDA
     {
 
-        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsBuilds(string patToken, string organization, string project, string branch, string buildId)
+        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsBuilds(string patToken, string organization, string project, string branch, string buildId, bool useCache)
         {
             List<AzureDevOpsBuild> builds = new List<AzureDevOpsBuild>();
-            AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
-            Newtonsoft.Json.Linq.JArray list = await api.GetAzureDevOpsBuildsJArray(patToken, organization, project, branch, buildId);
+            Newtonsoft.Json.Linq.JArray list = null;
+            if (useCache == true)
+            { }
+            else
+            {
+                AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
+                list = await api.GetAzureDevOpsBuildsJArray(patToken, organization, project, branch, buildId);
+            }
             if (list != null)
             {
                 builds = JsonConvert.DeserializeObject<List<AzureDevOpsBuild>>(list.ToString());
@@ -48,11 +54,11 @@ namespace DevOpsMetrics.Service.DataAccess
             return builds;
         }
 
-        public async Task<List<GitHubActionsRun>> GetGitHubActionRuns(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowId)
+        public async Task<List<GitHubActionsRun>> GetGitHubActionRuns(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowId, bool useCache)
         {
             List<GitHubActionsRun> runs = new List<GitHubActionsRun>();
             GitHubAPIAccess api = new GitHubAPIAccess();
-            Newtonsoft.Json.Linq.JArray list = await api.GetGitHubActionRunsJArray(clientId,  clientSecret, owner, repo, branch, workflowId);
+            Newtonsoft.Json.Linq.JArray list = await api.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, branch, workflowId);
             if (list != null)
             {
                 runs = JsonConvert.DeserializeObject<List<GitHubActionsRun>>(list.ToString());

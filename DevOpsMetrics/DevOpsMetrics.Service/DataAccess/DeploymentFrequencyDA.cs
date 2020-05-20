@@ -10,7 +10,7 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class DeploymentFrequencyDA
     {
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems)
+        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             Utility<Build> utility = new Utility<Build>();
             if (getSampleData == false)
@@ -21,7 +21,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 BuildsDA buildsDA = new BuildsDA();
 
                 //Gets a list of builds
-                List<AzureDevOpsBuild> azureDevOpsBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, organization, project, branch, buildId);
+                List<AzureDevOpsBuild> azureDevOpsBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, organization, project, branch, buildId, useCache);
                 List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
 
                 //Translate the Azure DevOps build to a generic build object
@@ -77,7 +77,7 @@ namespace DevOpsMetrics.Service.DataAccess
             }
         }
 
-        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems)
+        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             Utility<Build> utility = new Utility<Build>();
             if (getSampleData == false)
@@ -88,7 +88,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 BuildsDA buildsDA = new BuildsDA();
 
                 //Lists the workflows in a repository. 
-                List<GitHubActionsRun> gitHubRuns = await buildsDA.GetGitHubActionRuns(getSampleData, clientId, clientSecret, owner, repo, branch, workflowId);
+                List<GitHubActionsRun> gitHubRuns = await buildsDA.GetGitHubActionRuns(getSampleData, clientId, clientSecret, owner, repo, branch, workflowId, useCache);
                 List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
                 foreach (GitHubActionsRun item in gitHubRuns)
                 {

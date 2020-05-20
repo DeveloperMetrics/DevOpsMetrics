@@ -10,7 +10,7 @@ namespace DevOpsMetrics.Service.DataAccess
     public class PullRequestDA
     {
 
-        public async Task<List<AzureDevOpsPRCommit>> GetAzureDevOpsPullRequestCommits(string patToken, string organization, string project, string repositoryId, string pullRequestId)
+        public async Task<List<AzureDevOpsPRCommit>> GetAzureDevOpsPullRequestCommits(string patToken, string organization, string project, string repositoryId, string pullRequestId, bool useCache)
         {
             AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
             Newtonsoft.Json.Linq.JArray list = await api.GetAzureDevOpsPullRequestCommitsJArray(patToken, organization, project, repositoryId, pullRequestId);
@@ -18,7 +18,7 @@ namespace DevOpsMetrics.Service.DataAccess
             return commits;
         }
 
-        public async Task<string> GetGitHubPullRequestIdByBranchName(string clientId, string clientSecret, string owner, string repo, string branch)
+        public async Task<string> GetGitHubPullRequestIdByBranchName(string clientId, string clientSecret, string owner, string repo, string branch, bool useCache)
         {
             List<GitHubPR> prs = new List<GitHubPR>();
             GitHubAPIAccess api = new GitHubAPIAccess();
@@ -40,7 +40,7 @@ namespace DevOpsMetrics.Service.DataAccess
             return prId;
         }
 
-        public async Task<List<GitHubPRCommit>> GetGitHubPullRequestCommits(string clientId, string clientSecret, string owner, string repo, string pull_number)
+        public async Task<List<GitHubPRCommit>> GetGitHubPullRequestCommits(string clientId, string clientSecret, string owner, string repo, string pull_number, bool useCache)
         {
             GitHubAPIAccess api = new GitHubAPIAccess();
             Newtonsoft.Json.Linq.JArray list = await api.GetGitHubPullRequestCommitsJArray(clientId, clientSecret, owner, repo, pull_number);
