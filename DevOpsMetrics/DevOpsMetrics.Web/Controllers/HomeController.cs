@@ -106,8 +106,9 @@ namespace DevOpsMetrics.Web.Controllers
             string project = "SamLearnsAzure";
             string repositoryId = "SamLearnsAzure";
             string azBranch = "refs/heads/master";
+            string buildName = "SamLearnsAzure.CI";
             string buildId = "3673"; //SamLearnsAzure.CI
-            LeadTimeForChangesModel newItem1 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, repositoryId, azBranch, buildId, numberOfDays, maxNumberOfItems, useCache);
+            LeadTimeForChangesModel newItem1 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, repositoryId, azBranch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
             if (newItem1 != null)
             {
                 items.Add(newItem1);
@@ -119,8 +120,9 @@ namespace DevOpsMetrics.Web.Controllers
             string project2 = "PartsUnlimited";
             string repositoryId2 = "PartsUnlimited";
             string azBranch2 = "refs/heads/master";
-            string buildId2 = "75"; //SamLearnsAzure.CI
-            LeadTimeForChangesModel newItem2 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken2, organization2, project2, repositoryId2, azBranch2, buildId2, numberOfDays, maxNumberOfItems, useCache);
+            string buildName2 = "PartsUnlimited.CI";
+            string buildId2 = "75"; //
+            LeadTimeForChangesModel newItem2 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken2, organization2, project2, repositoryId2, azBranch2, buildName2, buildId2, numberOfDays, maxNumberOfItems, useCache);
             if (newItem2 != null)
             {
                 items.Add(newItem2);

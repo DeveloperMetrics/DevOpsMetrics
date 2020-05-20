@@ -29,15 +29,30 @@ namespace DevOpsMetrics.Service.Controllers
         /// <param name="buildId"></param>
         /// <param name="numberOfDays"></param>
         /// <param name="maxNumberOfItems"></param>
+        /// <param name="useCache"></param>
         /// <returns></returns>
         [HttpGet("GetAzureDevOpsLeadTimeForChanges")]
-        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string branch, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
+        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, string patToken,
+            string organization, string project, string repositoryId, string branch, string buildName, string buildId,
+            int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             LeadTimeForChangesModel model = new LeadTimeForChangesModel();
             try
             {
+                TableStorageAuth tableStorageAuth = new TableStorageAuth
+                {
+                    AccountName = Configuration["AppSettings:AzureStorageAccountName"],
+                    AccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
+                    TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
+                    TableAzureDevOpsPRs = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"],
+                    TableAzureDevOpsPRCommits = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"],
+                    TableGitHubRuns = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"],
+                    TableGitHubPRs = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"],
+                    TableGitHubPRCommits = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"],
+                };
                 LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-                model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, organization, project, repositoryId, branch, buildId, numberOfDays, maxNumberOfItems, useCache);
+                model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageAuth,
+                        organization, project, repositoryId, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
             {
@@ -66,15 +81,30 @@ namespace DevOpsMetrics.Service.Controllers
         /// <param name="workflowId"></param>
         /// <param name="numberOfDays"></param>
         /// <param name="maxNumberOfItems"></param>
+        /// <param name="useCache"></param>
         /// <returns></returns>
         [HttpGet("GetGitHubLeadTimeForChanges")]
-        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimeForChanges(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowId, int numberOfDays, int maxNumberOfItems, bool useCache)
+        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimeForChanges(bool getSampleData, string clientId, string clientSecret,
+            string owner, string repo, string branch, string workflowId,
+            int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             LeadTimeForChangesModel model = new LeadTimeForChangesModel();
             try
             {
+                TableStorageAuth tableStorageAuth = new TableStorageAuth
+                {
+                    AccountName = Configuration["AppSettings:AzureStorageAccountName"],
+                    AccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
+                    TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
+                    TableAzureDevOpsPRs = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"],
+                    TableAzureDevOpsPRCommits = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"],
+                    TableGitHubRuns = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"],
+                    TableGitHubPRs = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"],
+                    TableGitHubPRCommits = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"],
+                };
                 LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-                model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, owner, repo, branch, workflowId, numberOfDays, maxNumberOfItems, useCache);
+                model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageAuth,
+                        owner, repo, branch, workflowId, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
             {

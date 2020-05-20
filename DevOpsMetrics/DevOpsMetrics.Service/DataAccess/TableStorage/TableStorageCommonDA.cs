@@ -12,10 +12,10 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
         private string AccessKey;
         private string TableName;
 
-        public TableStorageCommonDA(string accountName, string accessKey, string tableName)
+        public TableStorageCommonDA(TableStorageAuth tableStorageAuth, string tableName)
         {
-            AccountName = accountName;
-            AccessKey = accessKey;
+            AccountName = tableStorageAuth.AccountName;
+            AccessKey = tableStorageAuth.AccountAccessKey;
             TableName = tableName;
         }
 

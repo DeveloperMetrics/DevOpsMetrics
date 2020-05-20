@@ -11,7 +11,8 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class LeadTimeForChangesDA
     {
-        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string masterBranch, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
+        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, TableStorageAuth tableStorageAuth,
+                string organization, string project, string repositoryId, string masterBranch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
             List<PullRequestModel> pullRequests = new List<PullRequestModel>();
@@ -19,7 +20,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 List<AzureDevOpsBuild> initialBuilds = new List<AzureDevOpsBuild>();
                 BuildsDA buildsDA = new BuildsDA();
-                initialBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, organization, project, masterBranch, buildId,useCache);
+                initialBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageAuth, organization, project, masterBranch, buildName, buildId, useCache);
 
                 //Process all builds, filtering by master and feature branchs
                 List<AzureDevOpsBuild> masterBranchBuilds = new List<AzureDevOpsBuild>();
@@ -166,7 +167,9 @@ namespace DevOpsMetrics.Service.DataAccess
             }
         }
 
-        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string masterBranch, string workflowId, int numberOfDays, int maxNumberOfItems, bool useCache)
+        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, TableStorageAuth tableStorageAuth,
+                string owner, string repo, string masterBranch, string workflowId,
+                int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
             List<PullRequestModel> pullRequests = new List<PullRequestModel>();
@@ -298,7 +301,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     ProjectName = repo,
                     IsAzureDevOps = false,
                     AverageBuildHours = averageBuildHours,
-                    AveragePullRequestHours=leadTime,
+                    AveragePullRequestHours = leadTime,
                     LeadTimeForChangesMetric = leadTime + averageBuildHours,
                     LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
                     PullRequests = pullRequests,

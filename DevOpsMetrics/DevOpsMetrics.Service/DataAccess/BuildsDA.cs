@@ -14,13 +14,15 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class BuildsDA
     {
-
-        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsBuilds(string patToken, string organization, string project, string branch, string buildId, bool useCache)
+        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsBuilds(string patToken, TableStorageAuth tableStorageAuth, string organization, string project, string branch, string buildName, string buildId, bool useCache)
         {
             List<AzureDevOpsBuild> builds = new List<AzureDevOpsBuild>();
             Newtonsoft.Json.Linq.JArray list = null;
             if (useCache == true)
-            { }
+            {
+                AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
+                list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableAzureDevOpsBuilds, daTableStorage.CreateAzureDevOpsBuildPartitionKey(organization, project, buildName));
+            }
             else
             {
                 AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();

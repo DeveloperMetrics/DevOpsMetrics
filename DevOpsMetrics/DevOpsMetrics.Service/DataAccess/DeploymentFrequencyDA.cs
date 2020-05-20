@@ -10,7 +10,9 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class DeploymentFrequencyDA
     {
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
+        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, TableStorageAuth tableStorageAuth, 
+                string organization, string project, string branch, string buildName, string buildId, 
+                int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             Utility<Build> utility = new Utility<Build>();
             if (getSampleData == false)
@@ -21,7 +23,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 BuildsDA buildsDA = new BuildsDA();
 
                 //Gets a list of builds
-                List<AzureDevOpsBuild> azureDevOpsBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, organization, project, branch, buildId, useCache);
+                List<AzureDevOpsBuild> azureDevOpsBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageAuth, organization, project, branch, buildName, buildId, useCache);
                 List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
 
                 //Translate the Azure DevOps build to a generic build object
@@ -77,7 +79,9 @@ namespace DevOpsMetrics.Service.DataAccess
             }
         }
 
-        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems, bool useCache)
+        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, TableStorageAuth tableStorageAuth,
+                string owner, string repo, string branch, string workflowName, string workflowId, 
+                int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             Utility<Build> utility = new Utility<Build>();
             if (getSampleData == false)

@@ -32,13 +32,13 @@ namespace DevOpsMetrics.Service.Controllers
         /// <param name="maxNumberOfItems"></param>
         /// <returns></returns>
         [HttpGet("GetAzureDevOpsDeploymentFrequency")]
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
+        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, TableStorageAuth tableStorageAuth, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             DeploymentFrequencyModel model = new DeploymentFrequencyModel();
             try
             {
                 DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-                model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+                model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageAuth, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
             {
@@ -69,17 +69,26 @@ namespace DevOpsMetrics.Service.Controllers
         /// <param name="maxNumberOfItems"></param>
         /// <returns></returns>
         [HttpGet("UpdateAzureDevOpsBuilds")]
-        public async Task<int> UpdateAzureDevOpsBuilds(bool getSampleData, string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems = 20)
+        public async Task<int> UpdateAzureDevOpsBuilds(bool getSampleData, string patToken,
+                string organization, string project, string branch, string buildName, string buildId,
+                int numberOfDays, int maxNumberOfItems)
         {
             int numberOfRecordsSaved = 0;
             try
             {
-                string accountName = Configuration["AppSettings:AzureStorageAccountName"];
-                string accessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
-                string tableName = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"];
-
+                TableStorageAuth tableStorageAuth = new TableStorageAuth
+                {
+                    AccountName = Configuration["AppSettings:AzureStorageAccountName"],
+                    AccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
+                    TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
+                    TableAzureDevOpsPRs = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"],
+                    TableAzureDevOpsPRCommits = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"],
+                    TableGitHubRuns = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"],
+                    TableGitHubPRs = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"],
+                    TableGitHubPRCommits = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"],
+                };
                 AzureTableStorageDA da = new AzureTableStorageDA();
-                numberOfRecordsSaved = await da.UpdateAzureDevOpsBuilds(patToken, accountName, accessKey, tableName, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
+                numberOfRecordsSaved = await da.UpdateAzureDevOpsBuilds(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsBuilds, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
             {
@@ -110,17 +119,27 @@ namespace DevOpsMetrics.Service.Controllers
         /// <param name="maxNumberOfItems"></param>
         /// <returns></returns>
         [HttpGet("UpdateGitHubActionRuns")]
-        public async Task<int> UpdateGitHubActionRuns(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems = 20)
+        public async Task<int> UpdateGitHubActionRuns(bool getSampleData, string clientId, string clientSecret,
+                string owner, string repo, string branch, string workflowName, string workflowId,
+                int numberOfDays, int maxNumberOfItems)
         {
             int numberOfRecordsSaved = 0;
             try
             {
-                string accountName = Configuration["AppSettings:AzureStorageAccountName"];
-                string accessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
-                string tableName = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"];
-
+                TableStorageAuth tableStorageAuth = new TableStorageAuth
+                {
+                    AccountName = Configuration["AppSettings:AzureStorageAccountName"],
+                    AccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
+                    TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
+                    TableAzureDevOpsPRs = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"],
+                    TableAzureDevOpsPRCommits = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"],
+                    TableGitHubRuns = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"],
+                    TableGitHubPRs = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"],
+                    TableGitHubPRCommits = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"],
+                };
                 AzureTableStorageDA da = new AzureTableStorageDA();
-                numberOfRecordsSaved = await da.UpdateGitHubActionRuns(clientId, clientSecret, accountName, accessKey, tableName, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+                numberOfRecordsSaved = await da.UpdateGitHubActionRuns(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubRuns,
+                        owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
             {
@@ -136,5 +155,5 @@ namespace DevOpsMetrics.Service.Controllers
             return numberOfRecordsSaved;
         }
 
-            }
+    }
 }

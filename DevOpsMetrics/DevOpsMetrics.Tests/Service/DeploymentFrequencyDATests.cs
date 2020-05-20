@@ -30,6 +30,17 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             bool getSampleData = true;
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
+            TableStorageAuth tableStorageAuth = new TableStorageAuth
+            {
+                AccountName = Configuration["AppSettings:AzureStorageAccountName"],
+                AccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
+                TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
+                TableAzureDevOpsPRs = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"],
+                TableAzureDevOpsPRCommits = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"],
+                TableGitHubRuns = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"],
+                TableGitHubPRs = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"],
+                TableGitHubPRCommits = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"],
+            };
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
@@ -41,7 +52,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageAuth, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
@@ -56,6 +67,17 @@ namespace DevOpsMetrics.Tests.Service
             bool getSampleData = true;
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
+            TableStorageAuth tableStorageAuth = new TableStorageAuth
+            {
+                AccountName = Configuration["AppSettings:AzureStorageAccountName"],
+                AccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
+                TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
+                TableAzureDevOpsPRs = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"],
+                TableAzureDevOpsPRCommits = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"],
+                TableGitHubRuns = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"],
+                TableGitHubPRs = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"],
+                TableGitHubPRCommits = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"],
+            };
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "master";
@@ -67,7 +89,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, tableStorageAuth, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
