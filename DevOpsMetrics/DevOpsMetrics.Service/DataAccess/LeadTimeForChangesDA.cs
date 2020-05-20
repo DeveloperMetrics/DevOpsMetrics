@@ -329,7 +329,7 @@ namespace DevOpsMetrics.Service.DataAccess
         {
             List<PullRequestModel> prs = new List<PullRequestModel>();
 
-            string url = "";
+            string url;
             if (isAzureDevOps)
             {
                 url = $"https://dev.azure.com/testOrganization/testProject/_git/testRepo/pullrequest/123";

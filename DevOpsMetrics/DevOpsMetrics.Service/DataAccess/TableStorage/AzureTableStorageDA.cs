@@ -55,7 +55,6 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
 
         public async Task<int> UpdateAzureDevOpsBuilds(string patToken, string accountName, string accessKey, string tableName, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems)
         {
-            BuildsDA da = new BuildsDA();
             AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
             JArray items = await api.GetAzureDevOpsBuildsJArray(patToken, organization, project, branch, buildId);
 
@@ -83,7 +82,6 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
 
         public async Task<int> UpdateAzureDevOpsPullRequests(string patToken, string accountName, string accessKey, string tableName, string organization, string project, string repositoryId, int numberOfDays, int maxNumberOfItems)
         {
-            PullRequestDA da = new PullRequestDA();
             AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
             JArray items = await api.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repositoryId);
 
@@ -108,7 +106,6 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
 
         public async Task<int> UpdateAzureDevOpsPullRequestCommits(string patToken, string accountName, string accessKey, string tableName, string organization, string project, string repositoryId, string pullRequestId, int numberOfDays, int maxNumberOfItems)
         {
-            PullRequestDA da = new PullRequestDA();
             AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
             JArray items = await api.GetAzureDevOpsPullRequestCommitsJArray(patToken, organization, project, repositoryId, pullRequestId);
 
@@ -133,7 +130,6 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
 
         public async Task<int> UpdateGitHubActionRuns(string clientId, string clientSecret, string accountName, string accessKey, string tableName, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems)
         {
-            BuildsDA da = new BuildsDA();
             GitHubAPIAccess api = new GitHubAPIAccess();
             JArray items = await api.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, branch, workflowId);
 
@@ -160,7 +156,6 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
 
         public async Task<int> UpdateGitHubActionPullRequests(string clientId, string clientSecret, string accountName, string accessKey, string tableName, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems)
         {
-            PullRequestDA da = new PullRequestDA();
             GitHubAPIAccess api = new GitHubAPIAccess();
             JArray items = await api.GetGitHubPullRequestsJArray(clientId, clientSecret, owner, repo, branch);
 
@@ -188,7 +183,6 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
 
         public async Task<int> UpdateGitHubActionPullRequestCommits(string clientId, string clientSecret, string accountName, string accessKey, string tableName, string owner, string repo, string branch, string workflowName, string workflowId, string pull_number, int numberOfDays, int maxNumberOfItems)
         {
-            PullRequestDA da = new PullRequestDA();
             GitHubAPIAccess api = new GitHubAPIAccess();
             JArray items = await api.GetGitHubPullRequestCommitsJArray(clientId, clientSecret, owner, repo, pull_number);
 

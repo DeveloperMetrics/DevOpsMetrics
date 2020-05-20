@@ -13,12 +13,10 @@ namespace DevOpsMetrics.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IConfiguration Configuration;
-        private readonly ILogger<HomeController> Logger;
 
-        public HomeController(IConfiguration configuration, ILogger<HomeController> logger)
+        public HomeController(IConfiguration configuration)
         {
             Configuration = configuration;
-            Logger = logger;
         }
 
         public IActionResult Index()

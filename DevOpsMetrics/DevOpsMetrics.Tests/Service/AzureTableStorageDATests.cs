@@ -75,7 +75,6 @@ namespace DevOpsMetrics.Tests.Service
         public void AzGetPRsDAIntegrationTest()
         {
             //Arrange
-            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string accountName = Configuration["AppSettings:AzureStorageAccountName"];
             string accountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
             string tableName = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"];
@@ -116,7 +115,6 @@ namespace DevOpsMetrics.Tests.Service
         public void AzGetPRCommitsDAIntegrationTest()
         {
             //Arrange
-            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string accountName = Configuration["AppSettings:AzureStorageAccountName"];
             string accountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
             string prTableName = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"];
