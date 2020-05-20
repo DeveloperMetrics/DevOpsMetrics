@@ -123,189 +123,189 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
         }
 
-        [TestCategory("APITest")]
-        [TestMethod]
-        public async Task AzLeadTimeControllerAPIIntegrationTest()
-        {
-            //Arrange
-            bool getSampleData = true;
-            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-            string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string repositoryId = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildName = "SamLearnsAzure.CI";
-            string buildId = "3673"; //SamLearnsAzure.CI
-            int numberOfDays = 7;
-            int maxNumberOfItems = 20;
+        //[TestCategory("APITest")]
+        //[TestMethod]
+        //public async Task AzLeadTimeControllerAPIIntegrationTest()
+        //{
+        //    //Arrange
+        //    bool getSampleData = true;
+        //    string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
+        //    string organization = "samsmithnz";
+        //    string project = "SamLearnsAzure";
+        //    string repositoryId = "SamLearnsAzure";
+        //    string branch = "refs/heads/master";
+        //    string buildName = "SamLearnsAzure.CI";
+        //    string buildId = "3673"; //SamLearnsAzure.CI
+        //    int numberOfDays = 7;
+        //    int maxNumberOfItems = 20;
 
-            //Act            
-            string url = $"/api/LeadTimeForChanges/GetAzureDevOpsLeadTimeForChanges?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&repositoryId={repositoryId}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
-            TestResponse<LeadTimeForChangesModel> httpResponse = new TestResponse<LeadTimeForChangesModel>();
-            LeadTimeForChangesModel model = await httpResponse.GetResponse(Client, url);
+        //    //Act            
+        //    string url = $"/api/LeadTimeForChanges/GetAzureDevOpsLeadTimeForChanges?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&repositoryId={repositoryId}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+        //    TestResponse<LeadTimeForChangesModel> httpResponse = new TestResponse<LeadTimeForChangesModel>();
+        //    LeadTimeForChangesModel model = await httpResponse.GetResponse(Client, url);
 
-            //Assert
-            Assert.IsTrue(model != null);
-            Assert.AreEqual(project, model.ProjectName);
-            Assert.IsTrue(model.PullRequests.Count > 0);
-            Assert.AreEqual("123", model.PullRequests[0].PullRequestId);
-            Assert.AreEqual("branch1", model.PullRequests[0].Branch);
-            Assert.AreEqual(1, model.PullRequests[0].BuildCount);
-            Assert.IsTrue(model.PullRequests[0].Commits.Count > 0);
-            Assert.AreEqual("abc", model.PullRequests[0].Commits[0].commitId);
-            Assert.IsTrue(model.PullRequests[0].Commits[0].date >= DateTime.MinValue);
-            Assert.AreEqual("name1", model.PullRequests[0].Commits[0].name);
-            Assert.AreEqual(60, Math.Round(model.PullRequests[0].Duration.TotalMinutes, 0));
-            Assert.AreEqual(33f, model.PullRequests[0].DurationPercent);
-            Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
-            Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
-            Assert.AreEqual(1f, model.AverageBuildHours);
-            Assert.AreEqual(12f, model.AveragePullRequestHours);
-            Assert.AreEqual(13f, model.LeadTimeForChangesMetric);
-            Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
-        }
+        //    //Assert
+        //    Assert.IsTrue(model != null);
+        //    Assert.AreEqual(project, model.ProjectName);
+        //    Assert.IsTrue(model.PullRequests.Count > 0);
+        //    Assert.AreEqual("123", model.PullRequests[0].PullRequestId);
+        //    Assert.AreEqual("branch1", model.PullRequests[0].Branch);
+        //    Assert.AreEqual(1, model.PullRequests[0].BuildCount);
+        //    Assert.IsTrue(model.PullRequests[0].Commits.Count > 0);
+        //    Assert.AreEqual("abc", model.PullRequests[0].Commits[0].commitId);
+        //    Assert.IsTrue(model.PullRequests[0].Commits[0].date >= DateTime.MinValue);
+        //    Assert.AreEqual("name1", model.PullRequests[0].Commits[0].name);
+        //    Assert.AreEqual(60, Math.Round(model.PullRequests[0].Duration.TotalMinutes, 0));
+        //    Assert.AreEqual(33f, model.PullRequests[0].DurationPercent);
+        //    Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
+        //    Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
+        //    Assert.AreEqual(1f, model.AverageBuildHours);
+        //    Assert.AreEqual(12f, model.AveragePullRequestHours);
+        //    Assert.AreEqual(13f, model.LeadTimeForChangesMetric);
+        //    Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
+        //}
 
-        [TestCategory("APITest")]
-        [TestMethod]
-        public async Task GHLeadTimeControllerAPIIntegrationTest()
-        {
-            //Arrange
-            bool getSampleData = true;
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            string owner = "samsmithnz";
-            string repo = "devopsmetrics";
-            string branch = "master";
-            string workflowId = "1162561";
-            int numberOfDays = 7;
-            int maxNumberOfItems = 20;
+        //[TestCategory("APITest")]
+        //[TestMethod]
+        //public async Task GHLeadTimeControllerAPIIntegrationTest()
+        //{
+        //    //Arrange
+        //    bool getSampleData = true;
+        //    string clientId = Configuration["AppSettings:GitHubClientId"];
+        //    string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
+        //    string owner = "samsmithnz";
+        //    string repo = "devopsmetrics";
+        //    string branch = "master";
+        //    string workflowId = "1162561";
+        //    int numberOfDays = 7;
+        //    int maxNumberOfItems = 20;
 
-            //Act
-            string url = $"/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
-            TestResponse<LeadTimeForChangesModel> httpResponse = new TestResponse<LeadTimeForChangesModel>();
-            LeadTimeForChangesModel model = await httpResponse.GetResponse(Client, url);
+        //    //Act
+        //    string url = $"/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+        //    TestResponse<LeadTimeForChangesModel> httpResponse = new TestResponse<LeadTimeForChangesModel>();
+        //    LeadTimeForChangesModel model = await httpResponse.GetResponse(Client, url);
 
-            //Assert
-            Assert.IsTrue(model != null);
-            Assert.AreEqual(repo, model.ProjectName);
-            Assert.IsTrue(model.PullRequests.Count > 0);
-            Assert.AreEqual("123", model.PullRequests[0].PullRequestId);
-            Assert.AreEqual("branch1", model.PullRequests[0].Branch);
-            Assert.AreEqual(1, model.PullRequests[0].BuildCount);
-            Assert.IsTrue(model.PullRequests[0].Commits.Count > 0);
-            Assert.AreEqual("abc", model.PullRequests[0].Commits[0].commitId);
-            Assert.IsTrue(model.PullRequests[0].Commits[0].date >= DateTime.MinValue);
-            Assert.AreEqual("name1", model.PullRequests[0].Commits[0].name);
-            Assert.AreEqual(60, Math.Round(model.PullRequests[0].Duration.TotalMinutes, 0));
-            Assert.AreEqual(33f, model.PullRequests[0].DurationPercent);
-            Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
-            Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
-            Assert.AreEqual(1f, model.AverageBuildHours);
-            Assert.AreEqual(20.33f, model.AveragePullRequestHours);
-            Assert.AreEqual(21.33f, model.LeadTimeForChangesMetric);
-            Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
-        }
+        //    //Assert
+        //    Assert.IsTrue(model != null);
+        //    Assert.AreEqual(repo, model.ProjectName);
+        //    Assert.IsTrue(model.PullRequests.Count > 0);
+        //    Assert.AreEqual("123", model.PullRequests[0].PullRequestId);
+        //    Assert.AreEqual("branch1", model.PullRequests[0].Branch);
+        //    Assert.AreEqual(1, model.PullRequests[0].BuildCount);
+        //    Assert.IsTrue(model.PullRequests[0].Commits.Count > 0);
+        //    Assert.AreEqual("abc", model.PullRequests[0].Commits[0].commitId);
+        //    Assert.IsTrue(model.PullRequests[0].Commits[0].date >= DateTime.MinValue);
+        //    Assert.AreEqual("name1", model.PullRequests[0].Commits[0].name);
+        //    Assert.AreEqual(60, Math.Round(model.PullRequests[0].Duration.TotalMinutes, 0));
+        //    Assert.AreEqual(33f, model.PullRequests[0].DurationPercent);
+        //    Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
+        //    Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
+        //    Assert.AreEqual(1f, model.AverageBuildHours);
+        //    Assert.AreEqual(20.33f, model.AveragePullRequestHours);
+        //    Assert.AreEqual(21.33f, model.LeadTimeForChangesMetric);
+        //    Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
+        //}
 
-        [TestCategory("APITest")]
-        [TestMethod]
-        public async Task AzLeadTimeControllerAPILiveIntegrationTest()
-        {
-            //Arrange
-            bool getSampleData = false;
-            string patToken = "";//Configuration["AppSettings:AzureDevOpsPatToken"];
-            string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string repositoryId = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildName = "SamLearnsAzure.CI";
-            string buildId = "3673"; //SamLearnsAzure.CI
-            int numberOfDays = 30;
-            int maxNumberOfItems = 20;
+        //[TestCategory("APITest")]
+        //[TestMethod]
+        //public async Task AzLeadTimeControllerAPILiveIntegrationTest()
+        //{
+        //    //Arrange
+        //    bool getSampleData = false;
+        //    string patToken = "";//Configuration["AppSettings:AzureDevOpsPatToken"];
+        //    string organization = "samsmithnz";
+        //    string project = "SamLearnsAzure";
+        //    string repositoryId = "SamLearnsAzure";
+        //    string branch = "refs/heads/master";
+        //    string buildName = "SamLearnsAzure.CI";
+        //    string buildId = "3673"; //SamLearnsAzure.CI
+        //    int numberOfDays = 30;
+        //    int maxNumberOfItems = 20;
 
-            //Act            
-            string url = $"/api/LeadTimeForChanges/GetAzureDevOpsLeadTimeForChanges?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&repositoryId={repositoryId}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
-            TestResponse<LeadTimeForChangesModel> httpResponse = new TestResponse<LeadTimeForChangesModel>();
-            LeadTimeForChangesModel model = await httpResponse.GetResponse(Client, url);
+        //    //Act            
+        //    string url = $"/api/LeadTimeForChanges/GetAzureDevOpsLeadTimeForChanges?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&repositoryId={repositoryId}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+        //    TestResponse<LeadTimeForChangesModel> httpResponse = new TestResponse<LeadTimeForChangesModel>();
+        //    LeadTimeForChangesModel model = await httpResponse.GetResponse(Client, url);
 
-            //Assert
-            Assert.IsTrue(model != null);
-            if (model.RateLimitHit == false)
-            {
-                Assert.AreEqual(project, model.ProjectName);
-                Assert.IsTrue(model.PullRequests.Count >= 0);
-                if (model.PullRequests.Count > 0)
-                {
-                    Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].PullRequestId) == false);
-                    Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Branch) == false);
-                    Assert.IsTrue(model.PullRequests[0].BuildCount >= 0);
-                    Assert.IsTrue(model.PullRequests[0].Commits.Count > 0);
-                    if (model.PullRequests[0].Commits.Count > 0)
-                    {
-                        Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Commits[0].commitId) == false);
-                        Assert.IsTrue(model.PullRequests[0].Commits[0].date >= DateTime.MinValue);
-                        Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Commits[0].name) == false);
-                    }
-                    Assert.IsTrue(Math.Round(model.PullRequests[0].Duration.TotalMinutes, 0) >= 0);
-                    Assert.IsTrue(model.PullRequests[0].DurationPercent >= 0);
-                    Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
-                    Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
-                }
-                Assert.IsTrue(model.AverageBuildHours >= 0);
-                Assert.IsTrue(model.AveragePullRequestHours >= 0);
-                Assert.IsTrue(model.LeadTimeForChangesMetric >= 0);
-                Assert.IsTrue(string.IsNullOrEmpty(model.LeadTimeForChangesMetricDescription) == false);
-            }
-        }
+        //    //Assert
+        //    Assert.IsTrue(model != null);
+        //    if (model.RateLimitHit == false)
+        //    {
+        //        Assert.AreEqual(project, model.ProjectName);
+        //        Assert.IsTrue(model.PullRequests.Count >= 0);
+        //        if (model.PullRequests.Count > 0)
+        //        {
+        //            Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].PullRequestId) == false);
+        //            Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Branch) == false);
+        //            Assert.IsTrue(model.PullRequests[0].BuildCount >= 0);
+        //            Assert.IsTrue(model.PullRequests[0].Commits.Count > 0);
+        //            if (model.PullRequests[0].Commits.Count > 0)
+        //            {
+        //                Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Commits[0].commitId) == false);
+        //                Assert.IsTrue(model.PullRequests[0].Commits[0].date >= DateTime.MinValue);
+        //                Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Commits[0].name) == false);
+        //            }
+        //            Assert.IsTrue(Math.Round(model.PullRequests[0].Duration.TotalMinutes, 0) >= 0);
+        //            Assert.IsTrue(model.PullRequests[0].DurationPercent >= 0);
+        //            Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
+        //            Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
+        //        }
+        //        Assert.IsTrue(model.AverageBuildHours >= 0);
+        //        Assert.IsTrue(model.AveragePullRequestHours >= 0);
+        //        Assert.IsTrue(model.LeadTimeForChangesMetric >= 0);
+        //        Assert.IsTrue(string.IsNullOrEmpty(model.LeadTimeForChangesMetricDescription) == false);
+        //    }
+        //}
 
-        [TestCategory("APITest")]
-        [TestMethod]
-        public async Task GHLeadTimeControllerAPILiveIntegrationTest()
-        {
-            //Arrange
-            bool getSampleData = false;
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            string owner = "samsmithnz";
-            string repo = "devopsmetrics";
-            string branch = "master";
-            string workflowId = "1162561";
-            int numberOfDays = 7;
-            int maxNumberOfItems = 20;
+        //[TestCategory("APITest")]
+        //[TestMethod]
+        //public async Task GHLeadTimeControllerAPILiveIntegrationTest()
+        //{
+        //    //Arrange
+        //    bool getSampleData = false;
+        //    string clientId = Configuration["AppSettings:GitHubClientId"];
+        //    string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
+        //    string owner = "samsmithnz";
+        //    string repo = "devopsmetrics";
+        //    string branch = "master";
+        //    string workflowId = "1162561";
+        //    int numberOfDays = 7;
+        //    int maxNumberOfItems = 20;
 
-            //Act
-            string url = $"/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
-            TestResponse<LeadTimeForChangesModel> httpResponse = new TestResponse<LeadTimeForChangesModel>();
-            LeadTimeForChangesModel model = await httpResponse.GetResponse(Client, url);
+        //    //Act
+        //    string url = $"/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+        //    TestResponse<LeadTimeForChangesModel> httpResponse = new TestResponse<LeadTimeForChangesModel>();
+        //    LeadTimeForChangesModel model = await httpResponse.GetResponse(Client, url);
 
-            //Assert
-            Assert.IsTrue(model != null);
-            if (model.RateLimitHit == false)
-            {
-                Assert.AreEqual(repo, model.ProjectName);
-                Assert.IsTrue(model.PullRequests.Count >= 0);
-                if (model.PullRequests.Count > 0)
-                {
-                    Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].PullRequestId) == false);
-                    Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Branch) == false);
-                    Assert.IsTrue(model.PullRequests[0].BuildCount >= 0);
-                    Assert.IsTrue(model.PullRequests[0].Commits.Count > 0);
-                    if (model.PullRequests[0].Commits.Count > 0)
-                    {
-                        Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Commits[0].commitId) == false);
-                        Assert.IsTrue(model.PullRequests[0].Commits[0].date >= DateTime.MinValue);
-                        Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Commits[0].name) == false);
-                    }
-                    Assert.IsTrue(Math.Round(model.PullRequests[0].Duration.TotalMinutes, 0) >= 0);
-                    Assert.IsTrue(model.PullRequests[0].DurationPercent >= 0);
-                    Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
-                    Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
-                }
-                Assert.IsTrue(model.AverageBuildHours >= 0);
-                Assert.IsTrue(model.AveragePullRequestHours >= 0);
-                Assert.IsTrue(model.LeadTimeForChangesMetric >= 0);
-                Assert.IsTrue(string.IsNullOrEmpty(model.LeadTimeForChangesMetricDescription) == false);
-            }
-        }
+        //    //Assert
+        //    Assert.IsTrue(model != null);
+        //    if (model.RateLimitHit == false)
+        //    {
+        //        Assert.AreEqual(repo, model.ProjectName);
+        //        Assert.IsTrue(model.PullRequests.Count >= 0);
+        //        if (model.PullRequests.Count > 0)
+        //        {
+        //            Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].PullRequestId) == false);
+        //            Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Branch) == false);
+        //            Assert.IsTrue(model.PullRequests[0].BuildCount >= 0);
+        //            Assert.IsTrue(model.PullRequests[0].Commits.Count > 0);
+        //            if (model.PullRequests[0].Commits.Count > 0)
+        //            {
+        //                Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Commits[0].commitId) == false);
+        //                Assert.IsTrue(model.PullRequests[0].Commits[0].date >= DateTime.MinValue);
+        //                Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Commits[0].name) == false);
+        //            }
+        //            Assert.IsTrue(Math.Round(model.PullRequests[0].Duration.TotalMinutes, 0) >= 0);
+        //            Assert.IsTrue(model.PullRequests[0].DurationPercent >= 0);
+        //            Assert.IsTrue(model.PullRequests[0].StartDateTime >= DateTime.MinValue);
+        //            Assert.IsTrue(model.PullRequests[0].EndDateTime >= DateTime.MinValue);
+        //        }
+        //        Assert.IsTrue(model.AverageBuildHours >= 0);
+        //        Assert.IsTrue(model.AveragePullRequestHours >= 0);
+        //        Assert.IsTrue(model.LeadTimeForChangesMetric >= 0);
+        //        Assert.IsTrue(string.IsNullOrEmpty(model.LeadTimeForChangesMetricDescription) == false);
+        //    }
+        //}
 
     }
 }

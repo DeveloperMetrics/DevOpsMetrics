@@ -17,8 +17,9 @@ namespace DevOpsMetrics.Service
             CreateHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((context, builder) =>
                 {
                     // Add other providers for JSON, etc.
@@ -31,5 +32,6 @@ namespace DevOpsMetrics.Service
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+        }
     }
 }
