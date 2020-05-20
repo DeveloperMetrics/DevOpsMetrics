@@ -122,9 +122,10 @@ namespace DevOpsMetrics.Tests.Service
             string buildId = "3673"; //SamLearnsAzure.CI
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
+            bool useCache = true;
 
             //Act
-            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&useCache={useCache}";
             TestResponse<DeploymentFrequencyModel> httpResponse = new TestResponse<DeploymentFrequencyModel>();
             DeploymentFrequencyModel model = await httpResponse.GetResponse(Client, url);
 
@@ -158,9 +159,10 @@ namespace DevOpsMetrics.Tests.Service
             string workflowId = "108084";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
+            bool useCache = true;
 
             //Act
-            string url = $"/api/DeploymentFrequency/GetGitHubDeploymentFrequency?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+            string url = $"/api/DeploymentFrequency/GetGitHubDeploymentFrequency?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&useCache={useCache}";
             TestResponse<DeploymentFrequencyModel> httpResponse = new TestResponse<DeploymentFrequencyModel>();
             DeploymentFrequencyModel model = await httpResponse.GetResponse(Client, url);
 
@@ -196,9 +198,10 @@ namespace DevOpsMetrics.Tests.Service
             string buildId = "3673"; //SamLearnsAzure.CI
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
+            bool useCache = true;
 
             //Act
-            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&useCache={useCache}";
             TestResponse<DeploymentFrequencyModel> httpResponse = new TestResponse<DeploymentFrequencyModel>();
             DeploymentFrequencyModel model = await httpResponse.GetResponse(Client, url);
 
@@ -239,9 +242,10 @@ namespace DevOpsMetrics.Tests.Service
             string workflowId = "108084";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
+            bool useCache = true;
 
             //Act
-            string url = $"/api/DeploymentFrequency/GetGitHubDeploymentFrequency?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+            string url = $"/api/DeploymentFrequency/GetGitHubDeploymentFrequency?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&useCache={useCache}";
             TestResponse<DeploymentFrequencyModel> httpResponse = new TestResponse<DeploymentFrequencyModel>();
             DeploymentFrequencyModel model = await httpResponse.GetResponse(Client, url);
 
