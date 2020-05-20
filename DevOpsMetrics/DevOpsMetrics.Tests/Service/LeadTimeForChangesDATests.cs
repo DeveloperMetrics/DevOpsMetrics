@@ -99,6 +99,7 @@ namespace DevOpsMetrics.Tests.Service
             string owner = "samsmithnz";
             string repo = "devopsmetrics";
             string masterBranch = "master";
+            string workflowName = "DevOpsMetrics.CI";
             string workflowId = "1162561";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
@@ -107,7 +108,7 @@ namespace DevOpsMetrics.Tests.Service
             //Act
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
             LeadTimeForChangesModel model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageAuth,
-                    owner, repo, masterBranch, workflowId,
+                    owner, repo, masterBranch, workflowName, workflowId,
                     numberOfDays, maxNumberOfItems, useCache);
 
             //Assert

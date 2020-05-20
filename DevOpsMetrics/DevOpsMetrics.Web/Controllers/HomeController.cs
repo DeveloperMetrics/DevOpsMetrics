@@ -21,7 +21,7 @@ namespace DevOpsMetrics.Web.Controllers
 
         public IActionResult Index()
         {
-             return View();
+            return View();
         }
 
         public async Task<IActionResult> DeploymentFrequency()
@@ -134,9 +134,9 @@ namespace DevOpsMetrics.Web.Controllers
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string ghbranch = "master";
-            //string workflowName = "SamsFeatureFlags.CI";
+            string workflowName = "SamsFeatureFlags.CI";
             string workflowId = "108084";
-            LeadTimeForChangesModel newItem3 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret, owner, repo, ghbranch, workflowId, numberOfDays, maxNumberOfItems, useCache);
+            LeadTimeForChangesModel newItem3 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret, owner, repo, ghbranch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
             if (newItem3 != null)
             {
                 items.Add(newItem3);
@@ -148,9 +148,9 @@ namespace DevOpsMetrics.Web.Controllers
             string owner2 = "samsmithnz";
             string repo2 = "DevOpsMetrics";
             string ghbranch2 = "master";
-            //string workflowName2 = "DevOpsMetrics.CI";
+            string workflowName2 = "DevOpsMetrics.CI";
             string workflowId2 = "1162561";
-            LeadTimeForChangesModel newItem4 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, clientId2, clientSecret2, owner2, repo2, ghbranch2, workflowId2, numberOfDays, maxNumberOfItems, useCache);
+            LeadTimeForChangesModel newItem4 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, clientId2, clientSecret2, owner2, repo2, ghbranch2, workflowName2, workflowId2, numberOfDays, maxNumberOfItems, useCache);
             if (newItem4 != null)
             {
                 items.Add(newItem4);

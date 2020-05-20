@@ -93,6 +93,7 @@ namespace DevOpsMetrics.Tests.Service
             string owner = "samsmithnz";
             string repo = "devopsmetrics";
             string branch = "master";
+            string workflowName = "DevOpsMetrics.CICD";
             string workflowId = "1162561";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
@@ -100,7 +101,7 @@ namespace DevOpsMetrics.Tests.Service
             LeadTimeForChangesController controller = new LeadTimeForChangesController(Configuration);
 
             //Act
-            LeadTimeForChangesModel model = await controller.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret, owner, repo, branch, workflowId, numberOfDays, maxNumberOfItems, useCache);
+            LeadTimeForChangesModel model = await controller.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);

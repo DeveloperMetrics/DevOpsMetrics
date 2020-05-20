@@ -55,7 +55,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     List<AzureDevOpsBuild> branchBuilds = featureBranchBuilds.Where(a => a.sourceBranch == branch).ToList();
                     string pullRequestId = branch.Replace("refs/pull/", "").Replace("/merge", "");
                     PullRequestDA pullRequestDA = new PullRequestDA();
-                    List<AzureDevOpsPRCommit> pullRequestCommits = await pullRequestDA.GetAzureDevOpsPullRequestCommits(patToken, organization, project, repositoryId, pullRequestId, useCache);
+                    List<AzureDevOpsPRCommit> pullRequestCommits = await pullRequestDA.GetAzureDevOpsPullRequestCommits(patToken, tableStorageAuth, organization, project, repositoryId, pullRequestId, useCache);
                     List<Commit> commits = new List<Commit>();
                     foreach (AzureDevOpsPRCommit item in pullRequestCommits)
                     {
@@ -168,7 +168,7 @@ namespace DevOpsMetrics.Service.DataAccess
         }
 
         public async Task<LeadTimeForChangesModel> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, TableStorageAuth tableStorageAuth,
-                string owner, string repo, string masterBranch, string workflowId,
+                string owner, string repo, string masterBranch, string workflowName, string workflowId,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
@@ -177,7 +177,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 List<GitHubActionsRun> initialRuns = new List<GitHubActionsRun>();
                 BuildsDA buildsDA = new BuildsDA();
-                initialRuns = await buildsDA.GetGitHubActionRuns(getSampleData, clientId, clientSecret, owner, repo, masterBranch, workflowId, useCache);
+                initialRuns = await buildsDA.GetGitHubActionRuns(getSampleData, clientId, clientSecret, tableStorageAuth, owner, repo, masterBranch, workflowName, workflowId, useCache);
 
                 //Process all builds, filtering by master and feature branchs
                 List<GitHubActionsRun> masterBranchRuns = new List<GitHubActionsRun>();
@@ -213,8 +213,8 @@ namespace DevOpsMetrics.Service.DataAccess
                     //This is messy. In Azure DevOps we could get the build trigger/pull request id. In GitHub we cannot. 
                     //Instead we get the pull request id by searching pull requests by branch
                     PullRequestDA pullRequestDA = new PullRequestDA();
-                    string pullRequestId = await pullRequestDA.GetGitHubPullRequestIdByBranchName(clientId, clientSecret, owner, repo, branch, useCache);
-                    List<GitHubPRCommit> pullRequestCommits = await pullRequestDA.GetGitHubPullRequestCommits(clientId, clientSecret, owner, repo, pullRequestId, useCache);
+                    string pullRequestId = await pullRequestDA.GetGitHubPullRequestIdByBranchName(clientId, clientSecret, tableStorageAuth, owner, repo, branch, useCache);
+                    List<GitHubPRCommit> pullRequestCommits = await pullRequestDA.GetGitHubPullRequestCommits(clientId, clientSecret, tableStorageAuth, owner, repo, pullRequestId, useCache);
                     List<Commit> commits = new List<Commit>();
                     foreach (GitHubPRCommit item in pullRequestCommits)
                     {

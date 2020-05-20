@@ -85,7 +85,7 @@ namespace DevOpsMetrics.Service.Controllers
         /// <returns></returns>
         [HttpGet("GetGitHubLeadTimeForChanges")]
         public async Task<LeadTimeForChangesModel> GetGitHubLeadTimeForChanges(bool getSampleData, string clientId, string clientSecret,
-            string owner, string repo, string branch, string workflowId,
+            string owner, string repo, string branch, string workflowName, string workflowId,
             int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             LeadTimeForChangesModel model = new LeadTimeForChangesModel();
@@ -104,7 +104,7 @@ namespace DevOpsMetrics.Service.Controllers
                 };
                 LeadTimeForChangesDA da = new LeadTimeForChangesDA();
                 model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageAuth,
-                        owner, repo, branch, workflowId, numberOfDays, maxNumberOfItems, useCache);
+                        owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
             {

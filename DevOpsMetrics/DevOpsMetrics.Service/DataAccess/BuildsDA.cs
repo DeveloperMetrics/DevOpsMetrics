@@ -14,7 +14,8 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class BuildsDA
     {
-        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsBuilds(string patToken, TableStorageAuth tableStorageAuth, string organization, string project, string branch, string buildName, string buildId, bool useCache)
+        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsBuilds(string patToken, TableStorageAuth tableStorageAuth,
+                string organization, string project, string branch, string buildName, string buildId, bool useCache)
         {
             List<AzureDevOpsBuild> builds = new List<AzureDevOpsBuild>();
             Newtonsoft.Json.Linq.JArray list = null;
@@ -56,11 +57,21 @@ namespace DevOpsMetrics.Service.DataAccess
             return builds;
         }
 
-        public async Task<List<GitHubActionsRun>> GetGitHubActionRuns(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowId, bool useCache)
+        public async Task<List<GitHubActionsRun>> GetGitHubActionRuns(bool getSampleData, string clientId, string clientSecret, TableStorageAuth tableStorageAuth,
+                string owner, string repo, string branch, string workflowName, string workflowId, bool useCache)
         {
             List<GitHubActionsRun> runs = new List<GitHubActionsRun>();
-            GitHubAPIAccess api = new GitHubAPIAccess();
-            Newtonsoft.Json.Linq.JArray list = await api.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, branch, workflowId);
+            Newtonsoft.Json.Linq.JArray list = null;
+            if (useCache == true)
+            {
+                AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
+                list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableGitHubRuns, daTableStorage.CreateGitHubRunPartitionKey(owner, repo, workflowName));
+            }
+            else
+            {
+                GitHubAPIAccess api = new GitHubAPIAccess();
+                list = await api.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, branch, workflowId);
+            }
             if (list != null)
             {
                 runs = JsonConvert.DeserializeObject<List<GitHubActionsRun>>(list.ToString());
