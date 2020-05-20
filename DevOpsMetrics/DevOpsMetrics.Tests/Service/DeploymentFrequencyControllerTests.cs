@@ -51,10 +51,11 @@ namespace DevOpsMetrics.Tests.Service
             string buildId = "3673"; //SamLearnsAzure.CI
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
+            bool useCache = true;
             DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
+            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.AreEqual(true, model.IsAzureDevOps);
@@ -86,10 +87,11 @@ namespace DevOpsMetrics.Tests.Service
             string workflowId = "108084";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
+            bool useCache = true;
             DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.AreEqual(false, model.IsAzureDevOps);

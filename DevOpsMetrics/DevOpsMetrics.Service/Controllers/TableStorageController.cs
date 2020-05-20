@@ -32,7 +32,7 @@ namespace DevOpsMetrics.Service.Controllers
         /// <param name="maxNumberOfItems"></param>
         /// <returns></returns>
         [HttpGet("GetAzureDevOpsDeploymentFrequency")]
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems = 20, bool useCache = false)
+        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             DeploymentFrequencyModel model = new DeploymentFrequencyModel();
             try

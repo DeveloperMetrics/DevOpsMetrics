@@ -31,7 +31,7 @@ namespace DevOpsMetrics.Service.Controllers
         /// <param name="maxNumberOfItems"></param>
         /// <returns></returns>
         [HttpGet("GetAzureDevOpsLeadTimeForChanges")]
-        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string branch, string buildId, int numberOfDays, int maxNumberOfItems = 20, bool useCache = false)
+        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string branch, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             LeadTimeForChangesModel model = new LeadTimeForChangesModel();
             try
@@ -68,7 +68,7 @@ namespace DevOpsMetrics.Service.Controllers
         /// <param name="maxNumberOfItems"></param>
         /// <returns></returns>
         [HttpGet("GetGitHubLeadTimeForChanges")]
-        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimeForChanges(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowId, int numberOfDays, int maxNumberOfItems = 20, bool useCache = false)
+        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimeForChanges(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowId, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             LeadTimeForChangesModel model = new LeadTimeForChangesModel();
             try
