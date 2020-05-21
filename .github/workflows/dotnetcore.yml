@@ -79,4 +79,4 @@ jobs:
       with:
         app-name: devopsmetrics-prod-eu-web
         package: webapp 
-    - run: az webapp config appsettings set --name "devopsmetrics-prod-eu-web" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientId }}" AppSettings:GitHubClientId=${{ secrets.GitHubClientSecret }}" 
+    - run: az webapp config appsettings set --name devopsmetrics-prod-eu-web --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientSecret }}" 
