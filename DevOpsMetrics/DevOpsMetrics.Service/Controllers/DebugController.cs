@@ -23,13 +23,13 @@ namespace DevOpsMetrics.Service.Controllers
         {
             string result = "";
             result += "AzureStorageAccountName: " + Configuration["AppSettings:AzureStorageAccountName"] + Environment.NewLine;
-            result += "AzureStorageAccountName: " + Configuration["AppSettings:AzureStorageAccountAccessKey"] + Environment.NewLine;
-            result += "AzureStorageAccountName: " + Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"] + Environment.NewLine;
-            result += "AzureStorageAccountName: " + Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"] + Environment.NewLine;
-            result += "AzureStorageAccountName: " + Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"] + Environment.NewLine;
-            result += "AzureStorageAccountName: " + Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"] + Environment.NewLine;
-            result += "AzureStorageAccountName: " + Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"] + Environment.NewLine;
-            result += "AzureStorageAccountName: " + Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"] + Environment.NewLine;
+            result += "AzureStorageAccountAccessKey: " + Configuration["AppSettings:AzureStorageAccountAccessKey"] + Environment.NewLine;
+            result += "AzureStorageAccountContainerAzureDevOpsBuilds: " + Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"] + Environment.NewLine;
+            result += "AzureStorageAccountContainerAzureDevOpsPRs: " + Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"] + Environment.NewLine;
+            result += "AzureStorageAccountContainerAzureDevOpsPRCommits: " + Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"] + Environment.NewLine;
+            result += "AzureStorageAccountContainerGitHubRuns: " + Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"] + Environment.NewLine;
+            result += "AzureStorageAccountContainerGitHubPRs: " + Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"] + Environment.NewLine;
+            result += "AzureStorageAccountContainerGitHubPRCommits: " + Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"] + Environment.NewLine;
             return result;
         }
     }
