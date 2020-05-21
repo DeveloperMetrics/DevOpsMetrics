@@ -47,7 +47,7 @@ namespace DevOpsMetrics.Service.Controllers
                 TableGitHubRuns = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"],
                 TableGitHubPRs = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"],
                 TableGitHubPRCommits = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"],
-            }; 
+            };
             try
             {
                 DeploymentFrequencyDA da = new DeploymentFrequencyDA();

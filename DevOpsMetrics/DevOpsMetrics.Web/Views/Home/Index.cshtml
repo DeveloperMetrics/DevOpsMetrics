@@ -1,5 +1,5 @@
-﻿@*@using DevOpsMetrics.Service.Models.Common
-    @model List<LeadTimeForChangesModel>*@
+﻿@*@using Microsoft.Extensions.Configuration; 
+@model IConfiguration*@
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -8,12 +8,17 @@
 
 <div class="row">
     <div class="col-md-12">
-        @Html.ActionLink("Deployment Frequency", "DeploymentFrequency","Home")
+        @Html.ActionLink("Deployment Frequency", "DeploymentFrequency", "Home")
     </div>
     <div class="col-md-12">
-        @Html.ActionLink("Lead time for changes", "LeadTimeForChanges","Home")
+        @Html.ActionLink("Lead time for changes", "LeadTimeForChanges", "Home")
     </div>
     <div class="col-md-12">
         Source code can be found at <a href="https://github.com/samsmithnz/DevOpsMetrics">https://github.com/samsmithnz/DevOpsMetrics</a>
     </div>
 </div>
+@*<div>
+    <span>patToken = @Model["AppSettings:AzureDevOpsPatToken"]</span>
+    <span>clientId2 = @Model["AppSettings:GitHubClientId"]</span>
+    <span>clientSecret2 = @Model["AppSettings:GitHubClientSecret"]</span>
+</div>*@

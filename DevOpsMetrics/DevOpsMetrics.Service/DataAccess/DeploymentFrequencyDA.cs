@@ -93,41 +93,48 @@ namespace DevOpsMetrics.Service.DataAccess
 
                 //Lists the workflows in a repository. 
                 List<GitHubActionsRun> gitHubRuns = await buildsDA.GetGitHubActionRuns(getSampleData, clientId, clientSecret, tableStorageAuth, owner, repo, branch, workflowName, workflowId, useCache);
-                List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
-                foreach (GitHubActionsRun item in gitHubRuns)
+                if (gitHubRuns != null)
                 {
-                    if (item.status == "completed" && item.head_branch == branch && item.created_at > DateTime.Now.AddDays(-numberOfDays))
+                    List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
+                    foreach (GitHubActionsRun item in gitHubRuns)
                     {
-                        KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.created_at, item.created_at);
-                        dateList.Add(newItem);
-                        builds.Add(
-                            new Build
-                            {
-                                Id = item.run_number,
-                                Branch = item.head_branch,
-                                BuildNumber = item.run_number,
-                                StartTime = item.created_at,
-                                EndTime = item.updated_at,
-                                BuildDurationPercent = item.buildDurationPercent,
-                                Status = item.status,
-                                Url = item.html_url
-                            }
-                        );
+                        if (item.status == "completed" && item.head_branch == branch && item.created_at > DateTime.Now.AddDays(-numberOfDays))
+                        {
+                            KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.created_at, item.created_at);
+                            dateList.Add(newItem);
+                            builds.Add(
+                                new Build
+                                {
+                                    Id = item.run_number,
+                                    Branch = item.head_branch,
+                                    BuildNumber = item.run_number,
+                                    StartTime = item.created_at,
+                                    EndTime = item.updated_at,
+                                    BuildDurationPercent = item.buildDurationPercent,
+                                    Status = item.status,
+                                    Url = item.html_url
+                                }
+                            );
+                        }
                     }
+
+                    deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
+
+                    DeploymentFrequencyModel model = new DeploymentFrequencyModel
+                    {
+                        IsAzureDevOps = false,
+                        DeploymentName = workflowName,
+                        BuildList = utility.GetLastNItems(builds, maxNumberOfItems),
+                        DeploymentsPerDayMetric = deploymentsPerDay,
+                        DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
+                        NumberOfDays = numberOfDays
+                    };
+                    return model;
                 }
-
-                deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
-
-                DeploymentFrequencyModel model = new DeploymentFrequencyModel
+                else
                 {
-                    IsAzureDevOps = false,
-                    DeploymentName = workflowName,
-                    BuildList = utility.GetLastNItems(builds, maxNumberOfItems),
-                    DeploymentsPerDayMetric = deploymentsPerDay,
-                    DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
-                    NumberOfDays = numberOfDays
-                };
-                return model;
+                    return null;
+                }    
             }
             else
             {
