@@ -47,32 +47,32 @@ namespace DevOpsMetrics.Web.Controllers
                 items.Add(newItem1);
             }
 
-            ////Azure DevOps 2
-            //string patToken2 = Configuration["AppSettings:AzureDevOpsPatToken"];
-            //string organization2 = "samsmithnz";
-            //string project2 = "PartsUnlimited";
-            //string azBranch2 = "refs/heads/master";
-            //string buildName2 = "PartsUnlimited.CI";
-            //string buildId2 = "75"; //PartsUnlimited.CI
-            //DeploymentFrequencyModel newItem2 = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken2, organization2, project2, azBranch2, buildName2, buildId2, numberOfDays, maxNumberOfItems, useCache);
-            //if (newItem2 != null)
-            //{
-            //    items.Add(newItem2);
-            //}
+            //Azure DevOps 2
+            string patToken2 = Configuration["AppSettings:AzureDevOpsPatToken"];
+            string organization2 = "samsmithnz";
+            string project2 = "PartsUnlimited";
+            string azBranch2 = "refs/heads/master";
+            string buildName2 = "PartsUnlimited.CI";
+            string buildId2 = "75"; //PartsUnlimited.CI
+            DeploymentFrequencyModel newItem2 = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken2, organization2, project2, azBranch2, buildName2, buildId2, numberOfDays, maxNumberOfItems, useCache);
+            if (newItem2 != null)
+            {
+                items.Add(newItem2);
+            }
 
-            ////GitHub 1
-            //string clientId = Configuration["AppSettings:GitHubClientId"];
-            //string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            //string owner = "samsmithnz";
-            //string repo = "SamsFeatureFlags";
-            //string ghbranch = "master";
-            //string workflowName = "SamsFeatureFlags.CI";
-            //string workflowId = "108084";
-            //DeploymentFrequencyModel newItem3 = await serviceApiClient.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, ghbranch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
-            //if (newItem3 != null)
-            //{
-            //    items.Add(newItem3);
-            //}
+            //GitHub 1
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
+            string owner = "samsmithnz";
+            string repo = "SamsFeatureFlags";
+            string ghbranch = "master";
+            string workflowName = "SamsFeatureFlags.CI";
+            string workflowId = "108084";
+            DeploymentFrequencyModel newItem3 = await serviceApiClient.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, ghbranch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+            if (newItem3 != null)
+            {
+                items.Add(newItem3);
+            }
 
             //GitHub 2
             string clientId2 = Configuration["AppSettings:GitHubClientId"];
@@ -114,33 +114,33 @@ namespace DevOpsMetrics.Web.Controllers
                 items.Add(newItem1);
             }
 
-            ////Azure DevOps 2
-            //string patToken2 = Configuration["AppSettings:AzureDevOpsPatToken"];
-            //string organization2 = "samsmithnz";
-            //string project2 = "PartsUnlimited";
-            //string repositoryId2 = "PartsUnlimited";
-            //string azBranch2 = "refs/heads/master";
-            //string buildName2 = "PartsUnlimited.CI";
-            //string buildId2 = "75"; //
-            //LeadTimeForChangesModel newItem2 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken2, organization2, project2, repositoryId2, azBranch2, buildName2, buildId2, numberOfDays, maxNumberOfItems, useCache);
-            //if (newItem2 != null)
-            //{
-            //    items.Add(newItem2);
-            //}
+            //Azure DevOps 2
+            string patToken2 = Configuration["AppSettings:AzureDevOpsPatToken"];
+            string organization2 = "samsmithnz";
+            string project2 = "PartsUnlimited";
+            string repositoryId2 = "PartsUnlimited";
+            string azBranch2 = "refs/heads/master";
+            string buildName2 = "PartsUnlimited.CI";
+            string buildId2 = "75"; //
+            LeadTimeForChangesModel newItem2 = await serviceAPIClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken2, organization2, project2, repositoryId2, azBranch2, buildName2, buildId2, numberOfDays, maxNumberOfItems, useCache);
+            if (newItem2 != null)
+            {
+                items.Add(newItem2);
+            }
 
-            ////GitHub 1
-            //string clientId = Configuration["AppSettings:GitHubClientId"];
-            //string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            //string owner = "samsmithnz";
-            //string repo = "SamsFeatureFlags";
-            //string ghbranch = "master";
-            //string workflowName = "SamsFeatureFlags.CI";
-            //string workflowId = "108084";
-            //LeadTimeForChangesModel newItem3 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret, owner, repo, ghbranch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
-            //if (newItem3 != null)
-            //{
-            //    items.Add(newItem3);
-            //}
+            //GitHub 1
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
+            string owner = "samsmithnz";
+            string repo = "SamsFeatureFlags";
+            string ghbranch = "master";
+            string workflowName = "SamsFeatureFlags.CI";
+            string workflowId = "108084";
+            LeadTimeForChangesModel newItem3 = await serviceAPIClient.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret, owner, repo, ghbranch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+            if (newItem3 != null)
+            {
+                items.Add(newItem3);
+            }
 
             //GitHub 2
             string clientId2 = Configuration["AppSettings:GitHubClientId"];
