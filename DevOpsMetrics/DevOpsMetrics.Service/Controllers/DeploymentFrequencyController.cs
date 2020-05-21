@@ -62,7 +62,7 @@ namespace DevOpsMetrics.Service.Controllers
                 }
                 else
                 {
-                    throw new Exception(tableStorageAuth.ToString());
+                    throw;
                 }
             }
             return model;
