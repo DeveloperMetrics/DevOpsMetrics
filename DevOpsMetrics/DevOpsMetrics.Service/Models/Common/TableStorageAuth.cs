@@ -27,5 +27,15 @@ namespace DevOpsMetrics.Service.Models.Common
         public string TableGitHubRuns { get; set; }
         public string TableGitHubPRs { get; set; }
         public string TableGitHubPRCommits { get; set; }
+
+        public override string ToString()
+        {
+            string result = "";
+
+            result += "AccountName: " + AccountName + Environment.NewLine;
+            result += "AccountAccessKey: " + AccountAccessKey + Environment.NewLine;
+
+            return result;
+        }
     }
 }

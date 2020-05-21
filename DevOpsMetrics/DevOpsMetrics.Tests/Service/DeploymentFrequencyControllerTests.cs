@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Tests.Service
@@ -26,7 +27,7 @@ namespace DevOpsMetrics.Tests.Service
             IConfigurationBuilder config = new ConfigurationBuilder()
                .SetBasePath(AppContext.BaseDirectory)
                .AddJsonFile("appsettings.json");
-            config.AddUserSecrets<DevOpsMetrics.Service.Program>();
+            config.AddUserSecrets<DeploymentFrequencyControllerTests>();
             Configuration = config.Build();
 
             //Setup the test server
@@ -39,7 +40,7 @@ namespace DevOpsMetrics.Tests.Service
 
         [TestCategory("ControllerTest")]
         [TestMethod]
-        public async Task AzDeploymentsControllerIntegrationTest()
+        public async Task AzDeploymentsSampleControllerIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -51,7 +52,7 @@ namespace DevOpsMetrics.Tests.Service
             string buildId = "3673"; //SamLearnsAzure.CI
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            bool useCache = true;
+            bool useCache = false;
             DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
 
             //Act
@@ -74,7 +75,93 @@ namespace DevOpsMetrics.Tests.Service
 
         [TestCategory("ControllerTest")]
         [TestMethod]
-        public async Task GHDeploymentsControllerIntegrationTest()
+        public async Task AzDeploymentsAPIControllerIntegrationTest()
+        {
+            //Arrange
+            bool getSampleData = false;
+            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
+            string organization = "samsmithnz";
+            string project = "SamLearnsAzure";
+            string branch = "refs/heads/master";
+            string buildName = "SamLearnsAzure.CI";
+            string buildId = "3673"; //SamLearnsAzure.CI
+            int numberOfDays = 30;
+            int maxNumberOfItems = 20;
+            bool useCache = false;
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
+
+            //Act
+            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+
+            //Assert
+            Assert.IsTrue(model != null);
+            if (model.RateLimitHit == false)
+            {
+                Assert.AreEqual(true, model.IsAzureDevOps);
+                Assert.AreEqual(buildName, model.DeploymentName);
+                Assert.IsTrue(model.DeploymentsPerDayMetric >= 0f);
+                Assert.IsTrue(string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription) == false);
+                Assert.IsTrue(model.BuildList.Count >= 0);
+                if (model.BuildList.Count > 0)
+                {
+                    Assert.IsTrue(model.BuildList[0].BuildDurationPercent >= 0f);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].BuildNumber) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Branch) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Status) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Url) == false);
+                    Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
+                    Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
+                }
+            }
+        }
+
+        [TestCategory("ControllerTest")]
+        [TestMethod]
+        public async Task AzDeploymentsCacheControllerIntegrationTest()
+        {
+            //https://devopsmetrics-prod-eu-service.azurewebsites.net//api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData=False&patToken=&organization=samsmithnz&project=SamLearnsAzure&branch=refs/heads/master&buildName=SamLearnsAzure.CI&buildId=3673&numberOfDays=30&maxNumberOfItems=20&useCache=true
+
+            //Arrange
+            bool getSampleData = false;
+            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
+            string organization = "samsmithnz";
+            string project = "SamLearnsAzure";
+            string branch = "refs/heads/master";
+            string buildName = "SamLearnsAzure.CI";
+            string buildId = "3673"; //SamLearnsAzure.CI
+            int numberOfDays = 30;
+            int maxNumberOfItems = 20;
+            bool useCache = true;
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
+
+            //Act
+            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+
+            //Assert
+            Assert.IsTrue(model != null);
+            if (model.RateLimitHit == false)
+            {
+                Assert.AreEqual(true, model.IsAzureDevOps);
+                Assert.AreEqual(buildName, model.DeploymentName);
+                Assert.IsTrue(model.DeploymentsPerDayMetric >= 0f);
+                Assert.IsTrue(string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription) == false);
+                Assert.IsTrue(model.BuildList.Count >= 0);
+                if (model.BuildList.Count > 0)
+                {
+                    Assert.IsTrue(model.BuildList[0].BuildDurationPercent >= 0f);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].BuildNumber) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Branch) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Status) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Url) == false);
+                    Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
+                    Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
+                }
+            }
+        }
+
+        [TestCategory("ControllerTest")]
+        [TestMethod]
+        public async Task GHDeploymentsSampleControllerIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -108,12 +195,98 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
         }
 
+        [TestCategory("ControllerTest")]
+        [TestMethod]
+        public async Task GHDeploymentsAPIControllerIntegrationTest()
+        {
+            //Arrange
+            bool getSampleData = false;
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
+            string owner = "samsmithnz";
+            string repo = "samsfeatureflags";
+            string branch = "master";
+            string workflowName = "samsfeatureflags CI/CD";
+            string workflowId = "108084";
+            int numberOfDays = 7;
+            int maxNumberOfItems = 20;
+            bool useCache = false;
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
+
+            //Act
+            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+
+            //Assert
+            Assert.IsTrue(model != null);
+            if (model.RateLimitHit == false)
+            {
+                Assert.AreEqual(false, model.IsAzureDevOps);
+                Assert.AreEqual(workflowName, model.DeploymentName);
+                Assert.IsTrue(model.DeploymentsPerDayMetric >= 0f);
+                Assert.IsTrue(string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription) == false);
+                Assert.IsTrue(model.BuildList.Count >= 0);
+                if (model.BuildList.Count > 0)
+                {
+                    Assert.IsTrue(model.BuildList[0].BuildDurationPercent >= 0f);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].BuildNumber) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Branch) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Status) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Url) == false);
+                    Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
+                    Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
+                }
+            }
+        }
+
+        [TestCategory("ControllerTest")]
+        [TestMethod]
+        public async Task GHDeploymentsCacheControllerIntegrationTest()
+        {
+            //Arrange
+            bool getSampleData = false;
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
+            string owner = "samsmithnz";
+            string repo = "samsfeatureflags";
+            string branch = "master";
+            string workflowName = "samsfeatureflags CI/CD";
+            string workflowId = "108084";
+            int numberOfDays = 7;
+            int maxNumberOfItems = 20;
+            bool useCache = true;
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
+
+            //Act
+            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+
+            //Assert
+            Assert.IsTrue(model != null);
+            if (model.RateLimitHit == false)
+            {
+                Assert.AreEqual(false, model.IsAzureDevOps);
+                Assert.AreEqual(workflowName, model.DeploymentName);
+                Assert.IsTrue(model.DeploymentsPerDayMetric >= 0f);
+                Assert.IsTrue(string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription) == false);
+                Assert.IsTrue(model.BuildList.Count >= 0);
+                if (model.BuildList.Count > 0)
+                {
+                    Assert.IsTrue(model.BuildList[0].BuildDurationPercent >= 0f);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].BuildNumber) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Branch) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Status) == false);
+                    Assert.IsTrue(string.IsNullOrEmpty(model.BuildList[0].Url) == false);
+                    Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
+                    Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
+                }
+            }
+        }
+
         //[TestCategory("APITest")]
         //[TestMethod]
-        //public async Task AzDeploymentsControllerAPIIntegrationTest()
+        //public async Task AzDeploymentsControllerAPILiveIntegrationTest()
         //{
         //    //Arrange
-        //    bool getSampleData = true;
+        //    bool getSampleData = false;
         //    string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
         //    string organization = "samsmithnz";
         //    string project = "SamLearnsAzure";
@@ -146,7 +319,7 @@ namespace DevOpsMetrics.Tests.Service
 
         //[TestCategory("APITest")]
         //[TestMethod]
-        //public async Task GHDeploymentsControllerAPIIntegrationTest()
+        //public async Task GHDeploymentsControllerAPILiveIntegrationTest()
         //{
         //    //Arrange
         //    bool getSampleData = true;
@@ -198,7 +371,7 @@ namespace DevOpsMetrics.Tests.Service
         //    string buildId = "3673"; //SamLearnsAzure.CI
         //    int numberOfDays = 7;
         //    int maxNumberOfItems = 20;
-        //    bool useCache = true;
+        //    bool useCache = false;
 
         //    //Act
         //    string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&useCache={useCache}";
@@ -242,7 +415,7 @@ namespace DevOpsMetrics.Tests.Service
         //    string workflowId = "108084";
         //    int numberOfDays = 7;
         //    int maxNumberOfItems = 20;
-        //    bool useCache = true;
+        //    bool useCache = false;
 
         //    //Act
         //    string url = $"/api/DeploymentFrequency/GetGitHubDeploymentFrequency?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&useCache={useCache}";

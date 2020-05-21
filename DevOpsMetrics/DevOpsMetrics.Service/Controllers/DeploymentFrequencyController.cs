@@ -37,20 +37,19 @@ namespace DevOpsMetrics.Service.Controllers
             int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             DeploymentFrequencyModel model = new DeploymentFrequencyModel();
+            TableStorageAuth tableStorageAuth = new TableStorageAuth
+            {
+                AccountName = Configuration["AppSettings:AzureStorageAccountName"],
+                AccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
+                TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
+                TableAzureDevOpsPRs = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"],
+                TableAzureDevOpsPRCommits = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"],
+                TableGitHubRuns = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"],
+                TableGitHubPRs = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"],
+                TableGitHubPRCommits = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"],
+            }; 
             try
             {
-                TableStorageAuth tableStorageAuth = new TableStorageAuth
-                {
-                    AccountName = Configuration["AppSettings:AzureStorageAccountName"],
-                    AccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
-                    TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
-                    TableAzureDevOpsPRs = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"],
-                    TableAzureDevOpsPRCommits = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"],
-                    TableGitHubRuns = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"],
-                    TableGitHubPRs = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"],
-                    TableGitHubPRCommits = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"],
-                };
-
                 DeploymentFrequencyDA da = new DeploymentFrequencyDA();
                 model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageAuth, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
             }
@@ -63,7 +62,7 @@ namespace DevOpsMetrics.Service.Controllers
                 }
                 else
                 {
-                    throw;
+                    throw new Exception(tableStorageAuth.ToString());
                 }
             }
             return model;
