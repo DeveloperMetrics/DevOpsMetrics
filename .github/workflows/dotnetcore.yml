@@ -73,10 +73,10 @@ jobs:
       with:
         app-name: devopsmetrics-prod-eu-service
         package: serviceapp  
-    - run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --resource-group "devopsmetrics" --settings "AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" GitHubClientSecret="${{ secrets.GitHubClientId }}" GitHubClientId="${{ secrets.GitHubClientSecret }}" AzureStorageAccountAccessKey="${{ secrets.AzureStorageAccessKey }}" 
+    - run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountAccessKey=${{ secrets.AzureStorageAccessKey }}" 
     - name: Deploy website to Azure WebApp
       uses: Azure/webapps-deploy@v1
       with:
         app-name: devopsmetrics-prod-eu-web
         package: webapp 
-    - run: az webapp config appsettings set --name "devopsmetrics-prod-eu-web" --resource-group "devopsmetrics" --settings "AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" GitHubClientSecret="${{ secrets.GitHubClientId }}" GitHubClientId="${{ secrets.GitHubClientSecret }}" 
+    - run: az webapp config appsettings set --name "devopsmetrics-prod-eu-web" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientId }}" AppSettings:GitHubClientId=${{ secrets.GitHubClientSecret }}" 
