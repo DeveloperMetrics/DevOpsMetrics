@@ -30,7 +30,7 @@ namespace DevOpsMetrics.Web.Controllers
             int maxNumberOfItems = 20;
             int numberOfDays = 30;
             bool getSampleData = false;
-            bool useCache = true;
+            bool useCache = false;
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             List<DeploymentFrequencyModel> items = new List<DeploymentFrequencyModel>();
 
@@ -47,46 +47,46 @@ namespace DevOpsMetrics.Web.Controllers
                 items.Add(newItem1);
             }
 
-            ////Azure DevOps 2
-            //string patToken2 = Configuration["AppSettings:AzureDevOpsPatToken"];
-            //string organization2 = "samsmithnz";
-            //string project2 = "PartsUnlimited";
-            //string azBranch2 = "refs/heads/master";
-            //string buildName2 = "PartsUnlimited.CI";
-            //string buildId2 = "75"; //SamLearnsAzure.CI
-            //DeploymentFrequencyModel newItem2 = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken2, organization2, project2, azBranch2, buildName2, buildId2, numberOfDays, maxNumberOfItems, useCache);
-            //if (newItem2 != null)
-            //{
-            //    items.Add(newItem2);
-            //}
+            //Azure DevOps 2
+            string patToken2 = Configuration["AppSettings:AzureDevOpsPatToken"];
+            string organization2 = "samsmithnz";
+            string project2 = "PartsUnlimited";
+            string azBranch2 = "refs/heads/master";
+            string buildName2 = "PartsUnlimited.CI";
+            string buildId2 = "75"; //SamLearnsAzure.CI
+            DeploymentFrequencyModel newItem2 = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken2, organization2, project2, azBranch2, buildName2, buildId2, numberOfDays, maxNumberOfItems, useCache);
+            if (newItem2 != null)
+            {
+                items.Add(newItem2);
+            }
 
-            ////GitHub 1
-            //string clientId = Configuration["AppSettings:GitHubClientId"];
-            //string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            //string owner = "samsmithnz";
-            //string repo = "SamsFeatureFlags";
-            //string ghbranch = "master";
-            //string workflowName = "SamsFeatureFlags.CI";
-            //string workflowId = "108084";
-            //DeploymentFrequencyModel newItem3 = await serviceApiClient.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, ghbranch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
-            //if (newItem3 != null)
-            //{
-            //    items.Add(newItem3);
-            //}
+            //GitHub 1
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
+            string owner = "samsmithnz";
+            string repo = "SamsFeatureFlags";
+            string ghbranch = "master";
+            string workflowName = "SamsFeatureFlags.CI";
+            string workflowId = "108084";
+            DeploymentFrequencyModel newItem3 = await serviceApiClient.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, ghbranch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+            if (newItem3 != null)
+            {
+                items.Add(newItem3);
+            }
 
-            ////GitHub 2
-            //string clientId2 = Configuration["AppSettings:GitHubClientId"];
-            //string clientSecret2 = Configuration["AppSettings:GitHubClientSecret"];
-            //string owner2 = "samsmithnz";
-            //string repo2 = "DevOpsMetrics";
-            //string ghbranch2 = "master";
-            //string workflowName2 = "DevOpsMetrics.CI";
-            //string workflowId2 = "1162561";
-            //DeploymentFrequencyModel newItem4 = await serviceApiClient.GetGitHubDeploymentFrequency(getSampleData, clientId2, clientSecret2, owner2, repo2, ghbranch2, workflowName2, workflowId2, numberOfDays, maxNumberOfItems, useCache);
-            //if (newItem4 != null)
-            //{
-            //    items.Add(newItem4);
-            //}
+            //GitHub 2
+            string clientId2 = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret2 = Configuration["AppSettings:GitHubClientSecret"];
+            string owner2 = "samsmithnz";
+            string repo2 = "DevOpsMetrics";
+            string ghbranch2 = "master";
+            string workflowName2 = "DevOpsMetrics.CI";
+            string workflowId2 = "1162561";
+            DeploymentFrequencyModel newItem4 = await serviceApiClient.GetGitHubDeploymentFrequency(getSampleData, clientId2, clientSecret2, owner2, repo2, ghbranch2, workflowName2, workflowId2, numberOfDays, maxNumberOfItems, useCache);
+            if (newItem4 != null)
+            {
+                items.Add(newItem4);
+            }
 
             return View(items);
         }
@@ -96,7 +96,7 @@ namespace DevOpsMetrics.Web.Controllers
             int maxNumberOfItems = 20;
             int numberOfDays = 60;
             bool getSampleData = false;
-            bool useCache = true;
+            bool useCache = false;
             ServiceApiClient serviceAPIClient = new ServiceApiClient(Configuration);
             List<LeadTimeForChangesModel> items = new List<LeadTimeForChangesModel>();
 
