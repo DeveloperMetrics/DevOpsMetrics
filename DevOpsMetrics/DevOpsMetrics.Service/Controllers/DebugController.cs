@@ -30,6 +30,7 @@ namespace DevOpsMetrics.Service.Controllers
             result += "AzureStorageAccountContainerGitHubRuns: " + Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"] + Environment.NewLine;
             result += "AzureStorageAccountContainerGitHubPRs: " + Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"] + Environment.NewLine;
             result += "AzureStorageAccountContainerGitHubPRCommits: " + Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"] + Environment.NewLine;
+            result += "Time: " + DateTime.Now.ToString() + Environment.NewLine;
             return result;
         }
     }
