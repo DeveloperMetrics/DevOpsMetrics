@@ -103,7 +103,7 @@ namespace DevOpsMetrics.Tests.Service
             string workflowId = "1162561";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            bool useCache = true;
+            bool useCache = false;
 
             //Act
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();

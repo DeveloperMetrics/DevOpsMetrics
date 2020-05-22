@@ -190,7 +190,7 @@ namespace DevOpsMetrics.Service.DataAccess
                         if (item.head_branch == masterBranch)
                         {
                             //Save the master branch
-                            //           masterBranchRuns.Add(item);
+                            masterBranchRuns.Add(item);
                         }
                         else
                         {
