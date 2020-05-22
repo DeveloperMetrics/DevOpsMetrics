@@ -2,7 +2,7 @@
 
 namespace DevOpsMetrics.Service.DataAccess
 {
-    public class Utility<T>
+    public class ListUtility<T>
     {
         public List<T> GetLastNItems(List<T> items, int maxNumberOfItems)
         {

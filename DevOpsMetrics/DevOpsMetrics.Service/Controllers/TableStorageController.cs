@@ -76,17 +76,7 @@ namespace DevOpsMetrics.Service.Controllers
             int numberOfRecordsSaved = 0;
             try
             {
-                TableStorageAuth tableStorageAuth = new TableStorageAuth
-                {
-                    AccountName = Configuration["AppSettings:AzureStorageAccountName"],
-                    AccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
-                    TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
-                    TableAzureDevOpsPRs = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"],
-                    TableAzureDevOpsPRCommits = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"],
-                    TableGitHubRuns = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"],
-                    TableGitHubPRs = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"],
-                    TableGitHubPRCommits = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"],
-                };
+                TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
                 AzureTableStorageDA da = new AzureTableStorageDA();
                 numberOfRecordsSaved = await da.UpdateAzureDevOpsBuilds(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsBuilds, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
             }
@@ -126,17 +116,7 @@ namespace DevOpsMetrics.Service.Controllers
             int numberOfRecordsSaved = 0;
             try
             {
-                TableStorageAuth tableStorageAuth = new TableStorageAuth
-                {
-                    AccountName = Configuration["AppSettings:AzureStorageAccountName"],
-                    AccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
-                    TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
-                    TableAzureDevOpsPRs = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"],
-                    TableAzureDevOpsPRCommits = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"],
-                    TableGitHubRuns = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"],
-                    TableGitHubPRs = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"],
-                    TableGitHubPRCommits = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"],
-                };
+                TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
                 AzureTableStorageDA da = new AzureTableStorageDA();
                 numberOfRecordsSaved = await da.UpdateGitHubActionRuns(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubRuns,
                         owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
@@ -153,6 +133,26 @@ namespace DevOpsMetrics.Service.Controllers
                 }
             }
             return numberOfRecordsSaved;
+        }
+
+        [HttpGet("UpdateAzureDevOpsSetting")]
+        public async Task<bool> UpdateAzureDevOpsSetting(string patToken,
+                string organization, string project, string repository, string branch, string buildName, string buildId)
+        {
+            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            AzureTableStorageDA da = new AzureTableStorageDA();
+            return await da.UpdateAzureDevOpsSetting(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings,
+                    organization, project, repository, branch, buildName, buildId);
+        }
+
+        [HttpGet("UpdateGitHubSetting")]
+        public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret,
+                string owner, string repo, string branch, string workflowName, string workflowId)
+        {
+            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            AzureTableStorageDA da = new AzureTableStorageDA();
+            return await da.UpdateGitHubActionSetting(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubSettings,
+                    owner, repo, branch, workflowName, workflowId);
         }
 
     }

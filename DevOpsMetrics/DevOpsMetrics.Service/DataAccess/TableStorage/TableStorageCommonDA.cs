@@ -85,11 +85,9 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
         {
             CloudTable table = CreateConnection();
 
-            // Create the TableOperation that inserts the customer entity.
-            TableOperation insertOperation = TableOperation.InsertOrMerge(data);
-
-            // Execute the insert operation.
-            await table.ExecuteAsync(insertOperation);
+            // Create the TableOperation that inserts/merges the entity.
+            TableOperation operation = TableOperation.InsertOrMerge(data);
+            await table.ExecuteAsync(operation);
             return true;
         }
 

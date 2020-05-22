@@ -9,7 +9,7 @@ namespace DevOpsMetrics.Service.Models.Common
         {
             TableStorageCommonDA common = new TableStorageCommonDA();
             PartitionKey = common.EncodePartitionKey(partitionKey);
-            RowKey = rowKey;
+            RowKey = common.EncodePartitionKey(rowKey);
             Data = data;
         }
 

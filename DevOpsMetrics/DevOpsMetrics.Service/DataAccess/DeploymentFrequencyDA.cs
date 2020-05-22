@@ -14,7 +14,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 string organization, string project, string branch, string buildName, string buildId,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
-            Utility<Build> utility = new Utility<Build>();
+            ListUtility<Build> utility = new ListUtility<Build>();
             if (getSampleData == false)
             {
                 float deploymentsPerDay = 0;
@@ -83,7 +83,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 string owner, string repo, string branch, string workflowName, string workflowId,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
-            Utility<Build> utility = new Utility<Build>();
+            ListUtility<Build> utility = new ListUtility<Build>();
             if (getSampleData == false)
             {
                 float deploymentsPerDay = 0;
