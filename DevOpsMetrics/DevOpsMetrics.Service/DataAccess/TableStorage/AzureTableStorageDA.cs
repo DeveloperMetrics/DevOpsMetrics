@@ -230,6 +230,33 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             return itemsAdded;
         }
 
+
+
+        public List<AzureDevOpsSettings> GetAzureDevOpsSettings(TableStorageAuth tableStorageAuth, string settingsTable)
+        {
+            List<AzureDevOpsSettings> settings = null;
+            string partitionKey = "AzureDevOpsSettings";
+            JArray list = GetTableStorageItems(tableStorageAuth, settingsTable, partitionKey);
+            if (list != null)
+            {
+                settings = JsonConvert.DeserializeObject<List<AzureDevOpsSettings>>(list.ToString());
+            }
+            return settings;
+        }
+
+        public List<GitHubSettings> GetGitHubSettings(TableStorageAuth tableStorageAuth, string settingsTable)
+        {
+
+            List<GitHubSettings> settings = null;
+            string partitionKey = "GitHubSettings";
+            JArray list = GetTableStorageItems(tableStorageAuth, settingsTable, partitionKey);
+            if (list != null)
+            {
+                settings = JsonConvert.DeserializeObject<List<GitHubSettings>>(list.ToString());
+            }
+            return settings;
+        }
+
         public async Task<bool> UpdateAzureDevOpsSetting(string patToken, TableStorageAuth tableStorageAuth, string settingsTable,
              string organization, string project, string repository, string branch, string buildName, string buildId)
         {
@@ -252,7 +279,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             return await tableDA.SaveItem(newItem);
         }
 
-        public async Task<bool> UpdateGitHubActionSetting(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, string settingsTable,
+        public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, string settingsTable,
              string owner, string repo, string branch, string workflowName, string workflowId)
         {
             GitHubSettings settings = new GitHubSettings

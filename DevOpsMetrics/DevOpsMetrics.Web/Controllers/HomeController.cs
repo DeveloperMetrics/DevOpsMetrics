@@ -34,6 +34,10 @@ namespace DevOpsMetrics.Web.Controllers
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             List<DeploymentFrequencyModel> items = new List<DeploymentFrequencyModel>();
 
+            //Get a list of settings
+            serviceApiClient.GetAzureDevOpsSettings();
+            serviceApiClient.GetGitHubSettings();
+
             //Azure DevOps 1
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization = "samsmithnz";

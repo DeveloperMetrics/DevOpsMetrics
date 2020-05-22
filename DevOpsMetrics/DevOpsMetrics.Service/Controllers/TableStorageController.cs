@@ -1,9 +1,14 @@
 ﻿using DevOpsMetrics.Service.DataAccess;
 using DevOpsMetrics.Service.DataAccess.TableStorage;
+using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
+using DevOpsMetrics.Service.Models.GitHub;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.Controllers
@@ -135,6 +140,25 @@ namespace DevOpsMetrics.Service.Controllers
             return numberOfRecordsSaved;
         }
 
+        [HttpGet("GetAzureDevOpsSettings")]
+        public List<AzureDevOpsSettings> GetAzureDevOpsSettings()
+        {
+            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            AzureTableStorageDA da = new AzureTableStorageDA();
+            List<AzureDevOpsSettings> settings = da.GetAzureDevOpsSettings(tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings);
+
+            return settings;
+        }
+
+        [HttpGet("GetGitHubSettings")]
+        public List<GitHubSettings> GetGitHubSettings()
+        {
+            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            AzureTableStorageDA da = new AzureTableStorageDA();
+            List<GitHubSettings> settings = da.GetGitHubSettings(tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings);
+            return settings;
+        }
+
         [HttpGet("UpdateAzureDevOpsSetting")]
         public async Task<bool> UpdateAzureDevOpsSetting(string patToken,
                 string organization, string project, string repository, string branch, string buildName, string buildId)
@@ -151,7 +175,7 @@ namespace DevOpsMetrics.Service.Controllers
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             AzureTableStorageDA da = new AzureTableStorageDA();
-            return await da.UpdateGitHubActionSetting(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubSettings,
+            return await da.UpdateGitHubSetting(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubSettings,
                     owner, repo, branch, workflowName, workflowId);
         }
 

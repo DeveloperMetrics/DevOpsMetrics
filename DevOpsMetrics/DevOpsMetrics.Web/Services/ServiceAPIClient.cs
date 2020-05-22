@@ -1,7 +1,10 @@
-﻿using DevOpsMetrics.Service.Models.Common;
+﻿using DevOpsMetrics.Service.Models.AzureDevOps;
+using DevOpsMetrics.Service.Models.Common;
+using DevOpsMetrics.Service.Models.GitHub;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -44,6 +47,18 @@ namespace DevOpsMetrics.Web.Services
         {
             string url = $"/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&useCache={useCache}";
             return await GetResponse<LeadTimeForChangesModel>(Client, url);
+        }
+
+        public async Task<List<AzureDevOpsSettings>> GetAzureDevOpsSettings()
+        {
+            string url = $"/api/TableStorage/GetAzureDevOpsSettings";
+            return await GetResponse<List<AzureDevOpsSettings>>(Client, url);
+        }
+
+        public async Task<List<GitHubSettings>> GetGitHubSettings()
+        {
+            string url = $"/api/TableStorage/GetGitHubSettings";
+            return await GetResponse<List<GitHubSettings>>(Client, url);
         }
 
         private async Task<T> GetResponse<T>(HttpClient client, string url)
