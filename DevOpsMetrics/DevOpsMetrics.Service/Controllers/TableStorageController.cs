@@ -159,22 +159,22 @@ namespace DevOpsMetrics.Service.Controllers
 
         [HttpGet("UpdateAzureDevOpsSetting")]
         public async Task<bool> UpdateAzureDevOpsSetting(string patToken,
-                string organization, string project, string repository, string branch, string buildName, string buildId)
+                string organization, string project, string repository, string branch, string buildName, string buildId, int itemOrder)
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             AzureTableStorageDA da = new AzureTableStorageDA();
             return await da.UpdateAzureDevOpsSetting(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings,
-                    organization, project, repository, branch, buildName, buildId);
+                    organization, project, repository, branch, buildName, buildId, itemOrder);
         }
 
         [HttpGet("UpdateGitHubSetting")]
         public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret,
-                string owner, string repo, string branch, string workflowName, string workflowId)
+                string owner, string repo, string branch, string workflowName, string workflowId, int itemOrder)
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             AzureTableStorageDA da = new AzureTableStorageDA();
             return await da.UpdateGitHubSetting(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubSettings,
-                    owner, repo, branch, workflowName, workflowId);
+                    owner, repo, branch, workflowName, workflowId, itemOrder);
         }
 
     }

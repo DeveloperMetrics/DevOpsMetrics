@@ -70,11 +70,12 @@ namespace DevOpsMetrics.Tests.Service
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             string buildId = "3673";
+            int itemOrder = 1;
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
             bool result = await da.UpdateAzureDevOpsSetting(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings,
-                    organization, project, repositoryId, branch, buildName, buildId);
+                    organization, project, repositoryId, branch, buildName, buildId, itemOrder);
 
             //Assert
             Assert.IsTrue(result == true);
@@ -92,11 +93,12 @@ namespace DevOpsMetrics.Tests.Service
             string branch = "refs/heads/master";
             string buildName = "PartsUnlimited.CI";
             string buildId = "75";
+            int itemOrder = 4;
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
             bool result = await da.UpdateAzureDevOpsSetting(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings,
-                    organization, project, repositoryId, branch, buildName, buildId);
+                    organization, project, repositoryId, branch, buildName, buildId, itemOrder);
 
             //Assert
             Assert.IsTrue(result == true);
@@ -114,11 +116,12 @@ namespace DevOpsMetrics.Tests.Service
             string branch = "master";
             string workflowName = "DevOpsMetrics CI/CD";
             string workflowId = "1162561";
+            int itemOrder = 2;
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
             bool result = await da.UpdateGitHubSetting(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubSettings,
-                    owner, repo, branch, workflowName, workflowId);
+                    owner, repo, branch, workflowName, workflowId, itemOrder);
 
             //Assert
             Assert.IsTrue(result == true);
@@ -136,11 +139,12 @@ namespace DevOpsMetrics.Tests.Service
             string branch = "master";
             string workflowName = "SamsFeatureFlags.CI/CD";
             string workflowId = "108084";
+            int itemOrder = 3;
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
             bool result = await da.UpdateGitHubSetting(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubSettings,
-                    owner, repo, branch, workflowName, workflowId);
+                    owner, repo, branch, workflowName, workflowId, itemOrder);
 
             //Assert
             Assert.IsTrue(result == true);

@@ -29,5 +29,6 @@ namespace DevOpsMetrics.Service.Models.Common
         public string LeadTimeForChangesMetricDisplayUnit { get; set; }
         public string LeadTimeForChangesMetricDescription { get; set; }
         public bool RateLimitHit { get; set; }
+        public int ItemOrder { get; set; }
     }
 }
