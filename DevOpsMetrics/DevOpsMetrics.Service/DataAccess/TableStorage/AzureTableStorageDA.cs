@@ -230,8 +230,35 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             return itemsAdded;
         }
 
+
+
+        public List<AzureDevOpsSettings> GetAzureDevOpsSettings(TableStorageAuth tableStorageAuth, string settingsTable)
+        {
+            List<AzureDevOpsSettings> settings = null;
+            string partitionKey = "AzureDevOpsSettings";
+            JArray list = GetTableStorageItems(tableStorageAuth, settingsTable, partitionKey);
+            if (list != null)
+            {
+                settings = JsonConvert.DeserializeObject<List<AzureDevOpsSettings>>(list.ToString());
+            }
+            return settings;
+        }
+
+        public List<GitHubSettings> GetGitHubSettings(TableStorageAuth tableStorageAuth, string settingsTable)
+        {
+
+            List<GitHubSettings> settings = null;
+            string partitionKey = "GitHubSettings";
+            JArray list = GetTableStorageItems(tableStorageAuth, settingsTable, partitionKey);
+            if (list != null)
+            {
+                settings = JsonConvert.DeserializeObject<List<GitHubSettings>>(list.ToString());
+            }
+            return settings;
+        }
+
         public async Task<bool> UpdateAzureDevOpsSetting(string patToken, TableStorageAuth tableStorageAuth, string settingsTable,
-             string organization, string project, string repository, string branch, string buildName, string buildId)
+             string organization, string project, string repository, string branch, string buildName, string buildId, int itemOrder)
         {
             AzureDevOpsSettings settings = new AzureDevOpsSettings
             {
@@ -241,7 +268,8 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                 Repository = repository,
                 Branch = branch,
                 BuildName = buildName,
-                BuildId = buildId
+                BuildId = buildId,
+                ItemOrder = itemOrder
             };
 
             string partitionKey = "AzureDevOpsSettings";
@@ -252,8 +280,8 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             return await tableDA.SaveItem(newItem);
         }
 
-        public async Task<bool> UpdateGitHubActionSetting(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, string settingsTable,
-             string owner, string repo, string branch, string workflowName, string workflowId)
+        public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, string settingsTable,
+             string owner, string repo, string branch, string workflowName, string workflowId, int itemOrder)
         {
             GitHubSettings settings = new GitHubSettings
             {
@@ -263,7 +291,8 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                 Repo = repo,
                 Branch = branch,
                 WorkflowName = workflowName,
-                WorkflowId = workflowId
+                WorkflowId = workflowId,
+                ItemOrder = itemOrder
             };
 
             string partitionKey = "GitHubSettings";

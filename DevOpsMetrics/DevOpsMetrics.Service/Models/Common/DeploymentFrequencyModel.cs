@@ -50,5 +50,6 @@ namespace DevOpsMetrics.Service.Models.Common
         public string DeploymentsToDisplayUnit { get; set; }
         public string DeploymentsPerDayMetricDescription { get; set; }
         public bool RateLimitHit { get; set; }
-}
+        public int ItemOrder { get; set; }
+    }
 }

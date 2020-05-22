@@ -1,9 +1,12 @@
 ﻿using DevOpsMetrics.Service.DataAccess;
 using DevOpsMetrics.Service.DataAccess.TableStorage;
+using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
+using DevOpsMetrics.Service.Models.GitHub;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.Controllers
@@ -135,24 +138,43 @@ namespace DevOpsMetrics.Service.Controllers
             return numberOfRecordsSaved;
         }
 
+        [HttpGet("GetAzureDevOpsSettings")]
+        public List<AzureDevOpsSettings> GetAzureDevOpsSettings()
+        {
+            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            AzureTableStorageDA da = new AzureTableStorageDA();
+            List<AzureDevOpsSettings> settings = da.GetAzureDevOpsSettings(tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings);
+
+            return settings;
+        }
+
+        [HttpGet("GetGitHubSettings")]
+        public List<GitHubSettings> GetGitHubSettings()
+        {
+            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            AzureTableStorageDA da = new AzureTableStorageDA();
+            List<GitHubSettings> settings = da.GetGitHubSettings(tableStorageAuth, tableStorageAuth.TableGitHubSettings);
+            return settings;
+        }
+
         [HttpGet("UpdateAzureDevOpsSetting")]
         public async Task<bool> UpdateAzureDevOpsSetting(string patToken,
-                string organization, string project, string repository, string branch, string buildName, string buildId)
+                string organization, string project, string repository, string branch, string buildName, string buildId, int itemOrder)
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             AzureTableStorageDA da = new AzureTableStorageDA();
             return await da.UpdateAzureDevOpsSetting(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings,
-                    organization, project, repository, branch, buildName, buildId);
+                    organization, project, repository, branch, buildName, buildId, itemOrder);
         }
 
         [HttpGet("UpdateGitHubSetting")]
         public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret,
-                string owner, string repo, string branch, string workflowName, string workflowId)
+                string owner, string repo, string branch, string workflowName, string workflowId, int itemOrder)
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             AzureTableStorageDA da = new AzureTableStorageDA();
-            return await da.UpdateGitHubActionSetting(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubSettings,
-                    owner, repo, branch, workflowName, workflowId);
+            return await da.UpdateGitHubSetting(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubSettings,
+                    owner, repo, branch, workflowName, workflowId, itemOrder);
         }
 
     }

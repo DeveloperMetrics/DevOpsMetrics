@@ -170,29 +170,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(itemsAdded >= 0);
         }
 
-        [TestMethod]
-        public async Task AzUpdateSettingDAIntegrationTest()
-        {
-            //Arrange
-            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string repositoryId = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildName = "SamLearnsAzure.CI";
-            string buildId = "3673";
-
-            //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            bool result = await da.UpdateAzureDevOpsSetting(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings,
-                    organization, project, repositoryId, branch, buildName, buildId);
-
-            //Assert
-            Assert.IsTrue(result == true);
-        }
-
-        [TestMethod]
+             [TestMethod]
         public void GHGetBuildsDAIntegrationTest()
         {
             //Arrange
@@ -331,27 +309,6 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(itemsAdded >= 0);
         }
 
-        [TestMethod]
-        public async Task GHUpdateSettingDAIntegrationTest()
-        {
-            //Arrange
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            string owner = "samsmithnz";
-            string repo = "DevOpsMetrics";
-            string branch = "master";
-            string workflowName = "DevOpsMetrics CI/CD";
-            string workflowId = "1162561";
-
-            //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            bool result = await da.UpdateGitHubActionSetting(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubSettings,
-                    owner, repo, branch, workflowName, workflowId);
-
-            //Assert
-            Assert.IsTrue(result == true);
-        }
 
     }
 }
