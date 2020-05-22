@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Web.Controllers
@@ -50,6 +51,7 @@ namespace DevOpsMetrics.Web.Controllers
                 DeploymentFrequencyModel newDeploymentFrequencyModel = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken,
                         item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
+                newDeploymentFrequencyModel.ItemOrder = item.ItemOrder;
                 if (newDeploymentFrequencyModel != null)
                 {
                     items.Add(newDeploymentFrequencyModel);
@@ -60,12 +62,15 @@ namespace DevOpsMetrics.Web.Controllers
                 DeploymentFrequencyModel newDeploymentFrequencyModel = await serviceApiClient.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret,
                         item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId,
                         numberOfDays, maxNumberOfItems, useCache);
+                newDeploymentFrequencyModel.ItemOrder = item.ItemOrder;
                 if (newDeploymentFrequencyModel != null)
                 {
                     items.Add(newDeploymentFrequencyModel);
                 }
             }
 
+            //sort the list
+            items = items.OrderBy(o => o.ItemOrder).ToList();
             return View(items);
         }
 
@@ -91,6 +96,7 @@ namespace DevOpsMetrics.Web.Controllers
                 LeadTimeForChangesModel newLeadTimeForChangesModel = await serviceApiClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, 
                         item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId, 
                         numberOfDays, maxNumberOfItems, useCache);
+                newLeadTimeForChangesModel.ItemOrder = item.ItemOrder;
                 if (newLeadTimeForChangesModel != null)
                 {
                     items.Add(newLeadTimeForChangesModel);
@@ -101,12 +107,15 @@ namespace DevOpsMetrics.Web.Controllers
                 LeadTimeForChangesModel newLeadTimeForChangesModel = await serviceApiClient.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret, 
                         item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, 
                         numberOfDays, maxNumberOfItems, useCache);
+                newLeadTimeForChangesModel.ItemOrder = item.ItemOrder;
                 if (newLeadTimeForChangesModel != null)
                 {
                     items.Add(newLeadTimeForChangesModel);
                 }
             }
 
+            //sort the list
+            items = items.OrderBy(o => o.ItemOrder).ToList();
             return View(items);
         }
 
