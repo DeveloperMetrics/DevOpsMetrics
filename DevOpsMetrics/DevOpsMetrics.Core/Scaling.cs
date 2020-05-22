@@ -1,6 +1,6 @@
 ﻿namespace DevOpsMetrics.Core
 {
-    public class Utility
+    public class Scaling
     {
         //We scale the number, so that the lowest number is visible on the charts
         public static int ScaleNumberToRange(float number, float currentMin, float currentMax, float targetMin, float targetMax)

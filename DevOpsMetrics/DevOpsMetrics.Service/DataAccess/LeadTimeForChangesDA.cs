@@ -11,7 +11,8 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class LeadTimeForChangesDA
     {
-        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, string organization, string project, string repositoryId, string masterBranch, string buildId, int numberOfDays, int maxNumberOfItems)
+        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, TableStorageAuth tableStorageAuth,
+                string organization, string project, string repositoryId, string masterBranch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
             List<PullRequestModel> pullRequests = new List<PullRequestModel>();
@@ -19,7 +20,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 List<AzureDevOpsBuild> initialBuilds = new List<AzureDevOpsBuild>();
                 BuildsDA buildsDA = new BuildsDA();
-                initialBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, organization, project, masterBranch, buildId);
+                initialBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageAuth, organization, project, masterBranch, buildName, buildId, useCache);
 
                 //Process all builds, filtering by master and feature branchs
                 List<AzureDevOpsBuild> masterBranchBuilds = new List<AzureDevOpsBuild>();
@@ -54,7 +55,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     List<AzureDevOpsBuild> branchBuilds = featureBranchBuilds.Where(a => a.sourceBranch == branch).ToList();
                     string pullRequestId = branch.Replace("refs/pull/", "").Replace("/merge", "");
                     PullRequestDA pullRequestDA = new PullRequestDA();
-                    List<AzureDevOpsPRCommit> pullRequestCommits = await pullRequestDA.GetAzureDevOpsPullRequestCommits(patToken, organization, project, repositoryId, pullRequestId);
+                    List<AzureDevOpsPRCommit> pullRequestCommits = await pullRequestDA.GetAzureDevOpsPullRequestCommits(patToken, tableStorageAuth, organization, project, repositoryId, pullRequestId, useCache);
                     List<Commit> commits = new List<Commit>();
                     foreach (AzureDevOpsPRCommit item in pullRequestCommits)
                     {
@@ -115,7 +116,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 foreach (PullRequestModel item in pullRequests)
                 {
                     float interiumResult = (((float)item.Duration.TotalMinutes / maxPullRequestDuration) * 100f);
-                    item.DurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+                    item.DurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
 
                 //Filter out builds on the master branch older than the number of days
@@ -166,7 +167,9 @@ namespace DevOpsMetrics.Service.DataAccess
             }
         }
 
-        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string masterBranch, string workflowId, int numberOfDays, int maxNumberOfItems)
+        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, TableStorageAuth tableStorageAuth,
+                string owner, string repo, string masterBranch, string workflowName, string workflowId,
+                int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
             List<PullRequestModel> pullRequests = new List<PullRequestModel>();
@@ -174,7 +177,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 List<GitHubActionsRun> initialRuns = new List<GitHubActionsRun>();
                 BuildsDA buildsDA = new BuildsDA();
-                initialRuns = await buildsDA.GetGitHubActionRuns(getSampleData, clientId, clientSecret, owner, repo, masterBranch, workflowId);
+                initialRuns = await buildsDA.GetGitHubActionRuns(getSampleData, clientId, clientSecret, tableStorageAuth, owner, repo, masterBranch, workflowName, workflowId, useCache);
 
                 //Process all builds, filtering by master and feature branchs
                 List<GitHubActionsRun> masterBranchRuns = new List<GitHubActionsRun>();
@@ -210,8 +213,8 @@ namespace DevOpsMetrics.Service.DataAccess
                     //This is messy. In Azure DevOps we could get the build trigger/pull request id. In GitHub we cannot. 
                     //Instead we get the pull request id by searching pull requests by branch
                     PullRequestDA pullRequestDA = new PullRequestDA();
-                    string pullRequestId = await pullRequestDA.GetGitHubPullRequestIdByBranchName(clientId, clientSecret, owner, repo, branch);
-                    List<GitHubPRCommit> pullRequestCommits = await pullRequestDA.GetGitHubPullRequestCommits(clientId, clientSecret, owner, repo, pullRequestId);
+                    string pullRequestId = await pullRequestDA.GetGitHubPullRequestIdByBranchName(clientId, clientSecret, tableStorageAuth, owner, repo, branch, useCache);
+                    List<GitHubPRCommit> pullRequestCommits = await pullRequestDA.GetGitHubPullRequestCommits(clientId, clientSecret, tableStorageAuth, owner, repo, pullRequestId, useCache);
                     List<Commit> commits = new List<Commit>();
                     foreach (GitHubPRCommit item in pullRequestCommits)
                     {
@@ -274,7 +277,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 foreach (PullRequestModel item in pullRequests)
                 {
                     float interiumResult = (((float)item.Duration.TotalMinutes / maxPullRequestDuration) * 100f);
-                    item.DurationPercent = Utility.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+                    item.DurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
 
                 //Filter out builds on the master branch older than the number of days
@@ -298,7 +301,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     ProjectName = repo,
                     IsAzureDevOps = false,
                     AverageBuildHours = averageBuildHours,
-                    AveragePullRequestHours=leadTime,
+                    AveragePullRequestHours = leadTime,
                     LeadTimeForChangesMetric = leadTime + averageBuildHours,
                     LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
                     PullRequests = pullRequests,
@@ -329,7 +332,7 @@ namespace DevOpsMetrics.Service.DataAccess
         {
             List<PullRequestModel> prs = new List<PullRequestModel>();
 
-            string url = "";
+            string url;
             if (isAzureDevOps)
             {
                 url = $"https://dev.azure.com/testOrganization/testProject/_git/testRepo/pullrequest/123";

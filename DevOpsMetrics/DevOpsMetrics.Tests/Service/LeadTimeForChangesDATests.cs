@@ -20,6 +20,7 @@ namespace DevOpsMetrics.Tests.Service
             IConfigurationBuilder config = new ConfigurationBuilder()
                .SetBasePath(AppContext.BaseDirectory)
                .AddJsonFile("appsettings.json");
+            config.AddUserSecrets<LeadTimeForChangesDATests>();
             Configuration = config.Build();
         }
 
@@ -29,17 +30,32 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             bool getSampleData = true;
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
+            TableStorageAuth tableStorageAuth = new TableStorageAuth
+            {
+                AccountName = Configuration["AppSettings:AzureStorageAccountName"],
+                AccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
+                TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
+                TableAzureDevOpsPRs = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"],
+                TableAzureDevOpsPRCommits = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"],
+                TableGitHubRuns = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"],
+                TableGitHubPRs = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"],
+                TableGitHubPRCommits = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"],
+            };
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string repositoryId = "SamLearnsAzure";
             string masterBranch = "refs/heads/master";
+            string buildName = "SamLearnsAzure.CI";
             string buildId = "3673"; //SamLearnsAzure.CI
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
+            bool useCache = true;
 
             //Act
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-            LeadTimeForChangesModel model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, organization, project, repositoryId, masterBranch, buildId, numberOfDays, maxNumberOfItems);
+            LeadTimeForChangesModel model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageAuth,
+                    organization, project, repositoryId, masterBranch, buildName, buildId,
+                    numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -69,16 +85,31 @@ namespace DevOpsMetrics.Tests.Service
             bool getSampleData = true;
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
+            TableStorageAuth tableStorageAuth = new TableStorageAuth
+            {
+                AccountName = Configuration["AppSettings:AzureStorageAccountName"],
+                AccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
+                TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
+                TableAzureDevOpsPRs = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"],
+                TableAzureDevOpsPRCommits = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"],
+                TableGitHubRuns = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"],
+                TableGitHubPRs = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"],
+                TableGitHubPRCommits = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"],
+            };
             string owner = "samsmithnz";
             string repo = "devopsmetrics";
             string masterBranch = "master";
+            string workflowName = "DevOpsMetrics.CI";
             string workflowId = "1162561";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
+            bool useCache = true;
 
             //Act
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-            LeadTimeForChangesModel model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, owner, repo, masterBranch, workflowId, numberOfDays, maxNumberOfItems);
+            LeadTimeForChangesModel model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageAuth,
+                    owner, repo, masterBranch, workflowName, workflowId,
+                    numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);

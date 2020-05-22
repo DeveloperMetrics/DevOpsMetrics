@@ -5,5 +5,6 @@ namespace DevOpsMetrics.Service.Models.GitHub
     {
         public string number { get; set; }
         public GitHubHead head { get; set; }
+        public string state { get; set; }
     }
 }
