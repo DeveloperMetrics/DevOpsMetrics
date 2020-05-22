@@ -5,8 +5,6 @@ using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -155,7 +153,7 @@ namespace DevOpsMetrics.Service.Controllers
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             AzureTableStorageDA da = new AzureTableStorageDA();
-            List<GitHubSettings> settings = da.GetGitHubSettings(tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings);
+            List<GitHubSettings> settings = da.GetGitHubSettings(tableStorageAuth, tableStorageAuth.TableGitHubSettings);
             return settings;
         }
 
