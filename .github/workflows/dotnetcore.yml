@@ -33,6 +33,8 @@ jobs:
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj --configuration Release
     - name: .NET Publish Website
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj --configuration Release
+    - name: .NET Publish function
+      run: dotnet publish DevOpsMetrics/DevOpsMetrics.NightlyProcessor.Function/DevOpsMetrics.NightlyProcessor.Function.csproj --configuration Release      
       
     #Publish build artifacts to GitHub
     - name: Upload web service build artifacts back to GitHub
@@ -45,6 +47,11 @@ jobs:
       with:
         name: webapp
         path: DevOpsMetrics/DevOpsMetrics.Web/bin/Release/netcoreapp3.1/publish
+    - name: Upload function build artifacts back to GitHub
+      uses: actions/upload-artifact@master
+      with:
+        name: functionapp
+        path: DevOpsMetrics/DevOpsMetrics.NightlyProcessor.Function/bin/Release/netcoreapp3.1/publish
 
   #Deploy the artifacts to Azure
   deploy:
@@ -66,7 +73,12 @@ jobs:
     - name: Download webapp artifact
       uses: actions/download-artifact@v1.0.0
       with:
-        name: webapp    
+        name: webapp 
+    - name: Download webapp artifact
+      uses: actions/download-artifact@v1.0.0
+      with:
+        name: functionapp
+    
     #Deploy service and website to Azure
     - name: Deploy web service to Azure WebApp
       uses: Azure/webapps-deploy@v1
@@ -80,3 +92,8 @@ jobs:
         app-name: devopsmetrics-prod-eu-web
         package: webapp 
     - run: az webapp config appsettings set --name devopsmetrics-prod-eu-web --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  
+    - name: Deploy function to Azure WebApp
+      uses: Azure/webapps-deploy@v1
+      with:
+        app-name: devopsmetrics-prod-eu-function
+        package: functionapp 
