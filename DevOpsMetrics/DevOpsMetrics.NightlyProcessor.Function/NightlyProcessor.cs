@@ -26,22 +26,22 @@ namespace DevOpsMetrics.NightlyProcessor.Function
                 .AddEnvironmentVariables()
                 .Build();
 
-            //Get settings
-            ServiceApiClient api = new ServiceApiClient(configuration);
-            List<AzureDevOpsSettings> azSettings = await api.GetAzureDevOpsSettings();
-            List<GitHubSettings> ghSettings = await api.GetGitHubSettings();
+            ////Get settings
+            //ServiceApiClient api = new ServiceApiClient(configuration);
+            //List<AzureDevOpsSettings> azSettings = await api.GetAzureDevOpsSettings();
+            //List<GitHubSettings> ghSettings = await api.GetGitHubSettings();
 
-            //Loop through each setting to update the runs, pull requests and pull request commits
-            int numberOfDays = 30;
-            int maxNumberOfItems = 20;
-            foreach (AzureDevOpsSettings item in azSettings)
-            {
-                await api.UpdateAzureDevOpsBuilds(item.PatToken, item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems);
-            }
-            foreach (GitHubSettings item in ghSettings)
-            {
-                await api.UpdateGitHubActionRuns(item.ClientId, item.ClientSecret, item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
-            }
+            ////Loop through each setting to update the runs, pull requests and pull request commits
+            //int numberOfDays = 30;
+            //int maxNumberOfItems = 20;
+            //foreach (AzureDevOpsSettings item in azSettings)
+            //{
+            //    await api.UpdateAzureDevOpsBuilds(item.PatToken, item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems);
+            //}
+            //foreach (GitHubSettings item in ghSettings)
+            //{
+            //    await api.UpdateGitHubActionRuns(item.ClientId, item.ClientSecret, item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
+            //}
         }
 
     }
