@@ -33,7 +33,7 @@ jobs:
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj --configuration Release
     - name: .NET Publish Website
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj --configuration Release
-    - name: .NET Publish function
+    - name: .NET Publish Function
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.NightlyProcessor.Function/DevOpsMetrics.NightlyProcessor.Function.csproj --configuration Release      
       
     #Publish build artifacts to GitHub
@@ -79,7 +79,7 @@ jobs:
       with:
         name: functionapp
     
-    #Deploy service and website to Azure
+    #Deploy service, website, and function to Azure
     - name: Deploy web service to Azure WebApp
       uses: Azure/webapps-deploy@v1
       with:
@@ -97,3 +97,4 @@ jobs:
       with:
         app-name: devopsmetrics-prod-eu-function
         package: functionapp 
+    - run: az webapp config appsettings set --name "devopsmetrics-prod-eu-function" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountAccessKey=${{ secrets.AzureStorageAccessKey }}" 
