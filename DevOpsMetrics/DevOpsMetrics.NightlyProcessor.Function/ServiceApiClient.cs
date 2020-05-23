@@ -61,18 +61,6 @@ namespace DevOpsMetrics.NightlyProcessor.Function
             return await GetResponse<int>(Client, url);
         }
 
-        public async Task<int> UpdateAzureDevOpsPullRequestCommits(string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems)
-        {
-            string url = $"/api/TableStorage/UpdateAzureDevOpsBuilds?patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
-            return await GetResponse<int>(Client, url);
-        }
-
-        public async Task<int> UpdateGitHubActionPullRequestCommits(string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems)
-        {
-            string url = $"/api/TableStorage/UpdateGitHubActionRuns?clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
-            return await GetResponse<int>(Client, url);
-        }
-
         private async Task<T> GetResponse<T>(HttpClient client, string url)
         {
             T obj = default;
