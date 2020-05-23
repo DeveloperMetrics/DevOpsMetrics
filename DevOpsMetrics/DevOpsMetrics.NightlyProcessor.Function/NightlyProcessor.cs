@@ -44,14 +44,14 @@ namespace DevOpsMetrics.NightlyProcessor.Function
             foreach (AzureDevOpsSettings item in azSettings)
             {
                 log.LogInformation($"Processing organization {item.Organization}, project {item.Project}");
-                totalResults += await api.UpdateAzureDevOpsBuilds(item.PatToken, item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems);
-                totalResults += await api.UpdateAzureDevOpsPullRequests(item.PatToken, item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems);
+                totalResults += await api.UpdateAzureDevOpsBuilds(configuration["Appsettings:AzureDevOpsPatToken"], item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems);
+                totalResults += await api.UpdateAzureDevOpsPullRequests(configuration["Appsettings:AzureDevOpsPatToken"], item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems);
             }
             foreach (GitHubSettings item in ghSettings)
             {
                 log.LogInformation($"Processing owner {item.Owner}, repo {item.Repo}");
-                totalResults += await api.UpdateGitHubActionRuns(item.ClientId, item.ClientSecret, item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
-                totalResults += await api.UpdateGitHubActionPullRequests(item.ClientId, item.ClientSecret, item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
+                totalResults += await api.UpdateGitHubActionRuns(configuration["Appsettings:GitHubClientId"], configuration["Appsettings:GitHubClientSecret"], item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
+                totalResults += await api.UpdateGitHubActionPullRequests(configuration["Appsettings:GitHubClientId"], configuration["Appsettings:GitHubClientSecret"], item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
             }
             log.LogInformation($"C# Timer trigger function complete at: {DateTime.Now} after updating {totalResults} records");
         }
