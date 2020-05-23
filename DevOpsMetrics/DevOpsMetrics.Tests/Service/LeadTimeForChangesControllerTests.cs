@@ -34,7 +34,7 @@ namespace DevOpsMetrics.Tests.Service
                 .UseConfiguration(Configuration)
                 .UseStartup<DevOpsMetrics.Service.Startup>());
             Client = _server.CreateClient();
-            Client.BaseAddress = new Uri(Configuration["AppSettings:WebServiceURL"]);
+            //Client.BaseAddress = new Uri(Configuration["AppSettings:WebServiceURL"]);
         }
 
         [TestCategory("ControllerTest")]
