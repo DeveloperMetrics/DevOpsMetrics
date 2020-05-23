@@ -24,7 +24,12 @@ jobs:
       with:
         files: 'DevOpsMetrics/DevOpsMetrics.Tests/appsettings.json'
       env:
+        AppSettings.AzureDevOpsPatToken: "${{ secrets.AzureDevOpsPATToken }}"
+        AppSettings.GitHubClientId: "${{ secrets.GitHubClientId }}" 
+        AppSettings.GitHubClientSecret: "${{ secrets.GitHubClientSecret }}" 
         AppSettings.AzureStorageAccountAccessKey: "${{ secrets.AzureStorageAccessKey }}" 
+    - name: view appsettings file after substitution
+      run: Get-Content -Path "DevOpsMetrics/DevOpsMetrics.Tests/appsettings.json"
     - name: Run automated unit and integration tests
       run: dotnet test DevOpsMetrics/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Release --logger trx --collect "Code coverage" --settings:./DevOpsMetrics/DevOpsMetrics.Tests/CodeCoverage.runsettings --  
 
@@ -33,6 +38,8 @@ jobs:
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj --configuration Release
     - name: .NET Publish Website
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj --configuration Release
+    - name: .NET Publish Function
+      run: dotnet publish DevOpsMetrics/DevOpsMetrics.NightlyProcessor.Function/DevOpsMetrics.NightlyProcessor.Function.csproj --configuration Release      
       
     #Publish build artifacts to GitHub
     - name: Upload web service build artifacts back to GitHub
@@ -45,6 +52,11 @@ jobs:
       with:
         name: webapp
         path: DevOpsMetrics/DevOpsMetrics.Web/bin/Release/netcoreapp3.1/publish
+    - name: Upload function build artifacts back to GitHub
+      uses: actions/upload-artifact@master
+      with:
+        name: functionapp
+        path: DevOpsMetrics/DevOpsMetrics.NightlyProcessor.Function/bin/Release/netcoreapp3.1/publish
 
   #Deploy the artifacts to Azure
   deploy:
@@ -66,8 +78,13 @@ jobs:
     - name: Download webapp artifact
       uses: actions/download-artifact@v1.0.0
       with:
-        name: webapp    
-    #Deploy service and website to Azure
+        name: webapp 
+    - name: Download webapp artifact
+      uses: actions/download-artifact@v1.0.0
+      with:
+        name: functionapp
+    
+    #Deploy service, website, and function to Azure
     - name: Deploy web service to Azure WebApp
       uses: Azure/webapps-deploy@v1
       with:
@@ -80,3 +97,9 @@ jobs:
         app-name: devopsmetrics-prod-eu-web
         package: webapp 
     - run: az webapp config appsettings set --name devopsmetrics-prod-eu-web --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  
+    - name: Deploy function to Azure WebApp
+      uses: Azure/webapps-deploy@v1
+      with:
+        app-name: devopsmetrics-prod-eu-function
+        package: functionapp 
+    - run: az webapp config appsettings set --name "devopsmetrics-prod-eu-function" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountAccessKey=${{ secrets.AzureStorageAccessKey }}" "AppSettings:WebServiceURL=https://devopsmetrics-prod-eu-service.azurewebsites.net/" 

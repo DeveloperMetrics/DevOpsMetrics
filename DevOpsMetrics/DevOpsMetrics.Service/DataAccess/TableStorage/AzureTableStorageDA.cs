@@ -113,6 +113,10 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                 {
                     itemsAdded++;
                 }
+
+                itemsAdded += await UpdateAzureDevOpsPullRequestCommits(patToken, tableStorageAuth, tableName,
+                    organization, project, repositoryId, pullRequest.PullRequestId,
+                    numberOfDays, maxNumberOfItems);
             }
 
             return itemsAdded;
@@ -195,6 +199,9 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                     {
                         itemsAdded++;
                     }
+
+                    itemsAdded += await UpdateGitHubActionPullRequestCommits(clientId, clientSecret, tableStorageAuth, tableName,
+                        owner, repo, branch, workflowName, workflowId, pr.number, numberOfDays, maxNumberOfItems);
                 }
             }
 
@@ -229,8 +236,6 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
 
             return itemsAdded;
         }
-
-
 
         public List<AzureDevOpsSettings> GetAzureDevOpsSettings(TableStorageAuth tableStorageAuth, string settingsTable)
         {

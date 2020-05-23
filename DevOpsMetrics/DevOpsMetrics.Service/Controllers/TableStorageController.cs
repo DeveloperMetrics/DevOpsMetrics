@@ -72,7 +72,7 @@ namespace DevOpsMetrics.Service.Controllers
         /// <param name="maxNumberOfItems"></param>
         /// <returns></returns>
         [HttpGet("UpdateAzureDevOpsBuilds")]
-        public async Task<int> UpdateAzureDevOpsBuilds(bool getSampleData, string patToken,
+        public async Task<int> UpdateAzureDevOpsBuilds(string patToken,
                 string organization, string project, string branch, string buildName, string buildId,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -112,7 +112,7 @@ namespace DevOpsMetrics.Service.Controllers
         /// <param name="maxNumberOfItems"></param>
         /// <returns></returns>
         [HttpGet("UpdateGitHubActionRuns")]
-        public async Task<int> UpdateGitHubActionRuns(bool getSampleData, string clientId, string clientSecret,
+        public async Task<int> UpdateGitHubActionRuns(string clientId, string clientSecret,
                 string owner, string repo, string branch, string workflowName, string workflowId,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -123,6 +123,114 @@ namespace DevOpsMetrics.Service.Controllers
                 AzureTableStorageDA da = new AzureTableStorageDA();
                 numberOfRecordsSaved = await da.UpdateGitHubActionRuns(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubRuns,
                         owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Response status code does not indicate success: 403 (rate limit exceeded).")
+                {
+                    numberOfRecordsSaved = -1;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return numberOfRecordsSaved;
+        }
+
+        [HttpGet("UpdateAzureDevOpsPullRequests")]
+        public async Task<int> UpdateAzureDevOpsPullRequests(string patToken,
+               string organization, string project, string repositoryId,
+               int numberOfDays, int maxNumberOfItems)
+        {
+            int numberOfRecordsSaved = 0;
+            try
+            {
+                TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+                AzureTableStorageDA da = new AzureTableStorageDA();
+                numberOfRecordsSaved = await da.UpdateAzureDevOpsPullRequests(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsPRs,
+                        organization, project, repositoryId, numberOfDays, maxNumberOfItems);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Response status code does not indicate success: 403 (rate limit exceeded).")
+                {
+                    numberOfRecordsSaved = -1;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return numberOfRecordsSaved;
+        }
+
+        [HttpGet("UpdateGitHubActionPullRequests")]
+        public async Task<int> UpdateGitHubActionPullRequests(string clientId, string clientSecret,
+                string owner, string repo, string branch, string workflowName, string workflowId,
+                int numberOfDays, int maxNumberOfItems)
+        {
+            int numberOfRecordsSaved = 0;
+            try
+            {
+                TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+                AzureTableStorageDA da = new AzureTableStorageDA();
+                numberOfRecordsSaved = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubPRs,
+                        owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Response status code does not indicate success: 403 (rate limit exceeded).")
+                {
+                    numberOfRecordsSaved = -1;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return numberOfRecordsSaved;
+        }
+
+        [HttpGet("UpdateAzureDevOpsPullRequestCommits")]
+        public async Task<int> UpdateAzureDevOpsPullRequestCommits(string patToken,
+               string organization, string project, string repositoryId, string pullRequestId,
+               int numberOfDays, int maxNumberOfItems)
+        {
+            int numberOfRecordsSaved = 0;
+            try
+            {
+                TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+                AzureTableStorageDA da = new AzureTableStorageDA();
+                numberOfRecordsSaved = await da.UpdateAzureDevOpsPullRequestCommits(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsPRCommits,
+                    organization, project, repositoryId, pullRequestId, numberOfDays, maxNumberOfItems);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "Response status code does not indicate success: 403 (rate limit exceeded).")
+                {
+                    numberOfRecordsSaved = -1;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return numberOfRecordsSaved;
+        }
+
+        [HttpGet("UpdateGitHubActionPullRequestCommits")]
+        public async Task<int> UpdateGitHubActionPullRequestCommits(string clientId, string clientSecret,
+                string owner, string repo, string branch, string workflowName, string workflowId, string pull_number,
+                int numberOfDays, int maxNumberOfItems)
+        {
+            int numberOfRecordsSaved = 0;
+            try
+            {
+                TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+                AzureTableStorageDA da = new AzureTableStorageDA();
+                numberOfRecordsSaved = await da.UpdateGitHubActionPullRequestCommits(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubPRCommits,
+                        owner, repo, branch, workflowName, workflowId, pull_number, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
             {
