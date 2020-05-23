@@ -19,6 +19,8 @@ jobs:
         dotnet-version: 3.1.101
     
     #Build and test service   
+    - name: view appsettings file before substitution
+      run: Get-Content -Path "DevOpsMetrics/DevOpsMetrics.Tests/appsettings.json"
     - name: Variable Substitution appsettings file for tests
       uses: microsoft/variable-substitution@v1
       with:
@@ -28,7 +30,7 @@ jobs:
         Appsettings.GitHubClientId: "${{ secrets.GitHubClientId }}" 
         Appsettings.GitHubClientSecret: "${{ secrets.GitHubClientSecret }}" 
         AppSettings.AzureStorageAccountAccessKey: "${{ secrets.AzureStorageAccessKey }}" 
-    - name: view appsettings file 
+    - name: view appsettings file after substitution
       run: Get-Content -Path "DevOpsMetrics/DevOpsMetrics.Tests/appsettings.json"
     - name: Run automated unit and integration tests
       run: dotnet test DevOpsMetrics/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Release --logger trx --collect "Code coverage" --settings:./DevOpsMetrics/DevOpsMetrics.Tests/CodeCoverage.runsettings --  
