@@ -15,17 +15,10 @@ namespace DevOpsMetrics.NightlyProcessor.Function
     public static class NightlyProcessor
     {
         private const string everyTwoHours = "0 */2 * * *";
-        private const string everyTwoSeconds = "*/2 * * * * *";
-        private static bool functionIsRunning = false;
 
         [FunctionName("UpdateStorageTables")]
-        public static async Task Run([TimerTrigger(everyTwoSeconds)] TimerInfo myTimer, ILogger log, ExecutionContext context)
+        public static async Task Run([TimerTrigger(everyTwoHours)] TimerInfo myTimer, ILogger log, ExecutionContext context)
         {
-            //try
-            //{
-            //if (functionIsRunning == false)
-            //{
-            //    functionIsRunning = true;
             log.LogInformation($"C# Timer trigger function started at: {DateTime.Now}");
 
             //Load settings
@@ -62,12 +55,6 @@ namespace DevOpsMetrics.NightlyProcessor.Function
                 totalResults += await api.UpdateGitHubActionPullRequests(item.ClientId, item.ClientSecret, item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
             }
             log.LogInformation($"C# Timer trigger function complete at: {DateTime.Now} after updating {totalResults} records");
-            //    }
-            //}
-            //finally
-            //{
-            //    functionIsRunning = false;
-            //}
         }
 
     }
