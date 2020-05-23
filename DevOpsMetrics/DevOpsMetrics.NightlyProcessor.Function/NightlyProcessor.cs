@@ -34,9 +34,6 @@ namespace DevOpsMetrics.NightlyProcessor.Function
             List<AzureDevOpsSettings> azSettings = await api.GetAzureDevOpsSettings();
             List<GitHubSettings> ghSettings = await api.GetGitHubSettings();
 
-            log.LogInformation($"Checking AzureStorageAccountAccessKey environment variable: {configuration["AppSettings:AzureStorageAccountAccessKey"]}");
-
-
             //Loop through each setting to update the runs, pull requests and pull request commits
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
