@@ -69,13 +69,15 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
         }
 
         //This can't be async, because of how it queries the underlying data
-        public List<AzureStorageTableModel> GetItems(string partitionKeyFilter)
+        public List<AzureStorageTableModel> GetItems(string partitionKey)
         {
+            partitionKey = EncodePartitionKey(partitionKey);
+
             CloudTable table = CreateConnection();
 
             // execute the query on the table
             List<AzureStorageTableModel> list = table.CreateQuery<AzureStorageTableModel>()
-                                     .Where(ent => ent.PartitionKey == partitionKeyFilter)
+                                     .Where(ent => ent.PartitionKey == partitionKey)
                                      .ToList();
 
             return list;

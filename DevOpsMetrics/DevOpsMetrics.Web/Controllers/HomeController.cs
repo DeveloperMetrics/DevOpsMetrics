@@ -33,7 +33,7 @@ namespace DevOpsMetrics.Web.Controllers
             int maxNumberOfItems = 20;
             int numberOfDays = 30;
             bool getSampleData = false;
-            bool useCache = false;
+            bool useCache = true;
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
@@ -82,7 +82,7 @@ namespace DevOpsMetrics.Web.Controllers
             int maxNumberOfItems = 20;
             int numberOfDays = 60;
             bool getSampleData = false;
-            bool useCache = false;
+            bool useCache = true;
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             List<LeadTimeForChangesModel> items = new List<LeadTimeForChangesModel>();
 
