@@ -19,16 +19,14 @@ jobs:
         dotnet-version: 3.1.101
     
     #Build and test service   
-    - name: view appsettings file before substitution
-      run: Get-Content -Path "DevOpsMetrics/DevOpsMetrics.Tests/appsettings.json"
     - name: Variable Substitution appsettings file for tests
       uses: microsoft/variable-substitution@v1
       with:
         files: 'DevOpsMetrics/DevOpsMetrics.Tests/appsettings.json'
       env:
-        Appsettings.AzureDevOpsPatToken: "${{ secrets.AzureDevOpsPATToken }}"
-        Appsettings.GitHubClientId: "${{ secrets.GitHubClientId }}" 
-        Appsettings.GitHubClientSecret: "${{ secrets.GitHubClientSecret }}" 
+        AppSettings.AzureDevOpsPatToken: "${{ secrets.AzureDevOpsPATToken }}"
+        AppSettings.GitHubClientId: "${{ secrets.GitHubClientId }}" 
+        AppSettings.GitHubClientSecret: "${{ secrets.GitHubClientSecret }}" 
         AppSettings.AzureStorageAccountAccessKey: "${{ secrets.AzureStorageAccessKey }}" 
     - name: view appsettings file after substitution
       run: Get-Content -Path "DevOpsMetrics/DevOpsMetrics.Tests/appsettings.json"
