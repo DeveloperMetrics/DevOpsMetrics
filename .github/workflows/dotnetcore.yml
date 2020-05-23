@@ -24,6 +24,9 @@ jobs:
       with:
         files: 'DevOpsMetrics/DevOpsMetrics.Tests/appsettings.json'
       env:
+        Appsettings.AzureDevOpsPatToken: "${{ secrets.AzureDevOpsPATToken }}"
+        Appsettings.GitHubClientId: "${{ secrets.GitHubClientId }}" 
+        Appsettings.GitHubClientSecret: "${{ secrets.GitHubClientSecret }}" 
         AppSettings.AzureStorageAccountAccessKey: "${{ secrets.AzureStorageAccessKey }}" 
     - name: Run automated unit and integration tests
       run: dotnet test DevOpsMetrics/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Release --logger trx --collect "Code coverage" --settings:./DevOpsMetrics/DevOpsMetrics.Tests/CodeCoverage.runsettings --  
