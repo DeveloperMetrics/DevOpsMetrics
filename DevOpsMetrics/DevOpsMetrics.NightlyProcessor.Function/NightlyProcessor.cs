@@ -17,7 +17,10 @@ namespace DevOpsMetrics.NightlyProcessor.Function
         private const string everyTwoHours = "0 */2 * * *";
 
         [FunctionName("UpdateStorageTables")]
-        public static async Task Run([TimerTrigger(everyTwoHours, RunOnStartup = true)] TimerInfo myTimer, ILogger log, ExecutionContext context)
+        public static async Task Run(
+            [TimerTrigger(everyTwoHours, RunOnStartup = true)] TimerInfo myTimer, 
+            ILogger log, 
+            ExecutionContext context)
         {
             log.LogInformation($"C# Timer trigger function started at: {DateTime.Now}");
 
