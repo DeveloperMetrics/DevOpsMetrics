@@ -16,7 +16,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Service", "De
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Web", "DevOpsMetrics.Web\DevOpsMetrics.Web.csproj", "{432C7262-4877-400D-9719-A601C8F0FABD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsMetrics.NightlyProcessor.Function", "DevOpsMetrics.NightlyProcessor.Function\DevOpsMetrics.NightlyProcessor.Function.csproj", "{45166612-DEA4-4362-AE7D-35CA34A1C97D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.NightlyProcessor.Function", "DevOpsMetrics.NightlyProcessor.Function\DevOpsMetrics.NightlyProcessor.Function.csproj", "{45166612-DEA4-4362-AE7D-35CA34A1C97D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
