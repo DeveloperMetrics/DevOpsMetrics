@@ -71,7 +71,7 @@ namespace DevOpsMetrics.NightlyProcessor.Function
                 RequestBody = requestBody
             };
 
-            string url = $"/api/TableStorage/UpdateMonitoringEvent";
+            string url = $"/api/TableStorage/UpdateDevOpsMonitoringEvent";
             return await PostResponse(Client, url, monitoringEvent);
     }
 
