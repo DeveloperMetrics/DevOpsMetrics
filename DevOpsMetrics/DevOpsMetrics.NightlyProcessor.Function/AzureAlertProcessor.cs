@@ -36,13 +36,14 @@ namespace DevOpsMetrics.NightlyProcessor.Function
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             name = name ?? data?.name;
 
+            log.LogInformation($"C# HTTP trigger function processed request body {requestBody}.");
+
+
             //save response to table
             ServiceApiClient api = new ServiceApiClient(configuration);
             bool result = await api.UpdateDevOpsMonitoringEvent("MonitoringEvent", req.ContentLength.ToString(), requestBody);
 
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
+            string responseMessage = "monitoring event processed successfully";
 
             return new OkObjectResult(responseMessage);
         }
