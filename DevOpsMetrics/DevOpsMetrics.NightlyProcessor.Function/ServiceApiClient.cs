@@ -73,46 +73,46 @@ namespace DevOpsMetrics.NightlyProcessor.Function
 
             string url = $"/api/TableStorage/UpdateDevOpsMonitoringEvent";
             return await PostResponse(Client, url, monitoringEvent);
-    }
+        }
 
-    private async Task<T> GetResponse<T>(HttpClient client, string url)
-    {
-        T obj = default;
-        if (client != null && url != null)
+        private async Task<T> GetResponse<T>(HttpClient client, string url)
         {
-            Debug.WriteLine("Running url: " + client.BaseAddress.ToString() + url);
-            using (HttpResponseMessage response = await client.GetAsync(url))
+            T obj = default;
+            if (client != null && url != null)
             {
-                response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
-                if (string.IsNullOrEmpty(responseBody) == false)
+                Debug.WriteLine("Running url: " + client.BaseAddress.ToString() + url);
+                using (HttpResponseMessage response = await client.GetAsync(url))
                 {
-                    obj = JsonConvert.DeserializeObject<T>(responseBody);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    if (string.IsNullOrEmpty(responseBody) == false)
+                    {
+                        obj = JsonConvert.DeserializeObject<T>(responseBody);
+                    }
                 }
             }
+            return obj;
         }
-        return obj;
-    }
 
-    private async Task<bool> PostResponse(HttpClient client, string url, MonitoringEvent monitoringEvent)
-    {
-
-        if (client != null && url != null)
+        private async Task<bool> PostResponse(HttpClient client, string url, MonitoringEvent monitoringEvent)
         {
-            StringContent content = new StringContent(JsonConvert.SerializeObject(monitoringEvent));
 
-            Debug.WriteLine("Running url: " + client.BaseAddress.ToString() + url);
-            using (HttpResponseMessage response = await client.PostAsync(url, content))
+            if (client != null && url != null)
             {
-                response.EnsureSuccessStatusCode();
-                //string responseBody = await response.Content.ReadAsStringAsync();
-                //if (string.IsNullOrEmpty(responseBody) == false)
-                //{
-                //    obj = JsonConvert.DeserializeObject<T>(responseBody);
-                //}
+                StringContent content = new StringContent(JsonConvert.SerializeObject(monitoringEvent), Encoding.UTF8, "application/json");
+
+                Debug.WriteLine("Running url: " + client.BaseAddress.ToString() + url);
+                using (HttpResponseMessage response = await client.PostAsync(url, content))
+                {
+                    response.EnsureSuccessStatusCode();
+                    //string responseBody = await response.Content.ReadAsStringAsync();
+                    //if (string.IsNullOrEmpty(responseBody) == false)
+                    //{
+                    //    obj = JsonConvert.DeserializeObject<T>(responseBody);
+                    //}
+                }
             }
+            return true;
         }
-        return true;
     }
-}
 }
