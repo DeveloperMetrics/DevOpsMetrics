@@ -14,15 +14,13 @@ namespace DevOpsMetrics.NightlyProcessor.Function
 {
     public static class NightlyProcessor
     {
-        private const string everyTwoHours = "0 */2 * * *";
-
         [FunctionName("UpdateStorageTables")]
         public static async Task Run(
-            [TimerTrigger(everyTwoHours, RunOnStartup = true)] TimerInfo myTimer, 
+            [TimerTrigger("0 */2 * * *", RunOnStartup = true)] TimerInfo myTimer, 
             ILogger log, 
             ExecutionContext context)
         {
-            log.LogInformation($"C# Timer trigger function started at: {DateTime.Now}");
+            log.LogInformation($"C# Timer trigger function UpdateStorageTables started at: {DateTime.Now}");
 
             //Load settings
             IConfiguration configuration = new ConfigurationBuilder()
