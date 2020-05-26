@@ -36,11 +36,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            MonitoringEvent monitoringEvent = new MonitoringEvent
-            {
-                PartitionKey = "Test123",
-                RowKey = DateTime.Parse("2020-05-25T00:11:28.7763615Z").ToString("yyyy-MMM-dd-HH-mm-ss.fff"),
-                RequestBody = @"
+            MonitoringEvent monitoringEvent = new MonitoringEvent(@"
 {
   ""schemaId"": ""AzureMonitorMetricAlert"",
   ""data"": {
@@ -75,7 +71,7 @@ namespace DevOpsMetrics.Tests.Service
         ]
       },
       ""subscriptionId"": ""07db7d0b-a6cb-4e58-b07e-e1d541c39f5b"",
-      ""resourceGroupName"": ""SamLearnsAzureFeatureFlags"",
+      ""resourceGroupName"": ""SamLearnsAzureTest"",
       ""resourceName"": ""featureflags-data-eu-service"",
       ""resourceType"": ""Microsoft.Web/sites"",
       ""resourceId"": ""/subscriptions/07db7d0b-a6cb-4e58-b07e-e1d541c39f5b/resourceGroups/SamLearnsAzureFeatureFlags/providers/Microsoft.Web/sites/featureflags-data-eu-service"",
@@ -83,8 +79,7 @@ namespace DevOpsMetrics.Tests.Service
     }
   }
 }
-"
-            };
+");
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();

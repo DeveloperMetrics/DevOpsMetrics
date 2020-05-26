@@ -29,13 +29,11 @@ namespace DevOpsMetrics.NightlyProcessor.Function
                 .Build();
 
             //Process response
-            string name = req.Query["name"];
-
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                        string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
-
-            log.LogInformation($"C# HTTP trigger function processed request body {requestBody}.");
+            //string name = req.Query["name"];
+            //name = name ?? data?.name;
+            //log.LogInformation($"C# HTTP trigger function processed request body {requestBody}.");
 
 
             //save response to table
