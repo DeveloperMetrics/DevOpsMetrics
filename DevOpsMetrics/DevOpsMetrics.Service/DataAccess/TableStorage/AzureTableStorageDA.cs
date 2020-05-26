@@ -308,5 +308,15 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             return await tableDA.SaveItem(newItem);
         }
 
+        public async Task<bool> UpdateDevOpsMonitoringEvent(TableStorageAuth tableStorageAuth, MonitoringEvent monitoringEvent)
+        {
+            string partitionKey = monitoringEvent.PartitionKey;
+            string rowKey = monitoringEvent.RowKey;
+            string json = monitoringEvent.RequestBody;
+            AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, json);
+            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableMMTRRaw);
+            return await tableDA.SaveItem(newItem);
+        }
+
     }
 }

@@ -285,5 +285,13 @@ namespace DevOpsMetrics.Service.Controllers
                     owner, repo, branch, workflowName, workflowId, itemOrder);
         }
 
+        [HttpPost("UpdateDevOpsMonitoringEvent")]
+        public async Task<bool> UpdateDevOpsMonitoringEvent([FromBody] MonitoringEvent monitoringEvent)
+        {
+            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            AzureTableStorageDA da = new AzureTableStorageDA();
+            return await da.UpdateDevOpsMonitoringEvent( tableStorageAuth, monitoringEvent);
+        }
+
     }
 }

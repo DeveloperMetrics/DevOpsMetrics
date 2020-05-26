@@ -18,7 +18,9 @@ namespace DevOpsMetrics.Tests
                 TableGitHubRuns = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"],
                 TableGitHubPRs = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"],
                 TableGitHubPRCommits = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"],
-                TableGitHubSettings = Configuration["AppSettings:AzureStorageAccountContainerGitHubSettings"]
+                TableGitHubSettings = Configuration["AppSettings:AzureStorageAccountContainerGitHubSettings"],
+                TableMMTRRaw = Configuration["AppSettings:AzureStorageAccountContainerMMTRRaw"],
+                TableMMTRSummary = Configuration["AppSettings:AzureStorageAccountContainerMMTRSummary"],
             };
             return tableStorageAuth;
         }

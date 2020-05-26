@@ -33,17 +33,7 @@ namespace DevOpsMetrics.Tests.Service
         public void AzGetBuildsDAIntegrationTest()
         {
             //Arrange
-            TableStorageAuth tableStorageAuth = new TableStorageAuth
-            {
-                AccountName = Configuration["AppSettings:AzureStorageAccountName"],
-                AccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
-                TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
-                TableAzureDevOpsPRs = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"],
-                TableAzureDevOpsPRCommits = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"],
-                TableGitHubRuns = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"],
-                TableGitHubPRs = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"],
-                TableGitHubPRCommits = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"],
-            };
+            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string buildName = "SamLearnsAzure.CI";
