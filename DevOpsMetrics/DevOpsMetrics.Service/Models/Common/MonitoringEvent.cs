@@ -6,6 +6,8 @@ namespace DevOpsMetrics.Service.Models.Common
 {
     public class MonitoringEvent
     {
+        public MonitoringEvent() { } //Note this parameter-less function is required for JSON serialization
+
         public MonitoringEvent(string requestBody)
         {
             //Do some processing to extract some key properties from the json
