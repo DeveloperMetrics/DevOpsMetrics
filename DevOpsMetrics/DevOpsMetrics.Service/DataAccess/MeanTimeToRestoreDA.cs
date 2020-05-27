@@ -29,6 +29,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
                 {
+                    IsAzureDevOps = true,
                     ResourceGroup = resourceGroup,
                     MeanTimeToRestoreEvents = GetSampleMMTREvents(resourceGroup),
                     MTTRAverageDurationInMinutes = 1f
