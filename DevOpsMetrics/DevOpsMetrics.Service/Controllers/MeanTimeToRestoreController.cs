@@ -18,7 +18,7 @@ namespace DevOpsMetrics.Service.Controllers
             Configuration = configuration;
         }
 
-        [HttpGet("GetMeanTimeToRestore")]
+        [HttpGet("GetAzureMeanTimeToRestore")]
         public async Task<MeanTimeToRestoreModel> GetAzureMeanTimeToRestore(bool getSampleData,
             string resourceGroup, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
