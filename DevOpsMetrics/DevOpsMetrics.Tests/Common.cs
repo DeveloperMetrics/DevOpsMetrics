@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace DevOpsMetrics.Tests
 {
-    public class Common
+    public static class Common
     {
         public static TableStorageAuth GenerateTableAuthorization(IConfiguration Configuration)
         {

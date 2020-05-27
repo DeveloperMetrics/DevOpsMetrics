@@ -30,17 +30,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             bool getSampleData = true;
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-            TableStorageAuth tableStorageAuth = new TableStorageAuth
-            {
-                AccountName = Configuration["AppSettings:AzureStorageAccountName"],
-                AccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
-                TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
-                TableAzureDevOpsPRs = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"],
-                TableAzureDevOpsPRCommits = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"],
-                TableGitHubRuns = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"],
-                TableGitHubPRs = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"],
-                TableGitHubPRCommits = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"],
-            };
+            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
@@ -67,17 +57,7 @@ namespace DevOpsMetrics.Tests.Service
             bool getSampleData = true;
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageAuth tableStorageAuth = new TableStorageAuth
-            {
-                AccountName = Configuration["AppSettings:AzureStorageAccountName"],
-                AccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
-                TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
-                TableAzureDevOpsPRs = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"],
-                TableAzureDevOpsPRCommits = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"],
-                TableGitHubRuns = Configuration["AppSettings:AzureStorageAccountContainerGitHubRuns"],
-                TableGitHubPRs = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRs"],
-                TableGitHubPRCommits = Configuration["AppSettings:AzureStorageAccountContainerGitHubPRCommits"],
-            };
+            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "master";
