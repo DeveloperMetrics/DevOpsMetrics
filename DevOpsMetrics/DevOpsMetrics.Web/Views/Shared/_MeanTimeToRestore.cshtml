@@ -29,15 +29,15 @@
     {
         foreach (MeanTimeToRestoreEvent item in Model.MeanTimeToRestoreEvents)
         {
-            @*<a href="@item.Url" target="_blank">
+            <a href="@item.Url" target="_blank">
                     <div class="progress-bar">
-                        <div class="progress-track" title="Build @item.Id @item.Status @item.TimeSinceBuildCompleted (ran for @item.BuildDurationInMinutesAndSeconds)">
-                            <div class="progress-fill @item.Status">
-                                <span>@item.BuildDurationPercent%</span>
+                        <div class="progress-track" title="Mean time to restore on @item.StartTime.ToString("dd-MMM-yyyy") (ran for @item.MTTRDurationInMinutes.ToString("0.00"))">
+                            <div class="progress-fill completed">
+                                <span>50%</span>
                             </div>
                         </div>
                     </div>
-                </a>*@
+                </a>
         }
     }
 </div>

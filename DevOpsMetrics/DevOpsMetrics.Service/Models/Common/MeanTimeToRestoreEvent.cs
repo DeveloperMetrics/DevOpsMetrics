@@ -7,6 +7,7 @@ namespace DevOpsMetrics.Service.Models.Common
         public string ResourceGroup { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        public string Url { get; set; }
 
         public float MTTRDurationInMinutes
         {
