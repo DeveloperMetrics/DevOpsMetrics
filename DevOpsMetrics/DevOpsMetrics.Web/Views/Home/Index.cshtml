@@ -8,17 +8,15 @@
 
 <div class="row">
     <div class="col-md-12">
-        @Html.ActionLink("Deployment Frequency", "DeploymentFrequency", "Home")
+        <a href="@Url.Action("DeploymentFrequency", "Home")">Deployment Frequency</a>
     </div>
     <div class="col-md-12">
-        @Html.ActionLink("Lead time for changes", "LeadTimeForChanges", "Home")
+        <a href="@Url.Action("LeadTimeForChanges", "Home")">Lead time for changes</a>
+    </div>
+    <div class="col-md-12">
+        <a href="@Url.Action("MeanTimeToRestore", "Home")">Mean time to restore</a>
     </div>
     <div class="col-md-12">
         Source code can be found at <a href="https://github.com/samsmithnz/DevOpsMetrics">https://github.com/samsmithnz/DevOpsMetrics</a>
     </div>
 </div>
-@*<div>
-    <span>patToken = @Model["AppSettings:AzureDevOpsPatToken"]</span>
-    <span>clientId2 = @Model["AppSettings:GitHubClientId"]</span>
-    <span>clientSecret2 = @Model["AppSettings:GitHubClientSecret"]</span>
-</div>*@

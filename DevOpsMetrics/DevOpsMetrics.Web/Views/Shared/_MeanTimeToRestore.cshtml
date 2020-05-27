@@ -45,7 +45,7 @@
 @if (Model.MeanTimeToRestoreEvents.Count > 0)
 {
     <div class="metricSpan">
-        <b>Deployment frequency:</b> @Model.MTTRAverageDurationInMinutes.ToString("0.00") minutes @*@Model.DeploymentsToDisplayUnit (last @Model.NumberOfDays days)<br />*@
+        <b>Mean time to restore:</b> @Model.MTTRAverageDurationInMinutes.ToString("0.00") minutes @*@Model.DeploymentsToDisplayUnit (last @Model.NumberOfDays days)<br />*@
        @* <b>Deployment frequency ranking:</b> @Model.DeploymentsPerDayMetricDescription*@
     </div>
 }

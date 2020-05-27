@@ -138,6 +138,7 @@ namespace DevOpsMetrics.Web.Controllers
                 MeanTimeToRestoreModel newMeanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData, 
                         item.ProductionResourceGroup, numberOfDays, maxNumberOfItems, useCache);
                 newMeanTimeToRestoreModel.ItemOrder = item.ItemOrder;
+                newMeanTimeToRestoreModel.IsAzureDevOps = true;
                 if (newMeanTimeToRestoreModel != null)
                 {
                     items.Add(newMeanTimeToRestoreModel);
@@ -148,6 +149,7 @@ namespace DevOpsMetrics.Web.Controllers
                 MeanTimeToRestoreModel newMeanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
                         item.ProductionResourceGroup, numberOfDays, maxNumberOfItems, useCache);
                 newMeanTimeToRestoreModel.ItemOrder = item.ItemOrder;
+                newMeanTimeToRestoreModel.IsAzureDevOps = false;
                 if (newMeanTimeToRestoreModel != null)
                 {
                     items.Add(newMeanTimeToRestoreModel);
