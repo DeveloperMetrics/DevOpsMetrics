@@ -49,6 +49,12 @@ namespace DevOpsMetrics.Web.Services
             return await GetResponse<LeadTimeForChangesModel>(Client, url);
         }
 
+        public async Task<MeanTimeToRestoreModel> GetAzureMeanTimeToRestore(bool getSampleData, string resourceGroup, int numberOfDays, int maxNumberOfItems, bool useCache)
+        {
+            string url = $"/api/MeanTimeToRestore/GetAzureMeanTimeToRestore?getSampleData={getSampleData}&resourceGroup={resourceGroup}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&useCache={useCache}";
+            return await GetResponse<MeanTimeToRestoreModel>(Client, url);
+        }
+
         public async Task<List<AzureDevOpsSettings>> GetAzureDevOpsSettings()
         {
             string url = $"/api/TableStorage/GetAzureDevOpsSettings";
