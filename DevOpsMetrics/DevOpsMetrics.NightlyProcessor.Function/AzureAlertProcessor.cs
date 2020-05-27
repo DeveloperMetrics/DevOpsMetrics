@@ -33,7 +33,7 @@ namespace DevOpsMetrics.NightlyProcessor.Function
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             //string name = req.Query["name"];
             //name = name ?? data?.name;
-            //log.LogInformation($"C# HTTP trigger function processed request body {requestBody}.");
+            log.LogInformation($"C# HTTP trigger function processed request body {requestBody}.");
 
 
             //save response to table
