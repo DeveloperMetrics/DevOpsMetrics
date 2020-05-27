@@ -6,6 +6,7 @@ namespace DevOpsMetrics.Service.Models.Common
 {
     public class MeanTimeToRestoreModel
     {
+        public bool IsAzureDevOps { get; set; }
         public string ResourceGroup { get; set; }
 
         public List<MeanTimeToRestoreEvent> MeanTimeToRestoreEvents { get; set; }

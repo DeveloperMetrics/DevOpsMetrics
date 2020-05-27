@@ -267,22 +267,22 @@ namespace DevOpsMetrics.Service.Controllers
 
         [HttpGet("UpdateAzureDevOpsSetting")]
         public async Task<bool> UpdateAzureDevOpsSetting(string patToken,
-                string organization, string project, string repository, string branch, string buildName, string buildId, int itemOrder)
+                string organization, string project, string repository, string branch, string buildName, string buildId, string resourceGroup, int itemOrder)
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             AzureTableStorageDA da = new AzureTableStorageDA();
             return await da.UpdateAzureDevOpsSetting(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings,
-                    organization, project, repository, branch, buildName, buildId, itemOrder);
+                    organization, project, repository, branch, buildName, buildId, resourceGroup, itemOrder);
         }
 
         [HttpGet("UpdateGitHubSetting")]
         public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret,
-                string owner, string repo, string branch, string workflowName, string workflowId, int itemOrder)
+                string owner, string repo, string branch, string workflowName, string workflowId, string resourceGroup, int itemOrder)
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             AzureTableStorageDA da = new AzureTableStorageDA();
             return await da.UpdateGitHubSetting(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubSettings,
-                    owner, repo, branch, workflowName, workflowId, itemOrder);
+                    owner, repo, branch, workflowName, workflowId, resourceGroup, itemOrder);
         }
 
         [HttpPost("UpdateDevOpsMonitoringEvent")]
@@ -290,7 +290,7 @@ namespace DevOpsMetrics.Service.Controllers
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             AzureTableStorageDA da = new AzureTableStorageDA();
-            return await da.UpdateDevOpsMonitoringEvent( tableStorageAuth, monitoringEvent);
+            return await da.UpdateDevOpsMonitoringEvent(tableStorageAuth, monitoringEvent);
         }
 
     }

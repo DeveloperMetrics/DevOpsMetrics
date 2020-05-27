@@ -41,6 +41,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Assert
             Assert.IsTrue(model != null);
+            Assert.IsTrue(model.IsAzureDevOps == true);
             Assert.AreEqual(resourceGroup, model.ResourceGroup);
             Assert.IsTrue(model.MeanTimeToRestoreEvents.Count > 0);
             Assert.IsTrue(model.MTTRAverageDurationInMinutes > 0);
