@@ -53,6 +53,7 @@ namespace DevOpsMetrics.Service.DataAccess
                         Resource = item.resourceName,
                         ResourceGroup = item.resourceGroupName,
                         StartTime = item.timestamp,
+                        Status = "inProgress",
                         ItemOrder = i
                     };
                     events.Add(newEvent);
@@ -72,6 +73,7 @@ namespace DevOpsMetrics.Service.DataAccess
                             && endingAlerts[j].resourceGroupName == item.ResourceGroup)
                         {
                             item.EndTime = endingAlerts[j].timestamp;
+                            item.Status = "completed";
                             foundItemIndex = j;
                             break;
                         }
