@@ -136,7 +136,7 @@ namespace DevOpsMetrics.Web.Controllers
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
                 MeanTimeToRestoreModel newMeanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData, 
-                        item.ProductionResourceGroup, numberOfDays, maxNumberOfItems, useCache);
+                        item.ProductionResourceGroup, true, numberOfDays, maxNumberOfItems, useCache);
                 newMeanTimeToRestoreModel.ItemOrder = item.ItemOrder;
                 newMeanTimeToRestoreModel.IsAzureDevOps = true;
                 if (newMeanTimeToRestoreModel != null)
@@ -147,7 +147,7 @@ namespace DevOpsMetrics.Web.Controllers
             foreach (GitHubSettings item in githubSettings)
             {
                 MeanTimeToRestoreModel newMeanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
-                        item.ProductionResourceGroup, numberOfDays, maxNumberOfItems, useCache);
+                        item.ProductionResourceGroup, false, numberOfDays, maxNumberOfItems, useCache);
                 newMeanTimeToRestoreModel.ItemOrder = item.ItemOrder;
                 newMeanTimeToRestoreModel.IsAzureDevOps = false;
                 if (newMeanTimeToRestoreModel != null)

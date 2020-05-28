@@ -29,10 +29,16 @@
     {
         foreach (MeanTimeToRestoreEvent item in Model.MeanTimeToRestoreEvents)
         {
+            string description = $"Degradation event occured {item.StartTime.ToString("dd-MMM-yyyy")} (restored in {item.MTTRDurationInHours.ToString("0.00")} hours)";
+            if (item.EndTime == DateTime.MinValue)
+            {
+                description = $"Degradation event in progress, started at {item.StartTime.ToString("dd-MMM-yyyy")}";
+            }
+
             <a href="@item.Url" target="_blank">
                 <div class="progress-bar">
-                    <div class="progress-track" title="Degradation event occured @item.StartTime.ToString("dd-MMM-yyyy") (restored in @item.MTTRDurationInHours.ToString("0.00") hours)">
-                        <div class="progress-fill completed">
+                    <div class="progress-track" title="@description">
+                        <div class="progress-fill @item.Status">
                             <span>@item.MTTRDurationPercent%</span>
                         </div>
                     </div>
