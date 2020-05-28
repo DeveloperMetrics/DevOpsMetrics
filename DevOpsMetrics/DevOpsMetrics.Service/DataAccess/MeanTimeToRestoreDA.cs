@@ -1,8 +1,5 @@
-﻿using DevOpsMetrics.Core;
-using DevOpsMetrics.Service.DataAccess.TableStorage;
-using DevOpsMetrics.Service.Models.AzureDevOps;
+﻿using DevOpsMetrics.Service.DataAccess.TableStorage;
 using DevOpsMetrics.Service.Models.Common;
-using DevOpsMetrics.Service.Models.GitHub;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

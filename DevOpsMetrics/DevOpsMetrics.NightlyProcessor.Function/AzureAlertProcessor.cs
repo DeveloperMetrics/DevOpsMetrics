@@ -35,13 +35,11 @@ namespace DevOpsMetrics.NightlyProcessor.Function
             //name = name ?? data?.name;
             log.LogInformation($"C# HTTP trigger function processed request body {requestBody}.");
 
-
             //save response to table
             ServiceApiClient api = new ServiceApiClient(configuration);
-            await api.UpdateDevOpsMonitoringEvent("MonitoringEvent", req.ContentLength.ToString(), requestBody);
+            await api.UpdateDevOpsMonitoringEvent(requestBody);
 
             string responseMessage = "monitoring event processed successfully";
-
             return new OkObjectResult(responseMessage);
         }
     }

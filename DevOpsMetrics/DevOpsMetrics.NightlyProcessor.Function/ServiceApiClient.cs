@@ -62,7 +62,7 @@ namespace DevOpsMetrics.NightlyProcessor.Function
             return await GetResponse<int>(Client, url);
         }
 
-        public async Task<bool> UpdateDevOpsMonitoringEvent(string partitionKey, string rowKey, string requestBody)
+        public async Task<bool> UpdateDevOpsMonitoringEvent(string requestBody)
         {
             MonitoringEvent monitoringEvent = new MonitoringEvent(requestBody);
             string url = $"/api/TableStorage/UpdateDevOpsMonitoringEvent";
