@@ -46,5 +46,30 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.MeanTimeToRestoreEvents.Count > 0);
             Assert.IsTrue(model.MTTRAverageDurationInMinutes > 0);
         }
+
+
+        [TestMethod]
+        public async Task MeanTimeToRestoreDALiveIntegrationTest()
+        {
+            //Arrange
+            bool getSampleData = false;
+            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            string resourceGroup = "SamLearnsAzureProd";
+            bool isAzureDevOps = true;
+            int numberOfDays = 30;
+            int maxNumberOfItems = 20;
+            bool useCache = true;
+
+            //Act
+            MeanTimeToRestoreDA da = new MeanTimeToRestoreDA();
+            MeanTimeToRestoreModel model = await da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth, resourceGroup, numberOfDays, maxNumberOfItems, useCache);
+
+            //Assert
+            Assert.IsTrue(model != null);
+            //Assert.IsTrue(model.IsAzureDevOps == isAzureDevOps);
+            Assert.AreEqual(resourceGroup, model.ResourceGroup);
+            Assert.IsTrue(model.MeanTimeToRestoreEvents.Count > 0);
+            Assert.IsTrue(model.MTTRAverageDurationInMinutes > 0);
+        }
     }
 }

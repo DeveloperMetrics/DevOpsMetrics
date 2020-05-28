@@ -4,7 +4,9 @@ namespace DevOpsMetrics.Service.Models.Common
 {
     public class MeanTimeToRestoreEvent
     {
+        public string Name { get; set; }
         public string ResourceGroup { get; set; }
+        public string Resource { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public string Url { get; set; }
