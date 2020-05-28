@@ -1,10 +1,10 @@
 ﻿@using DevOpsMetrics.Service.Models.Common
 @model List<MeanTimeToRestoreModel>
 @{
-    ViewData["Title"] = "Mean time to restore";
+    ViewData["Title"] = "Time to restore service";
 }
 
-<h2>Mean time to restore</h2>
+<h2>Time to restore service</h2>
 <div class="row">
     @foreach (MeanTimeToRestoreModel item in Model)
     {
@@ -27,11 +27,11 @@
                 <th>Low</th>
             </tr>
             <tr>
-                <td>Fot the primary application or service you work on, how often does your organization deploy code to production or release it to end users</td>
-                <td>Multiple deploys per day</td>
-                <td>Between once per day and once per week</td>
-                <td>Between once per week and once per month</td>
-                <td>Between once per month and once every six months</td>
+                <td>For the primary application or service you work on, how long does it generally take to restore service when a service incident or a defect that impacts users occurs (e.g. unplanning outage or service impairment)</td>
+                <td>Less than one hour</td>
+                <td>Less than one day</td>
+                <td>Between one week and one month</td>
+                <td>More than one month</td>
             </tr>
         </table>
     </div>
@@ -40,12 +40,13 @@
         <hr />
         <b>FAQ</b><br />
         <b>What am I looking at?</b><br />
-        Deployment Frequency is a high performing DevOps metric to measure the number of deployments to production. This page helps us to measure it across various projects in both Azure DevOps and GitHub<br />
+        Time to restore service is a high performing DevOps metric to measure the number the average time to restore service impairment or unplanned outages. This page helps us to measure it across various projects in Azure<br />
         <b>How does it work?</b><br />
-        We look at the number of successful pipeline runs<br />
+        We setup Azure Monitor alerts on our resources, for example, on our web service, where we have an alerts for HTTP500 and HTTP403 errors, as well as monitoring CPU and RAM. If any of these alerts are triggered, we capture the alert in an Azure function, and save it into a Azure table storage, where we can aggregate and measure the time of the outage. When the alert is later resolved, this also triggers through the same workflow to save the the resolution and record the restoration of service. <br />
         <b>Assumptions/things we can't currently measure:</b><br />
-        - The build is multi-stage, and leads to a deployment in a production environment.<br />
-        - We only look at a single branch (usually the master branch), hence we ignore feature branches (as these probably aren't deploying to production')<br />
+        - Our project is hosted in Azure<br />
+        - The production environment is contained in a single resource group.<br />
+        - There are appropriate alerts setup on each of the resources, each with action groups to save the alert to Azure Storage <br />
         <br />
     </div>
 

@@ -9,7 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Tests", "DevO
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{97B5AD8C-80CA-4C4A-8F8E-264EAB873426}"
 	ProjectSection(SolutionItems) = preProject
+		..\ReadmeImages\DeploymentFrequencyDemo.png = ..\ReadmeImages\DeploymentFrequencyDemo.png
+		..\ReadmeImages\LeadTimeForChanges.png = ..\ReadmeImages\LeadTimeForChanges.png
 		..\README.md = ..\README.md
+		..\ReadmeImages\TimeToRestoreService.png = ..\ReadmeImages\TimeToRestoreService.png
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Service", "DevOpsMetrics.Service\DevOpsMetrics.Service.csproj", "{5F45E99B-F345-41B3-88D4-DFC50611EB89}"
