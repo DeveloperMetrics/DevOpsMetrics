@@ -1,4 +1,5 @@
-﻿using DevOpsMetrics.Service.DataAccess.TableStorage;
+﻿using DevOpsMetrics.Core;
+using DevOpsMetrics.Service.DataAccess.TableStorage;
 using DevOpsMetrics.Service.Models.Common;
 using Newtonsoft.Json;
 using System;
@@ -24,6 +25,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 //Compile the events
                 List<MeanTimeToRestoreEvent> events = new List<MeanTimeToRestoreEvent>();
                 int i = 0;
+                float maxEventDuration= 0;
                 foreach (AzureAlert item in alerts)
                 {
                     i++;
@@ -33,8 +35,18 @@ namespace DevOpsMetrics.Service.DataAccess
                         StartTime = item.timestamp,
                         ItemOrder = i
                     };
+                    if (newEvent.MTTRDurationInMinutes > maxEventDuration)
+                    {
+                        maxEventDuration = newEvent.MTTRDurationInMinutes;
+                    }
                     events.Add(newEvent);
                 }
+                foreach (MeanTimeToRestoreEvent item in events)
+                {
+                    float interiumResult = ((item.MTTRDurationInMinutes / maxEventDuration) * 100f);
+                    item.MTTRDurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+                }
+
                 //sort the list
                 events = events.OrderBy(o => o.StartTime).ToList();
 
@@ -42,7 +54,8 @@ namespace DevOpsMetrics.Service.DataAccess
                 MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
                 {
                     ResourceGroup = resourceGroup,
-                    MeanTimeToRestoreEvents = events
+                    MeanTimeToRestoreEvents = events,
+                    MTTRAverageDurationInMinutes = CalculateMTTRDuration(events)
                 };
                 return model;
             }
@@ -54,10 +67,25 @@ namespace DevOpsMetrics.Service.DataAccess
                     IsAzureDevOps = true,
                     ResourceGroup = resourceGroup,
                     MeanTimeToRestoreEvents = GetSampleMMTREvents(resourceGroup),
-                    MTTRAverageDurationInMinutes = 1f
+                    MTTRAverageDurationInMinutes = CalculateMTTRDuration(GetSampleMMTREvents(resourceGroup))
                 };
                 return model;
             }
+        }
+
+        private float CalculateMTTRDuration(List<MeanTimeToRestoreEvent>  events)
+        {
+            float total = 0f;
+            foreach (MeanTimeToRestoreEvent item in events)
+            {
+                total += item.MTTRDurationInMinutes;
+            }
+            float average = 0f;
+            if (events.Count > 0)
+            {
+                average = total / events.Count;
+            }
+            return average;
         }
 
         private List<MeanTimeToRestoreEvent> GetSampleMMTREvents(string resourceGroup)
@@ -68,6 +96,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 ResourceGroup = resourceGroup,
                 StartTime = DateTime.Now.AddDays(-7).AddMinutes(-4),
                 EndTime = DateTime.Now.AddDays(-7).AddMinutes(0),
+                MTTRDurationPercent = 60,
                 ItemOrder = 1
             };
             results.Add(item1);
@@ -76,6 +105,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 ResourceGroup = resourceGroup,
                 StartTime = DateTime.Now.AddDays(-5).AddMinutes(-5),
                 EndTime = DateTime.Now.AddDays(-5).AddMinutes(0),
+                MTTRDurationPercent = 80,
                 ItemOrder = 2
             };
             results.Add(item2);
@@ -83,6 +113,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 StartTime = DateTime.Now.AddDays(-4).AddMinutes(-1),
                 EndTime = DateTime.Now.AddDays(-4).AddMinutes(0),
+                MTTRDurationPercent = 20,
                 ItemOrder = 3
             };
             results.Add(item3);
@@ -90,6 +121,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 StartTime = DateTime.Now.AddDays(-3).AddMinutes(-4),
                 EndTime = DateTime.Now.AddDays(-3).AddMinutes(0),
+                MTTRDurationPercent = 60,
                 ItemOrder = 4
             };
             results.Add(item4);
@@ -97,6 +129,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 StartTime = DateTime.Now.AddDays(-2).AddMinutes(-7),
                 EndTime = DateTime.Now.AddDays(-2).AddMinutes(0),
+                MTTRDurationPercent = 100,
                 ItemOrder = 5
             };
             results.Add(item5);
@@ -104,6 +137,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 StartTime = DateTime.Now.AddDays(-1).AddMinutes(-5),
                 EndTime = DateTime.Now.AddDays(-1).AddMinutes(0),
+                MTTRDurationPercent = 80,
                 ItemOrder = 6
             };
             results.Add(item6);

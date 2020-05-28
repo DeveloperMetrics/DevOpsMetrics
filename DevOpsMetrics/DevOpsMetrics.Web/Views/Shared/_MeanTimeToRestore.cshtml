@@ -7,12 +7,12 @@
     if (Model.IsAzureDevOps == true)
     {
         widgetImageName = "AzureDevops-icon.png";
-        widgetName = "Azure DevOps";
+        widgetName = "Resource group";
     }
     else
     {
         widgetImageName = "GitHub-icon.png";
-        widgetName = "GitHub";
+        widgetName = "Resource group";
     }
 }
 
@@ -30,14 +30,14 @@
         foreach (MeanTimeToRestoreEvent item in Model.MeanTimeToRestoreEvents)
         {
             <a href="@item.Url" target="_blank">
-                    <div class="progress-bar">
-                        <div class="progress-track" title="Mean time to restore on @item.StartTime.ToString("dd-MMM-yyyy") (ran for @item.MTTRDurationInMinutes.ToString("0.00"))">
-                            <div class="progress-fill completed">
-                                <span>50%</span>
-                            </div>
+                <div class="progress-bar">
+                    <div class="progress-track" title="Degradation event occured @item.StartTime.ToString("dd-MMM-yyyy") (restored in @item.MTTRDurationInMinutes.ToString("0.00") minutes)">
+                        <div class="progress-fill completed">
+                            <span>@item.MTTRDurationPercent%</span>
                         </div>
                     </div>
-                </a>
+                </div>
+            </a>
         }
     }
 </div>
@@ -46,6 +46,6 @@
 {
     <div class="metricSpan">
         <b>Mean time to restore:</b> @Model.MTTRAverageDurationInMinutes.ToString("0.00") minutes @*@Model.DeploymentsToDisplayUnit (last @Model.NumberOfDays days)<br />*@
-       @* <b>Deployment frequency ranking:</b> @Model.DeploymentsPerDayMetricDescription*@
+        @* <b>Deployment frequency ranking:</b> @Model.DeploymentsPerDayMetricDescription*@
     </div>
 }

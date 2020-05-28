@@ -22,6 +22,7 @@ namespace DevOpsMetrics.Service.Models.Common
                 return duration;
             }
         }
+        public int MTTRDurationPercent { get; set; }
 
         //public string DeploymentName { get; set; }
         //public int NumberOfDays { get; set; }
