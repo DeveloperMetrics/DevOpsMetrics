@@ -11,7 +11,7 @@ namespace DevOpsMetrics.Service.Models.Common
         public DateTime EndTime { get; set; }
         public string Url { get; set; }
 
-        public float MTTRDurationInMinutes
+        public float MTTRDurationInHours
         {
             get
             {
@@ -19,7 +19,7 @@ namespace DevOpsMetrics.Service.Models.Common
                 if (EndTime != null && StartTime != null && EndTime > DateTime.MinValue && StartTime > DateTime.MinValue)
                 {
                     TimeSpan ts = EndTime - StartTime;
-                    duration = (float)ts.TotalMinutes;
+                    duration = (float)ts.TotalHours;
                 }
                 return duration;
             }

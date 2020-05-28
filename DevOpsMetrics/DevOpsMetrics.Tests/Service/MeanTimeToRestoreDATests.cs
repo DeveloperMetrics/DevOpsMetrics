@@ -44,7 +44,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.IsAzureDevOps == true);
             Assert.AreEqual(resourceGroup, model.ResourceGroup);
             Assert.IsTrue(model.MeanTimeToRestoreEvents.Count > 0);
-            Assert.IsTrue(model.MTTRAverageDurationInMinutes > 0);
+            Assert.IsTrue(model.MTTRAverageDurationInHours > 0);
         }
 
 
@@ -69,7 +69,7 @@ namespace DevOpsMetrics.Tests.Service
             //Assert.IsTrue(model.IsAzureDevOps == isAzureDevOps);
             Assert.AreEqual(resourceGroup, model.ResourceGroup);
             Assert.IsTrue(model.MeanTimeToRestoreEvents.Count > 0);
-            Assert.IsTrue(model.MTTRAverageDurationInMinutes > 0);
+            Assert.IsTrue(model.MTTRAverageDurationInHours > 0);
         }
     }
 }

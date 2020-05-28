@@ -80,9 +80,9 @@ namespace DevOpsMetrics.Service.DataAccess
                     {
                         //Remove the found item from the list, so we don't use it again.
                         endingAlerts.RemoveAt(foundItemIndex);
-                        if (item.MTTRDurationInMinutes > maxEventDuration)
+                        if (item.MTTRDurationInHours > maxEventDuration)
                         {
-                            maxEventDuration = item.MTTRDurationInMinutes;
+                            maxEventDuration = item.MTTRDurationInHours;
                         }
                     }
                 }
@@ -90,31 +90,37 @@ namespace DevOpsMetrics.Service.DataAccess
                 //Finally, process the percent calculation
                 foreach (MeanTimeToRestoreEvent item in events)
                 {
-                    float interiumResult = ((item.MTTRDurationInMinutes / maxEventDuration) * 100f);
+                    float interiumResult = ((item.MTTRDurationInHours / maxEventDuration) * 100f);
                     item.MTTRDurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
 
                 //sort the final list (May not be needed due to the initial sort on the starting alerts)
                 events = events.OrderBy(o => o.StartTime).ToList();
 
+                MeanTimeToRestore mttr = new MeanTimeToRestore();
+                float averageMTTR = CalculateMTTRDuration(events);
                 //Pull together the results into a single model
                 MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
                 {
                     ResourceGroup = resourceGroup,
                     MeanTimeToRestoreEvents = events,
-                    MTTRAverageDurationInMinutes = CalculateMTTRDuration(events)
+                    MTTRAverageDurationInHours = averageMTTR,
+                    MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(averageMTTR)
                 };
                 return model;
             }
             else
             {
                 //Return sample data
+                MeanTimeToRestore mttr = new MeanTimeToRestore();
+                float averageMTTR = CalculateMTTRDuration(GetSampleMMTREvents(resourceGroup));
                 MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
                 {
                     IsAzureDevOps = true,
                     ResourceGroup = resourceGroup,
                     MeanTimeToRestoreEvents = GetSampleMMTREvents(resourceGroup),
-                    MTTRAverageDurationInMinutes = CalculateMTTRDuration(GetSampleMMTREvents(resourceGroup))
+                    MTTRAverageDurationInHours = averageMTTR,
+                    MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(averageMTTR)
                 };
                 return model;
             }
@@ -125,7 +131,7 @@ namespace DevOpsMetrics.Service.DataAccess
             float total = 0f;
             foreach (MeanTimeToRestoreEvent item in events)
             {
-                total += item.MTTRDurationInMinutes;
+                total += item.MTTRDurationInHours;
             }
             float average = 0f;
             if (events.Count > 0)

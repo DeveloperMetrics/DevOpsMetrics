@@ -11,7 +11,8 @@ namespace DevOpsMetrics.Service.Models.Common
 
         public List<MeanTimeToRestoreEvent> MeanTimeToRestoreEvents { get; set; }
 
-        public float MTTRAverageDurationInMinutes { get; set; }
+        public float MTTRAverageDurationInHours { get; set; }
+        public string MTTRAverageDurationDescription { get; set; }
 
         //public string DeploymentName { get; set; }
         //public int NumberOfDays { get; set; }

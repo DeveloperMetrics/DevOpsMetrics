@@ -62,5 +62,36 @@ namespace DevOpsMetrics.Core
         {
             return MeanTimeToRestoreList.Where(x => x.Key > DateTime.Now.AddDays(-numberOfDays)).ToList();
         }
+
+        public string GetMeanTimeToRestoreRating(float meanTimeToRestoreInHours)
+        {
+            float hourlyRestoration = 1f;
+            float dailyDeployment = 24f;
+            float weeklyDeployment = 24f * 7f;
+            float monthlyDeployment = 24f * 30f;
+
+            string result = "";
+            if (meanTimeToRestoreInHours <= 0f) //no rating
+            {
+                result = "None";
+            }
+            else if (meanTimeToRestoreInHours < hourlyRestoration) //less than one hour
+            {
+                result = "Elite";
+            }
+            else if (meanTimeToRestoreInHours < dailyDeployment) //less than one week
+            {
+                result = "High";
+            }
+            else if (meanTimeToRestoreInHours > weeklyDeployment && meanTimeToRestoreInHours <= monthlyDeployment) //between one week and one month
+            {
+                result = "Medium";
+            }
+            else if (meanTimeToRestoreInHours > monthlyDeployment) //more than one month
+            {
+                result = "Low";
+            }
+            return result;
+        }
     }
 }
