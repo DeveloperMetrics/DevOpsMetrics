@@ -76,7 +76,7 @@ namespace DevOpsMetrics.Service.Controllers
                 string organization, string project, string branch, string buildName, string buildId,
                 int numberOfDays, int maxNumberOfItems)
         {
-            int numberOfRecordsSaved = 0;
+            int numberOfRecordsSaved;
             try
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
@@ -116,7 +116,7 @@ namespace DevOpsMetrics.Service.Controllers
                 string owner, string repo, string branch, string workflowName, string workflowId,
                 int numberOfDays, int maxNumberOfItems)
         {
-            int numberOfRecordsSaved = 0;
+            int numberOfRecordsSaved;
             try
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
@@ -143,7 +143,7 @@ namespace DevOpsMetrics.Service.Controllers
                string organization, string project, string repositoryId,
                int numberOfDays, int maxNumberOfItems)
         {
-            int numberOfRecordsSaved = 0;
+            int numberOfRecordsSaved;
             try
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
@@ -170,7 +170,7 @@ namespace DevOpsMetrics.Service.Controllers
                 string owner, string repo, string branch, string workflowName, string workflowId,
                 int numberOfDays, int maxNumberOfItems)
         {
-            int numberOfRecordsSaved = 0;
+            int numberOfRecordsSaved;
             try
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
@@ -197,7 +197,7 @@ namespace DevOpsMetrics.Service.Controllers
                string organization, string project, string repositoryId, string pullRequestId,
                int numberOfDays, int maxNumberOfItems)
         {
-            int numberOfRecordsSaved = 0;
+            int numberOfRecordsSaved;
             try
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
@@ -224,7 +224,7 @@ namespace DevOpsMetrics.Service.Controllers
                 string owner, string repo, string branch, string workflowName, string workflowId, string pull_number,
                 int numberOfDays, int maxNumberOfItems)
         {
-            int numberOfRecordsSaved = 0;
+            int numberOfRecordsSaved;
             try
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);

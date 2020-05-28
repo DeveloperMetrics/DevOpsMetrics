@@ -1,9 +1,12 @@
 ﻿using DevOpsMetrics.Core;
+using DevOpsMetrics.Service.DataAccess.TableStorage;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.DataAccess
@@ -16,17 +19,39 @@ namespace DevOpsMetrics.Service.DataAccess
         {
             if (getSampleData == false)
             {
+                //Pull the events from the table storage
+                AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
+                Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableMMTRRaw, resourceGroup);
+                List<AzureAlert> alerts = JsonConvert.DeserializeObject<List<AzureAlert>>(list.ToString());
 
+                //Compile the events
+                List<MeanTimeToRestoreEvent> events = new List<MeanTimeToRestoreEvent>();
+                int i = 0;
+                foreach (AzureAlert item in alerts)
+                {
+                    i++;
+                    MeanTimeToRestoreEvent newEvent = new MeanTimeToRestoreEvent
+                    {
+                        ResourceGroup = resourceGroup,
+                        StartTime = item.timestamp,
+                        ItemOrder = i
+                    };
+                    events.Add(newEvent);
+                }
+                //sort the list
+                events = events.OrderBy(o => o.StartTime).ToList();
+
+                //Pull together the results into a single model
                 MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
                 {
-                    //         ResourceGroup 
-                    //    StartTime 
-                    //EndTime
+                    ResourceGroup = resourceGroup,
+                    MeanTimeToRestoreEvents = events
                 };
                 return model;
             }
             else
             {
+                //Return sample data
                 MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
                 {
                     IsAzureDevOps = true,

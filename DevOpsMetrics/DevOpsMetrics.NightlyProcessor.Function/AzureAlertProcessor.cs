@@ -29,8 +29,8 @@ namespace DevOpsMetrics.NightlyProcessor.Function
                 .Build();
 
             //Process response
-                        string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            //dynamic data = JsonConvert.DeserializeObject(requestBody);
             //string name = req.Query["name"];
             //name = name ?? data?.name;
             log.LogInformation($"C# HTTP trigger function processed request body {requestBody}.");
@@ -38,7 +38,7 @@ namespace DevOpsMetrics.NightlyProcessor.Function
 
             //save response to table
             ServiceApiClient api = new ServiceApiClient(configuration);
-            bool result = await api.UpdateDevOpsMonitoringEvent("MonitoringEvent", req.ContentLength.ToString(), requestBody);
+            await api.UpdateDevOpsMonitoringEvent("MonitoringEvent", req.ContentLength.ToString(), requestBody);
 
             string responseMessage = "monitoring event processed successfully";
 

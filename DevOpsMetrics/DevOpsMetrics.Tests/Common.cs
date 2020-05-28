@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace DevOpsMetrics.Tests
 {
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public static class Common
     {
         public static TableStorageAuth GenerateTableAuthorization(IConfiguration Configuration)
