@@ -14,7 +14,7 @@ namespace DevOpsMetrics.Service.DataAccess
     {
         public async Task<MeanTimeToRestoreModel> GetAzureMeanTimeToRestore(bool getSampleData,
                 TableStorageAuth tableStorageAuth,
-                string resourceGroup, int numberOfDays, int maxNumberOfItems, bool useCache)
+                string resourceGroup, bool isAzureDevOps, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             if (getSampleData == false)
             {
@@ -104,6 +104,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 //Pull together the results into a single model
                 MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
                 {
+                    IsAzureDevOps = isAzureDevOps,
                     ResourceGroup = resourceGroup,
                     MeanTimeToRestoreEvents = events,
                     MTTRAverageDurationInHours = averageMTTR,
@@ -118,7 +119,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 float averageMTTR = CalculateMTTRDuration(GetSampleMMTREvents(resourceGroup));
                 MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
                 {
-                    IsAzureDevOps = true,
+                    IsAzureDevOps = isAzureDevOps,
                     ResourceGroup = resourceGroup,
                     MeanTimeToRestoreEvents = GetSampleMMTREvents(resourceGroup),
                     MTTRAverageDurationInHours = averageMTTR,

@@ -1,9 +1,7 @@
 ﻿using DevOpsMetrics.Service.DataAccess;
 using DevOpsMetrics.Service.Models.Common;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.Documents;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.Controllers
@@ -20,11 +18,11 @@ namespace DevOpsMetrics.Service.Controllers
 
         [HttpGet("GetAzureMeanTimeToRestore")]
         public async Task<MeanTimeToRestoreModel> GetAzureMeanTimeToRestore(bool getSampleData,
-            string resourceGroup, int numberOfDays, int maxNumberOfItems, bool useCache)
+            string resourceGroup, bool isAzureDevOps, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             MeanTimeToRestoreDA da = new MeanTimeToRestoreDA();
-            MeanTimeToRestoreModel model = await da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth, resourceGroup, numberOfDays, maxNumberOfItems, useCache);
+            MeanTimeToRestoreModel model = await da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth, resourceGroup, isAzureDevOps, numberOfDays, maxNumberOfItems, useCache);
             return model;
         }
 
