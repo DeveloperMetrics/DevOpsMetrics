@@ -16,27 +16,27 @@ namespace DevOpsMetrics.Core
             MeanTimeToRestoreList = new List<KeyValuePair<DateTime, TimeSpan>>();
         }
 
-        public float ProcessMeanTimeToRestore(List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList, string pipelineName, int numberOfDays)
+        public float ProcessMeanTimeToRestore(List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList, string resourceName, int numberOfDays)
         {
             if (meanTimeToRestoreList != null)
             {
                 foreach (KeyValuePair<DateTime, TimeSpan> item in meanTimeToRestoreList)
                 {
-                    AddMeanTimeToRestore(pipelineName, item.Key, item.Value);
+                    AddMeanTimeToRestore(resourceName, item.Key, item.Value);
                 }
             }
-            return CalculateMeanTimeToRestore(pipelineName, numberOfDays);
+            return CalculateMeanTimeToRestore(resourceName, numberOfDays);
         }
 
-        private bool AddMeanTimeToRestore(string pipelineName, DateTime eventDateTime, TimeSpan restoreDuration)
+        private bool AddMeanTimeToRestore(string resourceName, DateTime eventDateTime, TimeSpan restoreDuration)
         {
             MeanTimeToRestoreList.Add(new KeyValuePair<DateTime, TimeSpan>(eventDateTime, restoreDuration));
             return true;
         }
 
-        private float CalculateMeanTimeToRestore(string pipelineName, int numberOfDays)
+        private float CalculateMeanTimeToRestore(string resourceName, int numberOfDays)
         {
-            List<KeyValuePair<DateTime, TimeSpan>> items = GetMeanTimeToRestore(pipelineName, numberOfDays);
+            List<KeyValuePair<DateTime, TimeSpan>> items = GetMeanTimeToRestore(resourceName, numberOfDays);
 
             //Count up the total MTTR minutes
             double totalMinutes = 0;
@@ -58,9 +58,40 @@ namespace DevOpsMetrics.Core
         }
 
         //Filter the list by date
-        private List<KeyValuePair<DateTime, TimeSpan>> GetMeanTimeToRestore(string pipelineName, int numberOfDays)
+        private List<KeyValuePair<DateTime, TimeSpan>> GetMeanTimeToRestore(string resourceName, int numberOfDays)
         {
             return MeanTimeToRestoreList.Where(x => x.Key > DateTime.Now.AddDays(-numberOfDays)).ToList();
+        }
+
+        public string GetMeanTimeToRestoreRating(float meanTimeToRestoreInHours)
+        {
+            float hourlyRestoration = 1f;
+            float dailyDeployment = 24f;
+            float weeklyDeployment = 24f * 7f;
+            float monthlyDeployment = 24f * 30f;
+
+            string result = "";
+            if (meanTimeToRestoreInHours <= 0f) //no rating
+            {
+                result = "None";
+            }
+            else if (meanTimeToRestoreInHours < hourlyRestoration) //less than one hour
+            {
+                result = "Elite";
+            }
+            else if (meanTimeToRestoreInHours < dailyDeployment) //less than one week
+            {
+                result = "High";
+            }
+            else if (meanTimeToRestoreInHours > weeklyDeployment && meanTimeToRestoreInHours <= monthlyDeployment) //between one week and one month
+            {
+                result = "Medium";
+            }
+            else if (meanTimeToRestoreInHours > monthlyDeployment) //more than one month
+            {
+                result = "Low";
+            }
+            return result;
         }
     }
 }

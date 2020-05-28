@@ -17,7 +17,7 @@ namespace DevOpsMetrics.Service.DataAccess
             ListUtility<Build> utility = new ListUtility<Build>();
             if (getSampleData == false)
             {
-                float deploymentsPerDay = 0;
+                float deploymentsPerDay;
                 DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
                 List<Build> builds = new List<Build>();
                 BuildsDA buildsDA = new BuildsDA();
@@ -86,7 +86,7 @@ namespace DevOpsMetrics.Service.DataAccess
             ListUtility<Build> utility = new ListUtility<Build>();
             if (getSampleData == false)
             {
-                float deploymentsPerDay = 0;
+                float deploymentsPerDay;
                 DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
                 List<Build> builds = new List<Build>();
                 BuildsDA buildsDA = new BuildsDA();

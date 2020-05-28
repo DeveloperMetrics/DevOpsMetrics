@@ -263,7 +263,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
         }
 
         public async Task<bool> UpdateAzureDevOpsSetting(string patToken, TableStorageAuth tableStorageAuth, string settingsTable,
-             string organization, string project, string repository, string branch, string buildName, string buildId, int itemOrder)
+             string organization, string project, string repository, string branch, string buildName, string buildId, string resourceGroupName, int itemOrder)
         {
             AzureDevOpsSettings settings = new AzureDevOpsSettings
             {
@@ -274,6 +274,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                 Branch = branch,
                 BuildName = buildName,
                 BuildId = buildId,
+                ProductionResourceGroup = resourceGroupName,
                 ItemOrder = itemOrder
             };
 
@@ -286,7 +287,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
         }
 
         public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, string settingsTable,
-             string owner, string repo, string branch, string workflowName, string workflowId, int itemOrder)
+             string owner, string repo, string branch, string workflowName, string workflowId, string resourceGroupName, int itemOrder)
         {
             GitHubSettings settings = new GitHubSettings
             {
@@ -297,6 +298,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                 Branch = branch,
                 WorkflowName = workflowName,
                 WorkflowId = workflowId,
+                ProductionResourceGroup = resourceGroupName,
                 ItemOrder = itemOrder
             };
 

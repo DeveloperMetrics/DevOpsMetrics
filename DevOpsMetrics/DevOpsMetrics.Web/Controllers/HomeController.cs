@@ -119,6 +119,48 @@ namespace DevOpsMetrics.Web.Controllers
             return View(items);
         }
 
+        public async Task<IActionResult> MeanTimeToRestore()
+        {
+            int maxNumberOfItems = 20;
+            int numberOfDays = 60;
+            bool getSampleData = false;
+            bool useCache = true;
+            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+            List<MeanTimeToRestoreModel> items = new List<MeanTimeToRestoreModel>();
+
+            //Get a list of settings
+            List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
+            List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
+
+            //Create MTTR models from each setting object
+            foreach (AzureDevOpsSettings item in azureDevOpsSettings)
+            {
+                MeanTimeToRestoreModel newMeanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData, 
+                        item.ProductionResourceGroup, true, numberOfDays, maxNumberOfItems, useCache);
+                newMeanTimeToRestoreModel.ItemOrder = item.ItemOrder;
+                newMeanTimeToRestoreModel.IsAzureDevOps = true;
+                if (newMeanTimeToRestoreModel != null)
+                {
+                    items.Add(newMeanTimeToRestoreModel);
+                }
+            }
+            foreach (GitHubSettings item in githubSettings)
+            {
+                MeanTimeToRestoreModel newMeanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
+                        item.ProductionResourceGroup, false, numberOfDays, maxNumberOfItems, useCache);
+                newMeanTimeToRestoreModel.ItemOrder = item.ItemOrder;
+                newMeanTimeToRestoreModel.IsAzureDevOps = false;
+                if (newMeanTimeToRestoreModel != null)
+                {
+                    items.Add(newMeanTimeToRestoreModel);
+                }
+            }
+
+            //sort the list
+            items = items.OrderBy(o => o.ItemOrder).ToList();
+            return View(items);
+        }
+
         public IActionResult Privacy()
         {
             return View();

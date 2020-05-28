@@ -15,6 +15,7 @@ namespace DevOpsMetrics.Service.Models.AzureDevOps
         public string Branch { get; set; }
         public string BuildName { get; set; }
         public string BuildId { get; set; }
+        public string ProductionResourceGroup { get; set; }
         public int ItemOrder { get; set; }
     }
 }
