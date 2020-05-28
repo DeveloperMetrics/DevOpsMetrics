@@ -13,6 +13,7 @@ All four of these metrics are based on production environments, where the value 
 More information in a blog post here: https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/
 
 ## The current solution:
+We currently have 3 of the 4 metrics partly implemented, and undergoing the pilot
 - **Deployment Frequency**, in both Azure DevOps and GitHub:
   - How does it work? We look at the number of successful pipeline runs. 
   - Assumptions/things we can't currently measure: 
