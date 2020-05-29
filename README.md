@@ -10,7 +10,7 @@ All four of these metrics are based on production environments, where the value 
 
 ![High performing metrics](https://samlearnsazure.files.wordpress.com/2020/04/01highperformers.png)
 
-More information in a blog post here: https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/
+More information about high performing DevOps metrics can be found in a blog post here: https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/
 
 ## The current solution:
 We currently have 3 of the 4 metrics partly implemented, and undergoing the pilot

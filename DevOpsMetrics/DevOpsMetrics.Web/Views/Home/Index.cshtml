@@ -1,5 +1,7 @@
-﻿@*@using Microsoft.Extensions.Configuration;
-    @model IConfiguration*@
+﻿@using DevOpsMetrics.Service.Models.AzureDevOps;
+@using DevOpsMetrics.Service.Models.Common;
+@using DevOpsMetrics.Service.Models.GitHub;
+@model (List<AzureDevOpsSettings>, List<GitHubSettings>)
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -7,10 +9,33 @@
 <h2>High performing DevOps metrics</h2>
 <div class="row">
     <div class="col-md-12">
+        View all projects by metric
         <ul>
             <li><a href="@Url.Action("DeploymentFrequency", "Home")">Deployment Frequency</a></li>
             <li><a href="@Url.Action("LeadTimeForChanges", "Home")">Lead time for changes</a></li>
             <li><a href="@Url.Action("MeanTimeToRestore", "Home")">Time to restore service</a></li>
+            <li>Change failure rate (TBD)</li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        View all metrics grouped by project
+        <ul>
+            @foreach (AzureDevOpsSettings item in Model.Item1)
+            {
+                <li><a href="@Url.Action("Project", "Home", new { rowKey = "1" } )">Deployment Frequency</a></li>
+            }
+            @foreach (GitHubSettings item in Model.Item2)
+            {
+                <li><a href="@Url.Action("Project", "Home", new { rowKey = "1" })">Deployment Frequency</a></li>
+            }
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <ul>
             <li>Source code can be found at <a href="https://github.com/samsmithnz/DevOpsMetrics">https://github.com/samsmithnz/DevOpsMetrics</a></li>
         </ul>
     </div>

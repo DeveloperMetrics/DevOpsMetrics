@@ -6,6 +6,7 @@ using DevOpsMetrics.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -22,9 +23,18 @@ namespace DevOpsMetrics.Web.Controllers
             Configuration = configuration;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            bool getSampleData = false;
+            bool useCache = true;
+            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+
+            //Get a list of settings
+            List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
+            List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
+
+            (List<AzureDevOpsSettings>, List<GitHubSettings>) result = (azureDevOpsSettings, githubSettings);
+            return View(result);
         }
 
         public async Task<IActionResult> DeploymentFrequency()
@@ -93,8 +103,8 @@ namespace DevOpsMetrics.Web.Controllers
             //Create deployment frequency models from each setting object
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
-                LeadTimeForChangesModel newLeadTimeForChangesModel = await serviceApiClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, 
-                        item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId, 
+                LeadTimeForChangesModel newLeadTimeForChangesModel = await serviceApiClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken,
+                        item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
                 newLeadTimeForChangesModel.ItemOrder = item.ItemOrder;
                 if (newLeadTimeForChangesModel != null)
@@ -104,8 +114,8 @@ namespace DevOpsMetrics.Web.Controllers
             }
             foreach (GitHubSettings item in githubSettings)
             {
-                LeadTimeForChangesModel newLeadTimeForChangesModel = await serviceApiClient.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret, 
-                        item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, 
+                LeadTimeForChangesModel newLeadTimeForChangesModel = await serviceApiClient.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret,
+                        item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId,
                         numberOfDays, maxNumberOfItems, useCache);
                 newLeadTimeForChangesModel.ItemOrder = item.ItemOrder;
                 if (newLeadTimeForChangesModel != null)
@@ -135,7 +145,7 @@ namespace DevOpsMetrics.Web.Controllers
             //Create MTTR models from each setting object
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
-                MeanTimeToRestoreModel newMeanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData, 
+                MeanTimeToRestoreModel newMeanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
                         item.ProductionResourceGroup, true, numberOfDays, maxNumberOfItems, useCache);
                 newMeanTimeToRestoreModel.ItemOrder = item.ItemOrder;
                 newMeanTimeToRestoreModel.IsAzureDevOps = true;
