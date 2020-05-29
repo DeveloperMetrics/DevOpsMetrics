@@ -220,17 +220,14 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             //Check each build to see if it's in storage, adding the items not in storage
             foreach (JToken item in items)
             {
-                GitHubActionsRun build = JsonConvert.DeserializeObject<GitHubActionsRun>(item.ToString());
+                GitHubCommit commit = JsonConvert.DeserializeObject<GitHubCommit>(item.ToString());
 
-                if (build.status == "completed")
+                string partitionKey = CreateGitHubPRCommitPartitionKey(owner, repo, pull_number);
+                string rowKey = commit.sha;
+                AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
+                if (await tableDA.AddItem(newItem) == true)
                 {
-                    string partitionKey = CreateGitHubPRCommitPartitionKey(owner, repo, pull_number);
-                    string rowKey = pull_number;
-                    AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
-                    if (await tableDA.AddItem(newItem) == true)
-                    {
-                        itemsAdded++;
-                    }
+                    itemsAdded++;
                 }
             }
 
