@@ -63,7 +63,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             return list;
         }
 
-        public async Task<int> UpdateAzureDevOpsBuilds(string patToken, TableStorageAuth tableStorageAuth, string tableName,
+        public async Task<int> UpdateAzureDevOpsBuilds(string patToken, TableStorageAuth tableStorageAuth,
                 string organization, string project, string branch, string buildName, string buildId,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -71,7 +71,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             JArray items = await api.GetAzureDevOpsBuildsJArray(patToken, organization, project, branch, buildId);
 
             int itemsAdded = 0;
-            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableName);
+            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableAzureDevOpsBuilds);
             //Check each build to see if it's in storage, adding the items not in storage
             foreach (JToken item in items)
             {
@@ -92,7 +92,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             return itemsAdded;
         }
 
-        public async Task<int> UpdateAzureDevOpsPullRequests(string patToken, TableStorageAuth tableStorageAuth, string tableName,
+        public async Task<int> UpdateAzureDevOpsPullRequests(string patToken, TableStorageAuth tableStorageAuth, 
                 string organization, string project, string repositoryId,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -100,7 +100,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             JArray items = await api.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repositoryId);
 
             int itemsAdded = 0;
-            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableName);
+            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableAzureDevOpsPRs);
             //Check each build to see if it's in storage, adding the items not in storage
             foreach (JToken item in items)
             {
@@ -114,7 +114,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                     itemsAdded++;
                 }
 
-                itemsAdded += await UpdateAzureDevOpsPullRequestCommits(patToken, tableStorageAuth, tableName,
+                itemsAdded += await UpdateAzureDevOpsPullRequestCommits(patToken, tableStorageAuth,
                     organization, project, repositoryId, pullRequest.PullRequestId,
                     numberOfDays, maxNumberOfItems);
             }
@@ -122,7 +122,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             return itemsAdded;
         }
 
-        public async Task<int> UpdateAzureDevOpsPullRequestCommits(string patToken, TableStorageAuth tableStorageAuth, string tableName,
+        public async Task<int> UpdateAzureDevOpsPullRequestCommits(string patToken, TableStorageAuth tableStorageAuth, 
                 string organization, string project, string repositoryId, string pullRequestId,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -130,7 +130,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             JArray items = await api.GetAzureDevOpsPullRequestCommitsJArray(patToken, organization, project, repositoryId, pullRequestId);
 
             int itemsAdded = 0;
-            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableName);
+            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableAzureDevOpsPRCommits);
             //Check each build to see if it's in storage, adding the items not in storage
             foreach (JToken item in items)
             {
@@ -148,7 +148,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             return itemsAdded;
         }
 
-        public async Task<int> UpdateGitHubActionRuns(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, string tableName,
+        public async Task<int> UpdateGitHubActionRuns(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, 
                 string owner, string repo, string branch, string workflowName, string workflowId,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -156,7 +156,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             JArray items = await api.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, branch, workflowId);
 
             int itemsAdded = 0;
-            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableName);
+            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableGitHubRuns);
             //Check each build to see if it's in storage, adding the items not in storage
             foreach (JToken item in items)
             {
@@ -176,7 +176,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             return itemsAdded;
         }
 
-        public async Task<int> UpdateGitHubActionPullRequests(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, string tableName,
+        public async Task<int> UpdateGitHubActionPullRequests(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, 
                 string owner, string repo, string branch, string workflowName, string workflowId,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -184,7 +184,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             JArray items = await api.GetGitHubPullRequestsJArray(clientId, clientSecret, owner, repo, branch);
 
             int itemsAdded = 0;
-            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableName);
+            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableGitHubPRs);
             //Check each build to see if it's in storage, adding the items not in storage
             foreach (JToken item in items)
             {
@@ -200,7 +200,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                         itemsAdded++;
                     }
 
-                    itemsAdded += await UpdateGitHubActionPullRequestCommits(clientId, clientSecret, tableStorageAuth, tableName,
+                    itemsAdded += await UpdateGitHubActionPullRequestCommits(clientId, clientSecret, tableStorageAuth,
                         owner, repo, branch, workflowName, workflowId, pr.number, numberOfDays, maxNumberOfItems);
                 }
             }
@@ -208,7 +208,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             return itemsAdded;
         }
 
-        public async Task<int> UpdateGitHubActionPullRequestCommits(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, string tableName,
+        public async Task<int> UpdateGitHubActionPullRequestCommits(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, 
                 string owner, string repo, string branch, string workflowName, string workflowId, string pull_number,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -216,7 +216,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             JArray items = await api.GetGitHubPullRequestCommitsJArray(clientId, clientSecret, owner, repo, pull_number);
 
             int itemsAdded = 0;
-            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableName);
+            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableGitHubPRCommits);
             //Check each build to see if it's in storage, adding the items not in storage
             foreach (JToken item in items)
             {

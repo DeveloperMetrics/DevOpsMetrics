@@ -62,7 +62,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateAzureDevOpsBuilds(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsBuilds, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
+            int itemsAdded = await da.UpdateAzureDevOpsBuilds(patToken, tableStorageAuth, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(itemsAdded >= 0);
@@ -98,7 +98,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateAzureDevOpsPullRequests(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsBuilds,
+            int itemsAdded = await da.UpdateAzureDevOpsPullRequests(patToken, tableStorageAuth,
                 organization, project, repositoryId, numberOfDays, maxNumberOfItems);
 
             //Assert
@@ -133,34 +133,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(itemsAdded >= 0);
         }
 
-        //[TestMethod]
-        //public async Task AzUpdatePRCommitsDAIntegrationTest()
-        //{
-        //    //Arrange
-        //    string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-        //    TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-        //    string organization = "samsmithnz";
-        //    string project = "SamLearnsAzure";
-        //    string repositoryId = "SamLearnsAzure";
-        //    int numberOfDays = 30;
-        //    int maxNumberOfItems = 20;
-
-        //    //Act
-        //    AzureTableStorageDA da = new AzureTableStorageDA();
-        //    JArray prList = da.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableAzureDevOpsPRs, da.CreateAzureDevOpsPRPartitionKey(organization, project));
-        //    int itemsAdded = 0;
-        //    foreach (JToken item in prList)
-        //    {
-        //        AzureDevOpsPR pullRequest = JsonConvert.DeserializeObject<AzureDevOpsPR>(item.ToString());
-        //        string pullRequestId = pullRequest.PullRequestId;
-        //        itemsAdded += await da.UpdateAzureDevOpsPullRequestCommits(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsPRCommits, organization, project, repositoryId, pullRequestId, numberOfDays, maxNumberOfItems);
-        //    }
-
-        //    //Assert
-        //    Assert.IsTrue(itemsAdded >= 0);
-        //}
-
-             [TestMethod]
+        [TestMethod]
         public void GHGetBuildsDAIntegrationTest()
         {
             //Arrange
@@ -194,7 +167,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateGitHubActionRuns(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubRuns,
+            int itemsAdded = await da.UpdateGitHubActionRuns(clientId, clientSecret, tableStorageAuth,
                     owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
 
             //Assert
@@ -218,7 +191,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateGitHubActionRuns(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubRuns,
+            int itemsAdded = await da.UpdateGitHubActionRuns(clientId, clientSecret, tableStorageAuth,
                     owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
 
             //Assert
@@ -258,7 +231,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubPRs, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+            int itemsAdded = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageAuth, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(itemsAdded >= 0);
@@ -281,71 +254,11 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubPRs, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+            int itemsAdded = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageAuth, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(itemsAdded >= 0);
         }
-
-        //[TestMethod]
-        //public void GHGetPRCommitsDAIntegrationTest()
-        //{
-        //    //Arrange
-        //    TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-        //    string owner = "samsmithnz";
-        //    string repo = "DevOpsMetrics";
-
-        //    //Act
-        //    AzureTableStorageDA da = new AzureTableStorageDA();
-        //    JArray prList = da.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableGitHubPRs, da.CreateGitHubPRPartitionKey(owner, repo));
-        //    int itemsAdded = 0;
-        //    foreach (JToken item in prList)
-        //    {
-        //        GitHubPR pullRequest = JsonConvert.DeserializeObject<GitHubPR>(item.ToString());
-        //        string pullRequestId = pullRequest.number;
-        //        JArray list = da.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableGitHubPRCommits, da.CreateGitHubPRCommitPartitionKey(owner, repo));
-        //        if (list.Count > 0)
-        //        {
-        //            itemsAdded = list.Count;
-        //            break;
-        //        }
-        //    }
-
-        //    //Assert
-        //    Assert.IsTrue(itemsAdded >= 0);
-        //}
-
-        //[TestMethod]
-        //public async Task GHUpdatePRCommitsDAIntegrationTest()
-        //{
-        //    //Arrange
-        //    string clientId = Configuration["AppSettings:GitHubClientId"];
-        //    string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-        //    TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-        //    string owner = "samsmithnz";
-        //    string repo = "DevOpsMetrics";
-        //    string branch = "master";
-        //    string workflowName = "DevOpsMetrics CI/CD";
-        //    string workflowId = "1162561";
-        //    int numberOfDays = 30;
-        //    int maxNumberOfItems = 20;
-
-        //    //Act
-        //    AzureTableStorageDA da = new AzureTableStorageDA();
-        //    JArray prList = da.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableGitHubPRs, da.CreateGitHubPRPartitionKey(owner, repo));
-        //    int itemsAdded = 0;
-        //    foreach (JToken item in prList)
-        //    {
-        //        GitHubPR pullRequest = JsonConvert.DeserializeObject<GitHubPR>(item.ToString());
-        //        string pullRequestId = pullRequest.number;
-        //        itemsAdded += await da.UpdateGitHubActionPullRequestCommits(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubPRCommits,
-        //                owner, repo, branch, workflowName, workflowId, pullRequestId, numberOfDays, maxNumberOfItems);
-        //    }
-
-        //    //Assert
-        //    Assert.IsTrue(itemsAdded >= 0);
-        //}
-
 
     }
 }
