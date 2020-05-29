@@ -4,6 +4,7 @@ using DevOpsMetrics.Service.Models.GitHub;
 using DevOpsMetrics.Web.Models;
 using DevOpsMetrics.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
@@ -35,6 +36,73 @@ namespace DevOpsMetrics.Web.Controllers
 
             (List<AzureDevOpsSettings>, List<GitHubSettings>) result = (azureDevOpsSettings, githubSettings);
             return View(result);
+        }
+
+        public async Task<IActionResult> Project(string rowKey)
+        {
+            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
+            int maxNumberOfItems = 20;
+            int numberOfDays = 30;
+            bool getSampleData = false;
+            bool useCache = true;
+            AzureDevOpsSettings azureDevOpsSetting = null;
+            GitHubSettings githubSetting = null;
+            ProjectViewModel model = new ProjectViewModel();
+
+            //Find the right project to load
+            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+            List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
+            List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
+            foreach (AzureDevOpsSettings item in azureDevOpsSettings)
+            {
+                if (item.RowKey == rowKey)
+                {
+                    azureDevOpsSetting = item;
+
+                    DeploymentFrequencyModel newDeploymentFrequencyModel = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken,
+                        item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId,
+                        numberOfDays, maxNumberOfItems, useCache);
+                    LeadTimeForChangesModel newLeadTimeForChangesModel = await serviceApiClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken,
+                        item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId,
+                        numberOfDays, maxNumberOfItems, useCache);
+                    MeanTimeToRestoreModel newMeanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
+                        item.ProductionResourceGroup, true, numberOfDays, maxNumberOfItems, useCache);
+                    model = new ProjectViewModel
+                    {
+                        projectName = item.Project,
+                        deploymentFrequencyModel = newDeploymentFrequencyModel,
+                        leadTimeForChangesModel = newLeadTimeForChangesModel,
+                        meanTimeToRestoreModel = newMeanTimeToRestoreModel
+                    };
+                }
+            }
+            foreach (GitHubSettings item in githubSettings)
+            {
+                if (item.RowKey == rowKey)
+                {
+                    githubSetting = item;
+
+                    DeploymentFrequencyModel newDeploymentFrequencyModel = await serviceApiClient.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret,
+                        item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId,
+                        numberOfDays, maxNumberOfItems, useCache);
+                    LeadTimeForChangesModel newLeadTimeForChangesModel = await serviceApiClient.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret,
+                        item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId,
+                        numberOfDays, maxNumberOfItems, useCache);
+                    MeanTimeToRestoreModel newMeanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
+                        item.ProductionResourceGroup, false, numberOfDays, maxNumberOfItems, useCache);
+                    model = new ProjectViewModel
+                    {
+                        projectName = item.Repo,
+                        deploymentFrequencyModel = newDeploymentFrequencyModel,
+                        leadTimeForChangesModel = newLeadTimeForChangesModel,
+                        meanTimeToRestoreModel = newMeanTimeToRestoreModel
+                    };
+                }
+            }
+
+            return View(model);
         }
 
         public async Task<IActionResult> DeploymentFrequency()
@@ -148,7 +216,6 @@ namespace DevOpsMetrics.Web.Controllers
                 MeanTimeToRestoreModel newMeanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
                         item.ProductionResourceGroup, true, numberOfDays, maxNumberOfItems, useCache);
                 newMeanTimeToRestoreModel.ItemOrder = item.ItemOrder;
-                newMeanTimeToRestoreModel.IsAzureDevOps = true;
                 if (newMeanTimeToRestoreModel != null)
                 {
                     items.Add(newMeanTimeToRestoreModel);
@@ -159,7 +226,6 @@ namespace DevOpsMetrics.Web.Controllers
                 MeanTimeToRestoreModel newMeanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
                         item.ProductionResourceGroup, false, numberOfDays, maxNumberOfItems, useCache);
                 newMeanTimeToRestoreModel.ItemOrder = item.ItemOrder;
-                newMeanTimeToRestoreModel.IsAzureDevOps = false;
                 if (newMeanTimeToRestoreModel != null)
                 {
                     items.Add(newMeanTimeToRestoreModel);
