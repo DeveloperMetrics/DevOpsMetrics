@@ -121,7 +121,7 @@ namespace DevOpsMetrics.Tests.Service
             {
                 AzureDevOpsPR pullRequest = JsonConvert.DeserializeObject<AzureDevOpsPR>(item.ToString());
                 string pullRequestId = pullRequest.PullRequestId;
-                JArray list = da.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableAzureDevOpsPRCommits, da.CreateAzureDevOpsPRCommitPartitionKey(organization, project));
+                JArray list = da.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableAzureDevOpsPRCommits, da.CreateAzureDevOpsPRCommitPartitionKey(organization, project, pullRequestId));
                 if (list.Count > 0)
                 {
                     itemsAdded = list.Count;

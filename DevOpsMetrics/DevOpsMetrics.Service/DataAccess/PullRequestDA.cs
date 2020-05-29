@@ -18,7 +18,7 @@ namespace DevOpsMetrics.Service.DataAccess
             if (useCache == true)
             {
                 AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
-                list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableAzureDevOpsPRCommits, daTableStorage.CreateAzureDevOpsPRCommitPartitionKey(organization, project));
+                list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableAzureDevOpsPRCommits, daTableStorage.CreateAzureDevOpsPRCommitPartitionKey(organization, project, pullRequestId));
             }
             else
             {
@@ -67,7 +67,7 @@ namespace DevOpsMetrics.Service.DataAccess
             if (useCache == true)
             {
                 AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
-                list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableGitHubPRCommits, daTableStorage.CreateGitHubPRCommitPartitionKey(owner, repo));
+                list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableGitHubPRCommits, daTableStorage.CreateGitHubPRCommitPartitionKey(owner, repo, pull_number));
             }
             else
             {

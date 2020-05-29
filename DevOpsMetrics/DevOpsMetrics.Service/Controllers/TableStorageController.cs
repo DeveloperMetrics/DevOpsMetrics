@@ -81,7 +81,7 @@ namespace DevOpsMetrics.Service.Controllers
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
                 AzureTableStorageDA da = new AzureTableStorageDA();
-                numberOfRecordsSaved = await da.UpdateAzureDevOpsBuilds(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsBuilds, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
+                numberOfRecordsSaved = await da.UpdateAzureDevOpsBuilds(patToken, tableStorageAuth, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
             {
@@ -121,7 +121,7 @@ namespace DevOpsMetrics.Service.Controllers
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
                 AzureTableStorageDA da = new AzureTableStorageDA();
-                numberOfRecordsSaved = await da.UpdateGitHubActionRuns(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubRuns,
+                numberOfRecordsSaved = await da.UpdateGitHubActionRuns(clientId, clientSecret, tableStorageAuth,
                         owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
@@ -148,7 +148,7 @@ namespace DevOpsMetrics.Service.Controllers
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
                 AzureTableStorageDA da = new AzureTableStorageDA();
-                numberOfRecordsSaved = await da.UpdateAzureDevOpsPullRequests(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsPRs,
+                numberOfRecordsSaved = await da.UpdateAzureDevOpsPullRequests(patToken, tableStorageAuth,
                         organization, project, repositoryId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
@@ -175,7 +175,7 @@ namespace DevOpsMetrics.Service.Controllers
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
                 AzureTableStorageDA da = new AzureTableStorageDA();
-                numberOfRecordsSaved = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubPRs,
+                numberOfRecordsSaved = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageAuth,
                         owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
@@ -202,7 +202,7 @@ namespace DevOpsMetrics.Service.Controllers
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
                 AzureTableStorageDA da = new AzureTableStorageDA();
-                numberOfRecordsSaved = await da.UpdateAzureDevOpsPullRequestCommits(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsPRCommits,
+                numberOfRecordsSaved = await da.UpdateAzureDevOpsPullRequestCommits(patToken, tableStorageAuth,
                     organization, project, repositoryId, pullRequestId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
@@ -229,7 +229,7 @@ namespace DevOpsMetrics.Service.Controllers
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
                 AzureTableStorageDA da = new AzureTableStorageDA();
-                numberOfRecordsSaved = await da.UpdateGitHubActionPullRequestCommits(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubPRCommits,
+                numberOfRecordsSaved = await da.UpdateGitHubActionPullRequestCommits(clientId, clientSecret, tableStorageAuth,
                         owner, repo, branch, workflowName, workflowId, pull_number, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
