@@ -26,14 +26,13 @@ namespace DevOpsMetrics.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            bool getSampleData = false;
-            bool useCache = true;
-            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
 
             //Get a list of settings
+            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
 
+            //Return the resultant list
             (List<AzureDevOpsSettings>, List<GitHubSettings>) result = (azureDevOpsSettings, githubSettings);
             return View(result);
         }
@@ -55,6 +54,8 @@ namespace DevOpsMetrics.Web.Controllers
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
+           
+            //Get Azure DevOps project details
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
                 if (item.RowKey == rowKey)
@@ -78,6 +79,7 @@ namespace DevOpsMetrics.Web.Controllers
                     };
                 }
             }
+            //Get GitHub project details
             foreach (GitHubSettings item in githubSettings)
             {
                 if (item.RowKey == rowKey)
