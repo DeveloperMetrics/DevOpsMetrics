@@ -25,7 +25,7 @@ namespace DevOpsMetrics.Service.DataAccess.APIAccess
         {
             Newtonsoft.Json.Linq.JArray list = null;
             //https://docs.microsoft.com/en-us/rest/api/azure/devops/git/pull%20requests/get%20pull%20requests?view=azure-devops-rest-5.1
-            string url = $"https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repositoryId}/pullrequests?api-version=5.1";
+            string url = $"https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repositoryId}/pullrequests?searchCriteria.status=completed&api-version=5.1";
             string response = await SendAzureDevOpsMessage(url, patToken);
             if (string.IsNullOrEmpty(response) == false)
             {
