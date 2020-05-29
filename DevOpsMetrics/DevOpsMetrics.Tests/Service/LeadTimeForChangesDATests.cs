@@ -112,6 +112,5 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
         }
 
-
     }
 }
