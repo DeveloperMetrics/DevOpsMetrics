@@ -10,7 +10,7 @@ All four of these metrics are based on production environments, where the value 
 
 ![High performing metrics](https://samlearnsazure.files.wordpress.com/2020/04/01highperformers.png)
 
-More information in a blog post here: https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/
+More information about high performing DevOps metrics can be found in a blog post here: https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/
 
 ## The current solution:
 We currently have 3 of the 4 metrics partly implemented, and undergoing the pilot
@@ -19,6 +19,7 @@ We currently have 3 of the 4 metrics partly implemented, and undergoing the pilo
   - Assumptions/things we can't currently measure: 
       - The build is multi-stage, and leads to a deployment in a production environment.
       - We only look at a single branch (usually the master branch), hence we ignore feature branches (as these probably aren't deploying to production')
+  - Current limitations: Only one build/run can be specified
 ![Deployment Frequency](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/DeploymentFrequencyDemo.png)
 
 - **Lead time for changes**, in both Azure DevOps and GitHub:
@@ -28,6 +29,7 @@ We currently have 3 of the 4 metrics partly implemented, and undergoing the pilo
       - We start measuring at the first commit for a branch. Development is variable that depends on the task, and doesn't help with this measurement.
       - We assume we are following a git flow process, creating feature branches and merging back to the master branch, which is deployed to production on the completion of pull requests
       - We assume that the user requires pull requests to merge work into the master branch - we are looking at all work that is not on this master branch - hence we currently only support one master branch.
+  - Current limitations: Only one repo and master branch can be specified
 ![Lead time for changes](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/LeadTimeForChanges.png)
 
 - **Time to restore service**, in Azure
@@ -36,6 +38,7 @@ We currently have 3 of the 4 metrics partly implemented, and undergoing the pilo
       - Our project is hosted in Azure
       - The production environment is contained in a single resource group
       - There are appropriate alerts setup on each of the resources, each with action groups to save the alert to Azure Storage <br />
+  - Current limitations: Only one production resource group can be specified
 ![Time to restore service](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/TimeToRestoreService.png)
 
 # Architecture

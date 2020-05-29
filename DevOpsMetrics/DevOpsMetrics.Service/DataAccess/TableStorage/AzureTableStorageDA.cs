@@ -265,8 +265,11 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
         public async Task<bool> UpdateAzureDevOpsSetting(string patToken, TableStorageAuth tableStorageAuth, string settingsTable,
              string organization, string project, string repository, string branch, string buildName, string buildId, string resourceGroupName, int itemOrder)
         {
+            string partitionKey = "AzureDevOpsSettings";
+            string rowKey = CreateAzureDevOpsSettingsPartitionKey(organization, project, repository, buildName);
             AzureDevOpsSettings settings = new AzureDevOpsSettings
             {
+                RowKey = rowKey,
                 PatToken = patToken,
                 Organization = organization,
                 Project = project,
@@ -278,8 +281,6 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                 ItemOrder = itemOrder
             };
 
-            string partitionKey = "AzureDevOpsSettings";
-            string rowKey = CreateAzureDevOpsSettingsPartitionKey(organization, project, repository, buildName);
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(settings);
             AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, json);
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, settingsTable);
@@ -289,8 +290,11 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
         public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, string settingsTable,
              string owner, string repo, string branch, string workflowName, string workflowId, string resourceGroupName, int itemOrder)
         {
+            string partitionKey = "GitHubSettings";
+            string rowKey = CreateGitHubSettingsPartitionKey(owner, repo, workflowName);
             GitHubSettings settings = new GitHubSettings
             {
+                RowKey = rowKey,
                 ClientId = clientId,
                 ClientSecret = clientSecret,
                 Owner = owner,
@@ -302,8 +306,6 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                 ItemOrder = itemOrder
             };
 
-            string partitionKey = "GitHubSettings";
-            string rowKey = CreateGitHubSettingsPartitionKey(owner, repo, workflowName);
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(settings);
             AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, json);
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, settingsTable);

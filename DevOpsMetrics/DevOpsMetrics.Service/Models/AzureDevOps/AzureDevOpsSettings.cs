@@ -8,6 +8,7 @@ namespace DevOpsMetrics.Service.Models.AzureDevOps
 {
     public class AzureDevOpsSettings
     {
+        public string RowKey { get; set; }
         public string PatToken { get; set; }
         public string Organization { get; set; }
         public string Project { get; set; }
