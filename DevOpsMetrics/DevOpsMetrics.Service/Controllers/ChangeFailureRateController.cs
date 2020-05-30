@@ -19,13 +19,13 @@ namespace DevOpsMetrics.Service.Controllers
 
         [HttpGet("GetChangeFailureRate")]
         public async Task<ChangeFailureRateModel> GetChangeFailureRate(bool getSampleData,
-            string organization, string project, string branch, string buildName, string buildId,
+            string organization_owner, string project_repo, string branch, string buildName_workflowName, string buildId_workflowId,
             int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             ChangeFailureRateModel model = new ChangeFailureRateModel();
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             ChangeFailureRateDA da = new ChangeFailureRateDA();
-            model = await da.GetChangeFailureRate(getSampleData, tableStorageAuth, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+            model = await da.GetChangeFailureRate(getSampleData, tableStorageAuth, organization_owner, project_repo, branch, buildName_workflowName, buildId_workflowId, numberOfDays, maxNumberOfItems, useCache);
             return model;
         }
 

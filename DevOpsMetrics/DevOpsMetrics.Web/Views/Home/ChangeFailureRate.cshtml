@@ -1,22 +1,22 @@
 ﻿@using DevOpsMetrics.Service.Models.Common
-@model List<DeploymentFrequencyModel>
+@model List<ChangeFailureRateModel>
 @{
-    ViewData["Title"] = "Deployment frequency";
+    ViewData["Title"] = "Change failure rate";
 }
 
 <h2>Deployment frequency</h2>
 <div class="row">
-    @foreach (DeploymentFrequencyModel item in Model)
+    @foreach (ChangeFailureRateModel item in Model)
     {
         <div class="col-md-6">
-            @await Html.PartialAsync("_Deployments", item)
+            @await Html.PartialAsync("_ChangeFailureRate", item)
         </div>
     }
 </div>
 <div class="row">
     <div class="col-md-12" style="font-size: 10pt;">
         <hr />
-        <b>Deployment frequency performance rating table</b><br />
+        <b>Change failure rate rating table</b><br />
         <table class="table table-bordered">
             <tr>
                 <th>Description</th>
@@ -26,11 +26,11 @@
                 <th>Low</th>
             </tr>
             <tr>
-                <td>For the primary application or service you work on, how often does your organization deploy code to production or release it to end users</td>
-                <td>Multiple deploys per day</td>
-                <td>Between once per day and once per week</td>
-                <td>Between once per week and once per month</td>
-                <td>Between once per month and once every six months</td>
+                <td>For the primary application or service you work on, what percentage of changes to production or releases to users result in degraded service (e.g. lead to service impariment or service outage), and subsequently required remediation (e.g. require a hotfix, rollback, fix forward, patch)</td>
+                <td>0-15%</td>
+                <td>0-15% (although we are using 16-30% for this calcuation)</td>
+                <td>0-15% (although we are using 31-45% for this calcuation)</td>
+                <td>46-60% (although we are using 46%+ for this calculation)</td>
             </tr>
         </table>
     </div>
@@ -39,12 +39,13 @@
         <hr />
         <b>FAQ</b><br />
         <b>What am I looking at?</b><br />
-        Deployment Frequency is a high performing DevOps metric to measure the number of deployments to production. This page helps us to measure it across various projects in both Azure DevOps and GitHub<br />
+        Change failure rate is a high performing DevOps metric to measure the success of deployments to production. This page helps us to measure it across various projects in both Azure DevOps and GitHub<br />
         <b>How does it work?</b><br />
-        We look at the number of successful pipeline runs<br />
+        We look at builds, and let the user indicate if it was successful or a failure. By default (currently), the build is considered a failure. (We are going to change this to success by default later)<br />
         <b>Assumptions/things we can't currently measure:</b><br />
         - The build is multi-stage, and leads to a deployment in a production environment.<br />
-        - We only look at a single branch (usually the master branch), hence we ignore feature branches (as these probably aren't deploying to production')<br />
+        - We only look at a single branch (usually the master branch), hence we ignore feature branches (as these probably aren't deploying to production)<br />
+        - The user has reviewed the build/deployment and confirmed that the production deployment was successful<br />
         <br />
     </div>
 
