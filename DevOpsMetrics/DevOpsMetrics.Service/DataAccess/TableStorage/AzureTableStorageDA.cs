@@ -71,7 +71,8 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             JArray items = await api.GetAzureDevOpsBuildsJArray(patToken, organization, project, branch, buildId);
 
             int itemsAdded = 0;
-            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableAzureDevOpsBuilds);
+            TableStorageCommonDA tableBuildsDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableAzureDevOpsBuilds);
+            TableStorageCommonDA tableChangeFailureRateDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableChangeFailureRate);
             //Check each build to see if it's in storage, adding the items not in storage
             foreach (JToken item in items)
             {
@@ -83,13 +84,26 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                     string partitionKey = CreateAzureDevOpsBuildPartitionKey(organization, project, buildName);
                     string rowKey = build.buildNumber;
                     AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
-                    if (await tableDA.AddItem(newItem) == true)
+                    if (await tableBuildsDA.AddItem(newItem) == true)
                     {
                         itemsAdded++;
                     }
-                }
 
-                //Save the build information for change failure rate
+                    //Save the build information for change failure rate
+                    ChangeFailureRateBuild newBuild = new ChangeFailureRateBuild
+                    {
+                        Id = build.id,
+                        Branch = build.sourceBranch,
+                        BuildNumber = build.buildNumber,
+                        StartTime = build.queueTime,
+                        EndTime = build.finishTime,
+                        BuildDurationPercent = build.buildDurationPercent,
+                        Status = build.status,
+                        Url = build.url
+                    };
+                    itemsAdded += await UpdateChangeFailureRate(tableChangeFailureRateDA, newBuild, CreateAzureDevOpsBuildPartitionKey(organization, project, buildName));
+
+                }
             }
 
             return itemsAdded;
@@ -159,22 +173,52 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             JArray items = await api.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, branch, workflowId);
 
             int itemsAdded = 0;
-            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableGitHubRuns);
+            TableStorageCommonDA tableBuildDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableGitHubRuns);
+            TableStorageCommonDA tableChangeFailureRateDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableChangeFailureRate);
             //Check each build to see if it's in storage, adding the items not in storage
             foreach (JToken item in items)
             {
                 GitHubActionsRun build = JsonConvert.DeserializeObject<GitHubActionsRun>(item.ToString());
 
+                //Save the build information for builds
                 if (build.status == "completed")
                 {
                     string partitionKey = CreateGitHubRunPartitionKey(owner, repo, workflowName);
                     string rowKey = build.run_number;
                     AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
-                    if (await tableDA.AddItem(newItem) == true)
+                    if (await tableBuildDA.AddItem(newItem) == true)
                     {
                         itemsAdded++;
                     }
+
+                    //Save the build information for change failure rate
+                    ChangeFailureRateBuild newBuild = new ChangeFailureRateBuild
+                    {
+                        Id = build.run_number,
+                        Branch = build.head_branch,
+                        BuildNumber = build.run_number,
+                        StartTime = build.created_at,
+                        EndTime = build.updated_at,
+                        BuildDurationPercent = build.buildDurationPercent,
+                        Status = build.status,
+                        Url = build.html_url
+                    };
+                    itemsAdded += await UpdateChangeFailureRate(tableChangeFailureRateDA, newBuild, CreateGitHubRunPartitionKey(owner, repo, workflowName));
                 }
+
+            }
+            return itemsAdded;
+        }
+
+        private async Task<int> UpdateChangeFailureRate(TableStorageCommonDA tableChangeFailureRateDA, ChangeFailureRateBuild newBuild, string partitionKey)
+        {
+            int itemsAdded = 0;
+            string rowKey = newBuild.Id;
+            string json = JsonConvert.SerializeObject(newBuild);
+            AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, json);
+            if (await tableChangeFailureRateDA.AddItem(newItem) == true)
+            {
+                itemsAdded++;
             }
             return itemsAdded;
         }
@@ -281,7 +325,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                 ItemOrder = itemOrder
             };
 
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(settings);
+            string json = JsonConvert.SerializeObject(settings);
             AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, json);
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, settingsTable);
             return await tableDA.SaveItem(newItem);
@@ -306,7 +350,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                 ItemOrder = itemOrder
             };
 
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(settings);
+            string json = JsonConvert.SerializeObject(settings);
             AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, json);
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, settingsTable);
             return await tableDA.SaveItem(newItem);

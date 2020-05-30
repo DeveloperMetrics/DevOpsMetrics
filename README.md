@@ -9,6 +9,7 @@ All four of these metrics are based on production environments, where the value 
 - Change failure rate: after a production deployment, was it successful? Or did we need to deploy a fix/rollback?
 
 ![High performing metrics](https://samlearnsazure.files.wordpress.com/2020/04/01highperformers.png)
+(Chart from page 18 of https://services.google.com/fh/files/misc/state-of-devops-2019.pdf)
 
 More information about high performing DevOps metrics can be found in a blog post here: https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/
 
