@@ -20,7 +20,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 //Pull the events from the table storage
                 AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
-                Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableMTTRRaw, resourceGroup);
+                Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableMTTR, resourceGroup);
                 List<AzureAlert> alerts = new List<AzureAlert>();
                 //List<AzureAlert> alerts = JsonConvert.DeserializeObject<List<AzureAlert>>(list.ToString());
                 foreach (JToken item in list)

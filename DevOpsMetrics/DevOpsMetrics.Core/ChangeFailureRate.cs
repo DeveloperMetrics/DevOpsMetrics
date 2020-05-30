@@ -65,5 +65,31 @@ namespace DevOpsMetrics.Core
         {
             return ChangeFailureRateList.Where(x => x.Key > DateTime.Now.AddDays(-numberOfDays)).ToList();
         }
+
+        public string GetChangeFailureRateRating(float changeFailureRate)
+        {
+            string rating = "";
+            if (changeFailureRate < 0f)
+            {
+                rating = "None";
+            }
+            else if (changeFailureRate <= 0.15f) //0-15%
+            {
+                rating = "Elite";
+            }
+            else if (changeFailureRate <= 0.30f) //0-15% (not a typo, changing to <=30%)
+            {
+                rating = "High";
+            }
+            else if (changeFailureRate < 0.46f) //0-15% (not a typo, changing to <=46%)
+            {
+                rating = "Medium";
+            }
+            else if (changeFailureRate >= 46f)// 46-60% (but effectively 46+)
+            {
+                rating = "Low";
+            }
+            return rating;
+        }
     }
 }

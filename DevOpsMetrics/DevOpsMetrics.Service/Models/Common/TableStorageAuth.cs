@@ -30,7 +30,7 @@ namespace DevOpsMetrics.Service.Models.Common
         public string TableGitHubPRs { get; set; }
         public string TableGitHubPRCommits { get; set; }
         public string TableChangeFailureRate { get; set; }
-        public string TableMTTRRaw { get; set; }
+        public string TableMTTR { get; set; }
 
         public override string ToString()
         {

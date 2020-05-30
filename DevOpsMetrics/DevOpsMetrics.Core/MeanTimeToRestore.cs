@@ -70,28 +70,28 @@ namespace DevOpsMetrics.Core
             float weeklyDeployment = 24f * 7f;
             float monthlyDeployment = 24f * 30f;
 
-            string result = "";
+            string rating = "";
             if (meanTimeToRestoreInHours <= 0f) //no rating
             {
-                result = "None";
+                rating = "None";
             }
             else if (meanTimeToRestoreInHours < hourlyRestoration) //less than one hour
             {
-                result = "Elite";
+                rating = "Elite";
             }
             else if (meanTimeToRestoreInHours < dailyDeployment) //less than one week
             {
-                result = "High";
+                rating = "High";
             }
             else if (meanTimeToRestoreInHours > weeklyDeployment && meanTimeToRestoreInHours <= monthlyDeployment) //between one week and one month
             {
-                result = "Medium";
+                rating = "Medium";
             }
             else if (meanTimeToRestoreInHours > monthlyDeployment) //more than one month
             {
-                result = "Low";
+                rating = "Low";
             }
-            return result;
+            return rating;
         }
     }
 }

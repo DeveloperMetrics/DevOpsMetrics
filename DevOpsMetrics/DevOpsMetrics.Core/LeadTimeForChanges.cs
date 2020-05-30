@@ -68,28 +68,28 @@ namespace DevOpsMetrics.Core
             float weeklyDeployment = 24f * 7f;
             float monthlyDeployment = 24f * 30f;
 
-            string result = "";
+            string rating = "";
             if (leadTimeForChangesInHours <= 0f) //no rating
             {
-                result = "None";
+                rating = "None";
             }
             else if (leadTimeForChangesInHours < dailyDeployment) //less than one day
             {
-                result = "Elite";
+                rating = "Elite";
             }
             else if (leadTimeForChangesInHours >= dailyDeployment && leadTimeForChangesInHours <= weeklyDeployment) //between one day and one week
             {
-                result = "High";
+                rating = "High";
             }
             else if (leadTimeForChangesInHours > weeklyDeployment && leadTimeForChangesInHours <= monthlyDeployment) //between one week and one month
             {
-                result = "Medium";
+                rating = "Medium";
             }
             else if (leadTimeForChangesInHours > monthlyDeployment) //more than one month
             {
-                result = "Low";
+                rating = "Low";
             }
-            return result;
+            return rating;
         }
     }
 }
