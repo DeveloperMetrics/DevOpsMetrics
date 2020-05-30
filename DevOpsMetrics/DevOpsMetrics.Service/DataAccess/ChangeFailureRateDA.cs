@@ -70,8 +70,8 @@ namespace DevOpsMetrics.Service.DataAccess
                     IsAzureDevOps = isAzureDevOps,
                     DeploymentName = buildName_workflowName,
                     ChangeFailureRateBuildList = GetSampleBuilds(),
-                    ChangeFailureRateMetric = 8f / 10f,
-                    ChangeFailureRateMetricDescription = changeFailureRate.GetChangeFailureRateRating(8f / 10f)
+                    ChangeFailureRateMetric = 2f / 10f,
+                    ChangeFailureRateMetricDescription = changeFailureRate.GetChangeFailureRateRating(2f / 10f)
                 };
                 return model;
             }
