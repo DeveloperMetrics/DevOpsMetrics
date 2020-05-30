@@ -29,8 +29,8 @@ namespace DevOpsMetrics.Service.Models.Common
         public string TableGitHubRuns { get; set; }
         public string TableGitHubPRs { get; set; }
         public string TableGitHubPRCommits { get; set; }
-        public string TableMMTRSummary { get; set; }
-        public string TableMMTRRaw { get; set; }
+        public string TableChangeFailureRate { get; set; }
+        public string TableMTTRRaw { get; set; }
 
         public override string ToString()
         {
