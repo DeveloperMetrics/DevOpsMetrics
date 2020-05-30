@@ -92,10 +92,9 @@ namespace DevOpsMetrics.Tests.Service
             //Assert
             Assert.IsTrue(model != null);
             Assert.IsTrue(model.IsAzureDevOps == isAzureDevOps);
-            Assert.IsTrue(model.DeploymentName != "");
-            Assert.IsTrue(model.ChangeFailureRateMetric == 0f);
+            Assert.IsTrue(model.DeploymentName == buildName);
+            Assert.IsTrue(model.ChangeFailureRateMetric >= 0f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
-            Assert.AreEqual("Elite", model.ChangeFailureRateMetricDescription);
         }
     
         [TestCategory("ControllerTest")]
@@ -104,12 +103,10 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
+            string repo = "SamsFeatureFlags";
             string branch = "master";
-            string workflowName = "samsfeatureflags CI/CD";
+            string workflowName = "SamsFeatureFlags CI/CD";
             string workflowId = "108084";
             bool isAzureDevOps = false;
             int numberOfDays = 7;
@@ -136,17 +133,15 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = false;
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
+            string repo = "SamsFeatureFlags"; 
             string branch = "master";
-            string workflowName = "samsfeatureflags CI/CD";
+            string workflowName = "SamsFeatureFlags CI/CD";
             string workflowId = "108084";
             bool isAzureDevOps = false;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            bool useCache = false;
+            bool useCache = true;
             ChangeFailureRateController controller = new ChangeFailureRateController(Configuration);
 
             //Act
@@ -156,10 +151,10 @@ namespace DevOpsMetrics.Tests.Service
             //Assert
             Assert.IsTrue(model != null);
             Assert.IsTrue(model.IsAzureDevOps == isAzureDevOps);
-            Assert.IsTrue(model.DeploymentName != "");
-            Assert.IsTrue(model.ChangeFailureRateMetric == 0f);
+            Assert.IsTrue(model.DeploymentName == workflowName);
+            Assert.IsTrue(model.ChangeFailureRateMetric >= 0f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
-            Assert.AreEqual("Elite", model.ChangeFailureRateMetricDescription);
+
         }
 
     }
