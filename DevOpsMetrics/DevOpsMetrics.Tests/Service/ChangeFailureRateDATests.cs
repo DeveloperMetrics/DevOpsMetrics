@@ -54,32 +54,35 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreNotEqual("Elite", model.ChangeFailureRateMetricDescription);
         }
 
-        //[TestMethod]
-        //public async Task GHDeploymentFrequencyDAIntegrationTest()
-        //{
-        //    //Arrange
-        //    bool getSampleData = true;
-        //    string clientId = Configuration["AppSettings:GitHubClientId"];
-        //    string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-        //    TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-        //    string owner = "samsmithnz";
-        //    string repo = "DevOpsMetrics";
-        //    string branch = "master";
-        //    string workflowName = "DevOpsMetrics CI/CD";
-        //    string workflowId = "1162561";
-        //    int numberOfDays = 30;
-        //    int maxNumberOfItems = 20;
-        //    bool useCache = true;
+        [TestMethod]
+        public async Task GHDeploymentFrequencyDAIntegrationTest()
+        {
+            //Arrange
+            bool getSampleData = true;
+            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            string owner = "samsmithnz";
+            string repo = "DevOpsMetrics";
+            string branch = "master";
+            string workflowName = "DevOpsMetrics CI/CD";
+            string workflowId = "1162561";
+            bool isAzureDevOps = false;
+            int numberOfDays = 30;
+            int maxNumberOfItems = 20;
+            bool useCache = true;
 
-        //    //Act
-        //    DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-        //    DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, tableStorageAuth, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+            //Act
+            ChangeFailureRateDA da = new ChangeFailureRateDA();
+            ChangeFailureRateModel model = await da.GetChangeFailureRate(getSampleData, tableStorageAuth,
+               isAzureDevOps, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
 
-        //    //Assert
-        //    Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
-        //    Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription));
-        //    Assert.AreNotEqual("Unknown", model.DeploymentsPerDayMetricDescription);
-        //}
+            //Assert
+            Assert.IsTrue(model != null);
+            Assert.IsTrue(model.IsAzureDevOps == isAzureDevOps);
+            Assert.IsTrue(model.DeploymentName != "");
+            Assert.IsTrue(model.ChangeFailureRateMetric > 0f);
+            Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
+            Assert.AreNotEqual("Elite", model.ChangeFailureRateMetricDescription);
+        }
 
     }
 }
