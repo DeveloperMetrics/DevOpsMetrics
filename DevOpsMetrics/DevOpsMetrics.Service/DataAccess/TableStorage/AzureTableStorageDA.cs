@@ -315,7 +315,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             string rowKey = monitoringEvent.RowKey;
             string json = monitoringEvent.RequestBody;
             AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, json);
-            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableMMTRRaw);
+            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableMTTRRaw);
             return await tableDA.SaveItem(newItem);
         }
 

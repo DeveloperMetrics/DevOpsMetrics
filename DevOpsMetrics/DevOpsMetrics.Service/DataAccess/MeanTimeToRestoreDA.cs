@@ -20,7 +20,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 //Pull the events from the table storage
                 AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
-                Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableMMTRRaw, resourceGroup);
+                Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableMTTRRaw, resourceGroup);
                 List<AzureAlert> alerts = new List<AzureAlert>();
                 //List<AzureAlert> alerts = JsonConvert.DeserializeObject<List<AzureAlert>>(list.ToString());
                 foreach (JToken item in list)
@@ -116,12 +116,12 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 //Return sample data
                 MeanTimeToRestore mttr = new MeanTimeToRestore();
-                float averageMTTR = CalculateMTTRDuration(GetSampleMMTREvents(resourceGroup));
+                float averageMTTR = CalculateMTTRDuration(GetSampleMTTREvents(resourceGroup));
                 MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
                 {
                     IsAzureDevOps = isAzureDevOps,
                     ResourceGroup = resourceGroup,
-                    MeanTimeToRestoreEvents = GetSampleMMTREvents(resourceGroup),
+                    MeanTimeToRestoreEvents = GetSampleMTTREvents(resourceGroup),
                     MTTRAverageDurationInHours = averageMTTR,
                     MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(averageMTTR)
                 };
@@ -144,7 +144,7 @@ namespace DevOpsMetrics.Service.DataAccess
             return average;
         }
 
-        private List<MeanTimeToRestoreEvent> GetSampleMMTREvents(string resourceGroup)
+        private List<MeanTimeToRestoreEvent> GetSampleMTTREvents(string resourceGroup)
         {
             List<MeanTimeToRestoreEvent> results = new List<MeanTimeToRestoreEvent>();
             MeanTimeToRestoreEvent item1 = new MeanTimeToRestoreEvent
