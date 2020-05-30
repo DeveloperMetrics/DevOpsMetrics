@@ -4,9 +4,10 @@ namespace DevOpsMetrics.Web.Models
 {
     public class ProjectViewModel
     {
-        public string projectName { get; set; }
-        public DeploymentFrequencyModel deploymentFrequencyModel { get; set; }
-        public LeadTimeForChangesModel leadTimeForChangesModel { get; set; }
-        public MeanTimeToRestoreModel meanTimeToRestoreModel { get; set; }
+        public string ProjectName { get; set; }
+        public DeploymentFrequencyModel DeploymentFrequency { get; set; }
+        public LeadTimeForChangesModel LeadTimeForChanges { get; set; }
+        public MeanTimeToRestoreModel MeanTimeToRestore { get; set; }
+        public ChangeFailureRateModel ChangeFailureRate { get; set; }
     }
 }

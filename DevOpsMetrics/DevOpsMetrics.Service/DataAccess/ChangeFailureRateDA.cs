@@ -57,7 +57,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     IsAzureDevOps = isAzureDevOps,
                     DeploymentName = buildName_workflowName,                    
-                    ChangeFailureRateBuildList = null,
+                    ChangeFailureRateBuildList = new List<ChangeFailureRateBuild>(),
                     ChangeFailureRateMetric = 0f,
                     ChangeFailureRateMetricDescription = changeFailureRate.GetChangeFailureRateRating(0f)
                 };
