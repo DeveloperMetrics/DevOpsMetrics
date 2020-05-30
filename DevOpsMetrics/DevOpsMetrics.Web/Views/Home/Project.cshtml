@@ -4,18 +4,18 @@
     ViewData["Title"] = "Project summary";
 }
 
-<h2>@Model.projectName project summary</h2>
+<h2>@Model.ProjectName project summary</h2>
 <div class="row">
     <div class="col-md-6">
-        @await Html.PartialAsync("_Deployments", Model.deploymentFrequencyModel)
+        @await Html.PartialAsync("_Deployments", Model.DeploymentFrequency)
     </div>
     <div class="col-md-6">
-        @await Html.PartialAsync("_LeadTimeForChanges", Model.leadTimeForChangesModel)
+        @await Html.PartialAsync("_LeadTimeForChanges", Model.LeadTimeForChanges)
     </div>
     <div class="col-md-6">
-        @await Html.PartialAsync("_MeanTimeToRestore", Model.meanTimeToRestoreModel)
+        @await Html.PartialAsync("_MeanTimeToRestore", Model.MeanTimeToRestore)
     </div>
     <div class="col-md-6">
-        @await Html.PartialAsync("_ChangeFailureRate")
+        @await Html.PartialAsync("_ChangeFailureRate", Model.ChangeFailureRate)
     </div>
 </div>

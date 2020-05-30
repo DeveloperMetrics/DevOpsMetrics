@@ -1,9 +1,48 @@
-﻿
+﻿@using DevOpsMetrics.Service.Models.Common
+@model ChangeFailureRateModel
+
+@{
+    string widgetImageName = "";
+    string widgetName = "";
+    if (Model.IsAzureDevOps == true)
+    {
+        widgetImageName = "AzureDevops-icon.png";
+        widgetName = "Azure DevOps";
+    }
+    else
+    {
+        widgetImageName = "GitHub-icon.png";
+        widgetName = "GitHub";
+    }
+}
+
 @* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
 <div class="chartContainer vertical flat">
-    <h4></h4>
+    <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.DeploymentName</h4>
+    @if (Model.ChangeFailureRateBuildList.Count == 0)
+    {
         <div style="height:100px">
-            <span>The change failure rate metric has not yet been implemented</span>
+            <span>There is no data to display for this period</span>
         </div>
+    }
+    else
+    {
+        foreach (Build item in Model.ChangeFailureRateBuildList)
+        {
+            <a href="@item.Url" target="_blank">
+                <div class="progress-bar">
+                    <div class="progress-track" title="Build @item.Id @item.Status @item.TimeSinceBuildCompleted (ran for @item.BuildDurationInMinutesAndSeconds)">
+                        <div class="progress-fill @item.Status">
+                            <span>@item.BuildDurationPercent%</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        }
+    }
 </div>
 <br />
+<div class="metricSpan">
+    <b>Change failure rate:</b> @Model.ChangeFailureRateMetric.ToString("0.00%") <br />
+    <b>Change failure rate ranking:</b> @Model.ChangeFailureRateMetricDescription
+</div>

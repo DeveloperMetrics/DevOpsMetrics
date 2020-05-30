@@ -10,43 +10,32 @@ namespace DevOpsMetrics.Tests.Core
     [TestClass]
     public class MeanTimeToRestoreTests
     {
+
         [TestMethod]
-        public void MeanTimeToRestoreSingleOneDayTest()
+        public void MTTREliteTest()
         {
             //Arrange
             MeanTimeToRestore metrics = new MeanTimeToRestore();
             string pipelineName = "TestPipeline.CI";
-            int numberOfDays = 1;
+            int numberOfDays = 7;
             List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = new List<KeyValuePair<DateTime, TimeSpan>>
             {
-                new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, new TimeSpan(0, 45, 0))
+                new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-3), new TimeSpan(0, 40, 0)),
+                new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-4), new TimeSpan(0, 50, 0)),
             };
 
             //Act
             float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, pipelineName, numberOfDays);
+            string rating = metrics.GetMeanTimeToRestoreRating(result);
 
             //Assert
-            Assert.AreEqual(45f, result);
+            Assert.AreEqual(0.75f, result);
+            Assert.AreEqual("Elite", rating);
         }
 
-        [TestMethod]
-        public void MeanTimeToRestoreNullOneDayTest()
-        {
-            //Arrange
-            MeanTimeToRestore metrics = new MeanTimeToRestore();
-            string pipelineName = "TestPipeline.CI";
-            int numberOfDays = 1;
-            List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = null;
-
-            //Act
-            float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, pipelineName, numberOfDays);
-
-            //Assert
-            Assert.AreEqual(0f, result);
-        }
 
         [TestMethod]
-        public void MeanTimeToRestoreFiveSevenDaysTest()
+        public void MTTRHighTest()
         {
             //Arrange
             MeanTimeToRestore metrics = new MeanTimeToRestore();
@@ -64,9 +53,71 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, pipelineName, numberOfDays);
+            string rating = metrics.GetMeanTimeToRestoreRating(result);
 
             //Assert
-            Assert.AreEqual(63f, result);
+            Assert.AreEqual(1.05f, result);
+            Assert.AreEqual("High", rating);
+        }
+
+        [TestMethod]
+        public void MTTRMediumTest()
+        {
+            //Arrange
+            MeanTimeToRestore metrics = new MeanTimeToRestore();
+            string pipelineName = "TestPipeline.CI";
+            int numberOfDays = 1;
+            List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = new List<KeyValuePair<DateTime, TimeSpan>>
+            {
+                new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, new TimeSpan(25, 0, 0))
+            };
+
+            //Act
+            float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, pipelineName, numberOfDays);
+            string rating = metrics.GetMeanTimeToRestoreRating(result);
+
+            //Assert
+            Assert.AreEqual(25f, result);
+            Assert.AreEqual("Medium", rating);
+        }
+
+        [TestMethod]
+        public void MTTRLowTest()
+        {
+            //Arrange
+            MeanTimeToRestore metrics = new MeanTimeToRestore();
+            string pipelineName = "TestPipeline.CI";
+            int numberOfDays = 1;
+            List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = new List<KeyValuePair<DateTime, TimeSpan>>
+            {
+                new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, new TimeSpan(170, 0, 0))
+            };
+
+            //Act
+            float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, pipelineName, numberOfDays);
+            string rating = metrics.GetMeanTimeToRestoreRating(result);
+
+            //Assert
+            Assert.AreEqual(170f, result);
+            Assert.AreEqual("Low", rating);
+        }
+
+        [TestMethod]
+        public void MTTRNoneTest()
+        {
+            //Arrange
+            MeanTimeToRestore metrics = new MeanTimeToRestore();
+            string pipelineName = "TestPipeline.CI";
+            int numberOfDays = 1;
+            List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = null;
+
+            //Act
+            float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, pipelineName, numberOfDays);
+            string rating = metrics.GetMeanTimeToRestoreRating(result);
+
+            //Assert
+            Assert.AreEqual(0f, result);
+            Assert.AreEqual("None", rating);
         }
 
     }

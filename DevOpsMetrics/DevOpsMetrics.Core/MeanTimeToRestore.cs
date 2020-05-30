@@ -38,21 +38,21 @@ namespace DevOpsMetrics.Core
         {
             List<KeyValuePair<DateTime, TimeSpan>> items = GetMeanTimeToRestore(resourceName, numberOfDays);
 
-            //Count up the total MTTR minutes
-            double totalMinutes = 0;
+            //Count up the total MTTR hours
+            double totalHours = 0;
             foreach (KeyValuePair<DateTime, TimeSpan> item in items)
             {
-                totalMinutes += item.Value.TotalMinutes;
+                totalHours += item.Value.TotalHours;
             }
 
             //Calculate mean time for changes per day
             float meanTimeForChanges = 0;
             if (items.Count > 0)
             {
-                meanTimeForChanges = (float)totalMinutes / (float)items.Count;
+                meanTimeForChanges = (float)totalHours / (float)items.Count;
             }
 
-            meanTimeForChanges = (float)Math.Round((double)meanTimeForChanges, 4);
+            meanTimeForChanges = (float)Math.Round((double)meanTimeForChanges, 2);
 
             return meanTimeForChanges;
         }
@@ -68,30 +68,29 @@ namespace DevOpsMetrics.Core
             float hourlyRestoration = 1f;
             float dailyDeployment = 24f;
             float weeklyDeployment = 24f * 7f;
-            float monthlyDeployment = 24f * 30f;
 
-            string result = "";
+            string rating = "";
             if (meanTimeToRestoreInHours <= 0f) //no rating
             {
-                result = "None";
+                rating = "None";
             }
             else if (meanTimeToRestoreInHours < hourlyRestoration) //less than one hour
             {
-                result = "Elite";
+                rating = "Elite";
             }
-            else if (meanTimeToRestoreInHours < dailyDeployment) //less than one week
+            else if (meanTimeToRestoreInHours < dailyDeployment) //less than one day (orginal calculation says < 1 day, but this scales)
             {
-                result = "High";
+                rating = "High";
             }
-            else if (meanTimeToRestoreInHours > weeklyDeployment && meanTimeToRestoreInHours <= monthlyDeployment) //between one week and one month
+            else if (meanTimeToRestoreInHours < weeklyDeployment) //between one day and one week (orginal calculation says < 1 day, but this scales)
             {
-                result = "Medium";
+                rating = "Medium";
             }
-            else if (meanTimeToRestoreInHours > monthlyDeployment) //more than one month
+            else if (meanTimeToRestoreInHours > weeklyDeployment) //more than one week
             {
-                result = "Low";
+                rating = "Low";
             }
-            return result;
+            return rating;
         }
     }
 }

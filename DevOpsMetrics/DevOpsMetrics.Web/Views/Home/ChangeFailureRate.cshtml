@@ -1,0 +1,52 @@
+﻿@using DevOpsMetrics.Service.Models.Common
+@model List<ChangeFailureRateModel>
+@{
+    ViewData["Title"] = "Change failure rate";
+}
+
+<h2>Deployment frequency</h2>
+<div class="row">
+    @foreach (ChangeFailureRateModel item in Model)
+    {
+        <div class="col-md-6">
+            @await Html.PartialAsync("_ChangeFailureRate", item)
+        </div>
+    }
+</div>
+<div class="row">
+    <div class="col-md-12" style="font-size: 10pt;">
+        <hr />
+        <b>Change failure rate rating table</b><br />
+        <table class="table table-bordered">
+            <tr>
+                <th>Description</th>
+                <th>Elite</th>
+                <th>High</th>
+                <th>Medium</th>
+                <th>Low</th>
+            </tr>
+            <tr>
+                <td>For the primary application or service you work on, what percentage of changes to production or releases to users result in degraded service (e.g. lead to service impariment or service outage), and subsequently required remediation (e.g. require a hotfix, rollback, fix forward, patch)</td>
+                <td>0-15%</td>
+                <td>0-15% (although we are using 16-30% for this calcuation)</td>
+                <td>0-15% (although we are using 31-45% for this calcuation)</td>
+                <td>46-60% (although we are using 46%+ for this calculation)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="col-md-12" style="font-size: 10pt;">
+        <hr />
+        <b>FAQ</b><br />
+        <b>What am I looking at?</b><br />
+        Change failure rate is a high performing DevOps metric to measure the success of deployments to production. This page helps us to measure it across various projects in both Azure DevOps and GitHub<br />
+        <b>How does it work?</b><br />
+        We look at builds, and let the user indicate if it was successful or a failure. By default (currently), the build is considered a failure. (We are going to change this to success by default later)<br />
+        <b>Assumptions/things we can't currently measure:</b><br />
+        - The build is multi-stage, and leads to a deployment in a production environment.<br />
+        - We only look at a single branch (usually the master branch), hence we ignore feature branches (as these probably aren't deploying to production)<br />
+        - The user has reviewed the build/deployment and confirmed that the production deployment was successful<br />
+        <br />
+    </div>
+
+</div>
