@@ -10,9 +10,9 @@ namespace DevOpsMetrics.Tests.Core
     [TestClass]
     public class ChangeFailureRateTests
     {
-     
+
         [TestMethod]
-        public void ChangeFailureRateSingleOneDayTest()
+        public void ChangeFailureRateEliteTest()
         {
             //Arrange
             ChangeFailureRate metrics = new ChangeFailureRate();
@@ -20,34 +20,24 @@ namespace DevOpsMetrics.Tests.Core
             int numberOfDays = 1;
             List<KeyValuePair<DateTime, bool>> changeFailureRateList = new List<KeyValuePair<DateTime, bool>>
             {
-                new KeyValuePair<DateTime, bool>(DateTime.Now, true)
+                new KeyValuePair<DateTime, bool>(DateTime.Now, true),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(1), true),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(2), true),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(3), true),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(4), true)
             };
 
             //Act
-            float result = metrics.ProcessLeadTimeForChanges(changeFailureRateList, pipelineName, numberOfDays);
-
-            //Assert
-            Assert.AreEqual(1f, result);
-        }
-
-        [TestMethod]
-        public void ChangeFailureRateNullOneDayTest()
-        {
-            //Arrange
-            ChangeFailureRate metrics = new ChangeFailureRate();
-            string pipelineName = "TestPipeline.CI";
-            int numberOfDays = 1;
-            List<KeyValuePair<DateTime, bool>> changeFailureRateList = null;
-
-            //Act
-            float result = metrics.ProcessLeadTimeForChanges(changeFailureRateList, pipelineName, numberOfDays);
+            float result = metrics.ProcessChangeFailureRate(changeFailureRateList, pipelineName, numberOfDays);
+            string rating = metrics.GetChangeFailureRateRating(result);
 
             //Assert
             Assert.AreEqual(0f, result);
+            Assert.AreEqual("Elite", rating);
         }
 
         [TestMethod]
-        public void ChangeFailureRateFiveSevenDaysTest()
+        public void ChangeFailureRateHighTest()
         {
             //Arrange
             ChangeFailureRate metrics = new ChangeFailureRate();
@@ -56,18 +46,87 @@ namespace DevOpsMetrics.Tests.Core
             List<KeyValuePair<DateTime, bool>> changeFailureRateList = new List<KeyValuePair<DateTime, bool>>
             {
                 new KeyValuePair<DateTime, bool>(DateTime.Now, true),
-                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(-1), false),
-                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(-2), true),
-                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(-3), false),
-                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(-4), true),
-                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(-14), true) //this record should be out of range
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(1), true),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(2), true),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(3), true),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(4), false)
             };
 
             //Act
-            float result = metrics.ProcessLeadTimeForChanges(changeFailureRateList, pipelineName, numberOfDays);
+            float result = metrics.ProcessChangeFailureRate(changeFailureRateList, pipelineName, numberOfDays);
+            string rating = metrics.GetChangeFailureRateRating(result);
+
+            //Assert
+            Assert.AreEqual(0.2f, result);
+            Assert.AreEqual("High", rating);
+        }
+
+        [TestMethod]
+        public void ChangeFailureRateMediumTest()
+        {
+            //Arrange
+            ChangeFailureRate metrics = new ChangeFailureRate();
+            string pipelineName = "TestPipeline.CI";
+            int numberOfDays = 7;
+            List<KeyValuePair<DateTime, bool>> changeFailureRateList = new List<KeyValuePair<DateTime, bool>>
+            {
+                new KeyValuePair<DateTime, bool>(DateTime.Now, true),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(1), true),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(2), true),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(3), false),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(4), false)
+            };
+
+            //Act
+            float result = metrics.ProcessChangeFailureRate(changeFailureRateList, pipelineName, numberOfDays);
+            string rating = metrics.GetChangeFailureRateRating(result);
+
+            //Assert
+            Assert.AreEqual(0.4f, result);
+            Assert.AreEqual("Medium", rating);
+        }
+
+        [TestMethod]
+        public void ChangeFailureRateLowTest()
+        {
+            //Arrange
+            ChangeFailureRate metrics = new ChangeFailureRate();
+            string pipelineName = "TestPipeline.CI";
+            int numberOfDays = 7;
+            List<KeyValuePair<DateTime, bool>> changeFailureRateList = new List<KeyValuePair<DateTime, bool>>
+            {
+                new KeyValuePair<DateTime, bool>(DateTime.Now, true),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(1), true),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(2), false),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(3), false),
+                new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(4), false)
+            };
+
+            //Act
+            float result = metrics.ProcessChangeFailureRate(changeFailureRateList, pipelineName, numberOfDays);
+            string rating = metrics.GetChangeFailureRateRating(result);
 
             //Assert
             Assert.AreEqual(0.6f, result);
+            Assert.AreEqual("Low", rating);
+        }
+
+        [TestMethod]
+        public void ChangeFailureRateNullTest()
+        {
+            //Arrange
+            ChangeFailureRate metrics = new ChangeFailureRate();
+            string pipelineName = "TestPipeline.CI";
+            int numberOfDays = 1;
+            List<KeyValuePair<DateTime, bool>> changeFailureRateList = null;
+
+            //Act
+            float result = metrics.ProcessChangeFailureRate(changeFailureRateList, pipelineName, numberOfDays);
+            string rating = metrics.GetChangeFailureRateRating(result);
+
+            //Assert
+            Assert.AreEqual(-1f, result);
+            Assert.AreEqual("None", rating);
         }
 
     }

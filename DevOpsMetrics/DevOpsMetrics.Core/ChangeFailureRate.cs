@@ -16,7 +16,7 @@ namespace DevOpsMetrics.Core
             ChangeFailureRateList = new List<KeyValuePair<DateTime, bool>>();
         }
 
-        public float ProcessLeadTimeForChanges(List<KeyValuePair<DateTime, bool>> changeFailureRateList, string pipelineName, int numberOfDays)
+        public float ProcessChangeFailureRate(List<KeyValuePair<DateTime, bool>> changeFailureRateList, string pipelineName, int numberOfDays)
         {
             if (changeFailureRateList != null)
             {
@@ -38,24 +38,30 @@ namespace DevOpsMetrics.Core
         {
             List<KeyValuePair<DateTime, bool>> items = GetChangeFailureRate(pipelineName, numberOfDays);
 
-            //Count up all successful changes
-            int successfulCount = 0;
-            foreach (KeyValuePair<DateTime, bool> item in items)
-            {
-                if (item.Value == true)
-                {
-                    successfulCount++;
-                }
-            }
-
-            //Calculate the change failure rate per day
             float changeFailureRate = 0;
-            if (items.Count > 0)
+            if (items == null || items.Count == 0)
             {
-                changeFailureRate = (float)successfulCount / (float)items.Count;
+                 changeFailureRate = -1;
             }
+            else
+            {
+                //Count up all successful changes
+                int failureCount = 0;
+                foreach (KeyValuePair<DateTime, bool> item in items)
+                {
+                    if (item.Value == false)
+                    {
+                        failureCount++;
+                    }
+                }
 
-            changeFailureRate = (float)Math.Round((double)changeFailureRate, 4);
+                //Calculate the change failure rate per day
+                if (items.Count > 0)
+                {
+                    changeFailureRate = (float)failureCount / (float)items.Count;
+                }
+                changeFailureRate = (float)Math.Round((double)changeFailureRate, 4);
+            }
 
             return changeFailureRate;
         }
@@ -85,7 +91,7 @@ namespace DevOpsMetrics.Core
             {
                 rating = "Medium";
             }
-            else if (changeFailureRate >= 46f)// 46-60% (but effectively 46+)
+            else if (changeFailureRate >= 0.46f)// 46-60% (but effectively 46+)
             {
                 rating = "Low";
             }
