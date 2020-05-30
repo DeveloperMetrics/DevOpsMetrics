@@ -77,6 +77,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             {
                 AzureDevOpsBuild build = JsonConvert.DeserializeObject<AzureDevOpsBuild>(item.ToString());
 
+                //Save the build information for builds
                 if (build.status == "completed")
                 {
                     string partitionKey = CreateAzureDevOpsBuildPartitionKey(organization, project, buildName);
@@ -87,6 +88,8 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                         itemsAdded++;
                     }
                 }
+
+                //Save the build information for change failure rate
             }
 
             return itemsAdded;
