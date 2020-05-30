@@ -239,6 +239,47 @@ namespace DevOpsMetrics.Web.Controllers
             return View(items);
         }
 
+        public async Task<IActionResult> ChangeFailureRate()
+        {
+            int maxNumberOfItems = 20;
+            int numberOfDays = 60;
+            bool getSampleData = true;
+            bool useCache = true;
+            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+            List<ChangeFailureRateModel> items = new List<ChangeFailureRateModel>();
+
+            //Get a list of settings
+            List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
+            List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
+
+            //Create MTTR models from each setting object
+            foreach (AzureDevOpsSettings item in azureDevOpsSettings)
+            {
+                ChangeFailureRateModel changeFailureRateModel = await serviceApiClient.GetChangeFailureRate(getSampleData,
+                        true, item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId, 
+                        numberOfDays, maxNumberOfItems, useCache);
+                //changeFailureRateModel.ItemOrder = item.ItemOrder;
+                if (changeFailureRateModel != null)
+                {
+                    items.Add(changeFailureRateModel);
+                }
+            }
+            foreach (GitHubSettings item in githubSettings)
+            {
+                ChangeFailureRateModel changeFailureRateModel = await serviceApiClient.GetChangeFailureRate(getSampleData,
+                        false, item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems, useCache);
+                //changeFailureRateModel.ItemOrder = item.ItemOrder;
+                if (changeFailureRateModel != null)
+                {
+                    items.Add(changeFailureRateModel);
+                }
+            }
+
+            //sort the list
+            //items = items.OrderBy(o => o.ItemOrder).ToList();
+            return View(items);
+        }
+
         public IActionResult Privacy()
         {
             return View();

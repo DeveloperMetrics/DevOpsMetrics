@@ -55,6 +55,12 @@ namespace DevOpsMetrics.Web.Services
             return await GetResponse<MeanTimeToRestoreModel>(Client, url);
         }
 
+        public async Task<ChangeFailureRateModel> GetChangeFailureRate(bool getSampleData, bool isAzureDevOps, string organization_owner, string project_repo, string branch, string buildName_workflowName, string buildId_workflowId, int numberOfDays, int maxNumberOfItems, bool useCache)
+        {
+            string url = $"/api/ChangeFailureRate/GetChangeFailureRate?getSampleData={getSampleData}&isAzureDevOps={isAzureDevOps}&organization_owner={organization_owner}&project_repo={project_repo}&branch={branch}&buildName_workflowName={buildName_workflowName}&buildId_workflowId={buildId_workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&useCache={useCache}";
+            return await GetResponse<ChangeFailureRateModel>(Client, url);
+        }
+
         public async Task<List<AzureDevOpsSettings>> GetAzureDevOpsSettings()
         {
             string url = $"/api/TableStorage/GetAzureDevOpsSettings";
