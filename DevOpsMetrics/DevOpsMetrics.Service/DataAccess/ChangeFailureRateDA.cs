@@ -1,7 +1,9 @@
 ﻿using DevOpsMetrics.Core;
+using DevOpsMetrics.Service.DataAccess.TableStorage;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,48 +20,27 @@ namespace DevOpsMetrics.Service.DataAccess
             ChangeFailureRate changeFailureRate = new ChangeFailureRate();
             if (getSampleData == false)
             {
-                float changeFailureRateMetric;
-                 //List<Build> builds = new List<Build>();
-                //BuildsDA buildsDA = new BuildsDA();
+                              //Gets a list of change failure rate builds
+                AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
+                Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableChangeFailureRate, daTableStorage.CreateAzureDevOpsBuildPartitionKey(organization_owner, project_repo, buildId_workflowId));
+                List<ChangeFailureRateBuild> builds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
+                List<KeyValuePair<DateTime, bool>> dateList = new List<KeyValuePair<DateTime, bool>>();
 
-                ////Gets a list of builds
-                //List<AzureDevOpsBuild> azureDevOpsBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageAuth, organization, project, branch, buildName, buildId, useCache);
-                //List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
-
-                ////Translate the Azure DevOps build to a generic build object
-                //foreach (AzureDevOpsBuild item in azureDevOpsBuilds)
-                //{
-                //    //Only return completed builds on the target branch
-                //    if (item.status == "completed" && item.sourceBranch == branch && item.queueTime > DateTime.Now.AddDays(-numberOfDays))
-                //    {
-                //        KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.queueTime, item.queueTime);
-                //        dateList.Add(newItem);
-                //        builds.Add(
-                //            new Build
-                //            {
-                //                Id = item.id,
-                //                Branch = item.sourceBranch,
-                //                BuildNumber = item.buildNumber,
-                //                StartTime = item.queueTime,
-                //                EndTime = item.finishTime,
-                //                BuildDurationPercent = item.buildDurationPercent,
-                //                Status = item.status,
-                //                Url = item.url
-                //            }
-                //        );
-                //    }
-                //}
-
-                //deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
-
+                //Build the date list and then generate the change failure rate metric
+                foreach (ChangeFailureRateBuild item in builds)
+                {
+                    KeyValuePair<DateTime, bool> newItem = new KeyValuePair<DateTime, bool>(item.StartTime, item.DeploymentWasSuccessful);
+                    dateList.Add(newItem);
+                }
+                float changeFailureRateMetric = changeFailureRate.ProcessChangeFailureRate(dateList, "", numberOfDays);
 
                 ChangeFailureRateModel model = new ChangeFailureRateModel
                 {
                     IsAzureDevOps = isAzureDevOps,
                     DeploymentName = buildName_workflowName,                    
-                    ChangeFailureRateBuildList = new List<ChangeFailureRateBuild>(),
-                    ChangeFailureRateMetric = 0f,
-                    ChangeFailureRateMetricDescription = changeFailureRate.GetChangeFailureRateRating(0f)
+                    ChangeFailureRateBuildList = builds,
+                    ChangeFailureRateMetric = changeFailureRateMetric,
+                    ChangeFailureRateMetricDescription = changeFailureRate.GetChangeFailureRateRating(changeFailureRateMetric)
                 };
                 return model;
             }

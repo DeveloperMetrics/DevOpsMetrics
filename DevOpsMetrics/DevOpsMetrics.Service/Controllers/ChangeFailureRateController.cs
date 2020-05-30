@@ -26,8 +26,7 @@ namespace DevOpsMetrics.Service.Controllers
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             ChangeFailureRateDA da = new ChangeFailureRateDA();
             model = await da.GetChangeFailureRate(getSampleData, tableStorageAuth, isAzureDevOps,
-                organization_owner, project_repo, branch, buildName_workflowName, buildId_workflowId, 
-                
+                organization_owner, project_repo, branch, buildName_workflowName, buildId_workflowId,                
                 numberOfDays, maxNumberOfItems, useCache);
             return model;
         }
