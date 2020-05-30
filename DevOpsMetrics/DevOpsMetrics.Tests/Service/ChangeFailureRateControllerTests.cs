@@ -104,9 +104,9 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             bool getSampleData = true;
             string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
+            string repo = "SamsFeatureFlags";
             string branch = "master";
-            string workflowName = "samsfeatureflags CI/CD";
+            string workflowName = "SamsFeatureFlags CI/CD";
             string workflowId = "108084";
             bool isAzureDevOps = false;
             int numberOfDays = 7;
@@ -134,9 +134,9 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             bool getSampleData = false;
             string owner = "samsmithnz";
-            string repo = "samsfeatureflags";
+            string repo = "SamsFeatureFlags"; 
             string branch = "master";
-            string workflowName = "samsfeatureflags CI/CD";
+            string workflowName = "SamsFeatureFlags CI/CD";
             string workflowId = "108084";
             bool isAzureDevOps = false;
             int numberOfDays = 7;
