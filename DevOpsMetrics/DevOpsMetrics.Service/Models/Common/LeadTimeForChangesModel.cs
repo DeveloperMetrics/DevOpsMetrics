@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace DevOpsMetrics.Service.Models.Common
 {
@@ -7,7 +6,7 @@ namespace DevOpsMetrics.Service.Models.Common
     {
         public string ProjectName { get; set; }
         public int NumberOfDays { get; set; }
-        public bool IsAzureDevOps { get; set; }
+        public DevOpsPlatform TargetDevOpsPlatform { get; set; }
         public List<PullRequestModel> PullRequests { get; set; }
         public float AverageBuildHours { get; set; }
         public float AveragePullRequestHours { get; set; }

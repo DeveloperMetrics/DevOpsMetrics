@@ -138,7 +138,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
                     ProjectName = project,
-                    IsAzureDevOps = true,
+                    TargetDevOpsPlatform = DevOpsPlatform.AzureDevOps,
                     AverageBuildHours = averageBuildHours,
                     AveragePullRequestHours = leadTime,
                     LeadTimeForChangesMetric = leadTime + averageBuildHours,
@@ -154,12 +154,12 @@ namespace DevOpsMetrics.Service.DataAccess
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
                     ProjectName = project,
-                    IsAzureDevOps = true,
+                    TargetDevOpsPlatform = DevOpsPlatform.AzureDevOps,
                     AverageBuildHours = 1f,
                     AveragePullRequestHours = 12f,
                     LeadTimeForChangesMetric = 12f + 1f,
                     LeadTimeForChangesMetricDescription = "Elite",
-                    PullRequests = CreatePullRequestsSample(true),
+                    PullRequests = CreatePullRequestsSample(DevOpsPlatform.AzureDevOps),
                     NumberOfDays = numberOfDays
                 };
 
@@ -299,7 +299,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
                     ProjectName = repo,
-                    IsAzureDevOps = false,
+                    TargetDevOpsPlatform = DevOpsPlatform.GitHub,
                     AverageBuildHours = averageBuildHours,
                     AveragePullRequestHours = leadTime,
                     LeadTimeForChangesMetric = leadTime + averageBuildHours,
@@ -315,12 +315,12 @@ namespace DevOpsMetrics.Service.DataAccess
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
                     ProjectName = repo,
-                    IsAzureDevOps = false,
+                    TargetDevOpsPlatform = DevOpsPlatform.GitHub,
                     AverageBuildHours = 1f,
                     AveragePullRequestHours = 20.33f,
                     LeadTimeForChangesMetric = 20.33f + 1f,
                     LeadTimeForChangesMetricDescription = "Elite",
-                    PullRequests = CreatePullRequestsSample(false),
+                    PullRequests = CreatePullRequestsSample(DevOpsPlatform.GitHub),
                     NumberOfDays = numberOfDays
                 };
 
@@ -328,18 +328,22 @@ namespace DevOpsMetrics.Service.DataAccess
             }
         }
 
-        private List<PullRequestModel> CreatePullRequestsSample(bool isAzureDevOps)
+        private List<PullRequestModel> CreatePullRequestsSample(DevOpsPlatform targetDevOpsPlatform)
         {
             List<PullRequestModel> prs = new List<PullRequestModel>();
 
             string url;
-            if (isAzureDevOps)
+            if (targetDevOpsPlatform == DevOpsPlatform.AzureDevOps)
             {
                 url = $"https://dev.azure.com/testOrganization/testProject/_git/testRepo/pullrequest/123";
             }
-            else
+            else if (targetDevOpsPlatform == DevOpsPlatform.GitHub)
             {
                 url = $"https://github.com/testOwner/testRepo/pull/123";
+            }
+            else
+            {
+                url = "";
             }
 
             prs.Add(

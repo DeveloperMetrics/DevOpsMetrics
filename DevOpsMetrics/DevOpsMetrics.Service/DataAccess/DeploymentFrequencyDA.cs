@@ -55,7 +55,7 @@ namespace DevOpsMetrics.Service.DataAccess
 
                 DeploymentFrequencyModel model = new DeploymentFrequencyModel
                 {
-                    IsAzureDevOps = true,
+                    TargetDevOpsPlatform = DevOpsPlatform.AzureDevOps,
                     DeploymentName = buildName,
                     BuildList = utility.GetLastNItems(builds, maxNumberOfItems),
                     DeploymentsPerDayMetric = deploymentsPerDay,
@@ -68,7 +68,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 DeploymentFrequencyModel model = new DeploymentFrequencyModel
                 {
-                    IsAzureDevOps = true,
+                    TargetDevOpsPlatform = DevOpsPlatform.AzureDevOps,
                     DeploymentName = buildName,
                     BuildList = utility.GetLastNItems(GetSampleAzureDevOpsBuilds(), maxNumberOfItems),
                     DeploymentsPerDayMetric = 10f,
@@ -122,7 +122,7 @@ namespace DevOpsMetrics.Service.DataAccess
 
                     DeploymentFrequencyModel model = new DeploymentFrequencyModel
                     {
-                        IsAzureDevOps = false,
+                        TargetDevOpsPlatform = DevOpsPlatform.GitHub,
                         DeploymentName = workflowName,
                         BuildList = utility.GetLastNItems(builds, maxNumberOfItems),
                         DeploymentsPerDayMetric = deploymentsPerDay,
@@ -140,7 +140,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 DeploymentFrequencyModel model = new DeploymentFrequencyModel
                 {
-                    IsAzureDevOps = false,
+                    TargetDevOpsPlatform = DevOpsPlatform.GitHub,
                     DeploymentName = workflowName,
                     BuildList = utility.GetLastNItems(GetSampleGitHubBuilds(), maxNumberOfItems),
                     DeploymentsPerDayMetric = 10f,

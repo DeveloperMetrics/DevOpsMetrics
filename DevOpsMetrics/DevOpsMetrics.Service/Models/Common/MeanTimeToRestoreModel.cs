@@ -1,12 +1,10 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace DevOpsMetrics.Service.Models.Common
 {
     public class MeanTimeToRestoreModel
     {
-        public bool IsAzureDevOps { get; set; }
+        public DevOpsPlatform TargetDevOpsPlatform { get; set; }
         public string ResourceGroup { get; set; }
         public List<MeanTimeToRestoreEvent> MeanTimeToRestoreEvents { get; set; }
         public float MTTRAverageDurationInHours { get; set; }

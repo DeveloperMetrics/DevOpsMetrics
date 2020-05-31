@@ -31,18 +31,18 @@ namespace DevOpsMetrics.Tests.Service
             bool getSampleData = true;
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string resourceGroup = "DevOpsMetricsTestRG";
-            bool isAzureDevOps = true;
+            DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             bool useCache = true;
 
             //Act
             MeanTimeToRestoreDA da = new MeanTimeToRestoreDA();
-            MeanTimeToRestoreModel model = await da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth, resourceGroup, isAzureDevOps, numberOfDays, maxNumberOfItems, useCache);
+            MeanTimeToRestoreModel model = await da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth, resourceGroup, targetDevOpsPlatform, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
-            Assert.IsTrue(model.IsAzureDevOps == isAzureDevOps);
+            Assert.IsTrue(model.TargetDevOpsPlatform == targetDevOpsPlatform);
             Assert.AreEqual(resourceGroup, model.ResourceGroup);
             Assert.IsTrue(model.MeanTimeToRestoreEvents.Count > 0);
             Assert.IsTrue(model.MTTRAverageDurationInHours > 0);
@@ -56,18 +56,18 @@ namespace DevOpsMetrics.Tests.Service
             bool getSampleData = false;
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string resourceGroup = "SamLearnsAzureProd";
-            bool isAzureDevOps = true;
+            DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             bool useCache = true;
 
             //Act
             MeanTimeToRestoreDA da = new MeanTimeToRestoreDA();
-            MeanTimeToRestoreModel model = await da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth, resourceGroup, isAzureDevOps, numberOfDays, maxNumberOfItems, useCache);
+            MeanTimeToRestoreModel model = await da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth, resourceGroup, targetDevOpsPlatform, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
-            Assert.IsTrue(model.IsAzureDevOps == isAzureDevOps);
+            Assert.IsTrue(model.TargetDevOpsPlatform == targetDevOpsPlatform);
             Assert.AreEqual(resourceGroup, model.ResourceGroup);
             Assert.IsTrue(model.MeanTimeToRestoreEvents.Count > 0);
             Assert.IsTrue(model.MTTRAverageDurationInHours > 0);
@@ -81,18 +81,18 @@ namespace DevOpsMetrics.Tests.Service
             bool getSampleData = false;
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string resourceGroup = "SamLearnsAzureProd";
-            bool isAzureDevOps = true;
+            DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             bool useCache = true;
 
             //Act
             MeanTimeToRestoreDA da = new MeanTimeToRestoreDA();
-            MeanTimeToRestoreModel model = await da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth, resourceGroup, isAzureDevOps, numberOfDays, maxNumberOfItems, useCache);
+            MeanTimeToRestoreModel model = await da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth, resourceGroup, targetDevOpsPlatform, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
-            Assert.IsTrue(model.IsAzureDevOps == isAzureDevOps);
+            Assert.IsTrue(model.TargetDevOpsPlatform == targetDevOpsPlatform);
             Assert.AreEqual(resourceGroup, model.ResourceGroup);
             Assert.IsTrue(model.MeanTimeToRestoreEvents.Count > 0);
             Assert.IsTrue(model.MTTRAverageDurationInHours > 0);
