@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Generate a 500 error";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Generate a 500 error by dividing by zero</p>
+
+@{
+    int var1 = 2;
+    int var2 = 0;
+    int var3 = var1 / var2;
+}
