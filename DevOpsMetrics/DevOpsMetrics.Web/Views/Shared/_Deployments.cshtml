@@ -4,15 +4,20 @@
 @{
     string widgetImageName = "";
     string widgetName = "";
-    if (Model.IsAzureDevOps == true)
+    if (Model.TargetDevOpsPlatform == DevOpsPlatform.AzureDevOps)
     {
         widgetImageName = "AzureDevops-icon.png";
         widgetName = "Azure DevOps";
     }
-    else
+    else if (Model.TargetDevOpsPlatform == DevOpsPlatform.GitHub)
     {
         widgetImageName = "GitHub-icon.png";
         widgetName = "GitHub";
+    }
+    else
+    {
+        widgetImageName = "Unknown-icon.png";
+        widgetName = "Unknown";
     }
 }
 

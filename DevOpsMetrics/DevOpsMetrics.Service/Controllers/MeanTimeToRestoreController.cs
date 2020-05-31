@@ -18,11 +18,14 @@ namespace DevOpsMetrics.Service.Controllers
 
         [HttpGet("GetAzureMeanTimeToRestore")]
         public async Task<MeanTimeToRestoreModel> GetAzureMeanTimeToRestore(bool getSampleData,
-            string resourceGroup, bool isAzureDevOps, int numberOfDays, int maxNumberOfItems, bool useCache)
+            DevOpsPlatform targetDevOpsPlatform, string resourceGroup,
+            int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             MeanTimeToRestoreDA da = new MeanTimeToRestoreDA();
-            MeanTimeToRestoreModel model = await da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth, resourceGroup, isAzureDevOps, numberOfDays, maxNumberOfItems, useCache);
+            MeanTimeToRestoreModel model = await da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth,
+                targetDevOpsPlatform, resourceGroup,
+                numberOfDays, maxNumberOfItems, useCache);
             return model;
         }
 

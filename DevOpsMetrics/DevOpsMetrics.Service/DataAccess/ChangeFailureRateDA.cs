@@ -13,7 +13,7 @@ namespace DevOpsMetrics.Service.DataAccess
     public class ChangeFailureRateDA
     {
         public async Task<ChangeFailureRateModel> GetChangeFailureRate(bool getSampleData, TableStorageAuth tableStorageAuth,
-                bool isAzureDevOps, string organization_owner, string project_repo, string branch, string buildName_workflowName, string buildId_workflowId,
+                DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName, string buildId_workflowId,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             ListUtility<Build> utility = new ListUtility<Build>();
@@ -36,7 +36,7 @@ namespace DevOpsMetrics.Service.DataAccess
 
                 ChangeFailureRateModel model = new ChangeFailureRateModel
                 {
-                    IsAzureDevOps = isAzureDevOps,
+                    TargetDevOpsPlatform = targetDevOpsPlatform,
                     DeploymentName = buildName_workflowName,                    
                     ChangeFailureRateBuildList = builds,
                     ChangeFailureRateMetric = changeFailureRateMetric,
@@ -48,7 +48,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 ChangeFailureRateModel model = new ChangeFailureRateModel
                 {
-                    IsAzureDevOps = isAzureDevOps,
+                    TargetDevOpsPlatform = targetDevOpsPlatform,
                     DeploymentName = buildName_workflowName,
                     ChangeFailureRateBuildList = GetSampleBuilds(),
                     ChangeFailureRateMetric = 2f / 10f,

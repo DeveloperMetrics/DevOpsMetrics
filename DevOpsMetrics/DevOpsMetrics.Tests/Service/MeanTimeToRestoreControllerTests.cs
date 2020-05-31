@@ -45,18 +45,18 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             bool getSampleData = true;
             string resourceGroupName = "SamLearnsAzureProd";
-            bool isAzureDevOps = true;
+            DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = false;
             MeanTimeToRestoreController controller = new MeanTimeToRestoreController(Configuration);
 
             //Act
-            MeanTimeToRestoreModel model = await controller.GetAzureMeanTimeToRestore(getSampleData, resourceGroupName, isAzureDevOps, numberOfDays, maxNumberOfItems, useCache);
+            MeanTimeToRestoreModel model = await controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
-            Assert.AreEqual(isAzureDevOps, model.IsAzureDevOps);
+            Assert.AreEqual(targetDevOpsPlatform, model.TargetDevOpsPlatform);
             Assert.AreEqual(resourceGroupName, model.ResourceGroup);
             Assert.IsTrue(model.MeanTimeToRestoreEvents.Count > 0);
             Assert.IsTrue(model.MeanTimeToRestoreEvents[0].Name == "Name1");
@@ -78,18 +78,18 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             bool getSampleData = false;
             string resourceGroupName = "SamLearnsAzureProd";
-            bool isAzureDevOps = true;
+            DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             bool useCache = true;
             MeanTimeToRestoreController controller = new MeanTimeToRestoreController(Configuration);
 
             //Act
-            MeanTimeToRestoreModel model = await controller.GetAzureMeanTimeToRestore(getSampleData, resourceGroupName, isAzureDevOps, numberOfDays, maxNumberOfItems, useCache);
+            MeanTimeToRestoreModel model = await controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
-            Assert.AreEqual(isAzureDevOps, model.IsAzureDevOps);
+            Assert.AreEqual(targetDevOpsPlatform, model.TargetDevOpsPlatform);
             Assert.AreEqual(resourceGroupName, model.ResourceGroup);
             Assert.IsTrue(model.MeanTimeToRestoreEvents.Count > 0);
             Assert.IsTrue(model.MeanTimeToRestoreEvents[0].Name != "");

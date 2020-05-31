@@ -69,9 +69,9 @@ namespace DevOpsMetrics.Web.Controllers
                         item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
                     MeanTimeToRestoreModel meanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
-                        item.ProductionResourceGroup, true, numberOfDays, maxNumberOfItems, useCache);
+                       DevOpsPlatform.AzureDevOps, item.ProductionResourceGroup, numberOfDays, maxNumberOfItems, useCache);
                     ChangeFailureRateModel changeFailureRateModel = await serviceApiClient.GetChangeFailureRate(getSampleData,
-                        true, item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId,
+                        DevOpsPlatform.AzureDevOps, item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
                     model = new ProjectViewModel
                     {
@@ -97,9 +97,9 @@ namespace DevOpsMetrics.Web.Controllers
                         item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId,
                         numberOfDays, maxNumberOfItems, useCache);
                     MeanTimeToRestoreModel meanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
-                        item.ProductionResourceGroup, false, numberOfDays, maxNumberOfItems, useCache);
+                        DevOpsPlatform.GitHub, item.ProductionResourceGroup, numberOfDays, maxNumberOfItems, useCache);
                     ChangeFailureRateModel changeFailureRateModel = await serviceApiClient.GetChangeFailureRate(getSampleData,
-                        false, item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId,
+                        DevOpsPlatform.GitHub, item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId,
                         numberOfDays, maxNumberOfItems, useCache);
                     model = new ProjectViewModel
                     {
@@ -224,7 +224,7 @@ namespace DevOpsMetrics.Web.Controllers
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
                 MeanTimeToRestoreModel newMeanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
-                        item.ProductionResourceGroup, true, numberOfDays, maxNumberOfItems, useCache);
+                        DevOpsPlatform.AzureDevOps, item.ProductionResourceGroup, numberOfDays, maxNumberOfItems, useCache);
                 newMeanTimeToRestoreModel.ItemOrder = item.ItemOrder;
                 if (newMeanTimeToRestoreModel != null)
                 {
@@ -234,7 +234,7 @@ namespace DevOpsMetrics.Web.Controllers
             foreach (GitHubSettings item in githubSettings)
             {
                 MeanTimeToRestoreModel newMeanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
-                        item.ProductionResourceGroup, false, numberOfDays, maxNumberOfItems, useCache);
+                        DevOpsPlatform.GitHub, item.ProductionResourceGroup, numberOfDays, maxNumberOfItems, useCache);
                 newMeanTimeToRestoreModel.ItemOrder = item.ItemOrder;
                 if (newMeanTimeToRestoreModel != null)
                 {
@@ -264,7 +264,7 @@ namespace DevOpsMetrics.Web.Controllers
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
                 ChangeFailureRateModel changeFailureRateModel = await serviceApiClient.GetChangeFailureRate(getSampleData,
-                        true, item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId,
+                        DevOpsPlatform.AzureDevOps, item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
                 //changeFailureRateModel.ItemOrder = item.ItemOrder;
                 if (changeFailureRateModel != null)
@@ -275,7 +275,7 @@ namespace DevOpsMetrics.Web.Controllers
             foreach (GitHubSettings item in githubSettings)
             {
                 ChangeFailureRateModel changeFailureRateModel = await serviceApiClient.GetChangeFailureRate(getSampleData,
-                        false, item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems, useCache);
+                        DevOpsPlatform.GitHub, item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems, useCache);
                 //changeFailureRateModel.ItemOrder = item.ItemOrder;
                 if (changeFailureRateModel != null)
                 {

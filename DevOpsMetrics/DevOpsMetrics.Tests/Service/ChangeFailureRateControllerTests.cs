@@ -49,7 +49,7 @@ namespace DevOpsMetrics.Tests.Service
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             string buildId = "3673"; //SamLearnsAzure.CI
-            bool isAzureDevOps = true;
+            DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = false;
@@ -57,11 +57,11 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             ChangeFailureRateModel model = await controller.GetChangeFailureRate(getSampleData, 
-                isAzureDevOps, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+                targetDevOpsPlatform, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
-            Assert.IsTrue(model.IsAzureDevOps == isAzureDevOps);
+            Assert.IsTrue(model.TargetDevOpsPlatform == targetDevOpsPlatform);
             Assert.IsTrue(model.DeploymentName != "");
             Assert.IsTrue(model.ChangeFailureRateMetric > 0f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
@@ -79,7 +79,7 @@ namespace DevOpsMetrics.Tests.Service
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             string buildId = "3673"; //SamLearnsAzure.CI
-            bool isAzureDevOps = true;
+            DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             bool useCache = true;
@@ -87,11 +87,11 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             ChangeFailureRateModel model = await controller.GetChangeFailureRate(getSampleData,
-                isAzureDevOps, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+                targetDevOpsPlatform, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
-            Assert.IsTrue(model.IsAzureDevOps == isAzureDevOps);
+            Assert.IsTrue(model.TargetDevOpsPlatform == targetDevOpsPlatform);
             Assert.IsTrue(model.DeploymentName == buildName);
             Assert.IsTrue(model.ChangeFailureRateMetric >= 0f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
@@ -108,7 +108,7 @@ namespace DevOpsMetrics.Tests.Service
             string branch = "master";
             string workflowName = "SamsFeatureFlags CI/CD";
             string workflowId = "108084";
-            bool isAzureDevOps = false;
+            DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
@@ -116,11 +116,11 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             ChangeFailureRateModel model = await controller.GetChangeFailureRate(getSampleData,
-               isAzureDevOps, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+               targetDevOpsPlatform, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
-            Assert.IsTrue(model.IsAzureDevOps == isAzureDevOps);
+            Assert.IsTrue(model.TargetDevOpsPlatform == targetDevOpsPlatform);
             Assert.IsTrue(model.DeploymentName != "");
             Assert.IsTrue(model.ChangeFailureRateMetric > 0f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
@@ -138,7 +138,7 @@ namespace DevOpsMetrics.Tests.Service
             string branch = "master";
             string workflowName = "SamsFeatureFlags CI/CD";
             string workflowId = "108084";
-            bool isAzureDevOps = false;
+            DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
@@ -146,11 +146,11 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             ChangeFailureRateModel model = await controller.GetChangeFailureRate(getSampleData,
-               isAzureDevOps, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+               targetDevOpsPlatform, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
-            Assert.IsTrue(model.IsAzureDevOps == isAzureDevOps);
+            Assert.IsTrue(model.TargetDevOpsPlatform == targetDevOpsPlatform);
             Assert.IsTrue(model.DeploymentName == workflowName);
             Assert.IsTrue(model.ChangeFailureRateMetric >= 0f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));

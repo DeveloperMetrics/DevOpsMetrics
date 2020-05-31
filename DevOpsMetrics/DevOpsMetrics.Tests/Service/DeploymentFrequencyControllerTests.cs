@@ -59,7 +59,7 @@ namespace DevOpsMetrics.Tests.Service
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
-            Assert.AreEqual(true, model.IsAzureDevOps);
+            Assert.AreEqual(DevOpsPlatform.AzureDevOps, model.TargetDevOpsPlatform);
             Assert.AreEqual(buildName, model.DeploymentName);
             Assert.AreEqual(10f, model.DeploymentsPerDayMetric);
             Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
@@ -97,7 +97,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model != null);
             if (model.RateLimitHit == false)
             {
-                Assert.AreEqual(true, model.IsAzureDevOps);
+                Assert.AreEqual(DevOpsPlatform.AzureDevOps, model.TargetDevOpsPlatform);
                 Assert.AreEqual(buildName, model.DeploymentName);
                 Assert.IsTrue(model.DeploymentsPerDayMetric >= 0f);
                 Assert.IsTrue(string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription) == false);
@@ -141,7 +141,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model != null);
             if (model.RateLimitHit == false)
             {
-                Assert.AreEqual(true, model.IsAzureDevOps);
+                Assert.AreEqual(DevOpsPlatform.AzureDevOps, model.TargetDevOpsPlatform);
                 Assert.AreEqual(buildName, model.DeploymentName);
                 Assert.IsTrue(model.DeploymentsPerDayMetric >= 0f);
                 Assert.IsTrue(string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription) == false);
@@ -181,7 +181,7 @@ namespace DevOpsMetrics.Tests.Service
             DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
-            Assert.AreEqual(false, model.IsAzureDevOps);
+            Assert.AreEqual(DevOpsPlatform.GitHub, model.TargetDevOpsPlatform);
             Assert.AreEqual(workflowName, model.DeploymentName);
             Assert.AreEqual(10f, model.DeploymentsPerDayMetric);
             Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
@@ -220,7 +220,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model != null);
             if (model.RateLimitHit == false)
             {
-                Assert.AreEqual(false, model.IsAzureDevOps);
+                Assert.AreEqual(DevOpsPlatform.GitHub, model.TargetDevOpsPlatform);
                 Assert.AreEqual(workflowName, model.DeploymentName);
                 Assert.IsTrue(model.DeploymentsPerDayMetric >= 0f);
                 Assert.IsTrue(string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription) == false);
@@ -263,7 +263,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model != null);
             if (model.RateLimitHit == false)
             {
-                Assert.AreEqual(false, model.IsAzureDevOps);
+                Assert.AreEqual(DevOpsPlatform.GitHub, model.TargetDevOpsPlatform);
                 Assert.AreEqual(workflowName, model.DeploymentName);
                 Assert.IsTrue(model.DeploymentsPerDayMetric >= 0f);
                 Assert.IsTrue(string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription) == false);
@@ -305,7 +305,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model != null);
             if (model.RateLimitHit == false)
             {
-                Assert.AreEqual(true, model.IsAzureDevOps);
+                Assert.AreEqual(DevOpsPlatform.AzureDevOps, model.TargetDevOpsPlatform);
                 Assert.AreEqual(buildName, model.DeploymentName);
                 Assert.IsTrue(model.DeploymentsPerDayMetric >= 0f);
                 Assert.IsTrue(string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription) == false);
@@ -345,7 +345,7 @@ namespace DevOpsMetrics.Tests.Service
             DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
-            Assert.AreEqual(false, model.IsAzureDevOps);
+            Assert.AreEqual(DevOpsPlatform.GitHub, model.TargetDevOpsPlatform);
             Assert.AreEqual(workflowName, model.DeploymentName);
             Assert.AreEqual(10f, model.DeploymentsPerDayMetric);
             Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
@@ -383,7 +383,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model != null);
             if (model.RateLimitHit == false)
             {
-                Assert.AreEqual(true, model.IsAzureDevOps);
+                Assert.AreEqual(DevOpsPlatform.AzureDevOps, model.TargetDevOpsPlatform);
                 Assert.AreEqual(buildName, model.DeploymentName);
                 Assert.IsTrue(model.DeploymentsPerDayMetric >= 0f);
                 Assert.IsTrue(string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription) == false);
@@ -426,7 +426,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model != null);
             if (model.RateLimitHit == false)
             {
-                Assert.AreEqual(false, model.IsAzureDevOps);
+                Assert.AreEqual(DevOpsPlatform.GitHub, model.TargetDevOpsPlatform);
                 Assert.AreEqual(workflowName, model.DeploymentName);
                 Assert.IsTrue(model.DeploymentsPerDayMetric >= 0f);
                 Assert.IsTrue(string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription) == false);
