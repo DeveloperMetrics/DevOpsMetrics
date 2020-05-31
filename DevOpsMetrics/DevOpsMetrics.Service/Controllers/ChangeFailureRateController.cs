@@ -18,8 +18,8 @@ namespace DevOpsMetrics.Service.Controllers
         }
 
         [HttpGet("GetChangeFailureRate")]
-        public async Task<ChangeFailureRateModel> GetChangeFailureRate(bool getSampleData, DevOpsPlatform targetDevOpsPlatform,
-            string organization_owner, string project_repo, string branch, string buildName_workflowName, string buildId_workflowId,
+        public async Task<ChangeFailureRateModel> GetChangeFailureRate(bool getSampleData, 
+            DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName, string buildId_workflowId,
             int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             ChangeFailureRateModel model = new ChangeFailureRateModel();

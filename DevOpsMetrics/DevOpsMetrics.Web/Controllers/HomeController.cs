@@ -69,7 +69,7 @@ namespace DevOpsMetrics.Web.Controllers
                         item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
                     MeanTimeToRestoreModel meanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
-                        item.ProductionResourceGroup,DevOpsPlatform.AzureDevOps , numberOfDays, maxNumberOfItems, useCache);
+                       DevOpsPlatform.AzureDevOps, item.ProductionResourceGroup, numberOfDays, maxNumberOfItems, useCache);
                     ChangeFailureRateModel changeFailureRateModel = await serviceApiClient.GetChangeFailureRate(getSampleData,
                         DevOpsPlatform.AzureDevOps, item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
@@ -97,7 +97,7 @@ namespace DevOpsMetrics.Web.Controllers
                         item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId,
                         numberOfDays, maxNumberOfItems, useCache);
                     MeanTimeToRestoreModel meanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
-                        item.ProductionResourceGroup, DevOpsPlatform.GitHub, numberOfDays, maxNumberOfItems, useCache);
+                        DevOpsPlatform.GitHub, item.ProductionResourceGroup, numberOfDays, maxNumberOfItems, useCache);
                     ChangeFailureRateModel changeFailureRateModel = await serviceApiClient.GetChangeFailureRate(getSampleData,
                         DevOpsPlatform.GitHub, item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId,
                         numberOfDays, maxNumberOfItems, useCache);
@@ -224,7 +224,7 @@ namespace DevOpsMetrics.Web.Controllers
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
                 MeanTimeToRestoreModel newMeanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
-                        item.ProductionResourceGroup, DevOpsPlatform.AzureDevOps, numberOfDays, maxNumberOfItems, useCache);
+                        DevOpsPlatform.AzureDevOps, item.ProductionResourceGroup, numberOfDays, maxNumberOfItems, useCache);
                 newMeanTimeToRestoreModel.ItemOrder = item.ItemOrder;
                 if (newMeanTimeToRestoreModel != null)
                 {
@@ -234,7 +234,7 @@ namespace DevOpsMetrics.Web.Controllers
             foreach (GitHubSettings item in githubSettings)
             {
                 MeanTimeToRestoreModel newMeanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
-                        item.ProductionResourceGroup, DevOpsPlatform.GitHub, numberOfDays, maxNumberOfItems, useCache);
+                        DevOpsPlatform.GitHub, item.ProductionResourceGroup, numberOfDays, maxNumberOfItems, useCache);
                 newMeanTimeToRestoreModel.ItemOrder = item.ItemOrder;
                 if (newMeanTimeToRestoreModel != null)
                 {

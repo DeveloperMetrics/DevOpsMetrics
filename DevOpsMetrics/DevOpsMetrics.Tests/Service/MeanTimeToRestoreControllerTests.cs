@@ -52,7 +52,7 @@ namespace DevOpsMetrics.Tests.Service
             MeanTimeToRestoreController controller = new MeanTimeToRestoreController(Configuration);
 
             //Act
-            MeanTimeToRestoreModel model = await controller.GetAzureMeanTimeToRestore(getSampleData, resourceGroupName, targetDevOpsPlatform, numberOfDays, maxNumberOfItems, useCache);
+            MeanTimeToRestoreModel model = await controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -85,7 +85,7 @@ namespace DevOpsMetrics.Tests.Service
             MeanTimeToRestoreController controller = new MeanTimeToRestoreController(Configuration);
 
             //Act
-            MeanTimeToRestoreModel model = await controller.GetAzureMeanTimeToRestore(getSampleData, resourceGroupName, targetDevOpsPlatform, numberOfDays, maxNumberOfItems, useCache);
+            MeanTimeToRestoreModel model = await controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
