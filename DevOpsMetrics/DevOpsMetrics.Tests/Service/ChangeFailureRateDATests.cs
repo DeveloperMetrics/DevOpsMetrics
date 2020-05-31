@@ -50,6 +50,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TargetDevOpsPlatform == DevOpsPlatform.AzureDevOps);
             Assert.IsTrue(model.DeploymentName != "");
             Assert.IsTrue(model.ChangeFailureRateMetric > 0f);
+            Assert.IsTrue(model.ChangeFailureRateBuildList.Count <= 20f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
             Assert.AreNotEqual("Elite", model.ChangeFailureRateMetricDescription);
         }
@@ -80,6 +81,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TargetDevOpsPlatform == targetDevOpsPlatform);
             Assert.IsTrue(model.DeploymentName != "");
             Assert.IsTrue(model.ChangeFailureRateMetric > 0f);
+            Assert.IsTrue(model.ChangeFailureRateBuildList.Count <= 20f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
             Assert.AreNotEqual("Elite", model.ChangeFailureRateMetricDescription);
         }
