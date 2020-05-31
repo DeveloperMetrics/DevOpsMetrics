@@ -170,7 +170,7 @@ namespace DevOpsMetrics.Tests.Service
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "master";
-            string workflowName = "SamsFeatureFlags CI/CD";
+            string workflowName = "SamsFeatureFlags.CI/CD";
             string workflowId = "108084";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
@@ -206,7 +206,7 @@ namespace DevOpsMetrics.Tests.Service
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "master";
-            string workflowName = "SamsFeatureFlags CI/CD";
+            string workflowName = "SamsFeatureFlags.CI/CD";
             string workflowId = "108084";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
@@ -249,7 +249,7 @@ namespace DevOpsMetrics.Tests.Service
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "master";
-            string workflowName = "SamsFeatureFlags CI/CD";
+            string workflowName = "SamsFeatureFlags.CI/CD";
             string workflowId = "108084";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
@@ -334,7 +334,7 @@ namespace DevOpsMetrics.Tests.Service
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "master";
-            string workflowName = "SamsFeatureFlags CI/CD";
+            string workflowName = "SamsFeatureFlags.CI/CD";
             string workflowId = "108084";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
@@ -412,7 +412,7 @@ namespace DevOpsMetrics.Tests.Service
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "master";
-            string workflowName = "SamsFeatureFlags CI/CD";
+            string workflowName = "SamsFeatureFlags.CI/CD";
             string workflowId = "108084";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
