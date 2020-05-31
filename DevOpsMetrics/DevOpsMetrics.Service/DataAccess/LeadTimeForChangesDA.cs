@@ -54,56 +54,61 @@ namespace DevOpsMetrics.Service.DataAccess
                 foreach (string branch in branches)
                 {
                     List<AzureDevOpsBuild> branchBuilds = featureBranchBuilds.Where(a => a.sourceBranch == branch).ToList();
-                    string pullRequestId = branch.Replace("refs/pull/", "").Replace("/merge", "");
                     PullRequestDA pullRequestDA = new PullRequestDA();
-                    List<AzureDevOpsPRCommit> pullRequestCommits = await pullRequestDA.GetAzureDevOpsPullRequestCommits(patToken, tableStorageAuth, organization, project, repositoryId, pullRequestId, useCache);
-                    List<Commit> commits = new List<Commit>();
-                    foreach (AzureDevOpsPRCommit item in pullRequestCommits)
+                    AzureDevOpsPR pr = await pullRequestDA.GetAzureDevOpsPullRequest(patToken, tableStorageAuth, organization, project, repositoryId, branch, useCache);
+                    if (pr != null)
                     {
-                        commits.Add(new Commit
+                        string pullRequestId = branch.Replace("refs/pull/", "").Replace("/merge", "");
+                        List<AzureDevOpsPRCommit> pullRequestCommits = await pullRequestDA.GetAzureDevOpsPullRequestCommits(patToken, tableStorageAuth, organization, project, repositoryId, pullRequestId, useCache);
+                        List<Commit> commits = new List<Commit>();
+                        foreach (AzureDevOpsPRCommit item in pullRequestCommits)
                         {
-                            commitId = item.commitId,
-                            name = item.committer.name,
-                            date = item.committer.date
-                        });
-                    }
+                            commits.Add(new Commit
+                            {
+                                commitId = item.commitId,
+                                name = item.committer.name,
+                                date = item.committer.date
+                            });
+                        }
 
-                    DateTime minTime = DateTime.MaxValue;
-                    DateTime maxTime = DateTime.MinValue;
-                    foreach (AzureDevOpsPRCommit pullRequestCommit in pullRequestCommits)
-                    {
-                        if (minTime > pullRequestCommit.committer.date)
+                        DateTime minTime = DateTime.MaxValue;
+                        DateTime maxTime = DateTime.MinValue;
+                        foreach (AzureDevOpsPRCommit pullRequestCommit in pullRequestCommits)
                         {
-                            minTime = pullRequestCommit.committer.date;
+                            if (minTime > pullRequestCommit.committer.date)
+                            {
+                                minTime = pullRequestCommit.committer.date;
+                            }
+                            if (maxTime < pullRequestCommit.committer.date)
+                            {
+                                maxTime = pullRequestCommit.committer.date;
+                            }
                         }
-                        if (maxTime < pullRequestCommit.committer.date)
+                        foreach (AzureDevOpsBuild branchBuild in branchBuilds)
                         {
-                            maxTime = pullRequestCommit.committer.date;
+                            if (minTime > branchBuild.finishTime)
+                            {
+                                minTime = branchBuild.finishTime;
+                            }
+                            if (maxTime < branchBuild.finishTime)
+                            {
+                                maxTime = branchBuild.finishTime;
+                            }
                         }
+                        PullRequestModel pullRequest = new PullRequestModel
+                        {
+                            PullRequestId = pullRequestId,
+                            Branch = branch,
+                            BuildCount = branchBuilds.Count,
+                            Commits = commits,
+                            StartDateTime = minTime,
+                            EndDateTime = maxTime,
+                            Status = "inProgress",
+                            Url = $"https://dev.azure.com/{organization}/{project}/_git/{repositoryId}/pullrequest/{pullRequestId}"
+                        };
+                        leadTimeForChangesList.Add(new KeyValuePair<DateTime, TimeSpan>(minTime, pullRequest.Duration));
+                        pullRequests.Add(pullRequest);
                     }
-                    foreach (AzureDevOpsBuild branchBuild in branchBuilds)
-                    {
-                        if (minTime > branchBuild.finishTime)
-                        {
-                            minTime = branchBuild.finishTime;
-                        }
-                        if (maxTime < branchBuild.finishTime)
-                        {
-                            maxTime = branchBuild.finishTime;
-                        }
-                    }
-                    PullRequestModel pullRequest = new PullRequestModel
-                    {
-                        PullRequestId = pullRequestId,
-                        Branch = branch,
-                        BuildCount = branchBuilds.Count,
-                        Commits = commits,
-                        StartDateTime = minTime,
-                        EndDateTime = maxTime,
-                        Url = $"https://dev.azure.com/{organization}/{project}/_git/{repositoryId}/pullrequest/{pullRequestId}"
-                    };
-                    leadTimeForChangesList.Add(new KeyValuePair<DateTime, TimeSpan>(minTime, pullRequest.Duration));
-                    pullRequests.Add(pullRequest);
                 }
 
                 float maxPullRequestDuration = 0f;
@@ -212,60 +217,62 @@ namespace DevOpsMetrics.Service.DataAccess
                 foreach (string branch in branches)
                 {
                     List<GitHubActionsRun> branchBuilds = featureBranchRuns.Where(a => a.head_branch == branch).ToList();
-                    //This is messy. In Azure DevOps we could get the build trigger/pull request id. In GitHub we cannot. 
-                    //Instead we get the pull request id by searching pull requests by branch
                     PullRequestDA pullRequestDA = new PullRequestDA();
-                    string pullRequestId = await pullRequestDA.GetGitHubPullRequestIdByBranchName(clientId, clientSecret, tableStorageAuth, owner, repo, branch, useCache);
-                    List<GitHubPRCommit> pullRequestCommits = await pullRequestDA.GetGitHubPullRequestCommits(clientId, clientSecret, tableStorageAuth, owner, repo, pullRequestId, useCache);
-                    List<Commit> commits = new List<Commit>();
-                    foreach (GitHubPRCommit item in pullRequestCommits)
+                    GitHubPR pr = await pullRequestDA.GetGitHubPullRequest(clientId, clientSecret, tableStorageAuth, owner, repo, branch, useCache);
+                    if (pr != null)
                     {
-                        commits.Add(new Commit
+                        List<GitHubPRCommit> pullRequestCommits = await pullRequestDA.GetGitHubPullRequestCommits(clientId, clientSecret, tableStorageAuth, owner, repo, pr.number, useCache);
+                        List<Commit> commits = new List<Commit>();
+                        foreach (GitHubPRCommit item in pullRequestCommits)
                         {
-                            commitId = item.sha,
-                            name = item.commit.committer.name,
-                            date = item.commit.committer.date
-                        });
-                    }
+                            commits.Add(new Commit
+                            {
+                                commitId = item.sha,
+                                name = item.commit.committer.name,
+                                date = item.commit.committer.date
+                            });
+                        }
 
-                    DateTime minTime = DateTime.MaxValue;
-                    DateTime maxTime = DateTime.MinValue;
-                    foreach (GitHubPRCommit pullRequestCommit in pullRequestCommits)
-                    {
-                        if (minTime > pullRequestCommit.commit.committer.date)
+                        DateTime minTime = DateTime.MaxValue;
+                        DateTime maxTime = DateTime.MinValue;
+                        foreach (GitHubPRCommit pullRequestCommit in pullRequestCommits)
                         {
-                            minTime = pullRequestCommit.commit.committer.date;
+                            if (minTime > pullRequestCommit.commit.committer.date)
+                            {
+                                minTime = pullRequestCommit.commit.committer.date;
+                            }
+                            if (maxTime < pullRequestCommit.commit.committer.date)
+                            {
+                                maxTime = pullRequestCommit.commit.committer.date;
+                            }
                         }
-                        if (maxTime < pullRequestCommit.commit.committer.date)
+                        foreach (GitHubActionsRun branchBuild in branchBuilds)
                         {
-                            maxTime = pullRequestCommit.commit.committer.date;
+                            if (minTime > branchBuild.updated_at)
+                            {
+                                minTime = branchBuild.updated_at;
+                            }
+                            if (maxTime < branchBuild.updated_at)
+                            {
+                                maxTime = branchBuild.updated_at;
+                            }
                         }
-                    }
-                    foreach (GitHubActionsRun branchBuild in branchBuilds)
-                    {
-                        if (minTime > branchBuild.updated_at)
-                        {
-                            minTime = branchBuild.updated_at;
-                        }
-                        if (maxTime < branchBuild.updated_at)
-                        {
-                            maxTime = branchBuild.updated_at;
-                        }
-                    }
 
-                    PullRequestModel pullRequest = new PullRequestModel
-                    {
-                        PullRequestId = pullRequestId,
-                        Branch = branch,
-                        BuildCount = branchBuilds.Count,
-                        Commits = commits,
-                        StartDateTime = minTime,
-                        EndDateTime = maxTime,
-                        Url = $"https://github.com/{owner}/{repo}/pull/{pullRequestId}"
-                    };
+                        PullRequestModel pullRequest = new PullRequestModel
+                        {
+                            PullRequestId = pr.number,
+                            Branch = branch,
+                            BuildCount = branchBuilds.Count,
+                            Commits = commits,
+                            StartDateTime = minTime,
+                            EndDateTime = maxTime,
+                            Status = pr.state,
+                            Url = $"https://github.com/{owner}/{repo}/pull/{pr.number}"
+                        };
 
-                    leadTimeForChangesList.Add(new KeyValuePair<DateTime, TimeSpan>(minTime, pullRequest.Duration));
-                    pullRequests.Add(pullRequest);
+                        leadTimeForChangesList.Add(new KeyValuePair<DateTime, TimeSpan>(minTime, pullRequest.Duration));
+                        pullRequests.Add(pullRequest);
+                    }
                 }
 
                 float maxPullRequestDuration = 0f;

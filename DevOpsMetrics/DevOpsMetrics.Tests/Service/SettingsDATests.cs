@@ -158,7 +158,7 @@ namespace DevOpsMetrics.Tests.Service
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "master";
-            string workflowName = "SamsFeatureFlags.CI/CD";
+            string workflowName = "SamsFeatureFlags CI/CD";
             string workflowId = "108084";
             string resourceGroupName = "SamLearnsAzureFeatureFlags";
             int itemOrder = 3;

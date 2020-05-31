@@ -43,7 +43,7 @@
             <a href="@item.Url" target="_blank">
                 <div class="progress-bar">
                     <div class="progress-track" title="PR #@item.PullRequestId branch @item.Branch had @item.Commits.Count commits over @item.Duration.TotalHours.ToString("0.0") hours">
-                        <div class="progress-fill completed">
+                        <div class="progress-fill @item.Status">
                             <span>@item.DurationPercent.ToString("0")%</span>
                         </div>
                     </div>
