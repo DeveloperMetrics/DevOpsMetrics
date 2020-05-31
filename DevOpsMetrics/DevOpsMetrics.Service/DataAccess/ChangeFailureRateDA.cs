@@ -16,7 +16,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName, string buildId_workflowId,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
-            ListUtility<Build> utility = new ListUtility<Build>();
+            ListUtility<ChangeFailureRateBuild> utility = new ListUtility<ChangeFailureRateBuild>();
             ChangeFailureRate changeFailureRate = new ChangeFailureRate();
             if (getSampleData == false)
             {
@@ -38,7 +38,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     TargetDevOpsPlatform = targetDevOpsPlatform,
                     DeploymentName = buildName_workflowName,                    
-                    ChangeFailureRateBuildList = builds,
+                    ChangeFailureRateBuildList = utility.GetLastNItems(builds, maxNumberOfItems),
                     ChangeFailureRateMetric = changeFailureRateMetric,
                     ChangeFailureRateMetricDescription = changeFailureRate.GetChangeFailureRateRating(changeFailureRateMetric)
                 };
@@ -50,7 +50,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     TargetDevOpsPlatform = targetDevOpsPlatform,
                     DeploymentName = buildName_workflowName,
-                    ChangeFailureRateBuildList = GetSampleBuilds(),
+                    ChangeFailureRateBuildList = utility.GetLastNItems(GetSampleBuilds(), maxNumberOfItems),
                     ChangeFailureRateMetric = 2f / 10f,
                     ChangeFailureRateMetricDescription = changeFailureRate.GetChangeFailureRateRating(2f / 10f)
                 };
@@ -74,6 +74,8 @@ namespace DevOpsMetrics.Service.DataAccess
             };
             results.Add(item1);
             results.Add(item1);
+            results.Add(item1);
+            results.Add(item1);
             ChangeFailureRateBuild item2 = new ChangeFailureRateBuild
             {
                 StartTime = DateTime.Now.AddDays(-5).AddMinutes(-5),
@@ -85,6 +87,8 @@ namespace DevOpsMetrics.Service.DataAccess
                 Url = "https://dev.azure.com/samsmithnz/samlearnsazure/2",
                 DeploymentWasSuccessful = true
             };
+            results.Add(item2);
+            results.Add(item2);
             results.Add(item2);
             results.Add(item2);
             ChangeFailureRateBuild item3 = new ChangeFailureRateBuild
@@ -99,6 +103,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 DeploymentWasSuccessful = false
             };
             results.Add(item3);
+            results.Add(item3);
             ChangeFailureRateBuild item4 = new ChangeFailureRateBuild
             {
                 StartTime = DateTime.Now.AddDays(-3).AddMinutes(-4),
@@ -110,6 +115,8 @@ namespace DevOpsMetrics.Service.DataAccess
                 Url = "https://dev.azure.com/samsmithnz/samlearnsazure/4",
                 DeploymentWasSuccessful = true
             };
+            results.Add(item4);
+            results.Add(item4);
             results.Add(item4);
             results.Add(item4);
             ChangeFailureRateBuild item5 = new ChangeFailureRateBuild
@@ -125,6 +132,8 @@ namespace DevOpsMetrics.Service.DataAccess
             };
             results.Add(item5);
             results.Add(item5);
+            results.Add(item5);
+            results.Add(item5);
             ChangeFailureRateBuild item6 = new ChangeFailureRateBuild
             {
                 StartTime = DateTime.Now.AddDays(-1).AddMinutes(-5),
@@ -136,6 +145,8 @@ namespace DevOpsMetrics.Service.DataAccess
                 Url = "https://dev.azure.com/samsmithnz/samlearnsazure/6",
                 DeploymentWasSuccessful = false
             };
+            results.Add(item6);
+            results.Add(item6);
             results.Add(item6);
 
             return results;
