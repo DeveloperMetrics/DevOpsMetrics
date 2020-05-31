@@ -293,6 +293,11 @@ namespace DevOpsMetrics.Web.Controllers
             return View();
         }
 
+        public IActionResult Generate500Error()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
