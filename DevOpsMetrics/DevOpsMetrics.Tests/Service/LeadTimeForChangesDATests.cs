@@ -51,6 +51,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model != null);
             Assert.AreEqual(project, model.ProjectName);
             Assert.IsTrue(model.PullRequests.Count > 0);
+            Assert.IsTrue(model.PullRequests.Count <= 20);
             Assert.AreEqual("123", model.PullRequests[0].PullRequestId);
             Assert.AreEqual("branch1", model.PullRequests[0].Branch);
             Assert.AreEqual(1, model.PullRequests[0].BuildCount);
@@ -95,6 +96,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model != null);
             Assert.AreEqual(repo, model.ProjectName);
             Assert.IsTrue(model.PullRequests.Count > 0);
+            Assert.IsTrue(model.PullRequests.Count <= 20);
             Assert.AreEqual("123", model.PullRequests[0].PullRequestId);
             Assert.AreEqual("branch1", model.PullRequests[0].Branch);
             Assert.AreEqual(1, model.PullRequests[0].BuildCount);

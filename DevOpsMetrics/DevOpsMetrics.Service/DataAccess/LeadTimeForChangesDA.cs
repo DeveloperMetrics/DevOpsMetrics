@@ -14,6 +14,7 @@ namespace DevOpsMetrics.Service.DataAccess
         public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, TableStorageAuth tableStorageAuth,
                 string organization, string project, string repositoryId, string masterBranch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
+            ListUtility<PullRequestModel> utility = new ListUtility<PullRequestModel>();
             LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
             List<PullRequestModel> pullRequests = new List<PullRequestModel>();
             if (getSampleData == false)
@@ -143,7 +144,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     AveragePullRequestHours = leadTime,
                     LeadTimeForChangesMetric = leadTime + averageBuildHours,
                     LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
-                    PullRequests = pullRequests,
+                    PullRequests = utility.GetLastNItems(pullRequests, maxNumberOfItems),
                     NumberOfDays = numberOfDays
                 };
 
@@ -159,7 +160,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     AveragePullRequestHours = 12f,
                     LeadTimeForChangesMetric = 12f + 1f,
                     LeadTimeForChangesMetricDescription = "Elite",
-                    PullRequests = CreatePullRequestsSample(DevOpsPlatform.AzureDevOps),
+                    PullRequests = utility.GetLastNItems(CreatePullRequestsSample(DevOpsPlatform.AzureDevOps), maxNumberOfItems),
                     NumberOfDays = numberOfDays
                 };
 
@@ -171,6 +172,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 string owner, string repo, string masterBranch, string workflowName, string workflowId,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
+            ListUtility<PullRequestModel> utility = new ListUtility<PullRequestModel>();
             LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
             List<PullRequestModel> pullRequests = new List<PullRequestModel>();
             if (getSampleData == false)
@@ -304,7 +306,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     AveragePullRequestHours = leadTime,
                     LeadTimeForChangesMetric = leadTime + averageBuildHours,
                     LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
-                    PullRequests = pullRequests,
+                    PullRequests = utility.GetLastNItems(pullRequests, maxNumberOfItems),
                     NumberOfDays = numberOfDays
                 };
 
@@ -320,7 +322,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     AveragePullRequestHours = 20.33f,
                     LeadTimeForChangesMetric = 20.33f + 1f,
                     LeadTimeForChangesMetricDescription = "Elite",
-                    PullRequests = CreatePullRequestsSample(DevOpsPlatform.GitHub),
+                    PullRequests = utility.GetLastNItems(CreatePullRequestsSample(DevOpsPlatform.GitHub), maxNumberOfItems),
                     NumberOfDays = numberOfDays
                 };
 
@@ -346,42 +348,61 @@ namespace DevOpsMetrics.Service.DataAccess
                 url = "";
             }
 
-            prs.Add(
-                new PullRequestModel
-                {
-                    PullRequestId = "123",
-                    Branch = "branch1",
-                    BuildCount = 1,
-                    Commits = CreateCommitsSample(1),
-                    DurationPercent = 33,
-                    StartDateTime = DateTime.Now.AddDays(-7),
-                    EndDateTime = DateTime.Now.AddDays(-7).AddHours(1),
-                    Url = url
-                });
-            prs.Add(
-                new PullRequestModel
-                {
-                    PullRequestId = "124",
-                    Branch = "branch2",
-                    BuildCount = 3,
-                    Commits = CreateCommitsSample(3),
-                    DurationPercent = 100,
-                    StartDateTime = DateTime.Now.AddDays(-7),
-                    EndDateTime = DateTime.Now.AddDays(-5),
-                    Url = url
-                });
-            prs.Add(
-                new PullRequestModel
-                {
-                    PullRequestId = "126",
-                    Branch = "branch3",
-                    BuildCount = 2,
-                    Commits = CreateCommitsSample(2),
-                    DurationPercent = 66,
-                    StartDateTime = DateTime.Now.AddDays(-7),
-                    EndDateTime = DateTime.Now.AddDays(-6),
-                    Url = url
-                });
+            PullRequestModel pr1 = new PullRequestModel
+            {
+                PullRequestId = "123",
+                Branch = "branch1",
+                BuildCount = 1,
+                Commits = CreateCommitsSample(1),
+                DurationPercent = 33,
+                StartDateTime = DateTime.Now.AddDays(-7),
+                EndDateTime = DateTime.Now.AddDays(-7).AddHours(1),
+                Url = url
+            };
+            prs.Add(pr1);
+            prs.Add(pr1);
+            prs.Add(pr1);
+            prs.Add(pr1);
+            prs.Add(pr1);
+            PullRequestModel pr2 = new PullRequestModel
+            {
+                PullRequestId = "124",
+                Branch = "branch2",
+                BuildCount = 3,
+                Commits = CreateCommitsSample(3),
+                DurationPercent = 100,
+                StartDateTime = DateTime.Now.AddDays(-7),
+                EndDateTime = DateTime.Now.AddDays(-5),
+                Url = url
+            };
+            prs.Add(pr2);
+            prs.Add(pr2);
+            prs.Add(pr2);
+            prs.Add(pr2);
+            prs.Add(pr2);
+            prs.Add(pr2);
+            prs.Add(pr2);
+            prs.Add(pr2);
+            prs.Add(pr2);
+            prs.Add(pr2);
+
+            PullRequestModel pr3 = new PullRequestModel
+            {
+                PullRequestId = "126",
+                Branch = "branch3",
+                BuildCount = 2,
+                Commits = CreateCommitsSample(2),
+                DurationPercent = 66,
+                StartDateTime = DateTime.Now.AddDays(-7),
+                EndDateTime = DateTime.Now.AddDays(-6),
+                Url = url
+            };
+            prs.Add(pr3);
+            prs.Add(pr3);
+            prs.Add(pr3);
+            prs.Add(pr3);
+            prs.Add(pr3);
+            prs.Add(pr3);
 
             return prs;
         }
