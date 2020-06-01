@@ -107,8 +107,6 @@ namespace DevOpsMetrics.Service.DataAccess
                     {
                         if (item.status == "completed" && item.head_branch == branch && item.created_at > DateTime.Now.AddDays(-numberOfDays))
                         {
-                            KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.created_at, item.created_at);
-                            dateList.Add(newItem);
                             builds.Add(
                                 new Build
                                 {
@@ -125,13 +123,23 @@ namespace DevOpsMetrics.Service.DataAccess
                         }
                     }
 
+                    //Filter the results to return the last n (maxNumberOfItems)
+                    builds = utility.GetLastNItems(builds, maxNumberOfItems);
+                    //then build the calcuation
+                    foreach (Build item in builds)
+                    {
+                        KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.StartTime, item.EndTime);
+                        dateList.Add(newItem);
+                    }
+
+                    //calculate the metric on the final results
                     deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
 
                     DeploymentFrequencyModel model = new DeploymentFrequencyModel
                     {
                         TargetDevOpsPlatform = DevOpsPlatform.GitHub,
                         DeploymentName = workflowName,
-                        BuildList = utility.GetLastNItems(builds, maxNumberOfItems),
+                        BuildList = builds,
                         DeploymentsPerDayMetric = deploymentsPerDay,
                         DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
                         NumberOfDays = numberOfDays
