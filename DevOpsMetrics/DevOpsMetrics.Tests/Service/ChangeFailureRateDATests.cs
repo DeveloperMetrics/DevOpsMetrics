@@ -56,6 +56,37 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
+        public async Task AzChangeFailureRateDAIntegrationTest2()
+        {
+            //Arrange
+            bool getSampleData = false;
+            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            string organization = "samsmithnz";
+            string project = "PartsUnlimited";
+            string branch = "refs/heads/master";
+            string buildName = "PartsUnlimited.CI";
+            string buildId = "75"; //PartsUnlimited.CI
+            DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
+            int numberOfDays = 30;
+            int maxNumberOfItems = 20;
+            bool useCache = true;
+
+            //Act
+            ChangeFailureRateDA da = new ChangeFailureRateDA();
+            ChangeFailureRateModel model = await da.GetChangeFailureRate(getSampleData, tableStorageAuth,
+               targetDevOpsPlatform, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+
+            //Assert
+            Assert.IsTrue(model != null);
+            Assert.IsTrue(model.TargetDevOpsPlatform == DevOpsPlatform.AzureDevOps);
+            Assert.IsTrue(model.DeploymentName != "");
+            Assert.IsTrue(model.ChangeFailureRateMetric > 0f);
+            Assert.IsTrue(model.ChangeFailureRateBuildList.Count <= 20f);
+            Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
+            Assert.AreNotEqual("Elite", model.ChangeFailureRateMetricDescription);
+        }
+
+        [TestMethod]
         public async Task GHDeploymentFrequencyDAIntegrationTest()
         {
             //Arrange

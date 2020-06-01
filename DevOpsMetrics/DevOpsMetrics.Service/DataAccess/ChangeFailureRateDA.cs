@@ -24,17 +24,20 @@ namespace DevOpsMetrics.Service.DataAccess
                 AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
                 Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableChangeFailureRate, daTableStorage.CreateAzureDevOpsBuildPartitionKey(organization_owner, project_repo, buildName_workflowName));
                 List<ChangeFailureRateBuild> builds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
-                List<KeyValuePair<DateTime, bool>> dateList = new List<KeyValuePair<DateTime, bool>>();
 
                 //Build the date list and then generate the change failure rate metric
                 List<ChangeFailureRateBuild> filteredBuilds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
+                List<KeyValuePair<DateTime, bool>> dateList = new List<KeyValuePair<DateTime, bool>>();
                 float maxBuildDuration = 0f;
                 foreach (ChangeFailureRateBuild item in builds)
                 {
                     if (item.StartTime > DateTime.Now.AddDays(-numberOfDays))
                     {
-                        KeyValuePair<DateTime, bool> newItem = new KeyValuePair<DateTime, bool>(item.StartTime, item.DeploymentWasSuccessful);
-                        dateList.Add(newItem);
+                        if (item.DeploymentWasSuccessful == false)
+                        {
+                            KeyValuePair<DateTime, bool> newItem = new KeyValuePair<DateTime, bool>(item.StartTime, item.DeploymentWasSuccessful);
+                            dateList.Add(newItem);
+                        }
                         //Special branch for Azure DevOps to construct the Url to each build
                         if (targetDevOpsPlatform == DevOpsPlatform.AzureDevOps)
                         {
