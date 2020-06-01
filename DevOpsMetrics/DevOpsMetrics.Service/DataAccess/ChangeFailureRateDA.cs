@@ -27,28 +27,30 @@ namespace DevOpsMetrics.Service.DataAccess
                 List<KeyValuePair<DateTime, bool>> dateList = new List<KeyValuePair<DateTime, bool>>();
 
                 //Build the date list and then generate the change failure rate metric
+                List<ChangeFailureRateBuild> filteredBuilds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
+                float maxBuildDuration = 0f;
                 foreach (ChangeFailureRateBuild item in builds)
                 {
-                    KeyValuePair<DateTime, bool> newItem = new KeyValuePair<DateTime, bool>(item.StartTime, item.DeploymentWasSuccessful);
-                    dateList.Add(newItem);
+                    if (item.StartTime > DateTime.Now.AddDays(-numberOfDays))
+                    {
+                        KeyValuePair<DateTime, bool> newItem = new KeyValuePair<DateTime, bool>(item.StartTime, item.DeploymentWasSuccessful);
+                        dateList.Add(newItem);
+                        //Special branch for Azure DevOps to construct the Url to each build
+                        if (targetDevOpsPlatform == DevOpsPlatform.AzureDevOps)
+                        {
+                            item.Url = $"https://dev.azure.com/{organization_owner}/{project_repo}/_build/results?buildId={item.Id}&view=results";
+                        }
+                        if (item.BuildDuration > maxBuildDuration)
+                        {
+                            maxBuildDuration = item.BuildDuration;
+                        }
+                        filteredBuilds.Add(item);
+                    }
                 }
                 float changeFailureRateMetric = changeFailureRate.ProcessChangeFailureRate(dateList, "", numberOfDays);
 
                 //We need to do some post processing and loop over the list a couple times to find the max build duration, construct a usable url, and calculate a build duration percentage
-                float maxBuildDuration = 0f;
-                foreach (ChangeFailureRateBuild item in builds)
-                {
-                    //Special branch for Azure DevOps to construct the Url to each build
-                    if (targetDevOpsPlatform == DevOpsPlatform.AzureDevOps)
-                    {
-                        item.Url = $"https://dev.azure.com/{organization_owner}/{project_repo}/_build/results?buildId={item.Id}&view=results";
-                    }
-                    if (item.BuildDuration > maxBuildDuration)
-                    {
-                        maxBuildDuration = item.BuildDuration;
-                    }
-                }
-                foreach (ChangeFailureRateBuild item in builds)
+                foreach (ChangeFailureRateBuild item in filteredBuilds)
                 {
                     float interiumResult = ((item.BuildDuration / maxBuildDuration) * 100f);
                     item.BuildDurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
@@ -58,7 +60,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     TargetDevOpsPlatform = targetDevOpsPlatform,
                     DeploymentName = buildName_workflowName,
-                    ChangeFailureRateBuildList = utility.GetLastNItems(builds, maxNumberOfItems),
+                    ChangeFailureRateBuildList = utility.GetLastNItems(filteredBuilds, maxNumberOfItems),
                     ChangeFailureRateMetric = changeFailureRateMetric,
                     ChangeFailureRateMetricDescription = changeFailureRate.GetChangeFailureRateRating(changeFailureRateMetric)
                 };
