@@ -33,11 +33,10 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     if (item.StartTime > DateTime.Now.AddDays(-numberOfDays))
                     {
-                        if (item.DeploymentWasSuccessful == false)
-                        {
-                            KeyValuePair<DateTime, bool> newItem = new KeyValuePair<DateTime, bool>(item.StartTime, item.DeploymentWasSuccessful);
-                            dateList.Add(newItem);
-                        }
+                        //Build the date calculation
+                        KeyValuePair<DateTime, bool> newItem = new KeyValuePair<DateTime, bool>(item.StartTime, item.DeploymentWasSuccessful);
+                        dateList.Add(newItem);
+
                         //Special branch for Azure DevOps to construct the Url to each build
                         if (targetDevOpsPlatform == DevOpsPlatform.AzureDevOps)
                         {
