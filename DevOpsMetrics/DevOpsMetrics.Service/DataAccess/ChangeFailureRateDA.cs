@@ -45,6 +45,7 @@ namespace DevOpsMetrics.Service.DataAccess
                         filteredBuilds.Add(item);
                     }
                 }
+             
                 //Filter the results to return the last n (maxNumberOfItems)
                 filteredBuilds = utility.GetLastNItems(filteredBuilds, maxNumberOfItems);
                 //then build the calcuation
