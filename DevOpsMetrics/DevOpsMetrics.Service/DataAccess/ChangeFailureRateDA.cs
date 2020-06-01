@@ -33,10 +33,6 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     if (item.StartTime > DateTime.Now.AddDays(-numberOfDays))
                     {
-                        //Build the date calculation
-                        KeyValuePair<DateTime, bool> newItem = new KeyValuePair<DateTime, bool>(item.StartTime, item.DeploymentWasSuccessful);
-                        dateList.Add(newItem);
-
                         //Special branch for Azure DevOps to construct the Url to each build
                         if (targetDevOpsPlatform == DevOpsPlatform.AzureDevOps)
                         {
@@ -49,6 +45,15 @@ namespace DevOpsMetrics.Service.DataAccess
                         filteredBuilds.Add(item);
                     }
                 }
+                //Filter the results to return the last n (maxNumberOfItems)
+                filteredBuilds = utility.GetLastNItems(filteredBuilds, maxNumberOfItems);
+                //then build the calcuation
+                foreach (ChangeFailureRateBuild item in builds)
+                {
+                    KeyValuePair<DateTime, bool> newItem = new KeyValuePair<DateTime, bool>(item.StartTime, item.DeploymentWasSuccessful);
+                    dateList.Add(newItem);
+                }
+
                 float changeFailureRateMetric = changeFailureRate.ProcessChangeFailureRate(dateList, "", numberOfDays);
 
                 //We need to do some post processing and loop over the list a couple times to find the max build duration, construct a usable url, and calculate a build duration percentage
@@ -62,7 +67,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     TargetDevOpsPlatform = targetDevOpsPlatform,
                     DeploymentName = buildName_workflowName,
-                    ChangeFailureRateBuildList = utility.GetLastNItems(filteredBuilds, maxNumberOfItems),
+                    ChangeFailureRateBuildList = filteredBuilds,
                     ChangeFailureRateMetric = changeFailureRateMetric,
                     ChangeFailureRateMetricDescription = changeFailureRate.GetChangeFailureRateRating(changeFailureRateMetric)
                 };
