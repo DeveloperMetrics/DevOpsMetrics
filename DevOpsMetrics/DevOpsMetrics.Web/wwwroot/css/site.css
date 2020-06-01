@@ -134,19 +134,19 @@ h4 {
 }
 
 .completed {
-    background: #107c10;
+    background: #107c10; /*Green*/
 }
 
 .partiallySuccessful {
-    background: #fa9d2d;
+    background: #fa9d2d; /*Orange*/
 }
 
 .failed {
-    background: #cd4a45;
+    background: #cd4a45; /*Red*/
 }
 
 .inProgress {
-    background: #0078d4;
+    background: #0078d4; /*Blue*/
 }
 
 .rounded .progress-track,

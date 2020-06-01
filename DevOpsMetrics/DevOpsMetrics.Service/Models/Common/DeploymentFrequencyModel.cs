@@ -5,11 +5,10 @@ namespace DevOpsMetrics.Service.Models.Common
     public class DeploymentFrequencyModel
     {
         public string DeploymentName { get; set; }
-        public int NumberOfDays { get; set; }
         public DevOpsPlatform TargetDevOpsPlatform { get; set; }
-
+        public bool IsProjectView { get; set; }
+        public int NumberOfDays { get; set; }
         public List<Build> BuildList { get; set; }
-
         private float _deploymentsPerDayMetric;
         public float DeploymentsPerDayMetric
         {

@@ -23,7 +23,14 @@
 
 @* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
 <div class="chartContainer vertical flat">
-    <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.DeploymentName</h4>
+    @if (Model.IsProjectView == true)
+    {
+        <h4>Change Failure Rate</h4>
+    }
+    else
+    {
+        <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.DeploymentName</h4>
+    }
     @if (Model.ChangeFailureRateBuildList.Count == 0)
     {
         <div style="height:100px">
@@ -32,12 +39,21 @@
     }
     else
     {
-        foreach (Build item in Model.ChangeFailureRateBuildList)
+        foreach (ChangeFailureRateBuild item in Model.ChangeFailureRateBuildList)
         {
+            string progressFillStatus = "";
+            if (item.DeploymentWasSuccessful == true)
+            {
+                progressFillStatus = "completed";
+            }
+            else
+            {
+                progressFillStatus = "failed";
+            }
             <a href="@item.Url" target="_blank">
                 <div class="progress-bar">
                     <div class="progress-track" title="Build @item.Id @item.Status @item.TimeSinceBuildCompleted (ran for @item.BuildDurationInMinutesAndSeconds)">
-                        <div class="progress-fill @item.Status">
+                        <div class="progress-fill @progressFillStatus">
                             <span>@item.BuildDurationPercent%</span>
                         </div>
                     </div>

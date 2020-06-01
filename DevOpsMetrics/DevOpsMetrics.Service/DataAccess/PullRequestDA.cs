@@ -11,6 +11,37 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class PullRequestDA
     {
+        public async Task<AzureDevOpsPR> GetAzureDevOpsPullRequest(string patToken, TableStorageAuth tableStorageAuth, string organization, string project, string repositoryId, string branch, bool useCache)
+        {
+            List<AzureDevOpsPR> prs = new List<AzureDevOpsPR>();
+            Newtonsoft.Json.Linq.JArray list = null;
+            if (useCache == true)
+            {
+                AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
+                list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableAzureDevOpsPRs, daTableStorage.CreateGitHubPRPartitionKey(organization, project));
+            }
+            else
+            {
+                AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
+                list = await api.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repositoryId);
+            }
+            if (list != null)
+            {
+                prs = JsonConvert.DeserializeObject<List<AzureDevOpsPR>>(list.ToString());
+            }
+
+            //Find the PR id
+            AzureDevOpsPR pr = null;
+            foreach (AzureDevOpsPR item in prs)
+            {
+                if (item.targetRefName == branch)
+                {
+                    pr = item;
+                    break;
+                }
+            }
+            return pr;
+        }
 
         public async Task<List<AzureDevOpsPRCommit>> GetAzureDevOpsPullRequestCommits(string patToken, TableStorageAuth tableStorageAuth, string organization, string project, string repositoryId, string pullRequestId, bool useCache)
         {
@@ -30,7 +61,8 @@ namespace DevOpsMetrics.Service.DataAccess
             return commits;
         }
 
-        public async Task<string> GetGitHubPullRequestIdByBranchName(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, string owner, string repo, string branch, bool useCache)
+
+        public async Task<GitHubPR> GetGitHubPullRequest(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, string owner, string repo, string branch, bool useCache)
         {
             List<GitHubPR> prs = new List<GitHubPR>();
             Newtonsoft.Json.Linq.JArray list = null;
@@ -50,16 +82,48 @@ namespace DevOpsMetrics.Service.DataAccess
             }
 
             //Find the PR id
-            string prId = "";
+            GitHubPR pr = null;
             foreach (GitHubPR item in prs)
             {
                 if (item.head.@ref == branch)
                 {
-                    prId = item.number;
+                    pr = item;
+                    break;
                 }
             }
-            return prId;
+            return pr;
         }
+
+        //public async Task<string> GetGitHubPullRequestIdByBranchName(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, string owner, string repo, string branch, bool useCache)
+        //{
+        //    List<GitHubPR> prs = new List<GitHubPR>();
+        //    Newtonsoft.Json.Linq.JArray list = null;
+        //    if (useCache == true)
+        //    {
+        //        AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
+        //        list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableGitHubPRs, daTableStorage.CreateGitHubPRPartitionKey(owner, repo));
+        //    }
+        //    else
+        //    {
+        //        GitHubAPIAccess api = new GitHubAPIAccess();
+        //        list = await api.GetGitHubPullRequestsJArray(clientId, clientSecret, owner, repo, branch);
+        //    }
+        //    if (list != null)
+        //    {
+        //        prs = JsonConvert.DeserializeObject<List<GitHubPR>>(list.ToString());
+        //    }
+
+        //    //Find the PR id
+        //    string prId = "";
+        //    foreach (GitHubPR item in prs)
+        //    {
+        //        if (item.head.@ref == branch)
+        //        {
+        //            prId = item.number;
+        //        }
+        //    }
+        //    return prId;
+        //}
 
         public async Task<List<GitHubPRCommit>> GetGitHubPullRequestCommits(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, string owner, string repo, string pull_number, bool useCache)
         {

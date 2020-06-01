@@ -10,6 +10,7 @@ namespace DevOpsMetrics.Service.Models.Common
         public string Url { get; set; }
         public DateTime StartDateTime { get; set; }
         public DateTime EndDateTime { get; set; }
+        public string Status { get; set; }
         public TimeSpan Duration
         {
             get

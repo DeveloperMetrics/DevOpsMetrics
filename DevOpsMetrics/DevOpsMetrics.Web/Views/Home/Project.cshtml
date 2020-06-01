@@ -3,8 +3,27 @@
 @{
     ViewData["Title"] = "Project summary";
 }
+@{
+    string widgetImageName = "";
+    string widgetName = "";
+    if (Model.TargetDevOpsPlatform == DevOpsPlatform.AzureDevOps)
+    {
+        widgetImageName = "AzureDevops-icon.png";
+        widgetName = "Azure DevOps";
+    }
+    else if (Model.TargetDevOpsPlatform == DevOpsPlatform.GitHub)
+    {
+        widgetImageName = "GitHub-icon.png";
+        widgetName = "GitHub";
+    }
+    else
+    {
+        widgetImageName = "Unknown-icon.png";
+        widgetName = "Unknown";
+    }
+}
 
-<h2>@Model.ProjectName project summary</h2>
+<h2><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ProjectName DevOps summary</h2>
 <div class="row">
     <div class="col-md-6">
         @await Html.PartialAsync("_Deployments", Model.DeploymentFrequency)
