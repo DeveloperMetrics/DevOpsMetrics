@@ -55,11 +55,10 @@ namespace DevOpsMetrics.Service.DataAccess
                 {
                     List<AzureDevOpsBuild> branchBuilds = featureBranchBuilds.Where(a => a.sourceBranch == branch).ToList();
                     PullRequestDA pullRequestDA = new PullRequestDA();
-                    string pullRequestId = branch.Replace("refs/pull/", "").Replace("/merge", "");
                     AzureDevOpsPR pr = await pullRequestDA.GetAzureDevOpsPullRequest(patToken, tableStorageAuth, organization, project, repositoryId, branch, useCache);
                     if (pr != null)
                     {
-                        List<AzureDevOpsPRCommit> pullRequestCommits = await pullRequestDA.GetAzureDevOpsPullRequestCommits(patToken, tableStorageAuth, organization, project, repositoryId, pullRequestId, useCache);
+                        List<AzureDevOpsPRCommit> pullRequestCommits = await pullRequestDA.GetAzureDevOpsPullRequestCommits(patToken, tableStorageAuth, organization, project, repositoryId, pr.PullRequestId, useCache);
                         List<Commit> commits = new List<Commit>();
                         foreach (AzureDevOpsPRCommit item in pullRequestCommits)
                         {
@@ -97,14 +96,14 @@ namespace DevOpsMetrics.Service.DataAccess
                         }
                         PullRequestModel pullRequest = new PullRequestModel
                         {
-                            PullRequestId = pullRequestId,
+                            PullRequestId = pr.PullRequestId,
                             Branch = branch,
                             BuildCount = branchBuilds.Count,
                             Commits = commits,
                             StartDateTime = minTime,
                             EndDateTime = maxTime,
                             Status = pr.status,
-                            Url = $"https://dev.azure.com/{organization}/{project}/_git/{repositoryId}/pullrequest/{pullRequestId}"
+                            Url = $"https://dev.azure.com/{organization}/{project}/_git/{repositoryId}/pullrequest/{pr.PullRequestId}"
                         };
               
                         leadTimeForChangesList.Add(new KeyValuePair<DateTime, TimeSpan>(minTime, pullRequest.Duration));
