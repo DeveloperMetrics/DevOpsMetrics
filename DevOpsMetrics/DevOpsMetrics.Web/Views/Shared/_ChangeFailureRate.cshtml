@@ -23,7 +23,14 @@
 
 @* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
 <div class="chartContainer vertical flat">
-    <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.DeploymentName</h4>
+    @if (Model.IsProjectView == true)
+    {
+        <h4>Change Failure Rate</h4>
+    }
+    else
+    {
+        <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.DeploymentName</h4>
+    }
     @if (Model.ChangeFailureRateBuildList.Count == 0)
     {
         <div style="height:100px">

@@ -5,13 +5,15 @@ namespace DevOpsMetrics.Service.Models.Common
     public class LeadTimeForChangesModel
     {
         public string ProjectName { get; set; }
-        public int NumberOfDays { get; set; }
         public DevOpsPlatform TargetDevOpsPlatform { get; set; }
+        public bool IsProjectView { get; set; }
+        public int NumberOfDays { get; set; }
         public List<PullRequestModel> PullRequests { get; set; }
         public float AverageBuildHours { get; set; }
         public float AveragePullRequestHours { get; set; }
         private float _leadTimeForChangesMetric;
-        public float LeadTimeForChangesMetric {
+        public float LeadTimeForChangesMetric
+        {
             get
             {
                 return _leadTimeForChangesMetric;

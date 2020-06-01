@@ -9,7 +9,7 @@
         widgetImageName = "AzureDevops-icon.png";
         widgetName = "RG";
     }
-    else if(Model.TargetDevOpsPlatform == DevOpsPlatform.GitHub)
+    else if (Model.TargetDevOpsPlatform == DevOpsPlatform.GitHub)
     {
         widgetImageName = "GitHub-icon.png";
         widgetName = "RG";
@@ -23,7 +23,14 @@
 
 @* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
 <div class="chartContainer vertical flat">
-    <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ResourceGroup</h4>
+    @if (Model.IsProjectView == true)
+    {
+        <h4>Time to restore service</h4>
+    }
+    else
+    {
+        <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ResourceGroup</h4>
+    }
     @if (Model.MeanTimeToRestoreEvents.Count == 0)
     {
         <div style="height:100px">

@@ -73,9 +73,14 @@ namespace DevOpsMetrics.Web.Controllers
                     ChangeFailureRateModel changeFailureRateModel = await serviceApiClient.GetChangeFailureRate(getSampleData,
                         DevOpsPlatform.AzureDevOps, item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
+                    deploymentFrequencyModel.IsProjectView = true;
+                    leadTimeForChangesModel.IsProjectView = true;
+                    meanTimeToRestoreModel.IsProjectView = true;
+                    changeFailureRateModel.IsProjectView = true;
                     model = new ProjectViewModel
                     {
                         ProjectName = item.Project,
+                        TargetDevOpsPlatform = DevOpsPlatform.AzureDevOps,
                         DeploymentFrequency = deploymentFrequencyModel,
                         LeadTimeForChanges = leadTimeForChangesModel,
                         MeanTimeToRestore = meanTimeToRestoreModel,
@@ -101,9 +106,14 @@ namespace DevOpsMetrics.Web.Controllers
                     ChangeFailureRateModel changeFailureRateModel = await serviceApiClient.GetChangeFailureRate(getSampleData,
                         DevOpsPlatform.GitHub, item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId,
                         numberOfDays, maxNumberOfItems, useCache);
+                    deploymentFrequencyModel.IsProjectView = true;
+                    leadTimeForChangesModel.IsProjectView = true;
+                    meanTimeToRestoreModel.IsProjectView = true;
+                    changeFailureRateModel.IsProjectView = true;
                     model = new ProjectViewModel
                     {
                         ProjectName = item.Repo,
+                        TargetDevOpsPlatform = DevOpsPlatform.GitHub,
                         DeploymentFrequency = deploymentFrequencyModel,
                         LeadTimeForChanges = leadTimeForChangesModel,
                         MeanTimeToRestore = meanTimeToRestoreModel,

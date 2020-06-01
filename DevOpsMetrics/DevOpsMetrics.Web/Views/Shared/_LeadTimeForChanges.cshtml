@@ -22,36 +22,43 @@
 }
 
 @* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
-<div class="chartContainer vertical flat">
-    <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ProjectName</h4>
-    @if (Model.RateLimitHit == true)
-    {
-        <div style="height:100px">
-            <span>API rate limit has been reached, please try again later</span>
-        </div>
-    }
-    else if (Model.PullRequests.Count == 0)
-    {
-        <div style="height:100px">
-            <span>There is no data to display for this period</span>
-        </div>
-    }
-    else
-    {
-        foreach (PullRequestModel item in Model.PullRequests)
+    <div class="chartContainer vertical flat">
+        @if (Model.IsProjectView == true)
         {
-            <a href="@item.Url" target="_blank">
-                <div class="progress-bar">
-                    <div class="progress-track" title="PR #@item.PullRequestId branch @item.Branch had @item.Commits.Count commits over @item.Duration.TotalHours.ToString("0.0") hours">
-                        <div class="progress-fill @item.Status">
-                            <span>@item.DurationPercent.ToString("0")%</span>
+            <h4>Lead time for changes</h4>
+        }
+        else
+        {
+            <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ProjectName</h4>
+        }
+        @if (Model.RateLimitHit == true)
+        {
+            <div style="height:100px">
+                <span>API rate limit has been reached, please try again later</span>
+            </div>
+        }
+        else if (Model.PullRequests.Count == 0)
+        {
+            <div style="height:100px">
+                <span>There is no data to display for this period</span>
+            </div>
+        }
+        else
+        {
+            foreach (PullRequestModel item in Model.PullRequests)
+            {
+                <a href="@item.Url" target="_blank">
+                    <div class="progress-bar">
+                        <div class="progress-track" title="PR #@item.PullRequestId branch @item.Branch had @item.Commits.Count commits over @item.Duration.TotalHours.ToString("0.0") hours">
+                            <div class="progress-fill @item.Status">
+                                <span>@item.DurationPercent.ToString("0")%</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            }
         }
-    }
-</div>
+    </div>
 <br />
 @if (Model.RateLimitHit == false)
 {
