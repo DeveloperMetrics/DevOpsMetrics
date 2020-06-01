@@ -41,7 +41,7 @@ namespace DevOpsMetrics.Core
             float changeFailureRate = 0;
             if (items == null || items.Count == 0)
             {
-                 changeFailureRate = -1;
+                 changeFailureRate = 0;
             }
             else
             {
