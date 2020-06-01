@@ -32,8 +32,6 @@ namespace DevOpsMetrics.Service.DataAccess
                     //Only return completed builds on the target branch
                     if (item.status == "completed" && item.sourceBranch == branch && item.queueTime > DateTime.Now.AddDays(-numberOfDays))
                     {
-                        KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.queueTime, item.queueTime);
-                        dateList.Add(newItem);
                         builds.Add(
                             new Build
                             {
@@ -50,14 +48,19 @@ namespace DevOpsMetrics.Service.DataAccess
                     }
                 }
 
+                builds = utility.GetLastNItems(builds, maxNumberOfItems);
+                foreach (Build item in builds)
+                {
+                    KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.StartTime, item.EndTime);
+                    dateList.Add(newItem);
+                }
                 deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
-
 
                 DeploymentFrequencyModel model = new DeploymentFrequencyModel
                 {
                     TargetDevOpsPlatform = DevOpsPlatform.AzureDevOps,
                     DeploymentName = buildName,
-                    BuildList = utility.GetLastNItems(builds, maxNumberOfItems),
+                    BuildList = builds,
                     DeploymentsPerDayMetric = deploymentsPerDay,
                     DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
                     NumberOfDays = numberOfDays
@@ -134,7 +137,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 else
                 {
                     return null;
-                }    
+                }
             }
             else
             {

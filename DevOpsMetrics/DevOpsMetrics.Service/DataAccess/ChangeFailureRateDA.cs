@@ -54,6 +54,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     dateList.Add(newItem);
                 }
 
+                //calculate the metric on the final results
                 float changeFailureRateMetric = changeFailureRate.ProcessChangeFailureRate(dateList, "", numberOfDays);
 
                 //We need to do some post processing and loop over the list a couple times to find the max build duration, construct a usable url, and calculate a build duration percentage
