@@ -40,7 +40,7 @@ namespace DevOpsMetrics.Web.Controllers
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             int maxNumberOfItems = 20;
-            int numberOfDays = 1;
+            int numberOfDays = 2;
             bool getSampleData = false;
             bool useCache = true;
             AzureDevOpsSettings azureDevOpsSetting = null;
