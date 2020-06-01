@@ -60,10 +60,7 @@
     }
 </div>
 <br />
-@if (Model.MeanTimeToRestoreEvents.Count > 0)
-{
-    <div class="metricSpan">
-        <b>Mean time to restore:</b> @Model.MTTRAverageDurationInHours.ToString("0.00") hours @*@Model.DeploymentsToDisplayUnit (last @Model.NumberOfDays days)*@<br />
-        <b>Time to restore ranking:</b> @Model.MTTRAverageDurationDescription
-    </div>
-}
+<div class="metricSpan">
+    <b>Mean time to restore:</b> @Model.MTTRAverageDurationInHours.ToString("0.00") hours @*@Model.DeploymentsToDisplayUnit (last @Model.NumberOfDays days)*@<br />
+    <b>Time to restore ranking:</b> @Model.MTTRAverageDurationDescription
+</div>
