@@ -26,7 +26,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 List<ChangeFailureRateBuild> builds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
 
                 //Build the date list and then generate the change failure rate metric
-                List<ChangeFailureRateBuild> filteredBuilds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
+                List<ChangeFailureRateBuild> filteredBuilds = new List<ChangeFailureRateBuild>();
                 List<KeyValuePair<DateTime, bool>> dateList = new List<KeyValuePair<DateTime, bool>>();
                 float maxBuildDuration = 0f;
                 foreach (ChangeFailureRateBuild item in builds)
