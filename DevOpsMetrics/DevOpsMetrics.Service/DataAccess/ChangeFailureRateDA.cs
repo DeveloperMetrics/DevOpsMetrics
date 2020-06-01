@@ -31,7 +31,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 float maxBuildDuration = 0f;
                 foreach (ChangeFailureRateBuild item in builds)
                 {
-                    if (item.StartTime > DateTime.Now.AddDays(-numberOfDays))
+                    if (item.Branch == branch && item.StartTime > DateTime.Now.AddDays(-numberOfDays))
                     {
                         //Special branch for Azure DevOps to construct the Url to each build
                         if (targetDevOpsPlatform == DevOpsPlatform.AzureDevOps)
