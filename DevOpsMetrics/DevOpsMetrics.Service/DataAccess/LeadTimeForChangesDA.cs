@@ -269,6 +269,19 @@ namespace DevOpsMetrics.Service.DataAccess
                             Status = pr.state,
                             Url = $"https://github.com/{owner}/{repo}/pull/{pr.number}"
                         };
+                        //Convert the pull request status to the standard UI status
+                        if (pullRequest.Status == "closed")
+                        {
+                            pullRequest.Status = "completed";
+                        }
+                        else if (pullRequest.Status == "open")
+                        {
+                            pullRequest.Status = "inProgress";
+                        }
+                        else
+                        {
+                            pullRequest.Status = pullRequest.Status;
+                        }
 
                         leadTimeForChangesList.Add(new KeyValuePair<DateTime, TimeSpan>(minTime, pullRequest.Duration));
                         pullRequests.Add(pullRequest);
