@@ -34,7 +34,7 @@ namespace DevOpsMetrics.Service.DataAccess
             AzureDevOpsPR pr = null;
             foreach (AzureDevOpsPR item in prs)
             {
-                if (item.targetRefName == branch)
+                if (item.sourceRefName == branch)
                 {
                     pr = item;
                     break;

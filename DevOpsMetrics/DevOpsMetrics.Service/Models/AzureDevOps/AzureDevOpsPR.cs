@@ -5,6 +5,7 @@ namespace DevOpsMetrics.Service.Models.AzureDevOps
     {
         public string PullRequestId { get; set; }
         public string targetRefName { get; set; }
+        public string sourceRefName { get; set; }
         public string status { get; set; }
     }
 }

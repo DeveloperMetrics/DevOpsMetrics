@@ -240,7 +240,7 @@ namespace DevOpsMetrics.Tests.Service
                     Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].PullRequestId) == false);
                     Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Branch) == false);
                     Assert.IsTrue(model.PullRequests[0].BuildCount >= 0);
-                    Assert.IsTrue(model.PullRequests[0].Commits.Count > 0);
+                    Assert.IsTrue(model.PullRequests[0].Commits.Count >= 0);
                     if (model.PullRequests[0].Commits.Count > 0)
                     {
                         Assert.IsTrue(string.IsNullOrEmpty(model.PullRequests[0].Commits[0].commitId) == false);
