@@ -51,10 +51,20 @@ namespace DevOpsMetrics.Service.DataAccess
                 //Filter the results to return the last n (maxNumberOfItems)
                 builds = utility.GetLastNItems(builds, maxNumberOfItems);
                 //then build the calcuation
+                float maxBuildDuration = 0f;
                 foreach (Build item in builds)
                 {
                     KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.StartTime, item.EndTime);
                     dateList.Add(newItem);
+                    if (item.BuildDuration > maxBuildDuration)
+                    {
+                        maxBuildDuration = item.BuildDuration;
+                    }
+                }
+                foreach (Build item in builds)
+                {
+                    float interiumResult = ((item.BuildDuration / maxBuildDuration) * 100f);
+                    item.BuildDurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
 
                 //calculate the metric on the final results
@@ -126,10 +136,20 @@ namespace DevOpsMetrics.Service.DataAccess
                     //Filter the results to return the last n (maxNumberOfItems)
                     builds = utility.GetLastNItems(builds, maxNumberOfItems);
                     //then build the calcuation
+                    float maxBuildDuration = 0f;
                     foreach (Build item in builds)
                     {
                         KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.StartTime, item.EndTime);
                         dateList.Add(newItem);
+                        if (item.BuildDuration > maxBuildDuration)
+                        {
+                            maxBuildDuration = item.BuildDuration;
+                        }
+                    }
+                    foreach (Build item in builds)
+                    {
+                        float interiumResult = ((item.BuildDuration / maxBuildDuration) * 100f);
+                        item.BuildDurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                     }
 
                     //calculate the metric on the final results
