@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 
 namespace DevOpsMetrics.Service.Models.AzureDevOps
 {
@@ -7,6 +9,16 @@ namespace DevOpsMetrics.Service.Models.AzureDevOps
         public string id { get; set; }
         public string status { get; set; }
         public string sourceBranch { get; set; }
+        public string parameters { get; set; }
+        public string branch
+        {
+            get
+            {
+                JToken item = JToken.Parse(parameters);
+                string prBranch = item["system.pullRequest.sourceBranch"].ToString();
+                return prBranch;
+            }
+        }
         public string buildNumber { get; set; }
         public string url { get; set; }
         public DateTime queueTime { get; set; }

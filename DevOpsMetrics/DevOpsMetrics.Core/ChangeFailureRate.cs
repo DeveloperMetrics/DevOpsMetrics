@@ -41,7 +41,7 @@ namespace DevOpsMetrics.Core
             float changeFailureRate = 0;
             if (items == null || items.Count == 0)
             {
-                 changeFailureRate = -1;
+                changeFailureRate = -1;
             }
             else
             {
@@ -75,7 +75,7 @@ namespace DevOpsMetrics.Core
         public string GetChangeFailureRateRating(float changeFailureRate)
         {
             string rating = "";
-            if (changeFailureRate < 0f)
+            if (changeFailureRate < 0)
             {
                 rating = "None";
             }

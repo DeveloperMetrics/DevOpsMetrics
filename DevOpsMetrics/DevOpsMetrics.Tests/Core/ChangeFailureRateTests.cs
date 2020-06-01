@@ -125,7 +125,7 @@ namespace DevOpsMetrics.Tests.Core
             string rating = metrics.GetChangeFailureRateRating(result);
 
             //Assert
-            Assert.AreEqual(-1f, result);
+            Assert.AreEqual(-1, result);
             Assert.AreEqual("None", rating);
         }
 
