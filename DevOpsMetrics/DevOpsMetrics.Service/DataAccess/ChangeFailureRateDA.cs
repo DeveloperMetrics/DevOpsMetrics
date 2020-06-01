@@ -38,21 +38,21 @@ namespace DevOpsMetrics.Service.DataAccess
                         {
                             item.Url = $"https://dev.azure.com/{organization_owner}/{project_repo}/_build/results?buildId={item.Id}&view=results";
                         }
-                        if (item.BuildDuration > maxBuildDuration)
-                        {
-                            maxBuildDuration = item.BuildDuration;
-                        }
                         filteredBuilds.Add(item);
                     }
                 }
-             
+
                 //Filter the results to return the last n (maxNumberOfItems)
                 filteredBuilds = utility.GetLastNItems(filteredBuilds, maxNumberOfItems);
                 //then build the calcuation
-                foreach (ChangeFailureRateBuild item in builds)
+                foreach (ChangeFailureRateBuild item in filteredBuilds)
                 {
                     KeyValuePair<DateTime, bool> newItem = new KeyValuePair<DateTime, bool>(item.StartTime, item.DeploymentWasSuccessful);
                     dateList.Add(newItem);
+                    if (item.BuildDuration > maxBuildDuration)
+                    {
+                        maxBuildDuration = item.BuildDuration;
+                    }
                 }
 
                 //calculate the metric on the final results
