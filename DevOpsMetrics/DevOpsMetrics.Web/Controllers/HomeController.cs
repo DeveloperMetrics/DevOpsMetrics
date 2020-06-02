@@ -259,7 +259,7 @@ namespace DevOpsMetrics.Web.Controllers
         {
             int maxNumberOfItems = 20;
             int numberOfDays = 60;
-            bool getSampleData = true;
+            bool getSampleData = false;
             bool useCache = true;
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             List<ChangeFailureRateModel> items = new List<ChangeFailureRateModel>();

@@ -14,7 +14,7 @@ All four of these metrics are based on production environments, where the value 
 More information about high performing DevOps metrics can be found in a blog post here: https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/
 
 ## The current solution:
-We currently have 3 of the 4 metrics partly implemented, and undergoing the pilot
+We currently have all four of the metrics implemented and undergoing a pilot
 - **Deployment Frequency**, in both Azure DevOps and GitHub:
   - How does it work? We look at the number of successful pipeline runs. 
   - Assumptions/things we can't currently measure: 
@@ -34,13 +34,22 @@ We currently have 3 of the 4 metrics partly implemented, and undergoing the pilo
 ![Lead time for changes](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/LeadTimeForChanges.png)
 
 - **Time to restore service**, in Azure
-  - How does it work? We setup Azure Monitor alerts on our resources, for example, on our web service, where we have an alerts for HTTP500 and HTTP403 errors, as well as monitoring CPU and RAM. If any of these alerts are triggered, we capture the alert in an Azure function, and save it into a Azure table storage, where we can aggregate and measure the time of the outage. When the alert is later resolved, this also triggers through the same workflow to save the the resolution and record the restoration of service. <br />
+  - How does it work? We setup Azure Monitor alerts on our resources, for example, on our web service, where we have an alerts for HTTP500 and HTTP403 errors, as well as monitoring CPU and RAM. If any of these alerts are triggered, we capture the alert in an Azure function, and save it into a Azure table storage, where we can aggregate and measure the time of the outage. When the alert is later resolved, this also triggers through the same workflow to save the the resolution and record the restoration of service. 
   - Assumptions/things we can't currently measure:
       - Our project is hosted in Azure
       - The production environment is contained in a single resource group
-      - There are appropriate alerts setup on each of the resources, each with action groups to save the alert to Azure Storage <br />
+      - There are appropriate alerts setup on each of the resources, each with action groups to save the alert to Azure Storage 
   - Current limitations: Only one production resource group can be specified
 ![Time to restore service](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/TimeToRestoreService.png)
+
+- **Change failure rate**, in Azure DevOps and GitHub
+  - How does it work? We look at builds, and let the user indicate if it was successful or a failure. By default (currently), the build is considered a failure. (We are going to change this to success by default later) 
+  - Assumptions/things we can't currently measure:
+      - The build is multi-stage, and leads to a deployment in a production environment.
+      - We only look at a single branch (usually the master branch), hence we ignore feature branches (as these probably aren't deploying to production)
+      - The user has reviewed the build/deployment and confirmed that the production deployment was successful
+  - Current limitations: Only one build/run can be specified
+![Change failure rate](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/ChangeFailureRate.png)
 
 # Architecture
 Uses .Net CORE 3.1 & MSTest. A GitHub action runs the CI/CD process. 
