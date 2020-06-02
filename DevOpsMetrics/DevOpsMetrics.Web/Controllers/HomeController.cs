@@ -42,7 +42,7 @@ namespace DevOpsMetrics.Web.Controllers
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             int maxNumberOfItems = 20;
-            int numberOfDays = 2;
+            int numberOfDays = 30;
             bool getSampleData = false;
             bool useCache = true;
             AzureDevOpsSettings azureDevOpsSetting = null;
@@ -128,7 +128,7 @@ namespace DevOpsMetrics.Web.Controllers
         {
             //TODO: Move variables to a configuration file or database
             int maxNumberOfItems = 20;
-            int numberOfDays = 30;
+            int numberOfDays = 60;
             bool getSampleData = false;
             bool useCache = true;
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
