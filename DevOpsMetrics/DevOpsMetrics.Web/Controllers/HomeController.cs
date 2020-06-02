@@ -351,11 +351,46 @@ namespace DevOpsMetrics.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateChangeFailureRate(string ProjectIdSelected, string CompletionPercentSelected)
+        public async Task<IActionResult> UpdateChangeFailureRate(string ProjectIdSelected, int CompletionPercentSelected)
         {
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
 
-            return View();
+            //Get a list of settings
+            List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
+            List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
+
+            //Create project items from each setting and add it to a project list.
+            List<ProjectUpdateItem> projectList = new List<ProjectUpdateItem>();
+            string organization_owner = "";
+            string project_repo = "";
+            string buildName_workflowName = "";
+            foreach (AzureDevOpsSettings item in azureDevOpsSettings)
+            {
+                if (item.RowKey == ProjectIdSelected)
+                {
+                    organization_owner = item.Organization;
+                    project_repo = item.Project;
+                    buildName_workflowName = item.BuildName;
+                }
+            }
+            foreach (GitHubSettings item in githubSettings)
+            {
+                if (item.RowKey == ProjectIdSelected)
+                {
+                    organization_owner = item.Owner;
+                    project_repo = item.Repo;
+                    buildName_workflowName = item.WorkflowName;
+                }
+            }
+
+            if (organization_owner != "" && project_repo != "" && buildName_workflowName != "")
+            {
+                return View(await serviceApiClient.UpdateChangeFailureRate(organization_owner, project_repo, buildName_workflowName, CompletionPercentSelected));
+            }
+            else
+            {
+                return View(false);
+            }
         }
 
         public IActionResult Generate500Error()
