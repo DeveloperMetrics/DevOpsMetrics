@@ -1,0 +1,33 @@
+﻿@model ProjectUpdateViewModel
+@{
+    ViewData["Title"] = "Change failure rate";
+}
+
+<h2>Change failure rate updates</h2>
+<form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="UpdateChangeFailureRate">
+    <input id="organization_owner" type="hidden" value="" />
+    <input id="project_repo" type="hidden" value="" />
+    <input id="buildName_workflowName" type="hidden" value="" />
+    <div class="row">
+        <div class="col-md-6">
+            <span>Project:</span>
+            <select asp-for="ProjectIdSelected" asp-items="Model.ProjectList" class="form-control">
+                <option value="">Select Project</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <span>Complete %:</span>
+            <select asp-for="CompletionPercentSelected" asp-items="Model.CompletionPercentList" class="form-control">
+                <option value="">Select %</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <input type="submit" value="Save" />
+        </div>
+    </div>
+   
+</form>

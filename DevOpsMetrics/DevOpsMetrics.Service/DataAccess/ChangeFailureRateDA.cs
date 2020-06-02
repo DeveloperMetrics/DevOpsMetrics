@@ -3,9 +3,11 @@ using DevOpsMetrics.Service.DataAccess.TableStorage;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.DataAccess
@@ -22,7 +24,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 //Gets a list of change failure rate builds
                 AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
-                Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableChangeFailureRate, daTableStorage.CreateAzureDevOpsBuildPartitionKey(organization_owner, project_repo, buildName_workflowName));
+                Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableChangeFailureRate, daTableStorage.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName));
                 List<ChangeFailureRateBuild> builds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
 
                 //Build the date list and then generate the change failure rate metric
@@ -87,6 +89,61 @@ namespace DevOpsMetrics.Service.DataAccess
                 };
                 return model;
             }
+        }
+
+        public async Task<bool> UpdateChangeFailureRate(TableStorageAuth tableStorageAuth,
+               string organization_owner, string project_repo, string buildName_workflowName,
+               int percentComplete)
+        {
+            //Gets a list of change failure rate builds
+            AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
+            string partitionKey = daTableStorage.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName);
+            Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableChangeFailureRate, partitionKey);
+            List<ChangeFailureRateBuild> builds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
+
+            int numerator = 0;
+            int denominator = 0;
+            switch (percentComplete)
+            {
+                case 0:
+                    numerator = 0;
+                    denominator = 1;
+                    break;
+                case 10:
+                    numerator = 1;
+                    denominator = 10;
+                    break;
+                case 25:
+                    numerator = 1;
+                    denominator = 4;
+                    break;
+                case 50:
+                    numerator = 1;
+                    denominator = 2;
+                    break;
+                case 75:
+                    numerator = 3;
+                    denominator = 4;
+                    break;
+                case 100:
+                    numerator = 1;
+                    denominator = 1;
+                    break;
+            }
+
+            //var everyNth = list.Where((x, i) => i % nStep == 0);
+            //var everyFourth = list.Where((x,i) => i % 4 == 0);
+            ListUtility<ChangeFailureRateBuild> listUtility = new ListUtility<ChangeFailureRateBuild>();
+            List<ChangeFailureRateBuild> filteredBuilds = builds.Where((x, numerator) => numerator % denominator == 0).ToList();
+            filteredBuilds = listUtility.GetLastNItems(filteredBuilds, 20);
+            TableStorageCommonDA tableChangeFailureRateDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableChangeFailureRate);
+            foreach (ChangeFailureRateBuild item in filteredBuilds)
+            {
+                item.DeploymentWasSuccessful = true;
+                await daTableStorage.UpdateChangeFailureRate(tableChangeFailureRateDA, item, partitionKey, true);
+            }
+
+            return true;
         }
 
         private List<ChangeFailureRateBuild> GetSampleBuilds()

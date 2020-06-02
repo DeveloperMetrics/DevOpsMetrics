@@ -61,6 +61,12 @@ namespace DevOpsMetrics.Web.Services
             return await GetResponse<ChangeFailureRateModel>(Client, url);
         }
 
+        public async Task<bool> UpdateChangeFailureRate(string organization_owner, string project_repo, string buildName_workflowName, int percentComplete)
+        {
+            string url = $"/api/ChangeFailureRate/UpdateChangeFailureRate?organization_owner={organization_owner}&project_repo={project_repo}&buildName_workflowName={buildName_workflowName}&percentComplete={percentComplete}";
+            return await GetResponse<bool>(Client, url);
+        }
+
         public async Task<List<AzureDevOpsSettings>> GetAzureDevOpsSettings()
         {
             string url = $"/api/TableStorage/GetAzureDevOpsSettings";

@@ -40,7 +40,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            JArray list = da.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableAzureDevOpsBuilds, da.CreateAzureDevOpsBuildPartitionKey(organization, project, buildName));
+            JArray list = da.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableAzureDevOpsBuilds, da.CreateBuildWorkflowPartitionKey(organization, project, buildName));
 
             //Assert
             Assert.IsTrue(list.Count >= 0);
@@ -144,7 +144,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            JArray list = da.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableGitHubRuns, da.CreateGitHubRunPartitionKey(owner, repo, workflowName));
+            JArray list = da.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableGitHubRuns, da.CreateBuildWorkflowPartitionKey(owner, repo, workflowName));
 
             //Assert
             Assert.IsTrue(list.Count >= 0);

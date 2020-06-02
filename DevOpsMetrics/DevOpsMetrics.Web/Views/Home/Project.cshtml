@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Project summary";
 }
-@{
+@if (Model != null)
+{
     string widgetImageName = "";
     string widgetName = "";
     if (Model.TargetDevOpsPlatform == DevOpsPlatform.AzureDevOps)
@@ -21,20 +22,28 @@
         widgetImageName = "Unknown-icon.png";
         widgetName = "Unknown";
     }
-}
 
-<h2><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ProjectName DevOps summary</h2>
-<div class="row">
-    <div class="col-md-6">
-        @await Html.PartialAsync("_Deployments", Model.DeploymentFrequency)
+    <h2><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ProjectName DevOps metrics summary</h2>
+    <div class="row">
+        <div class="col-md-6">
+            @await Html.PartialAsync("_Deployments", Model.DeploymentFrequency)
+        </div>
+        <div class="col-md-6">
+            @await Html.PartialAsync("_LeadTimeForChanges", Model.LeadTimeForChanges)
+        </div>
+        <div class="col-md-6">
+            @await Html.PartialAsync("_MeanTimeToRestore", Model.MeanTimeToRestore)
+        </div>
+        <div class="col-md-6">
+            @await Html.PartialAsync("_ChangeFailureRate", Model.ChangeFailureRate)
+        </div>
     </div>
-    <div class="col-md-6">
-        @await Html.PartialAsync("_LeadTimeForChanges", Model.LeadTimeForChanges)
+}
+else
+{
+    <div class="row">
+        <div class="col-md-6">
+            Project not found
+        </div>
     </div>
-    <div class="col-md-6">
-        @await Html.PartialAsync("_MeanTimeToRestore", Model.MeanTimeToRestore)
-    </div>
-    <div class="col-md-6">
-        @await Html.PartialAsync("_ChangeFailureRate", Model.ChangeFailureRate)
-    </div>
-</div>
+}

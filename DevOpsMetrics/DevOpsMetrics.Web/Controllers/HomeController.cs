@@ -3,7 +3,9 @@ using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;
 using DevOpsMetrics.Web.Models;
 using DevOpsMetrics.Web.Services;
+using Microsoft.AspNetCore.DataProtection.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,7 +42,7 @@ namespace DevOpsMetrics.Web.Controllers
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             int maxNumberOfItems = 20;
-            int numberOfDays = 2;
+            int numberOfDays = 30;
             bool getSampleData = false;
             bool useCache = true;
             AzureDevOpsSettings azureDevOpsSetting = null;
@@ -126,7 +128,7 @@ namespace DevOpsMetrics.Web.Controllers
         {
             //TODO: Move variables to a configuration file or database
             int maxNumberOfItems = 20;
-            int numberOfDays = 30;
+            int numberOfDays = 60;
             bool getSampleData = false;
             bool useCache = true;
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
@@ -258,7 +260,7 @@ namespace DevOpsMetrics.Web.Controllers
         {
             int maxNumberOfItems = 20;
             int numberOfDays = 60;
-            bool getSampleData = true;
+            bool getSampleData = false;
             bool useCache = true;
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             List<ChangeFailureRateModel> items = new List<ChangeFailureRateModel>();
@@ -298,6 +300,115 @@ namespace DevOpsMetrics.Web.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public async Task<IActionResult> ChangeFailureRateUpdates()
+        {
+            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+
+            //Get a list of settings
+            List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
+            List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
+
+            //Create project items from each setting and add it to a project list.
+            List<ProjectUpdateItem> projectList = new List<ProjectUpdateItem>();
+            foreach (AzureDevOpsSettings item in azureDevOpsSettings)
+            {
+                ProjectUpdateItem newItem = new ProjectUpdateItem
+                {
+                    ProjectId = item.RowKey,
+                    ProjectName = item.Project
+                };
+                projectList.Add(newItem);
+            }
+            foreach (GitHubSettings item in githubSettings)
+            {
+                ProjectUpdateItem newItem = new ProjectUpdateItem
+                {
+                    ProjectId = item.RowKey,
+                    ProjectName = item.Repo
+                };
+                projectList.Add(newItem);
+            }
+
+            //Create a percentage completed dropdown
+            List<CompletionPercentItem> completionList = new List<CompletionPercentItem>
+            {
+                new CompletionPercentItem { CompletionPercent = 0 },
+                new CompletionPercentItem { CompletionPercent = 10 },
+                new CompletionPercentItem { CompletionPercent = 25 },
+                new CompletionPercentItem { CompletionPercent = 50 },
+                new CompletionPercentItem { CompletionPercent = 75 },
+                new CompletionPercentItem { CompletionPercent = 100 }
+            };
+
+            ProjectUpdateViewModel model = new ProjectUpdateViewModel
+            {
+                ProjectList = new SelectList(projectList, "ProjectId", "ProjectName"),
+                CompletionPercentList = new SelectList(completionList, "CompletionPercent", "CompletionPercent")
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateChangeFailureRate(string ProjectIdSelected, int CompletionPercentSelected)
+        {
+            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+
+            //Get a list of settings
+            List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
+            List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
+
+            //Create project items from each setting and add it to a project list.
+            List<ProjectUpdateItem> projectList = new List<ProjectUpdateItem>();
+            DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.Unknown;
+            string organization_owner = "";
+            string project_repo = "";
+            string repository = "";
+            string buildName_workflowName = "";
+            foreach (AzureDevOpsSettings item in azureDevOpsSettings)
+            {
+                if (item.RowKey == ProjectIdSelected)
+                {
+                    targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
+                    organization_owner = item.Organization;
+                    project_repo = item.Project;
+                    repository = item.Repository;
+                    buildName_workflowName = item.BuildName;
+                }
+            }
+            foreach (GitHubSettings item in githubSettings)
+            {
+                if (item.RowKey == ProjectIdSelected)
+                {
+                    targetDevOpsPlatform = DevOpsPlatform.GitHub;
+                    organization_owner = item.Owner;
+                    project_repo = item.Repo;
+                    repository = "";
+                    buildName_workflowName = item.WorkflowName;
+                }
+            }
+
+            //Update the change failure rate with the % distribution
+            if (organization_owner != "" && project_repo != "" && buildName_workflowName != "")
+            {
+                await serviceApiClient.UpdateChangeFailureRate(organization_owner, project_repo, buildName_workflowName, CompletionPercentSelected);
+            }
+
+            //Redirect to the correct project page to see the changes
+            if (targetDevOpsPlatform == DevOpsPlatform.AzureDevOps)
+            {
+                return RedirectToAction("Project", "Home", new { rowKey = organization_owner + "_" + project_repo + "_" + repository + "_" + buildName_workflowName });
+            }
+            else if (targetDevOpsPlatform == DevOpsPlatform.GitHub)
+            {
+                return RedirectToAction("Project", "Home", new { rowKey = organization_owner + "_" + project_repo + "_" + buildName_workflowName });
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         public IActionResult Generate500Error()
