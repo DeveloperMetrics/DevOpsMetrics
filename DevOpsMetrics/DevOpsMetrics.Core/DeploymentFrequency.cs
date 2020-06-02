@@ -27,6 +27,7 @@ namespace DevOpsMetrics.Core
         {
             if (deploymentFrequencyList != null)
             {
+                DeploymentFrequencyList = new List<KeyValuePair<DateTime, DateTime>>();
                 foreach (KeyValuePair<DateTime, DateTime> item in deploymentFrequencyList)
                 {
                     AddDeploymentFrequency(pipelineName, item.Key, item.Value);
