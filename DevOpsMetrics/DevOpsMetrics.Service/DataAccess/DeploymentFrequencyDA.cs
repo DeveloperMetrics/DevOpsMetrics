@@ -48,19 +48,25 @@ namespace DevOpsMetrics.Service.DataAccess
                     }
                 }
 
-                //Filter the results to return the last n (maxNumberOfItems)
-                builds = utility.GetLastNItems(builds, maxNumberOfItems);
                 //then build the calcuation
-                float maxBuildDuration = 0f;
-                foreach (Build item in builds)
+                 foreach (Build item in builds)
                 {
                     KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.StartTime, item.EndTime);
                     dateList.Add(newItem);
+       
+                }
+                //Filter the results to return the last n (maxNumberOfItems)
+                builds = utility.GetLastNItems(builds, maxNumberOfItems);
+                //Find the max build duration
+                float maxBuildDuration = 0f;
+                foreach (Build item in builds)
+                {
                     if (item.BuildDuration > maxBuildDuration)
                     {
                         maxBuildDuration = item.BuildDuration;
                     }
                 }
+                //Calculate the percent scaling
                 foreach (Build item in builds)
                 {
                     float interiumResult = ((item.BuildDuration / maxBuildDuration) * 100f);
