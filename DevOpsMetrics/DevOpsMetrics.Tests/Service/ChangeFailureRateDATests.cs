@@ -87,7 +87,7 @@ namespace DevOpsMetrics.Tests.Service
         //}
 
         [TestMethod]
-        public async Task GHDeploymentFrequencyDAIntegrationTest()
+        public async Task GHChangeFailureRateDAIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -115,6 +115,26 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.ChangeFailureRateBuildList.Count <= 20f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
             Assert.AreNotEqual("Elite", model.ChangeFailureRateMetricDescription);
+        }
+
+        [TestMethod]
+        public async Task UpdateChangeFailureRateDAIntegrationTest()
+        {
+            //Arrange
+           TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            string organization = "samsmithnz";
+            string project = "SamLearnsAzure";
+            string buildName = "SamLearnsAzure.CI";
+            int percent = 100;
+
+            //Act
+            ChangeFailureRateDA da = new ChangeFailureRateDA();
+            bool result = await da.UpdateChangeFailureRate(tableStorageAuth,
+               organization, project, buildName, percent);
+
+            //Assert
+            Assert.IsTrue(result == true);
+
         }
 
     }

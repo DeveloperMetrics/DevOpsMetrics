@@ -205,13 +205,13 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             return itemsAdded;
         }
 
-        public async Task<int> UpdateChangeFailureRate(TableStorageCommonDA tableChangeFailureRateDA, ChangeFailureRateBuild newBuild, string partitionKey)
+        public async Task<int> UpdateChangeFailureRate(TableStorageCommonDA tableChangeFailureRateDA, ChangeFailureRateBuild newBuild, string partitionKey, bool forceUpdate = false)
         {
             int itemsAdded = 0;
             string rowKey = newBuild.Id;
             string json = JsonConvert.SerializeObject(newBuild);
             AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, json);
-            if (await tableChangeFailureRateDA.AddItem(newItem) == true)
+            if (await tableChangeFailureRateDA.AddItem(newItem, forceUpdate) == true)
             {
                 itemsAdded++;
             }

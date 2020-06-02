@@ -133,13 +133,14 @@ namespace DevOpsMetrics.Service.DataAccess
 
             //var everyNth = list.Where((x, i) => i % nStep == 0);
             //var everyFourth = list.Where((x,i) => i % 4 == 0);
+            ListUtility<ChangeFailureRateBuild> listUtility = new ListUtility<ChangeFailureRateBuild>();
             List<ChangeFailureRateBuild> filteredBuilds = builds.Where((x, numerator) => numerator % denominator == 0).ToList();
+            filteredBuilds = listUtility.GetLastNItems(filteredBuilds, 20);
             TableStorageCommonDA tableChangeFailureRateDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableChangeFailureRate);
             foreach (ChangeFailureRateBuild item in filteredBuilds)
             {
                 item.DeploymentWasSuccessful = true;
-
-                await daTableStorage.UpdateChangeFailureRate(tableChangeFailureRateDA, item, partitionKey);
+                await daTableStorage.UpdateChangeFailureRate(tableChangeFailureRateDA, item, partitionKey, true);
             }
 
             return true;
