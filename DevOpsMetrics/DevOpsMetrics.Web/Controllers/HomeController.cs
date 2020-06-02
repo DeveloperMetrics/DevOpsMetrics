@@ -3,6 +3,7 @@ using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;
 using DevOpsMetrics.Web.Models;
 using DevOpsMetrics.Web.Services;
+using Microsoft.AspNetCore.DataProtection.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
@@ -361,15 +362,19 @@ namespace DevOpsMetrics.Web.Controllers
 
             //Create project items from each setting and add it to a project list.
             List<ProjectUpdateItem> projectList = new List<ProjectUpdateItem>();
+            DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.Unknown;
             string organization_owner = "";
             string project_repo = "";
+            string repository = "";
             string buildName_workflowName = "";
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
                 if (item.RowKey == ProjectIdSelected)
                 {
+                    targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
                     organization_owner = item.Organization;
                     project_repo = item.Project;
+                    repository = item.Repository;
                     buildName_workflowName = item.BuildName;
                 }
             }
@@ -377,19 +382,32 @@ namespace DevOpsMetrics.Web.Controllers
             {
                 if (item.RowKey == ProjectIdSelected)
                 {
+                    targetDevOpsPlatform = DevOpsPlatform.GitHub;
                     organization_owner = item.Owner;
                     project_repo = item.Repo;
+                    repository = "";
                     buildName_workflowName = item.WorkflowName;
                 }
             }
 
+            //Update the change failure rate with the % distribution
             if (organization_owner != "" && project_repo != "" && buildName_workflowName != "")
             {
-                return View(await serviceApiClient.UpdateChangeFailureRate(organization_owner, project_repo, buildName_workflowName, CompletionPercentSelected));
+                await serviceApiClient.UpdateChangeFailureRate(organization_owner, project_repo, buildName_workflowName, CompletionPercentSelected);
+            }
+
+            //Redirect to the correct project page to see the changes
+            if (targetDevOpsPlatform == DevOpsPlatform.AzureDevOps)
+            {
+                return RedirectToAction("Project", "Home", new { rowKey = organization_owner + "_" + project_repo + "_" + repository + "_" + buildName_workflowName });
+            }
+            else if (targetDevOpsPlatform == DevOpsPlatform.GitHub)
+            {
+                return RedirectToAction("Project", "Home", new { rowKey = organization_owner + "_" + project_repo + "_" + buildName_workflowName });
             }
             else
             {
-                return View(false);
+                return RedirectToAction("Index", "Home");
             }
         }
 
