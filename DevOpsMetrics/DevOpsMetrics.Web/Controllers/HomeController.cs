@@ -4,6 +4,7 @@ using DevOpsMetrics.Service.Models.GitHub;
 using DevOpsMetrics.Web.Models;
 using DevOpsMetrics.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -298,6 +299,43 @@ namespace DevOpsMetrics.Web.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public async Task<IActionResult> ChangeFailureRateUpdates()
+        {
+            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+
+            //Get a list of settings
+            List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
+            List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
+
+            //partition keys from each setting object
+            List<ProjectUpdateItem> projectList = new List<ProjectUpdateItem>();
+            foreach (AzureDevOpsSettings item in azureDevOpsSettings)
+            {
+                ProjectUpdateItem newItem = new ProjectUpdateItem
+                {
+                    ProjectId = item.RowKey,
+                    ProjectName = item.Project
+                };
+                projectList.Add(newItem);
+            }
+            foreach (GitHubSettings item in githubSettings)
+            {
+                ProjectUpdateItem newItem = new ProjectUpdateItem
+                {
+                    ProjectId = item.RowKey,
+                    ProjectName = item.Repo
+                };
+                projectList.Add(newItem);
+            }
+
+            ProjectUpdateViewModel model = new ProjectUpdateViewModel
+            {
+                ProjectList = new SelectList(projectList, "ProjectId", "ProjectName")
+            };
+
+            return View(model);
         }
 
         public IActionResult Generate500Error()
