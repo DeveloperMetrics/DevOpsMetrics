@@ -54,7 +54,7 @@ namespace DevOpsMetrics.Service.DataAccess
             if (useCache == true)
             {
                 AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
-                list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableGitHubRuns, daTableStorage.CreateGitHubRunPartitionKey(owner, repo, workflowName));
+                list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableGitHubRuns, daTableStorage.CreateBuildWorkflowPartitionKey(owner, repo, workflowName));
             }
             else
             {
