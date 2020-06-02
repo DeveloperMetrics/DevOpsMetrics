@@ -4,17 +4,27 @@
 }
 
 <h2>Change failure rate updates</h2>
-<div class="row">
-    <div class="col-md-6">
-        <span>Project:</span> <select asp-for="ProjectId" asp-items="Model.ProjectList" class="form-control">
-            <option value="">Select Project</option>
-        </select>
+<form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="UpdateChangeFailureRate">
+    <div class="row">
+        <div class="col-md-6">
+            <span>Project:</span>
+            <select asp-for="ProjectIdSelected" asp-items="Model.ProjectList" class="form-control">
+                <option value="">Select Project</option>
+            </select>
+        </div>
     </div>
-</div>
-@*<div class="row">
-    <div class="col-md-6">
-        <span>Complete %:</span> <select asp-for="CompletionPercent" asp-items="Model.CompleteList" class="form-control">
-            <option value="">Select %</option>
-        </select>
+    <div class="row">
+        <div class="col-md-6">
+            <span>Complete %:</span>
+            <select asp-for="CompletionPercentSelected" asp-items="Model.CompletionPercentList" class="form-control">
+                <option value="">Select %</option>
+            </select>
+        </div>
     </div>
-</div>*@
+    <div class="row">
+        <div class="col-md-6">
+            <input type="submit" value="Save" />
+        </div>
+    </div>
+   
+</form>

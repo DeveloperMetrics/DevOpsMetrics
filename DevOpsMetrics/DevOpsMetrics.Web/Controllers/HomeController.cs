@@ -309,7 +309,7 @@ namespace DevOpsMetrics.Web.Controllers
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
 
-            //partition keys from each setting object
+            //Create project items from each setting and add it to a project list.
             List<ProjectUpdateItem> projectList = new List<ProjectUpdateItem>();
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
@@ -330,12 +330,32 @@ namespace DevOpsMetrics.Web.Controllers
                 projectList.Add(newItem);
             }
 
+            //Create a percentage completed dropdown
+            List<CompletionPercentItem> completionList = new List<CompletionPercentItem>
+            {
+                new CompletionPercentItem { CompletionPercent = 0 },
+                new CompletionPercentItem { CompletionPercent = 10 },
+                new CompletionPercentItem { CompletionPercent = 25 },
+                new CompletionPercentItem { CompletionPercent = 50 },
+                new CompletionPercentItem { CompletionPercent = 75 },
+                new CompletionPercentItem { CompletionPercent = 100 }
+            };
+
             ProjectUpdateViewModel model = new ProjectUpdateViewModel
             {
-                ProjectList = new SelectList(projectList, "ProjectId", "ProjectName")
+                ProjectList = new SelectList(projectList, "ProjectId", "ProjectName"),
+                CompletionPercentList = new SelectList(completionList, "CompletionPercent", "CompletionPercent")
             };
 
             return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateChangeFailureRate(string ProjectIdSelected, string CompletionPercentSelected)
+        {
+            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+
+            return View();
         }
 
         public IActionResult Generate500Error()

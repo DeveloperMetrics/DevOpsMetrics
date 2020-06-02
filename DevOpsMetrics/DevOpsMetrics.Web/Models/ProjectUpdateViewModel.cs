@@ -6,6 +6,10 @@ namespace DevOpsMetrics.Web.Models
     {
         public SelectList ProjectList { get; set; }
 
-        public string ProjectId { get; set; }
+        public string ProjectIdSelected { get; set; }
+
+        public SelectList CompletionPercentList { get; set; }
+
+        public int CompletionPercentSelected { get; set; }
     }
 }
