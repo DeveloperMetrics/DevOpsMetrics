@@ -69,6 +69,9 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.MeanTimeToRestoreEvents[0].MTTRDurationInHours > 0f);
             Assert.IsTrue(model.MeanTimeToRestoreEvents[0].MTTRDurationPercent > 0f);
             Assert.IsTrue(model.MeanTimeToRestoreEvents[0].ItemOrder == 1);
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
         }
 
         [TestCategory("ControllerTest")]
@@ -102,6 +105,9 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.MeanTimeToRestoreEvents[0].MTTRDurationInHours > 0f);
             Assert.IsTrue(model.MeanTimeToRestoreEvents[0].MTTRDurationPercent > 0f);
             Assert.IsTrue(model.MeanTimeToRestoreEvents[0].ItemOrder == 1);
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
         }
 
 

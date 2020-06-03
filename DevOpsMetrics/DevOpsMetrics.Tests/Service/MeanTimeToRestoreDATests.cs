@@ -46,6 +46,9 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(resourceGroup, model.ResourceGroup);
             Assert.IsTrue(model.MeanTimeToRestoreEvents.Count > 0);
             Assert.IsTrue(model.MTTRAverageDurationInHours > 0);
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
         }
 
 
@@ -72,6 +75,9 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.MeanTimeToRestoreEvents.Count > 0);
             Assert.IsTrue(model.MTTRAverageDurationInHours > 0);
             Assert.IsTrue(model.MTTRAverageDurationDescription != "");
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
         }
 
         [TestMethod]
@@ -97,6 +103,9 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.MeanTimeToRestoreEvents.Count > 0);
             Assert.IsTrue(model.MTTRAverageDurationInHours > 0);
             Assert.IsTrue(model.MTTRAverageDurationDescription != "");
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
         }
     }
 }
