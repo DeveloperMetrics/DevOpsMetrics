@@ -15,6 +15,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             ListUtility<Build> utility = new ListUtility<Build>();
+            DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
             if (getSampleData == false)
             {
                 //Gets a list of builds
@@ -58,8 +59,7 @@ namespace DevOpsMetrics.Service.DataAccess
 
                     //then build the calcuation, loading the dates into a date array
                     float deploymentsPerDay;
-                    DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
-                    deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
+                     deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
 
                     //Filter the results to return the last n (maxNumberOfItems), to return to the UI
                     builds = utility.GetLastNItems(builds, maxNumberOfItems);
@@ -121,6 +121,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             ListUtility<Build> utility = new ListUtility<Build>();
+            DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
             if (getSampleData == false)
             {
                 //Gets a list of builds
@@ -164,7 +165,6 @@ namespace DevOpsMetrics.Service.DataAccess
 
                     //then build the calcuation, loading the dates into a date array
                     float deploymentsPerDay;
-                    DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
                     deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
 
                     //Filter the results to return the last n (maxNumberOfItems), to return to the UI
