@@ -195,7 +195,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 List<string> branches = new List<string>();
                 foreach (GitHubActionsRun item in initialRuns)
                 {
-                    if (item.status == "completed")
+                    if (item.status == "completed" && item.created_at > DateTime.Now.AddDays(-numberOfDays))
                     {
                         if (item.head_branch == masterBranch)
                         {
@@ -291,22 +291,23 @@ namespace DevOpsMetrics.Service.DataAccess
                     }
                 }
 
+                //Calculate the lead time for changes value, in hours
+                float leadTime = leadTimeForChanges.ProcessLeadTimeForChanges(leadTimeForChangesList, repo, numberOfDays);
+
+                List<PullRequestModel> uiPullRequests = utility.GetLastNItems(pullRequests, maxNumberOfItems);
                 float maxPullRequestDuration = 0f;
-                foreach (PullRequestModel item in pullRequests)
+                foreach (PullRequestModel item in uiPullRequests)
                 {
                     if (item.Duration.TotalMinutes > maxPullRequestDuration)
                     {
                         maxPullRequestDuration = (float)item.Duration.TotalMinutes;
                     }
                 }
-                foreach (PullRequestModel item in pullRequests)
+                foreach (PullRequestModel item in uiPullRequests)
                 {
                     float interiumResult = (((float)item.Duration.TotalMinutes / maxPullRequestDuration) * 100f);
                     item.DurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
-
-                //Filter out builds on the master branch older than the number of days
-                masterBranchRuns = masterBranchRuns.Where(x => x.created_at > DateTime.Now.AddDays(-numberOfDays)).ToList();
                 double totalHours = 0;
                 foreach (GitHubActionsRun item in masterBranchRuns)
                 {
@@ -318,9 +319,6 @@ namespace DevOpsMetrics.Service.DataAccess
                     averageBuildHours = (float)totalHours / (float)masterBranchRuns.Count;
                 }
 
-                //Calculate the lead time for changes value, in hours
-                float leadTime = leadTimeForChanges.ProcessLeadTimeForChanges(leadTimeForChangesList, repo, numberOfDays);
-
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
                     ProjectName = repo,
@@ -330,13 +328,16 @@ namespace DevOpsMetrics.Service.DataAccess
                     LeadTimeForChangesMetric = leadTime + averageBuildHours,
                     LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
                     PullRequests = utility.GetLastNItems(pullRequests, maxNumberOfItems),
-                    NumberOfDays = numberOfDays
+                    NumberOfDays = numberOfDays,
+                    MaxNumberOfItems = uiPullRequests.Count,
+                    TotalItems = pullRequests.Count
                 };
 
                 return model;
             }
             else
             {
+                List<PullRequestModel> samplePullRequests = utility.GetLastNItems(CreatePullRequestsSample(DevOpsPlatform.GitHub), maxNumberOfItems);
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
                     ProjectName = repo,
@@ -345,8 +346,10 @@ namespace DevOpsMetrics.Service.DataAccess
                     AveragePullRequestHours = 20.33f,
                     LeadTimeForChangesMetric = 20.33f + 1f,
                     LeadTimeForChangesMetricDescription = "Elite",
-                    PullRequests = utility.GetLastNItems(CreatePullRequestsSample(DevOpsPlatform.GitHub), maxNumberOfItems),
-                    NumberOfDays = numberOfDays
+                    PullRequests = samplePullRequests,
+                    NumberOfDays = numberOfDays,
+                    MaxNumberOfItems = samplePullRequests.Count,
+                    TotalItems = samplePullRequests.Count
                 };
 
                 return model;
