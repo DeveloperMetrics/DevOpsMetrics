@@ -23,7 +23,7 @@
         widgetName = "Unknown";
     }
 
-    <h2><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ProjectName DevOps metrics summary</h2>
+    <h2><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ProjectName high performing DevOps metrics</h2>
     <div class="row">
         <div class="col-md-6">
             @await Html.PartialAsync("_Deployments", Model.DeploymentFrequency)
