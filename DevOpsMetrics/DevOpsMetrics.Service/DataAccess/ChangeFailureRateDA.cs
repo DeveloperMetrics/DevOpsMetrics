@@ -156,8 +156,8 @@ namespace DevOpsMetrics.Service.DataAccess
             }
 
             //Get builds for positive (builds we will set DeploymentWasSuccessful=true) and negative (builds we will set to DeploymentWasSuccessful=false)
-            List<ChangeFailureRateBuild> postiveBuilds = builds.Where((x, numerator) => numerator % denominator == 0).ToList();
-            List<ChangeFailureRateBuild> negativeBuilds = builds.Where((x, numerator) => numerator % denominator != 0).ToList();
+            List<ChangeFailureRateBuild> postiveBuilds = builds.Where((x, numerator) => numerator % denominator != 0).ToList();
+            List<ChangeFailureRateBuild> negativeBuilds = builds.Where((x, numerator) => numerator % denominator == 0).ToList();
 
             //Make the updates
             TableStorageCommonDA tableChangeFailureRateDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableChangeFailureRate);
