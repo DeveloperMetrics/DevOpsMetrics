@@ -133,15 +133,18 @@ namespace DevOpsMetrics.Service.DataAccess
                     break;
             }
 
-            //var everyNth = list.Where((x, i) => i % nStep == 0);
-            //var everyFourth = list.Where((x,i) => i % 4 == 0);
             ListUtility<ChangeFailureRateBuild> listUtility = new ListUtility<ChangeFailureRateBuild>();
-            List<ChangeFailureRateBuild> filteredBuilds = builds.Where((x, numerator) => numerator % denominator == 0).ToList();
-            filteredBuilds = listUtility.GetLastNItems(filteredBuilds, 20);
+            List<ChangeFailureRateBuild> postiveBuilds = listUtility.GetLastNItems(builds.Where((x, numerator) => numerator % denominator == 0).ToList(), 20);
+            List<ChangeFailureRateBuild> negativeBuilds = listUtility.GetLastNItems(builds.Where((x, numerator) => numerator % denominator != 0).ToList(), 20);
             TableStorageCommonDA tableChangeFailureRateDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableChangeFailureRate);
-            foreach (ChangeFailureRateBuild item in filteredBuilds)
+            foreach (ChangeFailureRateBuild item in postiveBuilds)
             {
                 item.DeploymentWasSuccessful = true;
+                await daTableStorage.UpdateChangeFailureRate(tableChangeFailureRateDA, item, partitionKey, true);
+            }
+            foreach (ChangeFailureRateBuild item in negativeBuilds)
+            {
+                item.DeploymentWasSuccessful = false;
                 await daTableStorage.UpdateChangeFailureRate(tableChangeFailureRateDA, item, partitionKey, true);
             }
 
