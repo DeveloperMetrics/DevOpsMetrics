@@ -102,14 +102,25 @@ namespace DevOpsMetrics.Service.DataAccess
 
         public async Task<bool> UpdateChangeFailureRate(TableStorageAuth tableStorageAuth,
                string organization_owner, string project_repo, string buildName_workflowName,
-               int percentComplete)
+               int percentComplete, int numberOfDays)
         {
             //Gets a list of change failure rate builds
             AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
             string partitionKey = daTableStorage.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName);
             Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableChangeFailureRate, partitionKey);
-            List<ChangeFailureRateBuild> builds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
+            List<ChangeFailureRateBuild> initialBuilds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
 
+            //Get the list of items we are going to process, within the date/day range
+            List<ChangeFailureRateBuild> builds = new List<ChangeFailureRateBuild>();
+            foreach (ChangeFailureRateBuild item in initialBuilds)
+            {
+                if (item.StartTime > DateTime.Now.AddDays(-numberOfDays))
+                {
+                    builds.Add(item);
+                }
+            }
+
+            //Using the percent, convert it to a fraction
             int numerator = 0;
             int denominator = 0;
             switch (percentComplete)
@@ -134,15 +145,21 @@ namespace DevOpsMetrics.Service.DataAccess
                     numerator = 3;
                     denominator = 4;
                     break;
+                case 98:
+                    numerator = 49;
+                    denominator = 50;
+                    break;
                 case 100:
                     numerator = 1;
                     denominator = 1;
                     break;
             }
 
-            ListUtility<ChangeFailureRateBuild> listUtility = new ListUtility<ChangeFailureRateBuild>();
-            List<ChangeFailureRateBuild> postiveBuilds = listUtility.GetLastNItems(builds.Where((x, numerator) => numerator % denominator == 0).ToList(), 20);
-            List<ChangeFailureRateBuild> negativeBuilds = listUtility.GetLastNItems(builds.Where((x, numerator) => numerator % denominator != 0).ToList(), 20);
+            //Get builds for positive (builds we will set DeploymentWasSuccessful=true) and negative (builds we will set to DeploymentWasSuccessful=false)
+            List<ChangeFailureRateBuild> postiveBuilds = builds.Where((x, numerator) => numerator % denominator == 0).ToList();
+            List<ChangeFailureRateBuild> negativeBuilds = builds.Where((x, numerator) => numerator % denominator != 0).ToList();
+
+            //Make the updates
             TableStorageCommonDA tableChangeFailureRateDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableChangeFailureRate);
             foreach (ChangeFailureRateBuild item in postiveBuilds)
             {

@@ -26,8 +26,16 @@
     </div>
     <div class="row">
         <div class="col-md-6">
+            <span>Number of days to process:</span>
+            <select asp-for="NumberOfDaysSelected" asp-items="Model.NumberOfDaysList" class="form-control">
+                <option value="">Select completion %</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
             <input type="submit" value="Save" />
         </div>
     </div>
-   
+
 </form>
