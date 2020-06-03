@@ -132,11 +132,12 @@ namespace DevOpsMetrics.Tests.Service
             string project = "SamLearnsAzure";
             string buildName = "SamLearnsAzure.CI";
             int percent = 100;
+            int numberOfDays = 1;
 
             //Act
             ChangeFailureRateDA da = new ChangeFailureRateDA();
             bool result = await da.UpdateChangeFailureRate(tableStorageAuth,
-               organization, project, buildName, percent);
+               organization, project, buildName, percent, numberOfDays);
 
             //Assert
             Assert.IsTrue(result == true);
