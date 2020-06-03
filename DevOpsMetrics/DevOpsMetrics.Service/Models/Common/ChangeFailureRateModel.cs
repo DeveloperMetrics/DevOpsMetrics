@@ -10,5 +10,6 @@ namespace DevOpsMetrics.Service.Models.Common
         public List<ChangeFailureRateBuild> ChangeFailureRateBuildList { get; set; }
         public float ChangeFailureRateMetric { get; set; }
         public string ChangeFailureRateMetricDescription { get; set; }
+        public int NumberOfDays { get; set; }
     }
 }

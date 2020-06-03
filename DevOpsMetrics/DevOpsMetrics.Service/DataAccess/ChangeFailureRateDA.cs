@@ -73,7 +73,8 @@ namespace DevOpsMetrics.Service.DataAccess
                     DeploymentName = buildName_workflowName,
                     ChangeFailureRateBuildList = filteredBuilds,
                     ChangeFailureRateMetric = changeFailureRateMetric,
-                    ChangeFailureRateMetricDescription = changeFailureRate.GetChangeFailureRateRating(changeFailureRateMetric)
+                    ChangeFailureRateMetricDescription = changeFailureRate.GetChangeFailureRateRating(changeFailureRateMetric),
+                    NumberOfDays = numberOfDays
                 };
                 return model;
             }
@@ -85,7 +86,8 @@ namespace DevOpsMetrics.Service.DataAccess
                     DeploymentName = buildName_workflowName,
                     ChangeFailureRateBuildList = utility.GetLastNItems(GetSampleBuilds(), maxNumberOfItems),
                     ChangeFailureRateMetric = 2f / 10f,
-                    ChangeFailureRateMetricDescription = changeFailureRate.GetChangeFailureRateRating(2f / 10f)
+                    ChangeFailureRateMetricDescription = changeFailureRate.GetChangeFailureRateRating(2f / 10f),
+                    NumberOfDays = numberOfDays
                 };
                 return model;
             }

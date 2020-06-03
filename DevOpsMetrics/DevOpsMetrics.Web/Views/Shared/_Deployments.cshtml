@@ -22,48 +22,48 @@
 }
 
 @* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
-    <div class="chartContainer vertical flat">
-        @if (Model.IsProjectView == true)
-        {
-            <h4>Deployment frequency</h4>
-        }
-        else
-        {
-            <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.DeploymentName</h4>
-        }
-            @if (Model.RateLimitHit == true)
-            {
-                <div style="height:100px">
-                    <span>API rate limit has been reached, please try again later</span>
-                </div>
-            }
-            else if (Model.BuildList.Count == 0)
-            {
-                <div style="height:100px">
-                    <span>There is no data to display for this period</span>
-                </div>
-            }
-            else
-            {
-                foreach (Build item in Model.BuildList)
-                {
-                    <a href="@item.Url" target="_blank">
-                        <div class="progress-bar">
-                            <div class="progress-track" title="Build @item.Id @item.Status @item.TimeSinceBuildCompleted (ran for @item.BuildDurationInMinutesAndSeconds)">
-                                <div class="progress-fill @item.Status">
-                                    <span>@item.BuildDurationPercent%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                }
-            }
+<div class="chartContainer vertical flat">
+    @if (Model.IsProjectView == true)
+    {
+        <h4>Deployment frequency</h4>
+    }
+    else
+    {
+        <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.DeploymentName</h4>
+    }
+    @if (Model.RateLimitHit == true)
+    {
+        <div style="height:100px">
+            <span>API rate limit has been reached, please try again later</span>
         </div>
+    }
+    else if (Model.BuildList.Count == 0)
+    {
+        <div style="height:100px">
+            <span>There is no data to display for this period</span>
+        </div>
+    }
+    else
+    {
+        foreach (Build item in Model.BuildList)
+        {
+            <a href="@item.Url" target="_blank">
+                <div class="progress-bar">
+                    <div class="progress-track" title="Build @item.Id @item.Status @item.TimeSinceBuildCompleted (ran for @item.BuildDurationInMinutesAndSeconds)">
+                        <div class="progress-fill @item.Status">
+                            <span>@item.BuildDurationPercent%</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        }
+    }
+</div>
 <br />
 @if (Model.RateLimitHit == false)
 {
     <div class="metricSpan">
-        <b>Deployment frequency:</b> @Model.DeploymentsToDisplayMetric.ToString("0.00") @Model.DeploymentsToDisplayUnit (last @Model.NumberOfDays days)<br />
-        <b>Deployment frequency ranking:</b> @Model.DeploymentsPerDayMetricDescription
+        <b>Deployment frequency:</b><span> @Model.DeploymentsToDisplayMetric.ToString("0.00") @Model.DeploymentsToDisplayUnit (over last @Model.NumberOfDays days)</span><br />
+        <b>Deployment frequency ranking:</b><span> @Model.DeploymentsPerDayMetricDescription</span>
     </div>
 }

@@ -109,7 +109,8 @@ namespace DevOpsMetrics.Service.DataAccess
                     ResourceGroup = resourceGroup,
                     MeanTimeToRestoreEvents = events,
                     MTTRAverageDurationInHours = averageMTTR,
-                    MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(averageMTTR)
+                    MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(averageMTTR),
+                    NumberOfDays = numberOfDays
                 };
                 return model;
             }
@@ -124,7 +125,8 @@ namespace DevOpsMetrics.Service.DataAccess
                     ResourceGroup = resourceGroup,
                     MeanTimeToRestoreEvents = GetSampleMTTREvents(resourceGroup),
                     MTTRAverageDurationInHours = averageMTTR,
-                    MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(averageMTTR)
+                    MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(averageMTTR),
+                    NumberOfDays = numberOfDays
                 };
                 return model;
             }

@@ -66,7 +66,7 @@
 <div class="metricSpan">
     @if (@Model.ChangeFailureRateMetric >= 0)
     {
-        <b>Change failure rate:</b> @Model.ChangeFailureRateMetric.ToString("0.00%") <br />
+        <b>Change failure rate:</b><span> @Model.ChangeFailureRateMetric.ToString("0.00%") (over last @Model.NumberOfDays days)</span>< br />
     }
-    <b>Change failure rate ranking:</b> @Model.ChangeFailureRateMetricDescription
+    <b>Change failure rate ranking:</b><span> @Model.ChangeFailureRateMetricDescription</span>
 </div>
