@@ -17,86 +17,100 @@ namespace DevOpsMetrics.Service.DataAccess
             ListUtility<Build> utility = new ListUtility<Build>();
             if (getSampleData == false)
             {
-                float deploymentsPerDay;
-                DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
-                List<Build> builds = new List<Build>();
-                BuildsDA buildsDA = new BuildsDA();
-
                 //Gets a list of builds
+                BuildsDA buildsDA = new BuildsDA();
                 List<AzureDevOpsBuild> azureDevOpsBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageAuth, organization, project, branch, buildName, buildId, useCache);
-                List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
-
-                //Translate the Azure DevOps build to a generic build object
-                foreach (AzureDevOpsBuild item in azureDevOpsBuilds)
+                if (azureDevOpsBuilds != null)
                 {
-                    //Only return completed builds on the target branch
-                    if (item.status == "completed" && item.sourceBranch == branch && item.queueTime > DateTime.Now.AddDays(-numberOfDays))
+                    //Translate the Azure DevOps build to a generic build object
+                    List<Build> builds = new List<Build>();
+                    foreach (AzureDevOpsBuild item in azureDevOpsBuilds)
                     {
-                        builds.Add(
-                            new Build
-                            {
-                                Id = item.id,
-                                Branch = item.sourceBranch,
-                                BuildNumber = item.buildNumber,
-                                StartTime = item.queueTime,
-                                EndTime = item.finishTime,
-                                BuildDurationPercent = item.buildDurationPercent,
-                                Status = item.status,
-                                Url = item.url
-                            }
-                        );
+                        //Only return completed builds on the target branch, within the targeted date range
+                        if (item.status == "completed" && item.sourceBranch == branch && item.queueTime > DateTime.Now.AddDays(-numberOfDays))
+                        {
+                            builds.Add(
+                                new Build
+                                {
+                                    Id = item.id,
+                                    Branch = item.sourceBranch,
+                                    BuildNumber = item.buildNumber,
+                                    StartTime = item.queueTime,
+                                    EndTime = item.finishTime,
+                                    BuildDurationPercent = item.buildDurationPercent,
+                                    Status = item.status,
+                                    Url = item.url
+                                }
+                            );
+                        }
                     }
-                }
 
-                //then build the calcuation
-                 foreach (Build item in builds)
-                {
-                    KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.StartTime, item.EndTime);
-                    dateList.Add(newItem);
-       
-                }
-                //Filter the results to return the last n (maxNumberOfItems)
-                builds = utility.GetLastNItems(builds, maxNumberOfItems);
-                //Find the max build duration
-                float maxBuildDuration = 0f;
-                foreach (Build item in builds)
-                {
-                    if (item.BuildDuration > maxBuildDuration)
+                    //Get the total builds used in the calculation
+                    int buildTotal = builds.Count;
+
+                    //then build the calcuation, loading the dates into a date array
+                    List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
+                    foreach (Build item in builds)
                     {
-                        maxBuildDuration = item.BuildDuration;
+                        KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.StartTime, item.EndTime);
+                        dateList.Add(newItem);
                     }
+
+                    //then build the calcuation, loading the dates into a date array
+                    float deploymentsPerDay;
+                    DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
+                    deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
+
+                    //Filter the results to return the last n (maxNumberOfItems), to return to the UI
+                    builds = utility.GetLastNItems(builds, maxNumberOfItems);
+                    //Find the max build duration
+                    float maxBuildDuration = 0f;
+                    foreach (Build item in builds)
+                    {
+                        if (item.BuildDuration > maxBuildDuration)
+                        {
+                            maxBuildDuration = item.BuildDuration;
+                        }
+                    }
+                    //Calculate the percent scaling
+                    foreach (Build item in builds)
+                    {
+                        float interiumResult = ((item.BuildDuration / maxBuildDuration) * 100f);
+                        item.BuildDurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+                    }
+
+                    //Return the completed model
+                    DeploymentFrequencyModel model = new DeploymentFrequencyModel
+                    {
+                        TargetDevOpsPlatform = DevOpsPlatform.AzureDevOps,
+                        DeploymentName = buildName,
+                        BuildList = builds,
+                        DeploymentsPerDayMetric = deploymentsPerDay,
+                        DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
+                        NumberOfDays = numberOfDays,
+                        MaxNumberOfItems = builds.Count,
+                        TotalItems = buildTotal
+                    };
+                    return model;
                 }
-                //Calculate the percent scaling
-                foreach (Build item in builds)
+                else
                 {
-                    float interiumResult = ((item.BuildDuration / maxBuildDuration) * 100f);
-                    item.BuildDurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
+                    return null;
                 }
-
-                //calculate the metric on the final results
-                deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
-
+            }
+            else
+            {
+                List<Build> builds = utility.GetLastNItems(GetSampleAzureDevOpsBuilds(), maxNumberOfItems);
                 DeploymentFrequencyModel model = new DeploymentFrequencyModel
                 {
                     TargetDevOpsPlatform = DevOpsPlatform.AzureDevOps,
                     DeploymentName = buildName,
                     BuildList = builds,
-                    DeploymentsPerDayMetric = deploymentsPerDay,
-                    DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
-                    NumberOfDays = numberOfDays
-                };
-                return model;
-            }
-            else
-            {
-                DeploymentFrequencyModel model = new DeploymentFrequencyModel
-                {
-                    TargetDevOpsPlatform = DevOpsPlatform.AzureDevOps,
-                    DeploymentName = buildName,
-                    BuildList = utility.GetLastNItems(GetSampleAzureDevOpsBuilds(), maxNumberOfItems),
                     DeploymentsPerDayMetric = 10f,
                     DeploymentsPerDayMetricDescription = "Elite",
-                    NumberOfDays = numberOfDays
+                    NumberOfDays = numberOfDays,
+                    MaxNumberOfItems = builds.Count,
+                    TotalItems = builds.Count
                 };
                 return model;
             }
@@ -109,18 +123,16 @@ namespace DevOpsMetrics.Service.DataAccess
             ListUtility<Build> utility = new ListUtility<Build>();
             if (getSampleData == false)
             {
-                float deploymentsPerDay;
-                DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
-                List<Build> builds = new List<Build>();
+                //Gets a list of builds
                 BuildsDA buildsDA = new BuildsDA();
-
-                //Lists the workflows in a repository. 
                 List<GitHubActionsRun> gitHubRuns = await buildsDA.GetGitHubActionRuns(getSampleData, clientId, clientSecret, tableStorageAuth, owner, repo, branch, workflowName, workflowId, useCache);
                 if (gitHubRuns != null)
                 {
-                    List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
+                    //Translate the GitHub build to a generic build object
+                    List<Build> builds = new List<Build>();
                     foreach (GitHubActionsRun item in gitHubRuns)
                     {
+                        //Only return completed builds on the target branch, within the targeted date range
                         if (item.status == "completed" && item.head_branch == branch && item.created_at > DateTime.Now.AddDays(-numberOfDays))
                         {
                             builds.Add(
@@ -139,28 +151,41 @@ namespace DevOpsMetrics.Service.DataAccess
                         }
                     }
 
-                    //Filter the results to return the last n (maxNumberOfItems)
-                    builds = utility.GetLastNItems(builds, maxNumberOfItems);
-                    //then build the calcuation
-                    float maxBuildDuration = 0f;
+                    //Get the total builds used in the calculation
+                    int buildTotal = builds.Count;
+
+                    //then build the calcuation, loading the dates into a date array
+                    List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
                     foreach (Build item in builds)
                     {
                         KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.StartTime, item.EndTime);
                         dateList.Add(newItem);
+                    }
+
+                    //then build the calcuation, loading the dates into a date array
+                    float deploymentsPerDay;
+                    DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
+                    deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
+
+                    //Filter the results to return the last n (maxNumberOfItems), to return to the UI
+                    builds = utility.GetLastNItems(builds, maxNumberOfItems);
+                    //Find the max build duration
+                    float maxBuildDuration = 0f;
+                    foreach (Build item in builds)
+                    {
                         if (item.BuildDuration > maxBuildDuration)
                         {
                             maxBuildDuration = item.BuildDuration;
                         }
                     }
+                    //Calculate the percent scaling
                     foreach (Build item in builds)
                     {
                         float interiumResult = ((item.BuildDuration / maxBuildDuration) * 100f);
                         item.BuildDurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                     }
 
-                    //calculate the metric on the final results
-                    deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
-
+                    //Return the completed model
                     DeploymentFrequencyModel model = new DeploymentFrequencyModel
                     {
                         TargetDevOpsPlatform = DevOpsPlatform.GitHub,
@@ -168,7 +193,9 @@ namespace DevOpsMetrics.Service.DataAccess
                         BuildList = builds,
                         DeploymentsPerDayMetric = deploymentsPerDay,
                         DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
-                        NumberOfDays = numberOfDays
+                        NumberOfDays = numberOfDays,
+                        MaxNumberOfItems = builds.Count,
+                        TotalItems = buildTotal
                     };
                     return model;
                 }
@@ -179,14 +206,17 @@ namespace DevOpsMetrics.Service.DataAccess
             }
             else
             {
+                List<Build> builds = utility.GetLastNItems(GetSampleGitHubBuilds(), maxNumberOfItems);
                 DeploymentFrequencyModel model = new DeploymentFrequencyModel
                 {
                     TargetDevOpsPlatform = DevOpsPlatform.GitHub,
                     DeploymentName = workflowName,
-                    BuildList = utility.GetLastNItems(GetSampleGitHubBuilds(), maxNumberOfItems),
+                    BuildList = builds,
                     DeploymentsPerDayMetric = 10f,
                     DeploymentsPerDayMetricDescription = "Elite",
-                    NumberOfDays = numberOfDays
+                    NumberOfDays = numberOfDays,
+                    MaxNumberOfItems = builds.Count,
+                    TotalItems = builds.Count
                 };
                 return model;
             }
