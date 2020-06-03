@@ -22,50 +22,52 @@
 }
 
 @* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
-    <div class="chartContainer vertical flat">
-        @if (Model.IsProjectView == true)
+<div class="chartContainer vertical flat">
+    @if (Model.IsProjectView == true)
+    {
+        <h4>Lead time for changes</h4>
+    }
+    else
+    {
+        <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ProjectName</h4>
+    }
+    @if (Model.RateLimitHit == true)
+    {
+        <div style="height:100px">
+            <span>API rate limit has been reached, please try again later</span>
+        </div>
+    }
+    else if (Model.PullRequests.Count == 0)
+    {
+        <div style="height:100px">
+            <span>There is no data to display for this period</span>
+        </div>
+    }
+    else
+    {
+        foreach (PullRequestModel item in Model.PullRequests)
         {
-            <h4>Lead time for changes</h4>
-        }
-        else
-        {
-            <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ProjectName</h4>
-        }
-        @if (Model.RateLimitHit == true)
-        {
-            <div style="height:100px">
-                <span>API rate limit has been reached, please try again later</span>
-            </div>
-        }
-        else if (Model.PullRequests.Count == 0)
-        {
-            <div style="height:100px">
-                <span>There is no data to display for this period</span>
-            </div>
-        }
-        else
-        {
-            foreach (PullRequestModel item in Model.PullRequests)
-            {
-                <a href="@item.Url" target="_blank">
-                    <div class="progress-bar">
-                        <div class="progress-track" title="PR #@item.PullRequestId branch @item.Branch had @item.Commits.Count commits over @item.Duration.TotalHours.ToString("0.0") hours">
-                            <div class="progress-fill @item.Status">
-                                <span>@item.DurationPercent.ToString("0")%</span>
-                            </div>
+            <a href="@item.Url" target="_blank">
+                <div class="progress-bar">
+                    <div class="progress-track" title="PR #@item.PullRequestId branch @item.Branch had @item.Commits.Count commits over @item.Duration.TotalHours.ToString("0.0") hours">
+                        <div class="progress-fill @item.Status">
+                            <span>@item.DurationPercent.ToString("0")%</span>
                         </div>
                     </div>
-                </a>
-            }
+                </div>
+            </a>
         }
-    </div>
-<br />
+    }
+</div>
+<div class="metricSpan">
+    <span style="font-size: 9pt;">Last @Model.MaxNumberOfItems completed pull requests shown, out of @Model.TotalItems pull requests over last @Model.NumberOfDays days</span>
+</div>
 @if (Model.RateLimitHit == false)
 {
     <div class="metricSpan">
-        <b>Average build time:</b> @Model.AverageBuildHours.ToString("0.0") hours (over last @Model.NumberOfDays days)<br />
-        <b>Average pull request time:</b> @Model.AveragePullRequestHours.ToString("0.0") hours (over last @Model.NumberOfDays days)<br />
-        <b>Average Lead time for changes:</b> @Model.LeadTimeForChangesMetricDisplayMetric.ToString("0.0") @Model.LeadTimeForChangesMetricDisplayUnit (over last @Model.NumberOfDays days)<br />
-        <b>Average Lead time for changes ranking:</b> @Model.LeadTimeForChangesMetricDescription
+        @*<b>Build time:</b><span> @Model.AverageBuildHours.ToString("0.0") hours</span><br />
+        <b>Pull request time:</b><span> @Model.AveragePullRequestHours.ToString("0.0") hours</span><br />*@
+        <b>Lead time for changes:</b><span> @Model.LeadTimeForChangesMetricDisplayMetric.ToString("0.0") @Model.LeadTimeForChangesMetricDisplayUnit</span><br />
+        <b>Lead time for changes ranking:</b><span> @Model.LeadTimeForChangesMetricDescription</span>
     </div>
 }

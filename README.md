@@ -39,7 +39,9 @@ We currently have all four of the metrics implemented and undergoing a pilot
       - Our project is hosted in Azure
       - The production environment is contained in a single resource group
       - There are appropriate alerts setup on each of the resources, each with action groups to save the alert to Azure Storage 
-  - Current limitations: Only one production resource group can be specified
+  - Current limitations: 
+      - Only one production resource group can be specified
+      - If there is catastrophic resource group failure, (e.g. deleted), there is a high chance that some/all of the alerts will also be deleted
 ![Time to restore service](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/TimeToRestoreService.png)
 
 - **Change failure rate**, in Azure DevOps and GitHub

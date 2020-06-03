@@ -339,20 +339,32 @@ namespace DevOpsMetrics.Web.Controllers
                 new CompletionPercentItem { CompletionPercent = 25 },
                 new CompletionPercentItem { CompletionPercent = 50 },
                 new CompletionPercentItem { CompletionPercent = 75 },
+                new CompletionPercentItem { CompletionPercent = 98 },
                 new CompletionPercentItem { CompletionPercent = 100 }
+            };
+
+            //Create the days to process dropdown
+            List<NumberOfDaysItem> numberOfDaysList = new List<NumberOfDaysItem>
+            {
+                new NumberOfDaysItem { NumberOfDays = 1 },
+                new NumberOfDaysItem { NumberOfDays = 7 },
+                new NumberOfDaysItem { NumberOfDays = 20 },
+                new NumberOfDaysItem { NumberOfDays = 30 },
+                new NumberOfDaysItem { NumberOfDays = 60 }
             };
 
             ProjectUpdateViewModel model = new ProjectUpdateViewModel
             {
                 ProjectList = new SelectList(projectList, "ProjectId", "ProjectName"),
-                CompletionPercentList = new SelectList(completionList, "CompletionPercent", "CompletionPercent")
+                CompletionPercentList = new SelectList(completionList, "CompletionPercent", "CompletionPercent"),
+                NumberOfDaysList = new SelectList(numberOfDaysList, "NumberOfDays", "NumberOfDays")
             };
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateChangeFailureRate(string ProjectIdSelected, int CompletionPercentSelected)
+        public async Task<IActionResult> UpdateChangeFailureRate(string ProjectIdSelected, int CompletionPercentSelected, int NumberOfDaysSelected)
         {
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
 
@@ -361,7 +373,6 @@ namespace DevOpsMetrics.Web.Controllers
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
 
             //Create project items from each setting and add it to a project list.
-            List<ProjectUpdateItem> projectList = new List<ProjectUpdateItem>();
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.Unknown;
             string organization_owner = "";
             string project_repo = "";
@@ -393,7 +404,7 @@ namespace DevOpsMetrics.Web.Controllers
             //Update the change failure rate with the % distribution
             if (organization_owner != "" && project_repo != "" && buildName_workflowName != "")
             {
-                await serviceApiClient.UpdateChangeFailureRate(organization_owner, project_repo, buildName_workflowName, CompletionPercentSelected);
+                await serviceApiClient.UpdateChangeFailureRate(organization_owner, project_repo, buildName_workflowName, CompletionPercentSelected, NumberOfDaysSelected);
             }
 
             //Redirect to the correct project page to see the changes

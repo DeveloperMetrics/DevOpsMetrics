@@ -52,7 +52,10 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.ChangeFailureRateMetric > 0f);
             Assert.IsTrue(model.ChangeFailureRateBuildList.Count <= 20f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
-            Assert.AreNotEqual("Elite", model.ChangeFailureRateMetricDescription);
+            Assert.AreNotEqual("Elite", model.ChangeFailureRateMetricDescription); 
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
         }
 
         //[TestMethod]
@@ -115,6 +118,9 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.ChangeFailureRateBuildList.Count <= 20f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
             Assert.AreNotEqual("Elite", model.ChangeFailureRateMetricDescription);
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
         }
 
         [TestMethod]
@@ -126,11 +132,12 @@ namespace DevOpsMetrics.Tests.Service
             string project = "SamLearnsAzure";
             string buildName = "SamLearnsAzure.CI";
             int percent = 100;
+            int numberOfDays = 1;
 
             //Act
             ChangeFailureRateDA da = new ChangeFailureRateDA();
             bool result = await da.UpdateChangeFailureRate(tableStorageAuth,
-               organization, project, buildName, percent);
+               organization, project, buildName, percent, numberOfDays);
 
             //Assert
             Assert.IsTrue(result == true);

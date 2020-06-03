@@ -112,6 +112,9 @@ namespace DevOpsMetrics.Tests.Service
                     Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
                     Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
                 }
+                Assert.AreEqual(numberOfDays, model.NumberOfDays);
+                Assert.AreEqual(maxNumberOfItems, model.MaxNumberOfItems);
+                Assert.IsTrue(model.TotalItems > 0);
             }
         }
 
@@ -156,6 +159,9 @@ namespace DevOpsMetrics.Tests.Service
                     Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
                     Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
                 }
+                Assert.AreEqual(numberOfDays, model.NumberOfDays);
+                Assert.AreEqual(maxNumberOfItems, model.MaxNumberOfItems);
+                Assert.IsTrue(model.TotalItems > 0);
             }
         }
 
@@ -193,6 +199,9 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://GitHub.com/samsmithnz/devopsmetrics/1", model.BuildList[0].Url);
             Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
             Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
         }
 
         [TestCategory("ControllerTest")]
@@ -235,6 +244,9 @@ namespace DevOpsMetrics.Tests.Service
                     Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
                     Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
                 }
+                Assert.AreEqual(numberOfDays, model.NumberOfDays);
+                Assert.AreEqual(maxNumberOfItems, model.MaxNumberOfItems);
+                Assert.IsTrue(model.TotalItems > 0);
             }
         }
 
@@ -278,6 +290,9 @@ namespace DevOpsMetrics.Tests.Service
                     Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
                     Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
                 }
+                Assert.AreEqual(numberOfDays, model.NumberOfDays);
+                Assert.AreEqual(maxNumberOfItems, model.MaxNumberOfItems);
+                Assert.IsTrue(model.TotalItems > 0);
             }
         }
 
@@ -320,6 +335,9 @@ namespace DevOpsMetrics.Tests.Service
                     Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
                     Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
                 }
+                Assert.AreEqual(numberOfDays, model.NumberOfDays);
+                Assert.AreEqual(maxNumberOfItems, model.MaxNumberOfItems);
+                Assert.IsTrue(model.TotalItems > 0);
             }
         }
 
@@ -357,6 +375,9 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://GitHub.com/samsmithnz/devopsmetrics/1", model.BuildList[0].Url);
             Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
             Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
         }
 
         [TestCategory("APITest")]
@@ -398,6 +419,9 @@ namespace DevOpsMetrics.Tests.Service
                     Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
                     Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
                 }
+                Assert.AreEqual(numberOfDays, model.NumberOfDays);
+                Assert.AreEqual(maxNumberOfItems, model.MaxNumberOfItems);
+                Assert.IsTrue(model.TotalItems > 0);
             }
         }
 
@@ -441,6 +465,9 @@ namespace DevOpsMetrics.Tests.Service
                     Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
                     Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
                 }
+                Assert.AreEqual(numberOfDays, model.NumberOfDays);
+                Assert.AreEqual(maxNumberOfItems, model.MaxNumberOfItems);
+                Assert.IsTrue(model.TotalItems > 0);
             }
         }
 

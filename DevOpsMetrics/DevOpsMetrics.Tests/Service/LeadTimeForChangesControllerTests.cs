@@ -77,6 +77,9 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(12f, model.AveragePullRequestHours);
             Assert.AreEqual(13f, model.LeadTimeForChangesMetric);
             Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
         }
 
         [TestCategory("ControllerTest")]
@@ -122,6 +125,9 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(20.33f, model.AveragePullRequestHours);
             Assert.AreEqual(21.33f, model.LeadTimeForChangesMetric);
             Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
         }
 
         [TestCategory("APITest")]
@@ -164,6 +170,9 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(12f, model.AveragePullRequestHours);
             Assert.AreEqual(13f, model.LeadTimeForChangesMetric);
             Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
         }
 
         [TestCategory("APITest")]
@@ -206,6 +215,9 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(20.33f, model.AveragePullRequestHours);
             Assert.AreEqual(21.33f, model.LeadTimeForChangesMetric);
             Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
         }
 
         [TestCategory("APITest")]
@@ -256,6 +268,9 @@ namespace DevOpsMetrics.Tests.Service
                 Assert.IsTrue(model.AveragePullRequestHours >= 0);
                 Assert.IsTrue(model.LeadTimeForChangesMetric >= 0);
                 Assert.IsTrue(string.IsNullOrEmpty(model.LeadTimeForChangesMetricDescription) == false);
+                Assert.AreEqual(numberOfDays, model.NumberOfDays);
+                Assert.IsTrue(model.MaxNumberOfItems > 0);
+                Assert.IsTrue(model.TotalItems > 0);
             }
         }
 
@@ -307,6 +322,9 @@ namespace DevOpsMetrics.Tests.Service
                 Assert.IsTrue(model.AveragePullRequestHours >= 0);
                 Assert.IsTrue(model.LeadTimeForChangesMetric >= 0);
                 Assert.IsTrue(string.IsNullOrEmpty(model.LeadTimeForChangesMetricDescription) == false);
+                Assert.AreEqual(numberOfDays, model.NumberOfDays);
+                Assert.IsTrue(model.MaxNumberOfItems >= 0);
+                Assert.IsTrue(model.TotalItems >= 0);
             }
         }
 
@@ -358,6 +376,9 @@ namespace DevOpsMetrics.Tests.Service
                 Assert.IsTrue(model.AveragePullRequestHours >= 0);
                 Assert.IsTrue(model.LeadTimeForChangesMetric >= 0);
                 Assert.IsTrue(string.IsNullOrEmpty(model.LeadTimeForChangesMetricDescription) == false);
+                Assert.AreEqual(numberOfDays, model.NumberOfDays);
+                Assert.IsTrue(model.MaxNumberOfItems > 0);
+                Assert.IsTrue(model.TotalItems > 0);
             }
         }
 

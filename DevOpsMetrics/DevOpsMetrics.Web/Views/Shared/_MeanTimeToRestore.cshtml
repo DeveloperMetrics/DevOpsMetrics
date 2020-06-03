@@ -59,8 +59,10 @@
         }
     }
 </div>
-<br />
 <div class="metricSpan">
-    <b>Mean time to restore:</b> @Model.MTTRAverageDurationInHours.ToString("0.00") hours @*@Model.DeploymentsToDisplayUnit (last @Model.NumberOfDays days)*@<br />
-    <b>Time to restore ranking:</b> @Model.MTTRAverageDurationDescription
+    <span style="font-size: 9pt;">Last @Model.MaxNumberOfItems alerts shown, out of @Model.TotalItems alerts over last @Model.NumberOfDays days</span>
+</div>
+<div class="metricSpan">
+    <b>Mean time to restore:</b><span> @Model.MTTRAverageDurationInHours.ToString("0.00") hours</span><br />
+    <b>Time to restore ranking:</b><span> @Model.MTTRAverageDurationDescription</span>
 </div>

@@ -48,6 +48,10 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription));
             Assert.AreNotEqual("Unknown", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
+
         }
 
         [TestMethod]
@@ -75,6 +79,9 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription));
             Assert.AreNotEqual("Unknown", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
         }
 
     }

@@ -66,6 +66,9 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.ChangeFailureRateMetric > 0f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
             Assert.AreNotEqual("Elite", model.ChangeFailureRateMetricDescription);
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
         }
 
         [TestCategory("ControllerTest")]
@@ -95,6 +98,9 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.DeploymentName == buildName);
             Assert.IsTrue(model.ChangeFailureRateMetric >= 0f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
         }
     
         [TestCategory("ControllerTest")]
@@ -125,6 +131,9 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.ChangeFailureRateMetric > 0f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
             Assert.AreNotEqual("Elite", model.ChangeFailureRateMetricDescription);
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
         }
 
         [TestCategory("ControllerTest")]
@@ -154,6 +163,9 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.DeploymentName == workflowName);
             Assert.IsTrue(model.ChangeFailureRateMetric >= 0f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
 
         }
 

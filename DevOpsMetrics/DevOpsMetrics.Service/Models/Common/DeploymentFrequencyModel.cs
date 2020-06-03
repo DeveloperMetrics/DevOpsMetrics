@@ -8,6 +8,8 @@ namespace DevOpsMetrics.Service.Models.Common
         public DevOpsPlatform TargetDevOpsPlatform { get; set; }
         public bool IsProjectView { get; set; }
         public int NumberOfDays { get; set; }
+        public int MaxNumberOfItems { get; set; }
+        public int TotalItems { get; set; }
         public List<Build> BuildList { get; set; }
         private float _deploymentsPerDayMetric;
         public float DeploymentsPerDayMetric

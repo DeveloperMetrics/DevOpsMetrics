@@ -17,13 +17,13 @@ namespace DevOpsMetrics.Service.DataAccess
                 DevOpsPlatform targetDevOpsPlatform, string resourceGroup,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
+            ListUtility<MeanTimeToRestoreEvent> utility = new ListUtility<MeanTimeToRestoreEvent>();
             if (getSampleData == false)
             {
                 //Pull the events from the table storage
                 AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
                 Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableMTTR, resourceGroup);
                 List<AzureAlert> alerts = new List<AzureAlert>();
-                //List<AzureAlert> alerts = JsonConvert.DeserializeObject<List<AzureAlert>>(list.ToString());
                 foreach (JToken item in list)
                 {
                     alerts.Add(
@@ -47,20 +47,23 @@ namespace DevOpsMetrics.Service.DataAccess
                 List<AzureAlert> startingAlerts = alerts.Where(o => o.status == "Activated").ToList();
                 foreach (AzureAlert item in startingAlerts)
                 {
-                    i++;
-                    MeanTimeToRestoreEvent newEvent = new MeanTimeToRestoreEvent
+                    if (item.timestamp > DateTime.Now.AddDays(-numberOfDays))
                     {
-                        Name = item.name,
-                        Resource = item.resourceName,
-                        ResourceGroup = item.resourceGroupName,
-                        StartTime = item.timestamp,
-                        Status = "inProgress",
-                        ItemOrder = i
-                    };
-                    events.Add(newEvent);
+                        i++;
+                        MeanTimeToRestoreEvent newEvent = new MeanTimeToRestoreEvent
+                        {
+                            Name = item.name,
+                            Resource = item.resourceName,
+                            ResourceGroup = item.resourceGroupName,
+                            StartTime = item.timestamp,
+                            Status = "inProgress",
+                            ItemOrder = i
+                        };
+                        events.Add(newEvent);
+                    }
                 }
 
-                //Now loop through again, looking for the deactivated pairs
+                //Now loop through again, looking for the deactivated matching pair
                 float maxEventDuration = 0;
                 List<AzureAlert> endingAlerts = alerts.Where(o => o.status == "Deactivated").ToList();
                 foreach (MeanTimeToRestoreEvent item in events)
@@ -90,26 +93,32 @@ namespace DevOpsMetrics.Service.DataAccess
                     }
                 }
 
+                //Calculate the MTTR metric
+                MeanTimeToRestore mttr = new MeanTimeToRestore();
+                float averageMTTR = CalculateMTTRDuration(events);
+
+                //Filter and sort the final list (May not be needed due to the initial sort on the starting alerts)
+                List<MeanTimeToRestoreEvent> uiEvents = utility.GetLastNItems(events, maxNumberOfItems);
+                uiEvents = uiEvents.OrderBy(o => o.StartTime).ToList();
+
                 //Finally, process the percent calculation
-                foreach (MeanTimeToRestoreEvent item in events)
+                foreach (MeanTimeToRestoreEvent item in uiEvents)
                 {
                     float interiumResult = ((item.MTTRDurationInHours / maxEventDuration) * 100f);
                     item.MTTRDurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
 
-                //sort the final list (May not be needed due to the initial sort on the starting alerts)
-                events = events.OrderBy(o => o.StartTime).ToList();
-
-                MeanTimeToRestore mttr = new MeanTimeToRestore();
-                float averageMTTR = CalculateMTTRDuration(events);
                 //Pull together the results into a single model
                 MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
                 {
                     TargetDevOpsPlatform = targetDevOpsPlatform,
                     ResourceGroup = resourceGroup,
-                    MeanTimeToRestoreEvents = events,
+                    MeanTimeToRestoreEvents = uiEvents,
                     MTTRAverageDurationInHours = averageMTTR,
-                    MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(averageMTTR)
+                    MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(averageMTTR),
+                    NumberOfDays = numberOfDays,
+                    MaxNumberOfItems = uiEvents.Count,
+                    TotalItems = events.Count
                 };
                 return model;
             }
@@ -118,13 +127,17 @@ namespace DevOpsMetrics.Service.DataAccess
                 //Return sample data
                 MeanTimeToRestore mttr = new MeanTimeToRestore();
                 float averageMTTR = CalculateMTTRDuration(GetSampleMTTREvents(resourceGroup));
+                List<MeanTimeToRestoreEvent> sampleEvents = GetSampleMTTREvents(resourceGroup);
                 MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
                 {
                     TargetDevOpsPlatform = targetDevOpsPlatform,
                     ResourceGroup = resourceGroup,
-                    MeanTimeToRestoreEvents = GetSampleMTTREvents(resourceGroup),
+                    MeanTimeToRestoreEvents = sampleEvents,
                     MTTRAverageDurationInHours = averageMTTR,
-                    MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(averageMTTR)
+                    MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(averageMTTR),
+                    NumberOfDays = numberOfDays,
+                    MaxNumberOfItems = sampleEvents.Count,
+                    TotalItems = sampleEvents.Count
                 };
                 return model;
             }

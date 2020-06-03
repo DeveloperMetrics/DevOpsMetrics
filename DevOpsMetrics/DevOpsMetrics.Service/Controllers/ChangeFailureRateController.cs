@@ -32,13 +32,13 @@ namespace DevOpsMetrics.Service.Controllers
         }
 
         [HttpGet("UpdateChangeFailureRate")]
-        public async Task<bool> UpdateChangeFailureRate(string organization_owner, string project_repo, string buildName_workflowName, int percentComplete)
+        public async Task<bool> UpdateChangeFailureRate(string organization_owner, string project_repo, string buildName_workflowName, int percentComplete, int numberOfDays)
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             ChangeFailureRateDA da = new ChangeFailureRateDA();
             return await da.UpdateChangeFailureRate(tableStorageAuth,
                 organization_owner, project_repo, buildName_workflowName,
-                percentComplete);
+                percentComplete, numberOfDays);
 
         }
 
