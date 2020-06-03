@@ -49,7 +49,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription));
             Assert.AreNotEqual("Unknown", model.DeploymentsPerDayMetricDescription);
             Assert.AreEqual(numberOfDays, model.NumberOfDays);
-            Assert.AreEqual(maxNumberOfItems, model.MaxNumberOfItems);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
             Assert.IsTrue(model.TotalItems > 0);
 
         }
@@ -80,7 +80,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(false, string.IsNullOrEmpty(model.DeploymentsPerDayMetricDescription));
             Assert.AreNotEqual("Unknown", model.DeploymentsPerDayMetricDescription);
             Assert.AreEqual(numberOfDays, model.NumberOfDays);
-            Assert.AreEqual(maxNumberOfItems, model.MaxNumberOfItems);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
             Assert.IsTrue(model.TotalItems > 0);
         }
 
