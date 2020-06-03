@@ -62,11 +62,13 @@
         }
     }
 </div>
-<br />
+<div class="metricSpan">
+    <span style="font-size: 9pt;">Last 20 deployments shown, out of 700 deployments, over last @Model.NumberOfDays days</span>
+</div>
 <div class="metricSpan">
     @if (@Model.ChangeFailureRateMetric >= 0)
     {
-        <b>Change failure rate:</b><span> @Model.ChangeFailureRateMetric.ToString("0.00%") (over last @Model.NumberOfDays days)</span>< br />
+        <b>Change failure rate:</b><span> @Model.ChangeFailureRateMetric.ToString("0.00%")</span><br />
     }
     <b>Change failure rate ranking:</b><span> @Model.ChangeFailureRateMetricDescription</span>
 </div>

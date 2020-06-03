@@ -59,11 +59,13 @@
         }
     }
 </div>
-<br />
+<div class="metricSpan">
+    <span style="font-size: 9pt;">Last 20 builds shown, out of 1,200 builds over last @Model.NumberOfDays days</span>
+</div>
 @if (Model.RateLimitHit == false)
 {
     <div class="metricSpan">
-        <b>Deployment frequency:</b><span> @Model.DeploymentsToDisplayMetric.ToString("0.00") @Model.DeploymentsToDisplayUnit (over last @Model.NumberOfDays days)</span><br />
+        <b>Deployment frequency:</b><span> @Model.DeploymentsToDisplayMetric.ToString("0.00") @Model.DeploymentsToDisplayUnit</span><br />
         <b>Deployment frequency ranking:</b><span> @Model.DeploymentsPerDayMetricDescription</span>
     </div>
 }
