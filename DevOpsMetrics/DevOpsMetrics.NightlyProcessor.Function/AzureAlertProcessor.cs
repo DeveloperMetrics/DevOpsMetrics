@@ -30,9 +30,6 @@ namespace DevOpsMetrics.NightlyProcessor.Function
 
             //Process response
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            //dynamic data = JsonConvert.DeserializeObject(requestBody);
-            //string name = req.Query["name"];
-            //name = name ?? data?.name;
             log.LogInformation($"C# HTTP trigger function processed request body {requestBody}.");
 
             //save response to table
