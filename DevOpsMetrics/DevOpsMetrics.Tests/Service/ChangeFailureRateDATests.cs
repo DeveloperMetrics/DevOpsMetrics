@@ -34,16 +34,14 @@ namespace DevOpsMetrics.Tests.Service
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
-            string buildId = "3673"; //SamLearnsAzure.CI
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
-            bool useCache = true;
 
             //Act
             ChangeFailureRateDA da = new ChangeFailureRateDA();
             ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageAuth,
-               targetDevOpsPlatform, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+               targetDevOpsPlatform, organization, project, branch, buildName, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -99,16 +97,14 @@ namespace DevOpsMetrics.Tests.Service
             string repo = "DevOpsMetrics";
             string branch = "master";
             string workflowName = "DevOpsMetrics CI/CD";
-            string workflowId = "1162561";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
-            bool useCache = true;
 
             //Act
             ChangeFailureRateDA da = new ChangeFailureRateDA();
             ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageAuth,
-               targetDevOpsPlatform, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+               targetDevOpsPlatform, owner, repo, branch, workflowName, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model != null);

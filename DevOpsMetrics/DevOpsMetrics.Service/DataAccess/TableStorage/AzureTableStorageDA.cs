@@ -220,7 +220,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
         }
 
         public async Task<int> UpdateGitHubActionPullRequests(string clientId, string clientSecret, TableStorageAuth tableStorageAuth,
-                string owner, string repo, string branch, string workflowName, string workflowId,
+                string owner, string repo, string branch, 
                 int numberOfDays, int maxNumberOfItems)
         {
             GitHubAPIAccess api = new GitHubAPIAccess();

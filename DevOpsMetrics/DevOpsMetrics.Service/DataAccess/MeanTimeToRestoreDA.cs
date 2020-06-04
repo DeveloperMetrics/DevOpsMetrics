@@ -15,7 +15,7 @@ namespace DevOpsMetrics.Service.DataAccess
         public MeanTimeToRestoreModel GetAzureMeanTimeToRestore(bool getSampleData,
                 TableStorageAuth tableStorageAuth,
                 DevOpsPlatform targetDevOpsPlatform, string resourceGroup,
-                int numberOfDays, int maxNumberOfItems, bool useCache)
+                int numberOfDays, int maxNumberOfItems)
         {
             ListUtility<MeanTimeToRestoreEvent> utility = new ListUtility<MeanTimeToRestoreEvent>();
             if (getSampleData == false)

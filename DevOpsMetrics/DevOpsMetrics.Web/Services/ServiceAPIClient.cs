@@ -49,15 +49,15 @@ namespace DevOpsMetrics.Web.Services
             return await GetResponse<LeadTimeForChangesModel>(Client, url);
         }
 
-        public async Task<MeanTimeToRestoreModel> GetAzureMeanTimeToRestore(bool getSampleData, DevOpsPlatform targetDevOpsPlatform, string resourceGroup, int numberOfDays, int maxNumberOfItems, bool useCache)
+        public async Task<MeanTimeToRestoreModel> GetAzureMeanTimeToRestore(bool getSampleData, DevOpsPlatform targetDevOpsPlatform, string resourceGroup, int numberOfDays, int maxNumberOfItems)
         {
-            string url = $"/api/MeanTimeToRestore/GetAzureMeanTimeToRestore?getSampleData={getSampleData}&targetDevOpsPlatform={targetDevOpsPlatform}&resourceGroup={resourceGroup}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&useCache={useCache}";
+            string url = $"/api/MeanTimeToRestore/GetAzureMeanTimeToRestore?getSampleData={getSampleData}&targetDevOpsPlatform={targetDevOpsPlatform}&resourceGroup={resourceGroup}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
             return await GetResponse<MeanTimeToRestoreModel>(Client, url);
         }
 
-        public async Task<ChangeFailureRateModel> GetChangeFailureRate(bool getSampleData, DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName, string buildId_workflowId, int numberOfDays, int maxNumberOfItems, bool useCache)
+        public async Task<ChangeFailureRateModel> GetChangeFailureRate(bool getSampleData, DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName,  int numberOfDays, int maxNumberOfItems)
         {
-            string url = $"/api/ChangeFailureRate/GetChangeFailureRate?getSampleData={getSampleData}&targetDevOpsPlatform={targetDevOpsPlatform}&organization_owner={organization_owner}&project_repo={project_repo}&branch={branch}&buildName_workflowName={buildName_workflowName}&buildId_workflowId={buildId_workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&useCache={useCache}";
+            string url = $"/api/ChangeFailureRate/GetChangeFailureRate?getSampleData={getSampleData}&targetDevOpsPlatform={targetDevOpsPlatform}&organization_owner={organization_owner}&project_repo={project_repo}&branch={branch}&buildName_workflowName={buildName_workflowName}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
             return await GetResponse<ChangeFailureRateModel>(Client, url);
         }
 

@@ -15,8 +15,8 @@ namespace DevOpsMetrics.Service.DataAccess
     public class ChangeFailureRateDA
     {
         public ChangeFailureRateModel GetChangeFailureRate(bool getSampleData, TableStorageAuth tableStorageAuth,
-                DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName, string buildId_workflowId,
-                int numberOfDays, int maxNumberOfItems, bool useCache)
+                DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName, 
+                int numberOfDays, int maxNumberOfItems)
         {
             ListUtility<ChangeFailureRateBuild> utility = new ListUtility<ChangeFailureRateBuild>();
             ChangeFailureRate changeFailureRate = new ChangeFailureRate();
