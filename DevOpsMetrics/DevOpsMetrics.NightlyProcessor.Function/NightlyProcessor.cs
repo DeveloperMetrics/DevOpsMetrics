@@ -51,7 +51,7 @@ namespace DevOpsMetrics.NightlyProcessor.Function
             {
                 log.LogInformation($"Processing owner {item.Owner}, repo {item.Repo}");
                 int buildsUpdated = await api.UpdateGitHubActionRuns(configuration["Appsettings:GitHubClientId"], configuration["Appsettings:GitHubClientSecret"], item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
-                int prsUpdated = await api.UpdateGitHubActionPullRequests(configuration["Appsettings:GitHubClientId"], configuration["Appsettings:GitHubClientSecret"], item.Owner, item.Repo, item.Branch, numberOfDays, maxNumberOfItems);
+                int prsUpdated = await api.UpdateGitHubActionPullRequests(configuration["Appsettings:GitHubClientId"], configuration["Appsettings:GitHubClientSecret"], item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
                 log.LogInformation($"Processed owner {item.Owner}, repo {item.Repo}. {buildsUpdated} builds and {prsUpdated} prs/commits updated, ");
                 totalResults += buildsUpdated + prsUpdated;
             }
