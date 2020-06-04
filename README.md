@@ -5,7 +5,7 @@ All four of these metrics are based on production environments, where the value 
 
 - Lead time for changes: Time from committing a change to deployment to production
 - Deployment frequency: How often we deploy to production
-- Mean time to restore(MTTR): How quickly we can restore production in an outage or degradation
+- Mean time to restore (MTTR): How quickly we can restore production in an outage or degradation
 - Change failure rate: after a production deployment, was it successful? Or did we need to deploy a fix/rollback?
 
 ![High performing metrics](https://samlearnsazure.files.wordpress.com/2020/04/01highperformers.png)
