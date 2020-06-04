@@ -11,7 +11,8 @@ namespace DevOpsMetrics.Service.Controllers
     [ApiController]
     public class LeadTimeForChangesController : ControllerBase
     {
-        private IConfiguration Configuration;
+        private readonly IConfiguration Configuration;
+
         public LeadTimeForChangesController(IConfiguration configuration)
         {
             Configuration = configuration;

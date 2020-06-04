@@ -10,7 +10,8 @@ namespace DevOpsMetrics.Service.Controllers
     [ApiController]
     public class MeanTimeToRestoreController : ControllerBase
     {
-        private IConfiguration Configuration;
+        private readonly IConfiguration Configuration;
+
         public MeanTimeToRestoreController(IConfiguration configuration)
         {
             Configuration = configuration;

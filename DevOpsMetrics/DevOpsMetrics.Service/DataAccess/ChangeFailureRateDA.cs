@@ -160,7 +160,8 @@ namespace DevOpsMetrics.Service.DataAccess
             }
 
             //Get builds for positive (builds we will set DeploymentWasSuccessful=true) and negative (builds we will set to DeploymentWasSuccessful=false)
-            List<ChangeFailureRateBuild> postiveBuilds = builds.Where((x, numerator) => numerator % denominator != 0).ToList();
+            Console.WriteLine($"numerator {numerator} / denominator {denominator}");
+            List <ChangeFailureRateBuild> postiveBuilds = builds.Where((x, numerator) => numerator % denominator != 0).ToList();
             List<ChangeFailureRateBuild> negativeBuilds = builds.Where((x, numerator) => numerator % denominator == 0).ToList();
 
             //Make the updates

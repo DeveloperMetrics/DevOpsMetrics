@@ -15,7 +15,8 @@ namespace DevOpsMetrics.Service.Controllers
     [ApiController]
     public class TableStorageController : ControllerBase
     {
-        private IConfiguration Configuration;
+        private readonly IConfiguration Configuration;
+
         public TableStorageController(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -230,7 +231,7 @@ namespace DevOpsMetrics.Service.Controllers
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
                 AzureTableStorageDA da = new AzureTableStorageDA();
                 numberOfRecordsSaved = await da.UpdateGitHubActionPullRequestCommits(clientId, clientSecret, tableStorageAuth,
-                        owner, repo, branch, workflowName, workflowId, pull_number, numberOfDays, maxNumberOfItems);
+                        owner, repo, pull_number);
             }
             catch (Exception ex)
             {
