@@ -12,7 +12,7 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class MeanTimeToRestoreDA
     {
-        public async Task<MeanTimeToRestoreModel> GetAzureMeanTimeToRestore(bool getSampleData,
+        public MeanTimeToRestoreModel GetAzureMeanTimeToRestore(bool getSampleData,
                 TableStorageAuth tableStorageAuth,
                 DevOpsPlatform targetDevOpsPlatform, string resourceGroup,
                 int numberOfDays, int maxNumberOfItems, bool useCache)

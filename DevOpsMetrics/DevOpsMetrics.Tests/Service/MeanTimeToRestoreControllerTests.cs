@@ -40,7 +40,7 @@ namespace DevOpsMetrics.Tests.Service
 
         [TestCategory("ControllerTest")]
         [TestMethod]
-        public async Task AzureMTTRSampleControllerIntegrationTest()
+        public void AzureMTTRSampleControllerIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -52,7 +52,7 @@ namespace DevOpsMetrics.Tests.Service
             MeanTimeToRestoreController controller = new MeanTimeToRestoreController(Configuration);
 
             //Act
-            MeanTimeToRestoreModel model = await controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems, useCache);
+            MeanTimeToRestoreModel model = controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -76,7 +76,7 @@ namespace DevOpsMetrics.Tests.Service
 
         [TestCategory("ControllerTest")]
         [TestMethod]
-        public async Task AzureMTTRsAPIControllerIntegrationTest()
+        public void AzureMTTRsAPIControllerIntegrationTest()
         {
             //Arrange
             bool getSampleData = false;
@@ -88,7 +88,7 @@ namespace DevOpsMetrics.Tests.Service
             MeanTimeToRestoreController controller = new MeanTimeToRestoreController(Configuration);
 
             //Act
-            MeanTimeToRestoreModel model = await controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems, useCache);
+            MeanTimeToRestoreModel model = controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);

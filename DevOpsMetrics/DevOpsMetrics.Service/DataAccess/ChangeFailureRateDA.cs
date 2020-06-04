@@ -14,7 +14,7 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class ChangeFailureRateDA
     {
-        public async Task<ChangeFailureRateModel> GetChangeFailureRate(bool getSampleData, TableStorageAuth tableStorageAuth,
+        public ChangeFailureRateModel GetChangeFailureRate(bool getSampleData, TableStorageAuth tableStorageAuth,
                 DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName, string buildId_workflowId,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
@@ -150,6 +150,10 @@ namespace DevOpsMetrics.Service.DataAccess
                     denominator = 50;
                     break;
                 case 100:
+                    numerator = 1;
+                    denominator = 1;
+                    break;
+                default:
                     numerator = 1;
                     denominator = 1;
                     break;

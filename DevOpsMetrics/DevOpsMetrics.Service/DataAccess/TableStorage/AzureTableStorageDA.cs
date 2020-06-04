@@ -46,6 +46,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             return owner + "_" + repo + "_" + pullRequestId;
         }
 
+        //Note that this can't be async due to performance issues with Azure Storage when you retrieve items
         public JArray GetTableStorageItems(TableStorageAuth tableStorageAuth, string tableName, string partitionKey)
         {
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableName);

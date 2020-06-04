@@ -25,7 +25,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public async Task MeanTimeToRestoreDAIntegrationTest()
+        public void MeanTimeToRestoreDAIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -38,7 +38,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             MeanTimeToRestoreDA da = new MeanTimeToRestoreDA();
-            MeanTimeToRestoreModel model = await da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth, targetDevOpsPlatform, resourceGroup, numberOfDays, maxNumberOfItems, useCache);
+            MeanTimeToRestoreModel model = da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth, targetDevOpsPlatform, resourceGroup, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -53,7 +53,7 @@ namespace DevOpsMetrics.Tests.Service
 
 
         [TestMethod]
-        public async Task TimeToRestoreServiceDAIntegrationTest()
+        public void TimeToRestoreServiceDAIntegrationTest()
         {
             //Arrange
             bool getSampleData = false;
@@ -66,7 +66,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             MeanTimeToRestoreDA da = new MeanTimeToRestoreDA();
-            MeanTimeToRestoreModel model = await da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth, targetDevOpsPlatform, resourceGroup, numberOfDays, maxNumberOfItems, useCache);
+            MeanTimeToRestoreModel model = da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth, targetDevOpsPlatform, resourceGroup, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -81,7 +81,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public async Task TimeToRestoreServiceDALiveIntegrationTest()
+        public void TimeToRestoreServiceDALiveIntegrationTest()
         {
             //Arrange
             bool getSampleData = false;
@@ -94,7 +94,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             MeanTimeToRestoreDA da = new MeanTimeToRestoreDA();
-            MeanTimeToRestoreModel model = await da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth, targetDevOpsPlatform, resourceGroup, numberOfDays, maxNumberOfItems, useCache);
+            MeanTimeToRestoreModel model = da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth, targetDevOpsPlatform, resourceGroup, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);

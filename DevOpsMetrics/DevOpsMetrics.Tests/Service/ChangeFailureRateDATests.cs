@@ -25,7 +25,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public async Task AzChangeFailureRateDAIntegrationTest()
+        public void AzChangeFailureRateDAIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -42,7 +42,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             ChangeFailureRateDA da = new ChangeFailureRateDA();
-            ChangeFailureRateModel model = await da.GetChangeFailureRate(getSampleData, tableStorageAuth,
+            ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageAuth,
                targetDevOpsPlatform, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
@@ -52,7 +52,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.ChangeFailureRateMetric > 0f);
             Assert.IsTrue(model.ChangeFailureRateBuildList.Count <= 20f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
-            Assert.AreNotEqual("Elite", model.ChangeFailureRateMetricDescription); 
+            Assert.AreNotEqual("Elite", model.ChangeFailureRateMetricDescription);
             Assert.AreEqual(numberOfDays, model.NumberOfDays);
             Assert.IsTrue(model.MaxNumberOfItems > 0);
             Assert.IsTrue(model.TotalItems > 0);
@@ -90,7 +90,7 @@ namespace DevOpsMetrics.Tests.Service
         //}
 
         [TestMethod]
-        public async Task GHChangeFailureRateDAIntegrationTest()
+        public void GHChangeFailureRateDAIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -107,7 +107,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             ChangeFailureRateDA da = new ChangeFailureRateDA();
-            ChangeFailureRateModel model = await da.GetChangeFailureRate(getSampleData, tableStorageAuth,
+            ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageAuth,
                targetDevOpsPlatform, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
@@ -127,7 +127,7 @@ namespace DevOpsMetrics.Tests.Service
         public async Task UpdateChangeFailureRateDAIntegrationTest()
         {
             //Arrange
-           TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string buildName = "SamLearnsAzure.CI";
