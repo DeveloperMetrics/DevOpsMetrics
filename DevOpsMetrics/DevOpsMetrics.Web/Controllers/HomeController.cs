@@ -347,7 +347,7 @@ namespace DevOpsMetrics.Web.Controllers
             {
                 new NumberOfDaysItem { NumberOfDays = 1 },
                 new NumberOfDaysItem { NumberOfDays = 7 },
-                new NumberOfDaysItem { NumberOfDays = 20 },
+                new NumberOfDaysItem { NumberOfDays = 21 },
                 new NumberOfDaysItem { NumberOfDays = 30 },
                 new NumberOfDaysItem { NumberOfDays = 60 }
             };
