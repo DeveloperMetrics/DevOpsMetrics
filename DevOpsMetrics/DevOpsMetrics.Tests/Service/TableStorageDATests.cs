@@ -16,260 +16,20 @@ using System.Threading.Tasks;
 namespace DevOpsMetrics.Tests.Service
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("IntegrationTest")]
+    [TestCategory("UnitTest")]
     [TestClass]
     public class TableStorageDATests
     {
-        public IConfigurationRoot Configuration;
-
-        [TestInitialize]
-        public void TestStartUp()
-        {
-            IConfigurationBuilder config = new ConfigurationBuilder()
-               .SetBasePath(AppContext.BaseDirectory)
-               .AddJsonFile("appsettings.json");
-            config.AddUserSecrets<TableStorageDATests>();
-            Configuration = config.Build();
-        }
 
         [TestMethod]
-        public void AzGetBuildsDAIntegrationTest()
-        {
-            //Arrange
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string buildName = "SamLearnsAzure.CI";
-
-            //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            JArray list = da.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableAzureDevOpsBuilds, da.CreateBuildWorkflowPartitionKey(organization, project, buildName));
-
-            //Assert
-            Assert.IsTrue(list.Count >= 0);
-        }
-
-        [TestMethod]
-        public async Task AzUpdateBuildsDAIntegrationTest()
-        {
-            //Arrange
-            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildName = "SamLearnsAzure.CI";
-            string buildId = "3673"; //SamLearnsAzure.CI
-            int numberOfDays = 30;
-            int maxNumberOfItems = 20;
-
-            //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateAzureDevOpsBuilds(patToken, tableStorageAuth, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
-
-            //Assert
-            Assert.IsTrue(itemsAdded >= 0);
-        }
-
-        [TestMethod]
-        public void AzGetPRsDAIntegrationTest()
-        {
-            //Arrange
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-
-            //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            JArray list = da.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableAzureDevOpsBuilds, da.CreateAzureDevOpsPRPartitionKey(organization, project));
-
-            //Assert
-            Assert.IsTrue(list.Count >= 0);
-        }
-
-        [TestMethod]
-        public async Task AzUpdatePRsDAIntegrationTest()
-        {
-            //Arrange
-            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string repositoryId = "SamLearnsAzure";
-            int numberOfDays = 30;
-            int maxNumberOfItems = 20;
-
-            //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateAzureDevOpsPullRequests(patToken, tableStorageAuth,
-                organization, project, repositoryId, numberOfDays, maxNumberOfItems);
-
-            //Assert
-            Assert.IsTrue(itemsAdded >= 0);
-        }
-
-        [TestMethod]
-        public void AzGetPRCommitsDAIntegrationTest()
-        {
-            //Arrange
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-
-            //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            JArray prList = da.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableAzureDevOpsPRs, da.CreateAzureDevOpsPRPartitionKey(organization, project));
-            int itemsAdded = 0;
-            foreach (JToken item in prList)
-            {
-                AzureDevOpsPR pullRequest = JsonConvert.DeserializeObject<AzureDevOpsPR>(item.ToString());
-                string pullRequestId = pullRequest.PullRequestId;
-                JArray list = da.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableAzureDevOpsPRCommits, da.CreateAzureDevOpsPRCommitPartitionKey(organization, project, pullRequestId));
-                if (list.Count > 0)
-                {
-                    itemsAdded = list.Count;
-                    break;
-                }
-            }
-
-            //Assert
-            Assert.IsTrue(itemsAdded >= 0);
-        }
-
-        [TestMethod]
-        public void GHGetBuildsDAIntegrationTest()
-        {
-            //Arrange
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            string owner = "samsmithnz";
-            string repo = "DevOpsMetrics";
-            string workflowName = "DevOpsMetrics CI/CD";
-
-            //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            JArray list = da.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableGitHubRuns, da.CreateBuildWorkflowPartitionKey(owner, repo, workflowName));
-
-            //Assert
-            Assert.IsTrue(list.Count >= 0);
-        }
-
-        [TestMethod]
-        public async Task GHUpdateDevOpsMetricsBuildsDAIntegrationTest()
-        {
-            //Arrange
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            string owner = "samsmithnz";
-            string repo = "DevOpsMetrics";
-            string branch = "master";
-            string workflowName = "DevOpsMetrics CI/CD";
-            string workflowId = "1162561";
-            int numberOfDays = 30;
-            int maxNumberOfItems = 20;
-
-            //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateGitHubActionRuns(clientId, clientSecret, tableStorageAuth,
-                    owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
-
-            //Assert
-            Assert.IsTrue(itemsAdded >= 0);
-        }
-
-        [TestMethod]
-        public async Task GHUpdateSamsFeatureFlagsBuildsDAIntegrationTest()
-        {
-            //Arrange
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            string owner = "samsmithnz";
-            string repo = "SamsFeatureFlags";
-            string branch = "master";
-            string workflowName = "SamsFeatureFlags.CI/CD";
-            string workflowId = "108084";
-            int numberOfDays = 30;
-            int maxNumberOfItems = 20;
-
-            //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateGitHubActionRuns(clientId, clientSecret, tableStorageAuth,
-                    owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
-
-            //Assert
-            Assert.IsTrue(itemsAdded >= 0);
-        }
-
-        [TestMethod]
-        public void GHGetPRsDAIntegrationTest()
-        {
-            //Arrange
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            string owner = "samsmithnz";
-            string repo = "DevOpsMetrics";
-
-            //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            JArray list = da.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableGitHubPRs, da.CreateGitHubPRPartitionKey(owner, repo));
-
-            //Assert
-            Assert.IsTrue(list.Count >= 0);
-        }
-
-        [TestMethod]
-        public async Task GHUpdateDevOpsMetricsPRsDAIntegrationTest()
-        {
-            //Arrange
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            string owner = "samsmithnz";
-            string repo = "DevOpsMetrics";
-            string branch = "master";
-            int numberOfDays = 30;
-            int maxNumberOfItems = 20;
-
-            //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageAuth, owner, repo, branch, numberOfDays, maxNumberOfItems);
-
-            //Assert
-            Assert.IsTrue(itemsAdded >= 0);
-        }
-
-        [TestMethod]
-        public async Task GHUpdateSamsFeatureFlagsPRsDAIntegrationTest()
-        {
-            //Arrange
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            string owner = "samsmithnz";
-            string repo = "SamsFeatureFlags";
-            string branch = "master";
-            int numberOfDays = 30;
-            int maxNumberOfItems = 20;
-
-            //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageAuth, owner, repo, branch, numberOfDays, maxNumberOfItems);
-
-            //Assert
-            Assert.IsTrue(itemsAdded >= 0);
-        }
-
-        [TestMethod]
-        public async Task GetAzureDevOpsDeploymentFrequencyTest()
+        public async Task UpdateAzureDevOpsBuildsTest()
         {
             //Arrange
             Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
-            Mock<IDeploymentFrequencyDA> mockDA = new Mock<IDeploymentFrequencyDA>();
-            mockDA.Setup(repo => repo.GetAzureDevOpsDeploymentFrequency(It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<TableStorageAuth>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(Task.FromResult(GetSampleData()));
+            Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
+            mockDA.Setup(repo => repo.UpdateAzureDevOpsBuilds(It.IsAny<string>(), It.IsAny<TableStorageAuth>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(GetSampleUpdateData()));
             TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
-            bool getSampleData = false;
             string patToken = "";
-            TableStorageAuth tableStorageAuth = null;
             string organization = "";
             string project = "";
             string branch = "";
@@ -277,19 +37,131 @@ namespace DevOpsMetrics.Tests.Service
             string buildId = "";
             int numberOfDays = 0;
             int maxNumberOfItems = 0;
-            bool useCache = false;
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageAuth, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+            int result = await controller.UpdateAzureDevOpsBuilds(patToken, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
 
             //Assert
-            Assert.IsTrue(model != null);
+            Assert.AreEqual(7, result);
         }
 
-        private DeploymentFrequencyModel GetSampleData()
+        [TestMethod]
+        public async Task UpdateGitHubActionRunsTest()
         {
-            DeploymentFrequencyModel model = new DeploymentFrequencyModel();
-            return model;
+            //Arrange
+            Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
+            Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
+            mockDA.Setup(repo => repo.UpdateGitHubActionRuns(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TableStorageAuth>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(GetSampleUpdateData()));
+            TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
+            string clientId = "";
+            string clientSecret = "";
+            string owner = "";
+            string repo = "";
+            string branch = "";
+            string workflowName = "";
+            string workflowId = "";
+            int numberOfDays = 0;
+            int maxNumberOfItems = 0;
+
+            //Act
+            int result = await controller.UpdateGitHubActionRuns(clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+
+            //Assert
+            Assert.AreEqual(7, result);
+        }
+
+        [TestMethod]
+        public async Task UpdateAzureDevOpsPullRequestsTest()
+        {
+            //Arrange
+            Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
+            Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
+            mockDA.Setup(repo => repo.UpdateAzureDevOpsPullRequests(It.IsAny<string>(), It.IsAny<TableStorageAuth>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(GetSampleUpdateData()));
+            TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
+            string patToken = "";
+            string organization = "";
+            string project = "";
+            string repositoryId = "";
+            int numberOfDays = 0;
+            int maxNumberOfItems = 0;
+
+            //Act
+            int result = await controller.UpdateAzureDevOpsPullRequests(patToken, organization, project, repositoryId, numberOfDays, maxNumberOfItems);
+
+            //Assert
+            Assert.AreEqual(7, result);
+        }
+
+        [TestMethod]
+        public async Task UpdateGitHubActionPullRequestsTest()
+        {
+            //Arrange
+            Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
+            Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
+            mockDA.Setup(repo => repo.UpdateGitHubActionPullRequests(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TableStorageAuth>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(GetSampleUpdateData()));
+            TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
+            string clientId = "";
+            string clientSecret = "";
+            string owner = "";
+            string repo = "";
+            string branch = "";
+            int numberOfDays = 0;
+            int maxNumberOfItems = 0;
+
+            //Act
+            int result = await controller.UpdateGitHubActionPullRequests(clientId, clientSecret, owner, repo, branch, numberOfDays, maxNumberOfItems);
+
+            //Assert
+            Assert.AreEqual(7, result);
+        }
+
+        [TestMethod]
+        public async Task UpdateAzureDevOpsPullRequestCommitsTest()
+        {
+            //Arrange
+            Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
+            Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
+            mockDA.Setup(repo => repo.UpdateAzureDevOpsPullRequestCommits(It.IsAny<string>(), It.IsAny<TableStorageAuth>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),  It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(GetSampleUpdateData()));
+            TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
+            string patToken = "";
+            string organization = "";
+            string project = "";
+            string repositoryId = "";
+            string pullRequestId = "";
+            int numberOfDays = 0;
+            int maxNumberOfItems = 0;
+
+            //Act
+            int result = await controller.UpdateAzureDevOpsPullRequestCommits(patToken, organization, project, repositoryId, pullRequestId, numberOfDays, maxNumberOfItems);
+
+            //Assert
+            Assert.AreEqual(7, result);
+        }
+
+        [TestMethod]
+        public async Task UpdateGitHubActionPullRequestCommitsTest()
+        {
+            //Arrange
+            Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
+            Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
+            mockDA.Setup(repo => repo.UpdateGitHubActionPullRequestCommits(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TableStorageAuth>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(GetSampleUpdateData()));
+            TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
+            string clientId = "";
+            string clientSecret = "";
+            string owner = "";
+            string repo = "";
+            string pull_number = "";
+
+            //Act
+            int result = await controller.UpdateGitHubActionPullRequestCommits(clientId, clientSecret, owner, repo, pull_number);
+
+            //Assert
+            Assert.AreEqual(7, result);
+        }
+
+        private int GetSampleUpdateData()
+        {
+            return 7;
         }
 
     }

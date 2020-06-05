@@ -16,48 +16,12 @@ namespace DevOpsMetrics.Service.Controllers
     public class TableStorageController : ControllerBase
     {
         private readonly IConfiguration Configuration;
-        private readonly IDeploymentFrequencyDA DeploymentFrequencyDA;
+        private readonly IAzureTableStorageDA AzureTableStorageDA;
 
-        public TableStorageController(IConfiguration configuration, IDeploymentFrequencyDA deploymentFrequencyDA)
+        public TableStorageController(IConfiguration configuration, IAzureTableStorageDA azureTableStorageDA)
         {
             Configuration = configuration;
-            DeploymentFrequencyDA = deploymentFrequencyDA;
-        }
-
-        /// <summary>
-        /// Get builds from the Azure DevOps API
-        /// </summary>
-        /// <param name="getSampleData"></param>
-        /// <param name="patToken"></param>
-        /// <param name="organization"></param>
-        /// <param name="project"></param>
-        /// <param name="branch"></param>
-        /// <param name="buildName"></param>
-        /// <param name="buildId"></param>
-        /// <param name="numberOfDays"></param>
-        /// <param name="maxNumberOfItems"></param>
-        /// <returns></returns>
-        [HttpGet("GetAzureDevOpsDeploymentFrequency")]
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, TableStorageAuth tableStorageAuth, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
-        {
-            DeploymentFrequencyModel model = new DeploymentFrequencyModel();
-            try
-            {
-                model = await DeploymentFrequencyDA.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageAuth, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message == "Response status code does not indicate success: 403 (rate limit exceeded).")
-                {
-                    model.DeploymentName = buildName;
-                    model.RateLimitHit = true;
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return model;
+            AzureTableStorageDA = azureTableStorageDA;
         }
 
         /// <summary>
@@ -82,8 +46,7 @@ namespace DevOpsMetrics.Service.Controllers
             try
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-                AzureTableStorageDA da = new AzureTableStorageDA();
-                numberOfRecordsSaved = await da.UpdateAzureDevOpsBuilds(patToken, tableStorageAuth, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
+                numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsBuilds(patToken, tableStorageAuth, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
             {
@@ -122,8 +85,7 @@ namespace DevOpsMetrics.Service.Controllers
             try
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-                AzureTableStorageDA da = new AzureTableStorageDA();
-                numberOfRecordsSaved = await da.UpdateGitHubActionRuns(clientId, clientSecret, tableStorageAuth,
+                numberOfRecordsSaved = await AzureTableStorageDA.UpdateGitHubActionRuns(clientId, clientSecret, tableStorageAuth,
                         owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
@@ -149,9 +111,8 @@ namespace DevOpsMetrics.Service.Controllers
             try
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-                AzureTableStorageDA da = new AzureTableStorageDA();
-                numberOfRecordsSaved = await da.UpdateAzureDevOpsPullRequests(patToken, tableStorageAuth,
-                        organization, project, repositoryId, numberOfDays, maxNumberOfItems);
+                numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsPullRequests(patToken, tableStorageAuth,
+                         organization, project, repositoryId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
             {
@@ -169,15 +130,14 @@ namespace DevOpsMetrics.Service.Controllers
 
         [HttpGet("UpdateGitHubActionPullRequests")]
         public async Task<int> UpdateGitHubActionPullRequests(string clientId, string clientSecret,
-                string owner, string repo, string branch, 
+                string owner, string repo, string branch,
                 int numberOfDays, int maxNumberOfItems)
         {
             int numberOfRecordsSaved;
             try
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-                AzureTableStorageDA da = new AzureTableStorageDA();
-                numberOfRecordsSaved = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageAuth,
+                numberOfRecordsSaved = await AzureTableStorageDA.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageAuth,
                         owner, repo, branch, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
@@ -203,8 +163,7 @@ namespace DevOpsMetrics.Service.Controllers
             try
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-                AzureTableStorageDA da = new AzureTableStorageDA();
-                numberOfRecordsSaved = await da.UpdateAzureDevOpsPullRequestCommits(patToken, tableStorageAuth,
+                numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsPullRequestCommits(patToken, tableStorageAuth,
                     organization, project, repositoryId, pullRequestId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
@@ -229,8 +188,7 @@ namespace DevOpsMetrics.Service.Controllers
             try
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-                AzureTableStorageDA da = new AzureTableStorageDA();
-                numberOfRecordsSaved = await da.UpdateGitHubActionPullRequestCommits(clientId, clientSecret, tableStorageAuth,
+                numberOfRecordsSaved = await AzureTableStorageDA.UpdateGitHubActionPullRequestCommits(clientId, clientSecret, tableStorageAuth,
                         owner, repo, pull_number);
             }
             catch (Exception ex)
@@ -251,8 +209,7 @@ namespace DevOpsMetrics.Service.Controllers
         public List<AzureDevOpsSettings> GetAzureDevOpsSettings()
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            List<AzureDevOpsSettings> settings = da.GetAzureDevOpsSettings(tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings);
+            List<AzureDevOpsSettings> settings = AzureTableStorageDA.GetAzureDevOpsSettings(tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings);
 
             return settings;
         }
@@ -261,8 +218,7 @@ namespace DevOpsMetrics.Service.Controllers
         public List<GitHubSettings> GetGitHubSettings()
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            List<GitHubSettings> settings = da.GetGitHubSettings(tableStorageAuth, tableStorageAuth.TableGitHubSettings);
+            List<GitHubSettings> settings = AzureTableStorageDA.GetGitHubSettings(tableStorageAuth, tableStorageAuth.TableGitHubSettings);
             return settings;
         }
 
@@ -271,9 +227,8 @@ namespace DevOpsMetrics.Service.Controllers
                 string organization, string project, string repository, string branch, string buildName, string buildId, string resourceGroup, int itemOrder)
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            return await da.UpdateAzureDevOpsSetting(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings,
-                    organization, project, repository, branch, buildName, buildId, resourceGroup, itemOrder);
+            return await AzureTableStorageDA.UpdateAzureDevOpsSetting(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings,
+                     organization, project, repository, branch, buildName, buildId, resourceGroup, itemOrder);
         }
 
         [HttpGet("UpdateGitHubSetting")]
@@ -281,8 +236,7 @@ namespace DevOpsMetrics.Service.Controllers
                 string owner, string repo, string branch, string workflowName, string workflowId, string resourceGroup, int itemOrder)
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            return await da.UpdateGitHubSetting(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubSettings,
+            return await AzureTableStorageDA.UpdateGitHubSetting(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubSettings,
                     owner, repo, branch, workflowName, workflowId, resourceGroup, itemOrder);
         }
 
@@ -290,8 +244,7 @@ namespace DevOpsMetrics.Service.Controllers
         public async Task<bool> UpdateDevOpsMonitoringEvent([FromBody] MonitoringEvent monitoringEvent)
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            return await da.UpdateDevOpsMonitoringEvent(tableStorageAuth, monitoringEvent);
+            return await AzureTableStorageDA.UpdateDevOpsMonitoringEvent(tableStorageAuth, monitoringEvent);
         }
 
     }
