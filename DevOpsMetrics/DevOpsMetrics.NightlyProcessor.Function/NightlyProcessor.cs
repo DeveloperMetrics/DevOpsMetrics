@@ -16,8 +16,8 @@ namespace DevOpsMetrics.NightlyProcessor.Function
     {
         [FunctionName("UpdateStorageTables")]
         public static async Task Run(
-            [TimerTrigger("0 */2 * * *", RunOnStartup = true)] TimerInfo myTimer, 
-            ILogger log, 
+            [TimerTrigger("0 */2 * * *", RunOnStartup = true)] TimerInfo myTimer,
+            ILogger log,
             ExecutionContext context)
         {
             log.LogInformation($"C# Timer trigger function UpdateStorageTables started at: {DateTime.Now}");
@@ -43,7 +43,7 @@ namespace DevOpsMetrics.NightlyProcessor.Function
             {
                 log.LogInformation($"Processing organization {item.Organization}, project {item.Project}");
                 int buildsUpdated = await api.UpdateAzureDevOpsBuilds(configuration["Appsettings:AzureDevOpsPatToken"], item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems);
-                int prsUpdated = await api.UpdateAzureDevOpsPullRequests(configuration["Appsettings:AzureDevOpsPatToken"], item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems);
+                int prsUpdated = await api.UpdateAzureDevOpsPullRequests(configuration["Appsettings:AzureDevOpsPatToken"], item.Organization, item.Project, item.Repository, numberOfDays, maxNumberOfItems);
                 log.LogInformation($"Processed organization {item.Organization}, project {item.Project}. {buildsUpdated} builds and {prsUpdated} prs/commits updated, ");
                 totalResults += buildsUpdated + prsUpdated;
             }
@@ -51,7 +51,7 @@ namespace DevOpsMetrics.NightlyProcessor.Function
             {
                 log.LogInformation($"Processing owner {item.Owner}, repo {item.Repo}");
                 int buildsUpdated = await api.UpdateGitHubActionRuns(configuration["Appsettings:GitHubClientId"], configuration["Appsettings:GitHubClientSecret"], item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
-                int prsUpdated = await api.UpdateGitHubActionPullRequests(configuration["Appsettings:GitHubClientId"], configuration["Appsettings:GitHubClientSecret"], item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
+                int prsUpdated = await api.UpdateGitHubActionPullRequests(configuration["Appsettings:GitHubClientId"], configuration["Appsettings:GitHubClientSecret"], item.Owner, item.Repo, item.Branch, numberOfDays, maxNumberOfItems);
                 log.LogInformation($"Processed owner {item.Owner}, repo {item.Repo}. {buildsUpdated} builds and {prsUpdated} prs/commits updated, ");
                 totalResults += buildsUpdated + prsUpdated;
             }

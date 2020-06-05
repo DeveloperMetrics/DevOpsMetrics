@@ -1,4 +1,5 @@
 using DevOpsMetrics.Core;
+using DevOpsMetrics.Service.Models.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -26,11 +27,20 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, pipelineName, numberOfDays);
-            string rating = metrics.GetMeanTimeToRestoreRating(result);
+            MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
+            {
+                MTTRAverageDurationInHours = result,
+                MTTRAverageDurationDescription = metrics.GetMeanTimeToRestoreRating(result),
+                IsProjectView = false,
+                ItemOrder = 1
+            };
 
             //Assert
-            Assert.AreEqual(0.75f, result);
-            Assert.AreEqual("Elite", rating);
+            Assert.IsTrue(model != null);
+            Assert.AreEqual(0.75f, model.MTTRAverageDurationInHours);
+            Assert.AreEqual("Elite", model.MTTRAverageDurationDescription);
+            Assert.AreEqual(false, model.IsProjectView);
+            Assert.AreEqual(1, model.ItemOrder);
         }
 
 

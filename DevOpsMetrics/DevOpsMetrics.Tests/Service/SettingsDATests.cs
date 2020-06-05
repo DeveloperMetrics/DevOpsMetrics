@@ -26,7 +26,7 @@ namespace DevOpsMetrics.Tests.Service
             IConfigurationBuilder config = new ConfigurationBuilder()
                .SetBasePath(AppContext.BaseDirectory)
                .AddJsonFile("appsettings.json");
-            config.AddUserSecrets<AzureTableStorageDATests>();
+            config.AddUserSecrets<TableStorageDATests>();
             Configuration = config.Build();
         }
 

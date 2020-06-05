@@ -1,9 +1,12 @@
-﻿using DevOpsMetrics.Service.DataAccess.TableStorage;
+﻿using DevOpsMetrics.Service.Controllers;
+using DevOpsMetrics.Service.DataAccess;
+using DevOpsMetrics.Service.DataAccess.TableStorage;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -15,7 +18,7 @@ namespace DevOpsMetrics.Tests.Service
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [TestCategory("IntegrationTest")]
     [TestClass]
-    public class AzureTableStorageDATests
+    public class TableStorageDATests
     {
         public IConfigurationRoot Configuration;
 
@@ -25,7 +28,7 @@ namespace DevOpsMetrics.Tests.Service
             IConfigurationBuilder config = new ConfigurationBuilder()
                .SetBasePath(AppContext.BaseDirectory)
                .AddJsonFile("appsettings.json");
-            config.AddUserSecrets<AzureTableStorageDATests>();
+            config.AddUserSecrets<TableStorageDATests>();
             Configuration = config.Build();
         }
 
@@ -254,6 +257,39 @@ namespace DevOpsMetrics.Tests.Service
 
             //Assert
             Assert.IsTrue(itemsAdded >= 0);
+        }
+
+        [TestMethod]
+        public async Task GetAzureDevOpsDeploymentFrequencyTest()
+        {
+            //Arrange
+            Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
+            Mock<IDeploymentFrequencyDA> mockDA = new Mock<IDeploymentFrequencyDA>();
+            mockDA.Setup(repo => repo.GetAzureDevOpsDeploymentFrequency(It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<TableStorageAuth>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(Task.FromResult(GetSampleData()));
+            TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
+            bool getSampleData = false;
+            string patToken = "";
+            TableStorageAuth tableStorageAuth = null;
+            string organization = "";
+            string project = "";
+            string branch = "";
+            string buildName = "";
+            string buildId = "";
+            int numberOfDays = 0;
+            int maxNumberOfItems = 0;
+            bool useCache = false;
+
+            //Act
+            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageAuth, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+
+            //Assert
+            Assert.IsTrue(model != null);
+        }
+
+        private DeploymentFrequencyModel GetSampleData()
+        {
+            DeploymentFrequencyModel model = new DeploymentFrequencyModel();
+            return model;
         }
 
     }

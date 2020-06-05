@@ -7,18 +7,6 @@ namespace DevOpsMetrics.Service.Models.Common
 {
     public class TableStorageAuth
     {
-        //public TableStorageAuth(string accountName, string accountAccessKey, string tableName)
-        //{
-        //    AccountName = accountName;
-        //    AccountAccessKey = accountAccessKey;
-        //    TableAzureDevOpsBuilds = tableName;
-        //    TableAzureDevOpsPRs = tableName;
-        //    TableAzureDevOpsPRCommits = tableName;
-        //    TableGitHubRuns = tableName;
-        //    TableGitHubPRs = tableName;
-        //    TableGitHubPRCommits = tableName;
-        //}
-
         public string AccountName { get; set; }
         public string AccountAccessKey { get; set; }
         public string TableAzureDevOpsSettings { get; set; }
@@ -32,15 +20,5 @@ namespace DevOpsMetrics.Service.Models.Common
         public string TableMTTR { get; set; }
         public string TableChangeFailureRate { get; set; }
 
-        //TODO: Debug statement
-        public override string ToString()
-        {
-            string result = "";
-
-            result += "AccountName: " + AccountName + Environment.NewLine;
-            result += "AccountAccessKey: " + AccountAccessKey + Environment.NewLine;
-
-            return result;
-        }
     }
 }

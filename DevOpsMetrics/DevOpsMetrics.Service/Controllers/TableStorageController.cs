@@ -16,10 +16,12 @@ namespace DevOpsMetrics.Service.Controllers
     public class TableStorageController : ControllerBase
     {
         private readonly IConfiguration Configuration;
+        private readonly IDeploymentFrequencyDA DeploymentFrequencyDA;
 
-        public TableStorageController(IConfiguration configuration)
+        public TableStorageController(IConfiguration configuration, IDeploymentFrequencyDA deploymentFrequencyDA)
         {
             Configuration = configuration;
+            DeploymentFrequencyDA = deploymentFrequencyDA;
         }
 
         /// <summary>
@@ -41,8 +43,7 @@ namespace DevOpsMetrics.Service.Controllers
             DeploymentFrequencyModel model = new DeploymentFrequencyModel();
             try
             {
-                DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-                model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageAuth, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+                model = await DeploymentFrequencyDA.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageAuth, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
             {

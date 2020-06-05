@@ -1,4 +1,5 @@
 using DevOpsMetrics.Core;
+using DevOpsMetrics.Service.Models.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -29,11 +30,18 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessChangeFailureRate(changeFailureRateList, pipelineName, numberOfDays);
-            string rating = metrics.GetChangeFailureRateRating(result);
+            ChangeFailureRateModel model = new ChangeFailureRateModel
+            {
+                ChangeFailureRateMetric = result,
+                ChangeFailureRateMetricDescription = metrics.GetChangeFailureRateRating(result),
+                IsProjectView = false
+            };
 
             //Assert
-            Assert.AreEqual(0f, result);
-            Assert.AreEqual("Elite", rating);
+            Assert.IsTrue(model != null);
+            Assert.AreEqual(0f, model.ChangeFailureRateMetric);
+            Assert.AreEqual("Elite", model.ChangeFailureRateMetricDescription);
+            Assert.AreEqual(false, model.IsProjectView);
         }
 
         [TestMethod]

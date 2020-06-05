@@ -1,4 +1,5 @@
 using DevOpsMetrics.Core;
+using DevOpsMetrics.Service.Models.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -23,10 +24,19 @@ namespace DevOpsMetrics.Tests.Core
             };
 
             //Act
-            float result = metrics.ProcessDeploymentFrequency(deploymentFrequencyList, pipelineName, numberOfDays);
+            float metric = metrics.ProcessDeploymentFrequency(deploymentFrequencyList, pipelineName, numberOfDays);
+            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            {
+                DeploymentsPerDayMetric = metric,
+                DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
+            };
 
             //Assert
-            Assert.AreEqual(1f, result);
+            Assert.IsTrue(model != null);
+            Assert.AreEqual(1f, model.DeploymentsPerDayMetric);
+            Assert.AreEqual("High", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual(7, model.DeploymentsToDisplayMetric);
+            Assert.AreEqual("times per week", model.DeploymentsToDisplayUnit);
         }
 
         [TestMethod]
@@ -39,10 +49,25 @@ namespace DevOpsMetrics.Tests.Core
             List<KeyValuePair<DateTime, DateTime>> deploymentFrequencyList = null;
 
             //Act
-            float result = metrics.ProcessDeploymentFrequency(deploymentFrequencyList, pipelineName, numberOfDays);
+            float metric = metrics.ProcessDeploymentFrequency(deploymentFrequencyList, pipelineName, numberOfDays);
+            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            {
+                DeploymentsPerDayMetric = metric,
+                DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric),
+                IsProjectView = true,
+                ItemOrder = 1,
+                RateLimitHit = false
+            };
 
             //Assert
-            Assert.AreEqual(0f, result);
+            Assert.IsTrue(model != null);
+            Assert.AreEqual(0f, model.DeploymentsPerDayMetric);
+            Assert.AreEqual("None", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual(0, model.DeploymentsToDisplayMetric);
+            Assert.AreEqual("times per month", model.DeploymentsToDisplayUnit);
+            Assert.AreEqual(true, model.IsProjectView);
+            Assert.AreEqual(1, model.ItemOrder);
+            Assert.AreEqual(false, model.RateLimitHit);
         }
 
         [TestMethod]
@@ -59,14 +84,23 @@ namespace DevOpsMetrics.Tests.Core
                 new KeyValuePair<DateTime, DateTime>(DateTime.Now.AddDays(-2), DateTime.Now.AddDays(-2)),
                 new KeyValuePair<DateTime, DateTime>(DateTime.Now.AddDays(-3), DateTime.Now.AddDays(-3)),
                 new KeyValuePair<DateTime, DateTime>(DateTime.Now.AddDays(-4), DateTime.Now.AddDays(-4)),
-                new KeyValuePair<DateTime, DateTime>(DateTime.Now.AddDays(-14), DateTime.Now.AddDays(-14)) //this record should be out of range
+                new KeyValuePair<DateTime, DateTime>(DateTime.Now.AddDays(-8), DateTime.Now.AddDays(-8)) //this record should be out of range, as it's older than 7 days
             };
 
             //Act
-            float result = metrics.ProcessDeploymentFrequency(deploymentFrequencyList, pipelineName, numberOfDays);
+            float metric = metrics.ProcessDeploymentFrequency(deploymentFrequencyList, pipelineName, numberOfDays);
+            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            {
+                DeploymentsPerDayMetric = metric,
+                DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
+            };
 
             //Assert
-            Assert.AreEqual(0.7143f, result);
+            Assert.IsTrue(model != null);
+            Assert.AreEqual(0.7143f, model.DeploymentsPerDayMetric);
+            Assert.AreEqual("High", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual(5.0000997f, model.DeploymentsToDisplayMetric);
+            Assert.AreEqual("times per week", model.DeploymentsToDisplayUnit);
         }
 
         [TestMethod]
@@ -74,17 +108,21 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             DeploymentFrequency metrics = new DeploymentFrequency();
-            float dailyDeployment = 1f;
-            //float weeklyDeployment = 1f / 7f;
-            //float monthlyDeployment = 1f / 30f;
+            float metric = 1.01f; //daily
 
             //Act
-            string EliteResult = metrics.GetDeploymentFrequencyRating(dailyDeployment + dailyDeployment);
-            string EliteResult2 = metrics.GetDeploymentFrequencyRating(dailyDeployment + 0.001f);
+            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            {
+                DeploymentsPerDayMetric = metric,
+                DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
+            };
 
             //Assert
-            Assert.AreEqual("Elite", EliteResult);
-            Assert.AreEqual("Elite", EliteResult2);
+            Assert.IsTrue(model != null);
+            Assert.AreEqual(1.01f, model.DeploymentsPerDayMetric);
+            Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual(1.01f, model.DeploymentsToDisplayMetric);
+            Assert.AreEqual("per day", model.DeploymentsToDisplayUnit);
         }
 
         [TestMethod]
@@ -92,15 +130,21 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             DeploymentFrequency metrics = new DeploymentFrequency();
-            //float dailyDeployment = 1f;
-            float weeklyDeployment = 1f / 7f;
-            //float monthlyDeployment = 1f / 30f;
+            float metric = 1f / 7f; //weekly
 
             //Act
-            string HighResult = metrics.GetDeploymentFrequencyRating(weeklyDeployment);
+            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            {
+                DeploymentsPerDayMetric = metric,
+                DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
+            };
 
             //Assert
-            Assert.AreEqual("High", HighResult);
+            Assert.IsTrue(model != null);
+            Assert.AreEqual(1f / 7f, model.DeploymentsPerDayMetric);
+            Assert.AreEqual("High", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual(1f, model.DeploymentsToDisplayMetric);
+            Assert.AreEqual("times per week", model.DeploymentsToDisplayUnit);
         }
 
         [TestMethod]
@@ -108,15 +152,21 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             DeploymentFrequency metrics = new DeploymentFrequency();
-            //float dailyDeployment = 1f;
-            //float weeklyDeployment = 1f / 7f;
-            float monthlyDeployment = 1f / 30f;
+            float metric = 1f / 30f; //monthly
 
             //Act
-            string MediumResult = metrics.GetDeploymentFrequencyRating(monthlyDeployment);
+            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            {
+                DeploymentsPerDayMetric = metric,
+                DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
+            };
 
             //Assert
-            Assert.AreEqual("Medium", MediumResult);
+            Assert.IsTrue(model != null);
+            Assert.AreEqual(0.033333335f, model.DeploymentsPerDayMetric);
+            Assert.AreEqual("Medium", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual(1, model.DeploymentsToDisplayMetric);
+            Assert.AreEqual("times per month", model.DeploymentsToDisplayUnit);
 
         }
 
@@ -125,15 +175,21 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             DeploymentFrequency metrics = new DeploymentFrequency();
-            //float dailyDeployment = 1f;
-            //float weeklyDeployment = 1f / 7f;
-            float monthlyDeployment = 1f / 30f;
+            float metric = (1f / 30f) - 0.01f; //monthly
 
             //Act
-            string LowResult = metrics.GetDeploymentFrequencyRating(monthlyDeployment - 0.01f);
+            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            {
+                DeploymentsPerDayMetric = metric,
+                DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
+            };
 
             //Assert
-            Assert.AreEqual("Low", LowResult);
+            Assert.IsTrue(model != null);
+            Assert.AreEqual(metric, model.DeploymentsPerDayMetric);
+            Assert.AreEqual("Low", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual(0.70000005f, model.DeploymentsToDisplayMetric);
+            Assert.AreEqual("times per month", model.DeploymentsToDisplayUnit);
         }
 
         [TestMethod]
@@ -141,12 +197,21 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             DeploymentFrequency metrics = new DeploymentFrequency();
+            float metric = 0f; //None
 
             //Act
-            string LowResult = metrics.GetDeploymentFrequencyRating(0f);
+            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            {
+                DeploymentsPerDayMetric = metric,
+                DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
+            };
 
             //Assert
-            Assert.AreEqual("None", LowResult);
+            Assert.IsTrue(model != null);
+            Assert.AreEqual(0f, model.DeploymentsPerDayMetric);
+            Assert.AreEqual("None", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual(0, model.DeploymentsToDisplayMetric);
+            Assert.AreEqual("times per month", model.DeploymentsToDisplayUnit);
         }
 
     }
