@@ -1,16 +1,11 @@
-﻿using DevOpsMetrics.Service.Controllers;
-using DevOpsMetrics.Service.DataAccess;
-using DevOpsMetrics.Service.DataAccess.TableStorage;
+﻿using DevOpsMetrics.Service.DataAccess.TableStorage;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
-using DevOpsMetrics.Service.Models.GitHub;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Tests.Service

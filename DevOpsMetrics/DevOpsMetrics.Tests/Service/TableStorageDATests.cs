@@ -1,5 +1,4 @@
 ﻿using DevOpsMetrics.Service.Controllers;
-using DevOpsMetrics.Service.DataAccess;
 using DevOpsMetrics.Service.DataAccess.TableStorage;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
@@ -7,10 +6,7 @@ using DevOpsMetrics.Service.Models.GitHub;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Tests.Service
@@ -121,7 +117,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
             Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
-            mockDA.Setup(repo => repo.UpdateAzureDevOpsPullRequestCommits(It.IsAny<string>(), It.IsAny<TableStorageAuth>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(),  It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(GetSampleUpdateData()));
+            mockDA.Setup(repo => repo.UpdateAzureDevOpsPullRequestCommits(It.IsAny<string>(), It.IsAny<TableStorageAuth>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(GetSampleUpdateData()));
             TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
             string patToken = "";
             string organization = "";
@@ -159,9 +155,120 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(7, result);
         }
 
+
+        [TestMethod]
+        public void GetAzureDevOpsSettingsTest()
+        {
+            //Arrange
+            Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
+            Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
+            mockDA.Setup(repo => repo.GetAzureDevOpsSettings(It.IsAny<TableStorageAuth>(), It.IsAny<string>())).Returns(GetSampleAzureDevOpsSettingsData());
+            TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
+
+            //Act
+            List<AzureDevOpsSettings> result = controller.GetAzureDevOpsSettings();
+
+            //Assert
+            Assert.IsTrue(result != null);
+        }
+
+        [TestMethod]
+        public void GetGitHubSettingsTest()
+        {
+            //Arrange
+            Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
+            Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
+            mockDA.Setup(repo => repo.GetGitHubSettings(It.IsAny<TableStorageAuth>(), It.IsAny<string>())).Returns(GetSampleGitHubSettingsData());
+            TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
+
+            //Act
+            List<GitHubSettings> result = controller.GetGitHubSettings();
+
+            //Assert
+            Assert.IsTrue(result != null);
+        }
+
+
+        [TestMethod]
+        public async Task UpdateAzureDevOpsSettingTest()
+        {
+            //Arrange
+            Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
+            Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
+            mockDA.Setup(repo => repo.UpdateAzureDevOpsSetting(It.IsAny<string>(), It.IsAny<TableStorageAuth>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(Task.FromResult(true));
+            TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
+            string patToken = "";
+            string organization = "";
+            string project = "";
+            string repository = "";
+            string branch = "";
+            string buildName = "";
+            string buildId = "";
+            string resourceGroup = "";
+            int itemOrder = 0;
+
+            //Act
+            bool result = await controller.UpdateAzureDevOpsSetting(patToken, organization, project, repository, branch, buildName, buildId, resourceGroup, itemOrder);
+
+            //Assert
+            Assert.AreEqual(true, result);
+        }
+
+        [TestMethod]
+        public async Task UpdateGitHubSettingTest()
+        {
+            //Arrange
+            Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
+            Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
+            mockDA.Setup(repo => repo.UpdateGitHubSetting(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TableStorageAuth>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(Task.FromResult(true));
+            TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
+            string clientId = "";
+            string clientSecret = "";
+            string owner = "";
+            string repo = "";
+            string branch = "";
+            string workflowName = "";
+            string workflowId = "";
+            string resourceGroup = "";
+            int itemOrder = 0;
+
+            //Act
+            bool result = await controller.UpdateGitHubSetting(clientId, clientSecret, owner, repo, branch, workflowName, workflowId, resourceGroup, itemOrder);
+
+            //Assert
+            Assert.AreEqual(true, result);
+        }
+
+        [TestMethod]
+        public async Task UpdateDevOpsMonitoringEventTest()
+        {
+            //Arrange
+            Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
+            Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
+            mockDA.Setup(repo => repo.UpdateDevOpsMonitoringEvent(It.IsAny<TableStorageAuth>(), It.IsAny<MonitoringEvent>())).Returns(Task.FromResult(true));
+            TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
+            MonitoringEvent newEvent = new MonitoringEvent();
+
+            //Act
+            bool result = await controller.UpdateDevOpsMonitoringEvent(newEvent);
+
+            //Assert
+            Assert.AreEqual(true, result);
+        }
+
         private int GetSampleUpdateData()
         {
             return 7;
+        }
+
+        private List<AzureDevOpsSettings> GetSampleAzureDevOpsSettingsData()
+        {
+            return new List<AzureDevOpsSettings>();
+        }
+
+        private List<GitHubSettings> GetSampleGitHubSettingsData()
+        {
+            return new List<GitHubSettings>();
         }
 
     }
