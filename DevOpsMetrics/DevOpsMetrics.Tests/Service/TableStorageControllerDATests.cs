@@ -1,13 +1,11 @@
 ﻿using DevOpsMetrics.Service.DataAccess.TableStorage;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
-using DevOpsMetrics.Service.Models.GitHub;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Tests.Service
@@ -15,7 +13,7 @@ namespace DevOpsMetrics.Tests.Service
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [TestCategory("IntegrationTest")]
     [TestClass]
-    public class AzureTableStorageDATests
+    public class TableStorageControllerDATests
     {
         public IConfigurationRoot Configuration;
 
@@ -25,7 +23,7 @@ namespace DevOpsMetrics.Tests.Service
             IConfigurationBuilder config = new ConfigurationBuilder()
                .SetBasePath(AppContext.BaseDirectory)
                .AddJsonFile("appsettings.json");
-            config.AddUserSecrets<AzureTableStorageDATests>();
+            config.AddUserSecrets<TableStorageDATests>();
             Configuration = config.Build();
         }
 

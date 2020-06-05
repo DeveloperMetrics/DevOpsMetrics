@@ -1,4 +1,5 @@
 using DevOpsMetrics.Core;
+using DevOpsMetrics.Service.Models.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -25,9 +26,24 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessLeadTimeForChanges(leadTimeForChangesList, pipelineName, numberOfDays);
+            LeadTimeForChangesModel model = new LeadTimeForChangesModel
+            {
+                LeadTimeForChangesMetric = result,
+                LeadTimeForChangesMetricDescription = metrics.GetLeadTimeForChangesRating(result),
+                IsProjectView = true,
+                ItemOrder = 1,
+                RateLimitHit = true
+            };
 
             //Assert
-            Assert.AreEqual(0.75, Math.Round((double)result, 4));
+            Assert.IsTrue(model != null);
+            Assert.AreEqual(0.75f, model.LeadTimeForChangesMetric);
+            Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
+            Assert.AreEqual(0.75f, model.LeadTimeForChangesMetricDisplayMetric);
+            Assert.AreEqual("hours", model.LeadTimeForChangesMetricDisplayUnit);
+            Assert.AreEqual(true, model.IsProjectView);
+            Assert.AreEqual(1, model.ItemOrder);
+            Assert.AreEqual(true, model.RateLimitHit);
         }
 
         [TestMethod]

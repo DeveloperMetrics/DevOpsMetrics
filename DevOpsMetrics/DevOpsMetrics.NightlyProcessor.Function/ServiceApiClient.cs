@@ -50,15 +50,15 @@ namespace DevOpsMetrics.NightlyProcessor.Function
             return await GetResponse<int>(Client, url);
         }
 
-        public async Task<int> UpdateAzureDevOpsPullRequests(string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems)
+        public async Task<int> UpdateAzureDevOpsPullRequests(string patToken, string organization, string project, string repositoryId, int numberOfDays, int maxNumberOfItems)
         {
-            string url = $"/api/TableStorage/UpdateAzureDevOpsBuilds?patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+            string url = $"/api/TableStorage/UpdateAzureDevOpsPullRequests?patToken={patToken}&organization={organization}&project={project}&repositoryId={repositoryId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
             return await GetResponse<int>(Client, url);
         }
 
-        public async Task<int> UpdateGitHubActionPullRequests(string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems)
+        public async Task<int> UpdateGitHubActionPullRequests(string clientId, string clientSecret, string owner, string repo, string branch, int numberOfDays, int maxNumberOfItems)
         {
-            string url = $"/api/TableStorage/UpdateGitHubActionRuns?clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+            string url = $"/api/TableStorage/UpdateGitHubActionPullRequests?clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
             return await GetResponse<int>(Client, url);
         }
 

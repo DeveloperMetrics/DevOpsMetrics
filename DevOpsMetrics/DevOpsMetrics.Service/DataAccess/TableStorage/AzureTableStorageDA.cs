@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.DataAccess.TableStorage
 {
-    public class AzureTableStorageDA
+    public class AzureTableStorageDA : IAzureTableStorageDA
     {
         public string CreateAzureDevOpsSettingsPartitionKey(string organization, string project, string repository, string buildName)
         {
@@ -220,7 +220,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
         }
 
         public async Task<int> UpdateGitHubActionPullRequests(string clientId, string clientSecret, TableStorageAuth tableStorageAuth,
-                string owner, string repo, string branch, 
+                string owner, string repo, string branch,
                 int numberOfDays, int maxNumberOfItems)
         {
             GitHubAPIAccess api = new GitHubAPIAccess();

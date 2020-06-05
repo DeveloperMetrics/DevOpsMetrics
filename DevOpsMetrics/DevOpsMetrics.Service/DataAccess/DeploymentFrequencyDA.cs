@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.DataAccess
 {
-    public class DeploymentFrequencyDA
+    public class DeploymentFrequencyDA : IDeploymentFrequencyDA
     {
         public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, TableStorageAuth tableStorageAuth,
                 string organization, string project, string branch, string buildName, string buildId,
@@ -59,7 +59,7 @@ namespace DevOpsMetrics.Service.DataAccess
 
                     //then build the calcuation, loading the dates into a date array
                     float deploymentsPerDay;
-                     deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
+                    deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
 
                     //Filter the results to return the last n (maxNumberOfItems), to return to the UI
                     builds = utility.GetLastNItems(builds, maxNumberOfItems);
