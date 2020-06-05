@@ -224,14 +224,12 @@ namespace DevOpsMetrics.Tests.Service
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "master";
-            string workflowName = "DevOpsMetrics CI/CD";
-            string workflowId = "1162561";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageAuth, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+            int itemsAdded = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageAuth, owner, repo, branch, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(itemsAdded >= 0);
@@ -247,14 +245,12 @@ namespace DevOpsMetrics.Tests.Service
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "master";
-            string workflowName = "SamsFeatureFlags.CI/CD";
-            string workflowId = "108084";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageAuth, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+            int itemsAdded = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageAuth, owner, repo, branch, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(itemsAdded >= 0);

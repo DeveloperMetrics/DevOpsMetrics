@@ -25,7 +25,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public async Task AzChangeFailureRateDAIntegrationTest()
+        public void AzChangeFailureRateDAIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -34,16 +34,14 @@ namespace DevOpsMetrics.Tests.Service
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
-            string buildId = "3673"; //SamLearnsAzure.CI
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
-            bool useCache = true;
 
             //Act
             ChangeFailureRateDA da = new ChangeFailureRateDA();
-            ChangeFailureRateModel model = await da.GetChangeFailureRate(getSampleData, tableStorageAuth,
-               targetDevOpsPlatform, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+            ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageAuth,
+               targetDevOpsPlatform, organization, project, branch, buildName, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -52,7 +50,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.ChangeFailureRateMetric > 0f);
             Assert.IsTrue(model.ChangeFailureRateBuildList.Count <= 20f);
             Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
-            Assert.AreNotEqual("Elite", model.ChangeFailureRateMetricDescription); 
+            Assert.AreNotEqual("Elite", model.ChangeFailureRateMetricDescription);
             Assert.AreEqual(numberOfDays, model.NumberOfDays);
             Assert.IsTrue(model.MaxNumberOfItems > 0);
             Assert.IsTrue(model.TotalItems > 0);
@@ -90,7 +88,7 @@ namespace DevOpsMetrics.Tests.Service
         //}
 
         [TestMethod]
-        public async Task GHChangeFailureRateDAIntegrationTest()
+        public void GHChangeFailureRateDAIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -99,16 +97,14 @@ namespace DevOpsMetrics.Tests.Service
             string repo = "DevOpsMetrics";
             string branch = "master";
             string workflowName = "DevOpsMetrics CI/CD";
-            string workflowId = "1162561";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
-            bool useCache = true;
 
             //Act
             ChangeFailureRateDA da = new ChangeFailureRateDA();
-            ChangeFailureRateModel model = await da.GetChangeFailureRate(getSampleData, tableStorageAuth,
-               targetDevOpsPlatform, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+            ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageAuth,
+               targetDevOpsPlatform, owner, repo, branch, workflowName, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -127,7 +123,7 @@ namespace DevOpsMetrics.Tests.Service
         public async Task UpdateChangeFailureRateDAIntegrationTest()
         {
             //Arrange
-           TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string buildName = "SamLearnsAzure.CI";

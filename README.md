@@ -5,7 +5,7 @@ All four of these metrics are based on production environments, where the value 
 
 - Lead time for changes: Time from committing a change to deployment to production
 - Deployment frequency: How often we deploy to production
-- Mean time to restore(MTTR): How quickly we can restore production in an outage or degradation
+- Mean time to restore (MTTR): How quickly we can restore production in an outage or degradation
 - Change failure rate: after a production deployment, was it successful? Or did we need to deploy a fix/rollback?
 
 ![High performing metrics](https://samlearnsazure.files.wordpress.com/2020/04/01highperformers.png)
@@ -20,7 +20,7 @@ We currently have all four of the metrics implemented and undergoing a pilot
   - Assumptions/things we can't currently measure: 
       - The build is multi-stage, and leads to a deployment in a production environment.
       - We only look at a single branch (usually the master branch), hence we ignore feature branches (as these probably aren't deploying to production')
-  - Current limitations: Only one build/run can be specified
+  - Current limitations: Only one build/run/branch can be specified
 ![Deployment Frequency](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/DeploymentFrequencyDemo.png)
 
 - **Lead time for changes**, in both Azure DevOps and GitHub:

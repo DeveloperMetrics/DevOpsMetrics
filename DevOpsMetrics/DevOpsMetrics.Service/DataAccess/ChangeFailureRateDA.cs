@@ -14,9 +14,9 @@ namespace DevOpsMetrics.Service.DataAccess
 {
     public class ChangeFailureRateDA
     {
-        public async Task<ChangeFailureRateModel> GetChangeFailureRate(bool getSampleData, TableStorageAuth tableStorageAuth,
-                DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName, string buildId_workflowId,
-                int numberOfDays, int maxNumberOfItems, bool useCache)
+        public ChangeFailureRateModel GetChangeFailureRate(bool getSampleData, TableStorageAuth tableStorageAuth,
+                DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName, 
+                int numberOfDays, int maxNumberOfItems)
         {
             ListUtility<ChangeFailureRateBuild> utility = new ListUtility<ChangeFailureRateBuild>();
             ChangeFailureRate changeFailureRate = new ChangeFailureRate();
@@ -153,10 +153,15 @@ namespace DevOpsMetrics.Service.DataAccess
                     numerator = 1;
                     denominator = 1;
                     break;
+                default:
+                    numerator = 1;
+                    denominator = 1;
+                    break;
             }
 
             //Get builds for positive (builds we will set DeploymentWasSuccessful=true) and negative (builds we will set to DeploymentWasSuccessful=false)
-            List<ChangeFailureRateBuild> postiveBuilds = builds.Where((x, numerator) => numerator % denominator != 0).ToList();
+            Console.WriteLine($"numerator {numerator} / denominator {denominator}");
+            List <ChangeFailureRateBuild> postiveBuilds = builds.Where((x, numerator) => numerator % denominator != 0).ToList();
             List<ChangeFailureRateBuild> negativeBuilds = builds.Where((x, numerator) => numerator % denominator == 0).ToList();
 
             //Make the updates

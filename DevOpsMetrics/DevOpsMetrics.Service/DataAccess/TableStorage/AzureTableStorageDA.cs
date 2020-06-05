@@ -46,6 +46,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             return owner + "_" + repo + "_" + pullRequestId;
         }
 
+        //Note that this can't be async due to performance issues with Azure Storage when you retrieve items
         public JArray GetTableStorageItems(TableStorageAuth tableStorageAuth, string tableName, string partitionKey)
         {
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageAuth, tableName);
@@ -219,7 +220,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
         }
 
         public async Task<int> UpdateGitHubActionPullRequests(string clientId, string clientSecret, TableStorageAuth tableStorageAuth,
-                string owner, string repo, string branch, string workflowName, string workflowId,
+                string owner, string repo, string branch, 
                 int numberOfDays, int maxNumberOfItems)
         {
             GitHubAPIAccess api = new GitHubAPIAccess();
@@ -243,7 +244,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                     }
 
                     itemsAdded += await UpdateGitHubActionPullRequestCommits(clientId, clientSecret, tableStorageAuth,
-                        owner, repo, branch, workflowName, workflowId, pr.number, numberOfDays, maxNumberOfItems);
+                        owner, repo, pr.number);
                 }
             }
 
@@ -251,8 +252,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
         }
 
         public async Task<int> UpdateGitHubActionPullRequestCommits(string clientId, string clientSecret, TableStorageAuth tableStorageAuth,
-                string owner, string repo, string branch, string workflowName, string workflowId, string pull_number,
-                int numberOfDays, int maxNumberOfItems)
+                string owner, string repo, string pull_number)
         {
             GitHubAPIAccess api = new GitHubAPIAccess();
             JArray items = await api.GetGitHubPullRequestCommitsJArray(clientId, clientSecret, owner, repo, pull_number);

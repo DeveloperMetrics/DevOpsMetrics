@@ -11,7 +11,8 @@ namespace DevOpsMetrics.Service.Controllers
     [ApiController]
     public class DeploymentFrequencyController : ControllerBase
     {
-        private IConfiguration Configuration;
+        private readonly IConfiguration Configuration;
+
         public DeploymentFrequencyController(IConfiguration configuration)
         {
             Configuration = configuration;

@@ -40,7 +40,7 @@ namespace DevOpsMetrics.Tests.Service
 
         [TestCategory("ControllerTest")]
         [TestMethod]
-        public async Task AzChangeFailureRateSampleControllerIntegrationTest()
+        public void AzChangeFailureRateSampleControllerIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -48,16 +48,14 @@ namespace DevOpsMetrics.Tests.Service
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
-            string buildId = "3673"; //SamLearnsAzure.CI
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            bool useCache = false;
             ChangeFailureRateController controller = new ChangeFailureRateController(Configuration);
 
             //Act
-            ChangeFailureRateModel model = await controller.GetChangeFailureRate(getSampleData, 
-                targetDevOpsPlatform, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+            ChangeFailureRateModel model = controller.GetChangeFailureRate(getSampleData,
+                targetDevOpsPlatform, organization, project, branch, buildName, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -73,7 +71,7 @@ namespace DevOpsMetrics.Tests.Service
 
         [TestCategory("ControllerTest")]
         [TestMethod]
-        public async Task AzChangeFailureRateLiveControllerIntegrationTest()
+        public void AzChangeFailureRateLiveControllerIntegrationTest()
         {
             //Arrange
             bool getSampleData = false;
@@ -81,16 +79,14 @@ namespace DevOpsMetrics.Tests.Service
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
-            string buildId = "3673"; //SamLearnsAzure.CI
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
-            bool useCache = true;
             ChangeFailureRateController controller = new ChangeFailureRateController(Configuration);
 
             //Act
-            ChangeFailureRateModel model = await controller.GetChangeFailureRate(getSampleData,
-                targetDevOpsPlatform, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+            ChangeFailureRateModel model = controller.GetChangeFailureRate(getSampleData,
+                targetDevOpsPlatform, organization, project, branch, buildName, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -102,10 +98,10 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.MaxNumberOfItems > 0);
             Assert.IsTrue(model.TotalItems > 0);
         }
-    
+
         [TestCategory("ControllerTest")]
         [TestMethod]
-        public async Task GHChangeFailureRateSampleControllerIntegrationTest()
+        public void GHChangeFailureRateSampleControllerIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -113,16 +109,14 @@ namespace DevOpsMetrics.Tests.Service
             string repo = "SamsFeatureFlags";
             string branch = "master";
             string workflowName = "SamsFeatureFlags.CI/CD";
-            string workflowId = "108084";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            bool useCache = true;
             ChangeFailureRateController controller = new ChangeFailureRateController(Configuration);
 
             //Act
-            ChangeFailureRateModel model = await controller.GetChangeFailureRate(getSampleData,
-               targetDevOpsPlatform, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+            ChangeFailureRateModel model = controller.GetChangeFailureRate(getSampleData,
+               targetDevOpsPlatform, owner, repo, branch, workflowName, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -138,24 +132,22 @@ namespace DevOpsMetrics.Tests.Service
 
         [TestCategory("ControllerTest")]
         [TestMethod]
-        public async Task GHChangeFailureRateLiveControllerIntegrationTest()
+        public void GHChangeFailureRateLiveControllerIntegrationTest()
         {
             //Arrange
             bool getSampleData = false;
             string owner = "samsmithnz";
-            string repo = "SamsFeatureFlags"; 
+            string repo = "SamsFeatureFlags";
             string branch = "master";
             string workflowName = "SamsFeatureFlags.CI/CD";
-            string workflowId = "108084";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            bool useCache = true;
             ChangeFailureRateController controller = new ChangeFailureRateController(Configuration);
 
             //Act
-            ChangeFailureRateModel model = await controller.GetChangeFailureRate(getSampleData,
-               targetDevOpsPlatform, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+            ChangeFailureRateModel model = controller.GetChangeFailureRate(getSampleData,
+               targetDevOpsPlatform, owner, repo, branch, workflowName, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model != null);

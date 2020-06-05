@@ -15,7 +15,8 @@ namespace DevOpsMetrics.Service.Controllers
     [ApiController]
     public class TableStorageController : ControllerBase
     {
-        private IConfiguration Configuration;
+        private readonly IConfiguration Configuration;
+
         public TableStorageController(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -167,7 +168,7 @@ namespace DevOpsMetrics.Service.Controllers
 
         [HttpGet("UpdateGitHubActionPullRequests")]
         public async Task<int> UpdateGitHubActionPullRequests(string clientId, string clientSecret,
-                string owner, string repo, string branch, string workflowName, string workflowId,
+                string owner, string repo, string branch, 
                 int numberOfDays, int maxNumberOfItems)
         {
             int numberOfRecordsSaved;
@@ -176,7 +177,7 @@ namespace DevOpsMetrics.Service.Controllers
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
                 AzureTableStorageDA da = new AzureTableStorageDA();
                 numberOfRecordsSaved = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageAuth,
-                        owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+                        owner, repo, branch, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
             {
@@ -221,8 +222,7 @@ namespace DevOpsMetrics.Service.Controllers
 
         [HttpGet("UpdateGitHubActionPullRequestCommits")]
         public async Task<int> UpdateGitHubActionPullRequestCommits(string clientId, string clientSecret,
-                string owner, string repo, string branch, string workflowName, string workflowId, string pull_number,
-                int numberOfDays, int maxNumberOfItems)
+                string owner, string repo, string pull_number)
         {
             int numberOfRecordsSaved;
             try
@@ -230,7 +230,7 @@ namespace DevOpsMetrics.Service.Controllers
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
                 AzureTableStorageDA da = new AzureTableStorageDA();
                 numberOfRecordsSaved = await da.UpdateGitHubActionPullRequestCommits(clientId, clientSecret, tableStorageAuth,
-                        owner, repo, branch, workflowName, workflowId, pull_number, numberOfDays, maxNumberOfItems);
+                        owner, repo, pull_number);
             }
             catch (Exception ex)
             {

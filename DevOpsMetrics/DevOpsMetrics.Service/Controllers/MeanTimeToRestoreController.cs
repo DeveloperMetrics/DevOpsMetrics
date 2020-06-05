@@ -10,22 +10,23 @@ namespace DevOpsMetrics.Service.Controllers
     [ApiController]
     public class MeanTimeToRestoreController : ControllerBase
     {
-        private IConfiguration Configuration;
+        private readonly IConfiguration Configuration;
+
         public MeanTimeToRestoreController(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
         [HttpGet("GetAzureMeanTimeToRestore")]
-        public async Task<MeanTimeToRestoreModel> GetAzureMeanTimeToRestore(bool getSampleData,
+        public MeanTimeToRestoreModel GetAzureMeanTimeToRestore(bool getSampleData,
             DevOpsPlatform targetDevOpsPlatform, string resourceGroup,
-            int numberOfDays, int maxNumberOfItems, bool useCache)
+            int numberOfDays, int maxNumberOfItems)
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             MeanTimeToRestoreDA da = new MeanTimeToRestoreDA();
-            MeanTimeToRestoreModel model = await da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth,
+            MeanTimeToRestoreModel model = da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth,
                 targetDevOpsPlatform, resourceGroup,
-                numberOfDays, maxNumberOfItems, useCache);
+                numberOfDays, maxNumberOfItems);
             return model;
         }
 
