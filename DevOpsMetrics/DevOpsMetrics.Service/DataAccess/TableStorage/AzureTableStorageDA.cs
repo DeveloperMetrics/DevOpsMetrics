@@ -64,7 +64,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                 int numberOfDays, int maxNumberOfItems)
         {
             AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
-            JArray items = await api.GetAzureDevOpsBuildsJArray(patToken, organization, project, branch, buildId);
+            JArray items = await api.GetAzureDevOpsBuildsJArray(patToken, organization, project);
 
             int itemsAdded = 0;
             TableStorageCommonDA tableBuildsDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableAzureDevOpsBuilds);
@@ -166,7 +166,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                 int numberOfDays, int maxNumberOfItems)
         {
             GitHubAPIAccess api = new GitHubAPIAccess();
-            JArray items = await api.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, branch, workflowId);
+            JArray items = await api.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, workflowId);
 
             int itemsAdded = 0;
             TableStorageCommonDA tableBuildDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableGitHubRuns);

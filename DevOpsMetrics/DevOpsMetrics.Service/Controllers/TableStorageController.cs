@@ -24,19 +24,7 @@ namespace DevOpsMetrics.Service.Controllers
             AzureTableStorageDA = azureTableStorageDA;
         }
 
-        /// <summary>
-        /// Get builds from the Azure DevOps API, and save new records to the storage table
-        /// </summary>
-        /// <param name="getSampleData"></param>
-        /// <param name="patToken"></param>
-        /// <param name="organization"></param>
-        /// <param name="project"></param>
-        /// <param name="branch"></param>
-        /// <param name="buildName"></param>
-        /// <param name="buildId"></param>
-        /// <param name="numberOfDays"></param>
-        /// <param name="maxNumberOfItems"></param>
-        /// <returns></returns>
+        // Get builds from the Azure DevOps API, and save new records to the storage table
         [HttpGet("UpdateAzureDevOpsBuilds")]
         public async Task<int> UpdateAzureDevOpsBuilds(string patToken,
                 string organization, string project, string branch, string buildName, string buildId,
@@ -62,20 +50,7 @@ namespace DevOpsMetrics.Service.Controllers
             return numberOfRecordsSaved;
         }
 
-        /// <summary>
-        /// Get builds from the GitHub API
-        /// </summary>
-        /// <param name="getSampleData"></param>
-        /// <param name="clientId"></param>
-        /// <param name="clientSecret"></param>
-        /// <param name="owner"></param>
-        /// <param name="repo"></param>
-        /// <param name="branch"></param>
-        /// <param name="workflowName"></param>
-        /// <param name="workflowId"></param>
-        /// <param name="numberOfDays"></param>
-        /// <param name="maxNumberOfItems"></param>
-        /// <returns></returns>
+        // Get builds from the GitHub API
         [HttpGet("UpdateGitHubActionRuns")]
         public async Task<int> UpdateGitHubActionRuns(string clientId, string clientSecret,
                 string owner, string repo, string branch, string workflowName, string workflowId,

@@ -35,14 +35,13 @@ namespace DevOpsMetrics.Tests.Service
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
-            string buildId = "3673"; //SamLearnsAzure.CI
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             bool useCache = true;
 
             //Act
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageAuth, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageAuth, organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);

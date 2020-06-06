@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.DataAccess
 {
-    public class DeploymentFrequencyDA : IDeploymentFrequencyDA
+    public class DeploymentFrequencyDA
     {
         public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, TableStorageAuth tableStorageAuth,
-                string organization, string project, string branch, string buildName, string buildId,
+                string organization, string project, string branch, string buildName, 
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             ListUtility<Build> utility = new ListUtility<Build>();
             DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
             if (getSampleData == false)
             {
-                //Gets a list of builds
+                //Get a list of builds
                 BuildsDA buildsDA = new BuildsDA();
-                List<AzureDevOpsBuild> azureDevOpsBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageAuth, organization, project, branch, buildName, buildId, useCache);
+                List<AzureDevOpsBuild> azureDevOpsBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageAuth, organization, project, buildName, useCache);
                 if (azureDevOpsBuilds != null)
                 {
                     //Translate the Azure DevOps build to a generic build object
@@ -59,7 +59,7 @@ namespace DevOpsMetrics.Service.DataAccess
 
                     //then build the calcuation, loading the dates into a date array
                     float deploymentsPerDay;
-                    deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
+                    deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, numberOfDays);
 
                     //Filter the results to return the last n (maxNumberOfItems), to return to the UI
                     builds = utility.GetLastNItems(builds, maxNumberOfItems);
@@ -124,9 +124,9 @@ namespace DevOpsMetrics.Service.DataAccess
             DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
             if (getSampleData == false)
             {
-                //Gets a list of builds
+                //Get a list of builds
                 BuildsDA buildsDA = new BuildsDA();
-                List<GitHubActionsRun> gitHubRuns = await buildsDA.GetGitHubActionRuns(getSampleData, clientId, clientSecret, tableStorageAuth, owner, repo, branch, workflowName, workflowId, useCache);
+                List<GitHubActionsRun> gitHubRuns = await buildsDA.GetGitHubActionRuns(clientId, clientSecret, tableStorageAuth, owner, repo, workflowName, workflowId, useCache);
                 if (gitHubRuns != null)
                 {
                     //Translate the GitHub build to a generic build object
@@ -165,7 +165,7 @@ namespace DevOpsMetrics.Service.DataAccess
 
                     //then build the calcuation, loading the dates into a date array
                     float deploymentsPerDay;
-                    deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, "", numberOfDays);
+                    deploymentsPerDay = deploymentFrequency.ProcessDeploymentFrequency(dateList, numberOfDays);
 
                     //Filter the results to return the last n (maxNumberOfItems), to return to the UI
                     builds = utility.GetLastNItems(builds, maxNumberOfItems);

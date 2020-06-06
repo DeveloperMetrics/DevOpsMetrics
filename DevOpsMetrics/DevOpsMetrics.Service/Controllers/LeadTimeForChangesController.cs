@@ -18,23 +18,10 @@ namespace DevOpsMetrics.Service.Controllers
             Configuration = configuration;
         }
 
-        /// <summary>
-        /// Get lead time for changes from Azure DevOps API
-        /// </summary>
-        /// <param name="getSampleData"></param>
-        /// <param name="patToken"></param>
-        /// <param name="organization"></param>
-        /// <param name="project"></param>
-        /// <param name="repositoryId"></param>
-        /// <param name="branch"></param>
-        /// <param name="buildId"></param>
-        /// <param name="numberOfDays"></param>
-        /// <param name="maxNumberOfItems"></param>
-        /// <param name="useCache"></param>
-        /// <returns></returns>
+        // Get lead time for changes from Azure DevOps API
         [HttpGet("GetAzureDevOpsLeadTimeForChanges")]
         public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, string patToken,
-            string organization, string project, string repositoryId, string branch, string buildName, string buildId,
+            string organization, string project, string repositoryId, string branch, string buildName, 
             int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             LeadTimeForChangesModel model = new LeadTimeForChangesModel();
@@ -43,7 +30,7 @@ namespace DevOpsMetrics.Service.Controllers
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
                 LeadTimeForChangesDA da = new LeadTimeForChangesDA();
                 model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageAuth,
-                        organization, project, repositoryId, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+                        organization, project, repositoryId, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
             {
@@ -60,20 +47,7 @@ namespace DevOpsMetrics.Service.Controllers
             return model;
         }
 
-        /// <summary>
-        /// Get lead time for changes from GitHub API
-        /// </summary>
-        /// <param name="getSampleData"></param>
-        /// <param name="clientId"></param>
-        /// <param name="clientSecret"></param>
-        /// <param name="owner"></param>
-        /// <param name="repo"></param>
-        /// <param name="branch"></param>
-        /// <param name="workflowId"></param>
-        /// <param name="numberOfDays"></param>
-        /// <param name="maxNumberOfItems"></param>
-        /// <param name="useCache"></param>
-        /// <returns></returns>
+        // Get lead time for changes from GitHub API
         [HttpGet("GetGitHubLeadTimeForChanges")]
         public async Task<LeadTimeForChangesModel> GetGitHubLeadTimeForChanges(bool getSampleData, string clientId, string clientSecret,
             string owner, string repo, string branch, string workflowName, string workflowId,

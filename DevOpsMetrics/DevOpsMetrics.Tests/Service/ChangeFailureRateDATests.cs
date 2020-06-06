@@ -127,7 +127,7 @@ namespace DevOpsMetrics.Tests.Service
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string buildName = "SamLearnsAzure.CI";
-            int percent = 100;
+            int percent = 50;
             int numberOfDays = 1;
 
             //Act

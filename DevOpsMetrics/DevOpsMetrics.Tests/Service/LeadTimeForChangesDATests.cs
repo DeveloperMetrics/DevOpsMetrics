@@ -36,7 +36,6 @@ namespace DevOpsMetrics.Tests.Service
             string repositoryId = "SamLearnsAzure";
             string masterBranch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
-            string buildId = "3673"; //SamLearnsAzure.CI
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
@@ -44,7 +43,7 @@ namespace DevOpsMetrics.Tests.Service
             //Act
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
             LeadTimeForChangesModel model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageAuth,
-                    organization, project, repositoryId, masterBranch, buildName, buildId,
+                    organization, project, repositoryId, masterBranch, buildName, 
                     numberOfDays, maxNumberOfItems, useCache);
 
             //Assert

@@ -9,7 +9,7 @@ namespace DevOpsMetrics.Service.DataAccess.APIAccess
     public class GitHubAPIAccess
     {
 
-        public async Task<Newtonsoft.Json.Linq.JArray> GetGitHubActionRunsJArray(string clientId, string clientSecret, string owner, string repo, string branch, string workflowId)
+        public async Task<Newtonsoft.Json.Linq.JArray> GetGitHubActionRunsJArray(string clientId, string clientSecret, string owner, string repo, string workflowId)
         {
             Newtonsoft.Json.Linq.JArray list = null;
             string url = $"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflowId}/runs?per_page=100";

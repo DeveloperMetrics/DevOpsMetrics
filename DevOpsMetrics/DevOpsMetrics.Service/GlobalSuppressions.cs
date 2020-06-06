@@ -7,3 +7,4 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "<Pending>", Scope = "member", Target = "~M:DevOpsMetrics.Service.DataAccess.APIAccess.AzureDevOpsAPIAccess.SendAzureDevOpsMessage(System.String,System.String)~System.Threading.Tasks.Task{System.String}")]
 [assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "<Pending>", Scope = "member", Target = "~M:DevOpsMetrics.Service.DataAccess.APIAccess.GitHubAPIAccess.SendGitHubMessage(System.String,System.String,System.String)~System.Threading.Tasks.Task{System.String}")]
+[assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>", Scope = "namespaceanddescendants", Target = "DevOpsMetrics.Service.Models")]

@@ -16,7 +16,6 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             DeploymentFrequency metrics = new DeploymentFrequency();
-            string pipelineName = "TestPipeline.CI";
             int numberOfDays = 1;
             List<KeyValuePair<DateTime, DateTime>> deploymentFrequencyList = new List<KeyValuePair<DateTime, DateTime>>
             {
@@ -24,7 +23,7 @@ namespace DevOpsMetrics.Tests.Core
             };
 
             //Act
-            float metric = metrics.ProcessDeploymentFrequency(deploymentFrequencyList, pipelineName, numberOfDays);
+            float metric = metrics.ProcessDeploymentFrequency(deploymentFrequencyList, numberOfDays);
             DeploymentFrequencyModel model = new DeploymentFrequencyModel
             {
                 DeploymentsPerDayMetric = metric,
@@ -44,12 +43,11 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             DeploymentFrequency metrics = new DeploymentFrequency();
-            string pipelineName = "TestPipeline.CI";
             int numberOfDays = 1;
             List<KeyValuePair<DateTime, DateTime>> deploymentFrequencyList = null;
 
             //Act
-            float metric = metrics.ProcessDeploymentFrequency(deploymentFrequencyList, pipelineName, numberOfDays);
+            float metric = metrics.ProcessDeploymentFrequency(deploymentFrequencyList, numberOfDays);
             DeploymentFrequencyModel model = new DeploymentFrequencyModel
             {
                 DeploymentsPerDayMetric = metric,
@@ -75,7 +73,6 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             DeploymentFrequency metrics = new DeploymentFrequency();
-            string pipelineName = "TestPipeline.CI";
             int numberOfDays = 7;
             List<KeyValuePair<DateTime, DateTime>> deploymentFrequencyList = new List<KeyValuePair<DateTime, DateTime>>
             {
@@ -88,7 +85,7 @@ namespace DevOpsMetrics.Tests.Core
             };
 
             //Act
-            float metric = metrics.ProcessDeploymentFrequency(deploymentFrequencyList, pipelineName, numberOfDays);
+            float metric = metrics.ProcessDeploymentFrequency(deploymentFrequencyList, numberOfDays);
             DeploymentFrequencyModel model = new DeploymentFrequencyModel
             {
                 DeploymentsPerDayMetric = metric,

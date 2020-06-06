@@ -22,7 +22,7 @@ namespace DevOpsMetrics.Service.DataAccess
             ChangeFailureRate changeFailureRate = new ChangeFailureRate();
             if (getSampleData == false)
             {
-                //Gets a list of change failure rate builds
+                //Gets a list of change failure rate builds from Azure storage
                 AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
                 Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableChangeFailureRate, daTableStorage.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName));
                 List<ChangeFailureRateBuild> initialBuilds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
@@ -51,7 +51,7 @@ namespace DevOpsMetrics.Service.DataAccess
                     dateList.Add(newItem);
                 }
                 //calculate the metric on all of the results
-                float changeFailureRateMetric = changeFailureRate.ProcessChangeFailureRate(dateList, "", numberOfDays);
+                float changeFailureRateMetric = changeFailureRate.ProcessChangeFailureRate(dateList, numberOfDays);
 
                 //Filter the results to return the last n (maxNumberOfItems)
                 List<ChangeFailureRateBuild> uiBuilds = utility.GetLastNItems(builds, maxNumberOfItems);

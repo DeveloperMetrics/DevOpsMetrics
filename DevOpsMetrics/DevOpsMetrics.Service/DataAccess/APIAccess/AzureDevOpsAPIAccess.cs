@@ -8,7 +8,7 @@ namespace DevOpsMetrics.Service.DataAccess.APIAccess
 {
     public class AzureDevOpsAPIAccess
     {
-        public async Task<Newtonsoft.Json.Linq.JArray> GetAzureDevOpsBuildsJArray(string patToken, string organization, string project, string branch, string buildId)
+        public async Task<Newtonsoft.Json.Linq.JArray> GetAzureDevOpsBuildsJArray(string patToken, string organization, string project)
         {
             Newtonsoft.Json.Linq.JArray list = null;
             string url = $"https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1&queryOrder=BuildQueryOrder,finishTimeDescending";
