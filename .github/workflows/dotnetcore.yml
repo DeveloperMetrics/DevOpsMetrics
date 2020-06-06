@@ -64,7 +64,21 @@ jobs:
         name: azuredevopsextensionapp
         path: DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/bin/Release/netcoreapp3.1/publish
 
-
+  #Publish the Azure DevOps extension 
+  deployAzureDevOps:
+    runs-on: windows-latest
+    needs: build
+    steps:
+    - name: Download Azure DevOps extension artifact
+      uses: actions/download-artifact@v1.0.0
+      with:
+        name: azuredevopsextensionapp
+    - name: Build Extension
+      run: |
+        npm install -g tfx-cli
+        tfx extension create --manifest-globs vss-extension.json
+        #tfx extension samsmithnz create
+        tfx extension publish --help
 
   #Deploy the artifacts to Azure
   deploy:
