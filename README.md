@@ -1,5 +1,5 @@
 # DevOpsMetrics
-A project to experiment with high performing metrics
+A project to experiment with high performing metrics. A [demo website displaying the metrics can be viewed here](https://devopsmetrics-prod-eu-web.azurewebsites.net/).
 
 All four of these metrics are based on production environments, where the value to our end users is delivered:
 

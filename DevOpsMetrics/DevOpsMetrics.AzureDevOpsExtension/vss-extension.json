@@ -1,0 +1,54 @@
+{
+  "manifestVersion": 1,
+  "id": "high-performing-devops-metrics",
+  "version": "0.1.0",
+  "name": "High performing DevOps metrics",
+  "description": "Widgets to measure deployment frequency, lead time for changes, time to restore service and change failure rate",
+  "publisher": "Sam Smith",
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/samsmithnz/githubmetrics"
+  },
+  "categories": [ "Azure Repos", "Azure Pipelines" ],
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "icons": {
+    "default": "img/logo.png"
+  },
+  "scopes": [
+    "vso.build",
+    "vso.code",
+    "vso.release"
+  ],
+  "screenshots": [
+    {
+      "path": "screenshots/DeploymentFrequencyDemo.png"
+    },
+    {
+      "path": "screenshots/LeadTimeForChanges.png"
+    },
+    {
+      "path": "screenshots/TimeToRestoreService.png"
+    },
+    {
+      "path": "screenshots/ChangeFailureRate.png"
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "addressable": true
+    },
+    {
+      "path": "scripts",
+      "addressable": true
+    },
+    {
+      "path": "img",
+      "addressable": true
+    }
+  ]
+}
