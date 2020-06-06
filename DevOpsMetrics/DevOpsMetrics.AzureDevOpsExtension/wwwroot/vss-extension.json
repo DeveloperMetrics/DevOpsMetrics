@@ -1,10 +1,10 @@
 {
   "manifestVersion": 1,
   "id": "high-performing-devops-metrics",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "name": "High performing DevOps metrics",
   "description": "Widgets to measure deployment frequency, lead time for changes, time to restore service and change failure rate",
-  "publisher": "Sam Smith",
+  "publisher": "SamSmithNZ",
   "repository": {
     "type": "git",
     "uri": "https://github.com/samsmithnz/githubmetrics"
@@ -37,9 +37,22 @@
       "path": "screenshots/ChangeFailureRate.png"
     }
   ],
+  "contributions": [
+    {
+      "id": "InitialRelease",
+      "type": "ms.vss-web.action",
+      "targets": [
+        "ms.vss-build-web.completed-build-menu"
+      ]
+    }
+  ],
   "files": [
     {
       "path": "index.html",
+      "addressable": true
+    },
+    {
+      "path": "overview.md",
       "addressable": true
     },
     {
