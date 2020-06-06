@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: windows-latest
 
     steps:
@@ -40,6 +39,8 @@ jobs:
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj --configuration Release
     - name: .NET Publish Function
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.NightlyProcessor.Function/DevOpsMetrics.NightlyProcessor.Function.csproj --configuration Release      
+    - name: .NET Publish Azure DevOps Extension
+      run: dotnet publish DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/DevOpsMetrics.AzureDevOpsExtension.csproj --configuration Release    
       
     #Publish build artifacts to GitHub
     - name: Upload web service build artifacts back to GitHub
@@ -57,6 +58,13 @@ jobs:
       with:
         name: functionapp
         path: DevOpsMetrics/DevOpsMetrics.NightlyProcessor.Function/bin/Release/netcoreapp3.1/publish
+    - name: Upload Azure DevOps extension build artifacts back to GitHub
+      uses: actions/upload-artifact@master
+      with:
+        name: azuredevopsextensionapp
+        path: DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/bin/Release/netcoreapp3.1/publish
+
+
 
   #Deploy the artifacts to Azure
   deploy:
