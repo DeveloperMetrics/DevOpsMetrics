@@ -62,23 +62,30 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: azuredevopsextensionapp
-        path: DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/bin/Release/netcoreapp3.1/publish
+        path: DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension
+
+
 
   #Publish the Azure DevOps extension 
   deployAzureDevOps:
     runs-on: windows-latest
     needs: build
     steps:
-    - name: Download Azure DevOps extension artifact
-      uses: actions/download-artifact@v1.0.0
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
       with:
-        name: azuredevopsextensionapp
+        dotnet-version: 3.1.101
+    - name: .NET Publish Azure DevOps Extension
+      run: dotnet publish DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/DevOpsMetrics.AzureDevOpsExtension.csproj --configuration Release   
     - name: Build Extension
       run: |
         npm install -g tfx-cli
-        tfx extension create --manifest-globs vss-extension.json
-        #tfx extension samsmithnz create
-        tfx extension publish --help
+        tfx extension create --manifest-globs DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/vss-extension.json --rev-version
+        #tfx extension samsmithnz create --token "${{ secrets.AzureDevOpsPATToken }}"
+        tfx extension publish --help 
+
+
 
   #Deploy the artifacts to Azure
   deploy:
