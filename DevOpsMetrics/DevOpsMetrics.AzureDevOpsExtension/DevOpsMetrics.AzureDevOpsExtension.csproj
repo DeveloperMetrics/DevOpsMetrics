@@ -30,6 +30,18 @@
     <Content Update="wwwroot\overview.md">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\screenshots\ChangeFailureRate.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\screenshots\DeploymentFrequencyDemo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\screenshots\LeadTimeForChanges.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\screenshots\TimeToRestoreService.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\vss-extension.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
