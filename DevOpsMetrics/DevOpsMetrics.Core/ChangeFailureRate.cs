@@ -9,34 +9,34 @@ namespace DevOpsMetrics.Core
     /// </summary>
     public class ChangeFailureRate
     {
-        private List<KeyValuePair<DateTime, bool>> ChangeFailureRateList;
+        private readonly List<KeyValuePair<DateTime, bool>> ChangeFailureRateList;
 
         public ChangeFailureRate()
         {
             ChangeFailureRateList = new List<KeyValuePair<DateTime, bool>>();
         }
 
-        public float ProcessChangeFailureRate(List<KeyValuePair<DateTime, bool>> changeFailureRateList, string pipelineName, int numberOfDays)
+        public float ProcessChangeFailureRate(List<KeyValuePair<DateTime, bool>> changeFailureRateList, int numberOfDays)
         {
             if (changeFailureRateList != null)
             {
                 foreach (KeyValuePair<DateTime, bool> item in changeFailureRateList)
                 {
-                    AddChangeFailureRate(pipelineName, item.Key, item.Value);
+                    AddChangeFailureRate(item.Key, item.Value);
                 }
             }
-            return CalculateChangeFailureRate(pipelineName, numberOfDays);
+            return CalculateChangeFailureRate(numberOfDays);
         }
 
-        private bool AddChangeFailureRate(string pipelineName, DateTime eventDateTime, bool deploymentIsSuccessful)
+        private bool AddChangeFailureRate(DateTime eventDateTime, bool deploymentIsSuccessful)
         {
             ChangeFailureRateList.Add(new KeyValuePair<DateTime, bool>(eventDateTime, deploymentIsSuccessful));
             return true;
         }
 
-        private float CalculateChangeFailureRate(string pipelineName, int numberOfDays)
+        private float CalculateChangeFailureRate(int numberOfDays)
         {
-            List<KeyValuePair<DateTime, bool>> items = GetChangeFailureRate(pipelineName, numberOfDays);
+            List<KeyValuePair<DateTime, bool>> items = GetChangeFailureRate(numberOfDays);
 
             float changeFailureRate = 0;
             if (items == null || items.Count == 0)
@@ -67,7 +67,7 @@ namespace DevOpsMetrics.Core
         }
 
         //Filter the list by date
-        private List<KeyValuePair<DateTime, bool>> GetChangeFailureRate(string pipelineName, int numberOfDays)
+        private List<KeyValuePair<DateTime, bool>> GetChangeFailureRate(int numberOfDays)
         {
             return ChangeFailureRateList.Where(x => x.Key > DateTime.Now.AddDays(-numberOfDays)).ToList();
         }

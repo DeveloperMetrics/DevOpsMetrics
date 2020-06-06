@@ -9,34 +9,34 @@ namespace DevOpsMetrics.Core
     /// </summary>
     public class MeanTimeToRestore
     {
-        private List<KeyValuePair<DateTime, TimeSpan>> MeanTimeToRestoreList;
+        private readonly List<KeyValuePair<DateTime, TimeSpan>> MeanTimeToRestoreList;
 
         public MeanTimeToRestore()
         {
             MeanTimeToRestoreList = new List<KeyValuePair<DateTime, TimeSpan>>();
         }
 
-        public float ProcessMeanTimeToRestore(List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList, string resourceName, int numberOfDays)
+        public float ProcessMeanTimeToRestore(List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList, int numberOfDays)
         {
             if (meanTimeToRestoreList != null)
             {
                 foreach (KeyValuePair<DateTime, TimeSpan> item in meanTimeToRestoreList)
                 {
-                    AddMeanTimeToRestore(resourceName, item.Key, item.Value);
+                    AddMeanTimeToRestore(item.Key, item.Value);
                 }
             }
-            return CalculateMeanTimeToRestore(resourceName, numberOfDays);
+            return CalculateMeanTimeToRestore(numberOfDays);
         }
 
-        private bool AddMeanTimeToRestore(string resourceName, DateTime eventDateTime, TimeSpan restoreDuration)
+        private bool AddMeanTimeToRestore(DateTime eventDateTime, TimeSpan restoreDuration)
         {
             MeanTimeToRestoreList.Add(new KeyValuePair<DateTime, TimeSpan>(eventDateTime, restoreDuration));
             return true;
         }
 
-        private float CalculateMeanTimeToRestore(string resourceName, int numberOfDays)
+        private float CalculateMeanTimeToRestore(int numberOfDays)
         {
-            List<KeyValuePair<DateTime, TimeSpan>> items = GetMeanTimeToRestore(resourceName, numberOfDays);
+            List<KeyValuePair<DateTime, TimeSpan>> items = GetMeanTimeToRestore(numberOfDays);
 
             //Count up the total MTTR hours
             double totalHours = 0;
@@ -58,7 +58,7 @@ namespace DevOpsMetrics.Core
         }
 
         //Filter the list by date
-        private List<KeyValuePair<DateTime, TimeSpan>> GetMeanTimeToRestore(string resourceName, int numberOfDays)
+        private List<KeyValuePair<DateTime, TimeSpan>> GetMeanTimeToRestore(int numberOfDays)
         {
             return MeanTimeToRestoreList.Where(x => x.Key > DateTime.Now.AddDays(-numberOfDays)).ToList();
         }

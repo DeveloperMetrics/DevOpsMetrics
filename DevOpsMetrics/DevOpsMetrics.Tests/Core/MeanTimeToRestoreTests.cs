@@ -17,7 +17,6 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             MeanTimeToRestore metrics = new MeanTimeToRestore();
-            string pipelineName = "TestPipeline.CI";
             int numberOfDays = 7;
             List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = new List<KeyValuePair<DateTime, TimeSpan>>
             {
@@ -26,7 +25,7 @@ namespace DevOpsMetrics.Tests.Core
             };
 
             //Act
-            float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, pipelineName, numberOfDays);
+            float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, numberOfDays);
             MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
             {
                 MTTRAverageDurationInHours = result,
@@ -49,7 +48,6 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             MeanTimeToRestore metrics = new MeanTimeToRestore();
-            string pipelineName = "TestPipeline.CI";
             int numberOfDays = 7;
             List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = new List<KeyValuePair<DateTime, TimeSpan>>
             {
@@ -62,7 +60,7 @@ namespace DevOpsMetrics.Tests.Core
             };
 
             //Act
-            float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, pipelineName, numberOfDays);
+            float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, numberOfDays);
             string rating = metrics.GetMeanTimeToRestoreRating(result);
 
             //Assert
@@ -75,7 +73,6 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             MeanTimeToRestore metrics = new MeanTimeToRestore();
-            string pipelineName = "TestPipeline.CI";
             int numberOfDays = 1;
             List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = new List<KeyValuePair<DateTime, TimeSpan>>
             {
@@ -83,7 +80,7 @@ namespace DevOpsMetrics.Tests.Core
             };
 
             //Act
-            float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, pipelineName, numberOfDays);
+            float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, numberOfDays);
             string rating = metrics.GetMeanTimeToRestoreRating(result);
 
             //Assert
@@ -96,7 +93,6 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             MeanTimeToRestore metrics = new MeanTimeToRestore();
-            string pipelineName = "TestPipeline.CI";
             int numberOfDays = 1;
             List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = new List<KeyValuePair<DateTime, TimeSpan>>
             {
@@ -104,7 +100,7 @@ namespace DevOpsMetrics.Tests.Core
             };
 
             //Act
-            float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, pipelineName, numberOfDays);
+            float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, numberOfDays);
             string rating = metrics.GetMeanTimeToRestoreRating(result);
 
             //Assert
@@ -117,12 +113,11 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             MeanTimeToRestore metrics = new MeanTimeToRestore();
-            string pipelineName = "TestPipeline.CI";
             int numberOfDays = 1;
             List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = null;
 
             //Act
-            float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, pipelineName, numberOfDays);
+            float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, numberOfDays);
             string rating = metrics.GetMeanTimeToRestoreRating(result);
 
             //Assert

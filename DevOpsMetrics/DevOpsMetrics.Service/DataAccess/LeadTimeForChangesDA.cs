@@ -12,7 +12,7 @@ namespace DevOpsMetrics.Service.DataAccess
     public class LeadTimeForChangesDA
     {
         public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, TableStorageAuth tableStorageAuth,
-                string organization, string project, string repositoryId, string masterBranch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
+                string organization, string project, string repositoryId, string masterBranch, string buildName, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             ListUtility<PullRequestModel> utility = new ListUtility<PullRequestModel>();
             LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
@@ -21,7 +21,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 List<AzureDevOpsBuild> initialBuilds = new List<AzureDevOpsBuild>();
                 BuildsDA buildsDA = new BuildsDA();
-                initialBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageAuth, organization, project, masterBranch, buildName, buildId, useCache);
+                initialBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageAuth, organization, project, buildName, useCache);
 
                 //Process all builds, filtering by master and feature branchs
                 List<AzureDevOpsBuild> masterBranchBuilds = new List<AzureDevOpsBuild>();
@@ -112,7 +112,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 }
 
                 //Calculate the lead time for changes value, in hours
-                float leadTime = leadTimeForChanges.ProcessLeadTimeForChanges(leadTimeForChangesList, project, numberOfDays);
+                float leadTime = leadTimeForChanges.ProcessLeadTimeForChanges(leadTimeForChangesList, numberOfDays);
 
                 List<PullRequestModel> uiPullRequests = utility.GetLastNItems(pullRequests, maxNumberOfItems);
                 float maxPullRequestDuration = 0f;
@@ -187,7 +187,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 List<GitHubActionsRun> initialRuns = new List<GitHubActionsRun>();
                 BuildsDA buildsDA = new BuildsDA();
-                initialRuns = await buildsDA.GetGitHubActionRuns(getSampleData, clientId, clientSecret, tableStorageAuth, owner, repo, masterBranch, workflowName, workflowId, useCache);
+                initialRuns = await buildsDA.GetGitHubActionRuns(clientId, clientSecret, tableStorageAuth, owner, repo, workflowName, workflowId, useCache);
 
                 //Process all builds, filtering by master and feature branchs
                 List<GitHubActionsRun> masterBranchRuns = new List<GitHubActionsRun>();
@@ -292,7 +292,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 }
 
                 //Calculate the lead time for changes value, in hours
-                float leadTime = leadTimeForChanges.ProcessLeadTimeForChanges(leadTimeForChangesList, repo, numberOfDays);
+                float leadTime = leadTimeForChanges.ProcessLeadTimeForChanges(leadTimeForChangesList, numberOfDays);
 
                 List<PullRequestModel> uiPullRequests = utility.GetLastNItems(pullRequests, maxNumberOfItems);
                 float maxPullRequestDuration = 0f;

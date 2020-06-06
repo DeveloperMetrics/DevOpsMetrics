@@ -9,34 +9,34 @@ namespace DevOpsMetrics.Core
     /// </summary>
     public class LeadTimeForChanges
     {
-        private List<KeyValuePair<DateTime, TimeSpan>> LeadTimeForChangesList;
+        private readonly List<KeyValuePair<DateTime, TimeSpan>> LeadTimeForChangesList;
 
         public LeadTimeForChanges()
         {
             LeadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>();
         }
 
-        public float ProcessLeadTimeForChanges(List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList, string pipelineName, int numberOfDays)
+        public float ProcessLeadTimeForChanges(List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList, int numberOfDays)
         {
             if (leadTimeForChangesList != null)
             {
                 foreach (KeyValuePair<DateTime, TimeSpan> item in leadTimeForChangesList)
                 {
-                    AddLeadTimeForChanges(pipelineName, item.Key, item.Value);
+                    AddLeadTimeForChanges(item.Key, item.Value);
                 }
             }
-            return CalculateLeadTimeForChanges(pipelineName, numberOfDays);
+            return CalculateLeadTimeForChanges(numberOfDays);
         }
 
-        private bool AddLeadTimeForChanges(string pipelineName, DateTime eventDateTime, TimeSpan leadTimeDuration)
+        private bool AddLeadTimeForChanges(DateTime eventDateTime, TimeSpan leadTimeDuration)
         {
             LeadTimeForChangesList.Add(new KeyValuePair<DateTime, TimeSpan>(eventDateTime, leadTimeDuration));
             return true;
         }
 
-        private float CalculateLeadTimeForChanges(string pipelineName, int numberOfDays)
+        private float CalculateLeadTimeForChanges(int numberOfDays)
         {
-            List<KeyValuePair<DateTime, TimeSpan>> items = GetLeadTimeForChanges(pipelineName, numberOfDays);
+            List<KeyValuePair<DateTime, TimeSpan>> items = GetLeadTimeForChanges(numberOfDays);
 
             //Add up the total hours
             double totalHours = 0;
@@ -48,7 +48,7 @@ namespace DevOpsMetrics.Core
             float leadTimeForChanges = 0;
             if (items.Count > 0)
             {
-                leadTimeForChanges = (float)totalHours / (float)items.Count ;
+                leadTimeForChanges = (float)totalHours / (float)items.Count;
             }
 
             leadTimeForChanges = (float)Math.Round((double)leadTimeForChanges, 4);
@@ -57,7 +57,7 @@ namespace DevOpsMetrics.Core
         }
 
         //Filter the list by date
-        private List<KeyValuePair<DateTime, TimeSpan>> GetLeadTimeForChanges(string pipelineName, int numberOfDays)
+        private List<KeyValuePair<DateTime, TimeSpan>> GetLeadTimeForChanges(int numberOfDays)
         {
             return LeadTimeForChangesList.Where(x => x.Key > DateTime.Now.AddDays(-numberOfDays)).ToList();
         }

@@ -17,7 +17,6 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             ChangeFailureRate metrics = new ChangeFailureRate();
-            string pipelineName = "TestPipeline.CI";
             int numberOfDays = 1;
             List<KeyValuePair<DateTime, bool>> changeFailureRateList = new List<KeyValuePair<DateTime, bool>>
             {
@@ -29,7 +28,7 @@ namespace DevOpsMetrics.Tests.Core
             };
 
             //Act
-            float result = metrics.ProcessChangeFailureRate(changeFailureRateList, pipelineName, numberOfDays);
+            float result = metrics.ProcessChangeFailureRate(changeFailureRateList, numberOfDays);
             ChangeFailureRateModel model = new ChangeFailureRateModel
             {
                 ChangeFailureRateMetric = result,
@@ -49,7 +48,6 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             ChangeFailureRate metrics = new ChangeFailureRate();
-            string pipelineName = "TestPipeline.CI";
             int numberOfDays = 7;
             List<KeyValuePair<DateTime, bool>> changeFailureRateList = new List<KeyValuePair<DateTime, bool>>
             {
@@ -61,7 +59,7 @@ namespace DevOpsMetrics.Tests.Core
             };
 
             //Act
-            float result = metrics.ProcessChangeFailureRate(changeFailureRateList, pipelineName, numberOfDays);
+            float result = metrics.ProcessChangeFailureRate(changeFailureRateList, numberOfDays);
             string rating = metrics.GetChangeFailureRateRating(result);
 
             //Assert
@@ -74,7 +72,6 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             ChangeFailureRate metrics = new ChangeFailureRate();
-            string pipelineName = "TestPipeline.CI";
             int numberOfDays = 7;
             List<KeyValuePair<DateTime, bool>> changeFailureRateList = new List<KeyValuePair<DateTime, bool>>
             {
@@ -86,7 +83,7 @@ namespace DevOpsMetrics.Tests.Core
             };
 
             //Act
-            float result = metrics.ProcessChangeFailureRate(changeFailureRateList, pipelineName, numberOfDays);
+            float result = metrics.ProcessChangeFailureRate(changeFailureRateList, numberOfDays);
             string rating = metrics.GetChangeFailureRateRating(result);
 
             //Assert
@@ -99,7 +96,6 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             ChangeFailureRate metrics = new ChangeFailureRate();
-            string pipelineName = "TestPipeline.CI";
             int numberOfDays = 7;
             List<KeyValuePair<DateTime, bool>> changeFailureRateList = new List<KeyValuePair<DateTime, bool>>
             {
@@ -111,7 +107,7 @@ namespace DevOpsMetrics.Tests.Core
             };
 
             //Act
-            float result = metrics.ProcessChangeFailureRate(changeFailureRateList, pipelineName, numberOfDays);
+            float result = metrics.ProcessChangeFailureRate(changeFailureRateList, numberOfDays);
             string rating = metrics.GetChangeFailureRateRating(result);
 
             //Assert
@@ -124,12 +120,11 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             ChangeFailureRate metrics = new ChangeFailureRate();
-            string pipelineName = "TestPipeline.CI";
             int numberOfDays = 1;
             List<KeyValuePair<DateTime, bool>> changeFailureRateList = null;
 
             //Act
-            float result = metrics.ProcessChangeFailureRate(changeFailureRateList, pipelineName, numberOfDays);
+            float result = metrics.ProcessChangeFailureRate(changeFailureRateList, numberOfDays);
             string rating = metrics.GetChangeFailureRateRating(result);
 
             //Assert

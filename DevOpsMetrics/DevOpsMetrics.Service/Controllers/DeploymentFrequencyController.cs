@@ -18,23 +18,10 @@ namespace DevOpsMetrics.Service.Controllers
             Configuration = configuration;
         }
 
-        /// <summary>
-        /// Get builds from the Azure DevOps API
-        /// </summary>
-        /// <param name="getSampleData"></param>
-        /// <param name="patToken"></param>
-        /// <param name="organization"></param>
-        /// <param name="project"></param>
-        /// <param name="branch"></param>
-        /// <param name="buildName"></param>
-        /// <param name="buildId"></param>
-        /// <param name="numberOfDays"></param>
-        /// <param name="maxNumberOfItems"></param>
-        /// <param name="useCache"></param>
-        /// <returns></returns>
+        // Get builds from the Azure DevOps API
         [HttpGet("GetAzureDevOpsDeploymentFrequency")]
         public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken,
-            string organization, string project, string branch, string buildName, string buildId,
+            string organization, string project, string branch, string buildName, 
             int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             DeploymentFrequencyModel model = new DeploymentFrequencyModel();
@@ -42,7 +29,7 @@ namespace DevOpsMetrics.Service.Controllers
             {
                 TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
                 DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-                model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageAuth, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
+                model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageAuth, organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
             {
@@ -59,22 +46,7 @@ namespace DevOpsMetrics.Service.Controllers
             return model;
         }
 
-
-        /// <summary>
-        /// Get builds from the GitHub API
-        /// </summary>
-        /// <param name="getSampleData"></param>
-        /// <param name="clientId"></param>
-        /// <param name="clientSecret"></param>
-        /// <param name="owner"></param>
-        /// <param name="repo"></param>
-        /// <param name="branch"></param>
-        /// <param name="workflowName"></param>
-        /// <param name="workflowId"></param>
-        /// <param name="numberOfDays"></param>
-        /// <param name="maxNumberOfItems"></param>
-        /// <param name="useCache"></param>
-        /// <returns></returns>
+        // Get builds from the GitHub API
         [HttpGet("GetGitHubDeploymentFrequency")]
         public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret,
             string owner, string repo, string branch, string workflowName, string workflowId,
