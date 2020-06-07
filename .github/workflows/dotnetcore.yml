@@ -24,7 +24,7 @@ jobs:
     - run: |
         echo "${GITHUB_WORKSPACE}"
         xcopy /E /I "${GITHUB_WORKSPACE}/DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/bin/Release/netcoreapp3.1/publish/wwwroot" "${GITHUB_WORKSPACE}/output"
-        cd\${GITHUB_WORKSPACE}
+        cd ${GITHUB_WORKSPACE}
         dir
     - name: Build Extension
       run: |
