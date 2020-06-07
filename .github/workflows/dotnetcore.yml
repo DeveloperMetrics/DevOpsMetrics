@@ -149,6 +149,8 @@ jobs:
 #        Write-Host "New env variable " ${{ env.extensionVersion }}
     - name: Upload Azure DevOps extension build artifacts back to GitHub
       uses: actions/upload-artifact@v2
+      if: always()
       with:
         name: azuredevopsextensionpackage
-        path: DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\SamSmithNZ.high-performing-devops-metrics-${{ env.extensionVersion }}.vsix
+        #path: DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\SamSmithNZ.high-performing-devops-metrics-${{ env.extensionVersion }}.vsix
+        path: DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot
