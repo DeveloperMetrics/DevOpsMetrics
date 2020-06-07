@@ -8,58 +8,9 @@ on:
 
 jobs:
 
-
-  #Publish the Azure DevOps extension 
-  deployAzureDevOps:
-    runs-on: windows-latest
-    #needs: build
-    steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.101
-    - name: .NET Publish Azure DevOps Extension
-      run: dotnet publish DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/DevOpsMetrics.AzureDevOpsExtension.csproj --configuration Release   
-    #- name: Copy files
-    #  run: |
-    #    xcopy /e /i /y "DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot" "${GITHUB_WORKSPACE}\output"
-    #    cd "${GITHUB_WORKSPACE}\output"
-    #    dir
-    - name: Update file with unique version
-      run: |
-        #Get the current version
-        $pathToJson = "DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\vss-extension.json"
-        $a = Get-Content $pathToJson -raw | ConvertFrom-Json
-        Write-Host "old version: " $a.version
-        $splitVersion = $a.version -Split "\." #Split the version by the .
-        #Build a new version, appending the unique GitHub run number to the end
-        $newVersion = "$($splitVersion[0]).$($splitVersion[1]).$($splitVersion[2]).${{ github.run_number }}"
-        Write-Host "new version: " $newVersion
-        #Save the new version back to the file
-        $a.version = $newVersion
-        $a | ConvertTo-Json | set-content $pathToJson
-    - name: Build Extension
-      run: |
-        npm install -g tfx-cli
-        tfx extension create --manifest-globs vss-extension.json --root DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot  #--rev-version
-        #tfx extension samsmithnz create --token "${{ secrets.AzureDevOpsPATToken }}"
-        #tfx extension publish --help 
-    - name: Check files
-      run: |
-        cd DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot
-        dir
-    - name: Upload Azure DevOps extension build artifacts back to GitHub
-      uses: actions/upload-artifact@v2
-      with:
-        name: azuredevopsextensionpackage
-        path: DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot
-
-
-
   build:
     runs-on: windows-latest
-    if: github.ref == 'refs/heads/master'   
+    #if: github.ref == 'refs/heads/master'   
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -119,7 +70,7 @@ jobs:
   deploy:
     runs-on: windows-latest
     needs: build    
-    if: github.ref == 'refs/heads/master'    
+    #if: github.ref == 'refs/heads/master'    
     steps:        
     # Login with the secret SP details
     - name: Log into Azure
@@ -160,3 +111,47 @@ jobs:
         app-name: devopsmetrics-prod-eu-function
         package: functionapp 
     - run: az webapp config appsettings set --name "devopsmetrics-prod-eu-function" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountAccessKey=${{ secrets.AzureStorageAccessKey }}" "AppSettings:WebServiceURL=https://devopsmetrics-prod-eu-service.azurewebsites.net/" 
+
+
+
+  #Publish the Azure DevOps extension 
+  deployAzureDevOps:
+    runs-on: windows-latest
+    needs: build    
+    #if: github.ref == 'refs/heads/master'
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: .NET core Publish Azure DevOps Extension
+      run: dotnet publish DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/DevOpsMetrics.AzureDevOpsExtension.csproj --configuration Release   
+    - name: Update manifest file with unique version
+      run: |
+        #Get the current version
+        $pathToJson = "DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\vss-extension.json"
+        $a = Get-Content $pathToJson -raw | ConvertFrom-Json
+        Write-Host "old version: " $a.version
+        $splitVersion = $a.version -Split "\." #Split the version by the .
+        #Build a new version, appending the unique GitHub run number to the end
+        $newVersion = "$($splitVersion[0]).$($splitVersion[1]).$($splitVersion[2]).${{ github.run_number }}"
+        Write-Host "new version: " $newVersion
+        #Save the new version back to the file
+        $a.version = $newVersion
+        $a | ConvertTo-Json | set-content $pathToJson
+    - name: Build extension
+      run: |
+        npm install -g tfx-cli
+        tfx extension create --manifest-globs vss-extension.json --root DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot  #--rev-version
+        #tfx extension samsmithnz create --token "${{ secrets.AzureDevOpsPATToken }}"
+        #tfx extension publish --help 
+    - name: Check files
+      run: |
+        cd DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot
+        dir
+    - name: Upload Azure DevOps extension build artifacts back to GitHub
+      uses: actions/upload-artifact@v2
+      with:
+        name: azuredevopsextensionpackage
+        path: DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot
