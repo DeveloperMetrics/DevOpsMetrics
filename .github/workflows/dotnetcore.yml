@@ -22,11 +22,11 @@ jobs:
     - name: .NET Publish Azure DevOps Extension
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/DevOpsMetrics.AzureDevOpsExtension.csproj --configuration Release   
     - run: |
-        echo "${GITHUB_WORKSPACE}"
+        echo "$GITHUB_WORKSPACE"
         cd\
         mkdir output
         cd output
-        xcopy /E /I "${GITHUB_WORKSPACE}/DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/bin/Release/netcoreapp3.1/publish/wwwroot" "${GITHUB_WORKSPACE}/output"
+        xcopy /E /I "$GITHUB_WORKSPACE/DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/bin/Release/netcoreapp3.1/publish/wwwroot" "/output"
     - name: Build Extension
       run: |
         npm install -g tfx-cli
