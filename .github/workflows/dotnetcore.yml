@@ -34,8 +34,8 @@ jobs:
         Write-Host "old version: " + $a.version
         #Split the version by the .
         $splitVersion = $a.version -Split "\."
-        Write-Host "Github run number " + ${GITHUB_RUN_NUMBER}
-        $newVersion = "$($splitVersion[0]).$($splitVersion[1]).$($splitVersion[2]).${GITHUB_RUN_NUMBER}"
+        Write-Host "Github run number " + ${{ github.run_number }}
+        $newVersion = "$($splitVersion[0]).$($splitVersion[1]).$($splitVersion[2]).${{ github.run_number }}"
         $a.version = $newVersion
         Write-Host "new version: " + $newVersion
         $a | ConvertTo-Json | set-content $pathToJson
@@ -50,11 +50,14 @@ jobs:
       run: |
         cd "${GITHUB_WORKSPACE}\output"
         dir
+        cd\
+        cd "${{ GITHUB.WORKSPACE }}\output"
+        dir
     - name: Upload Azure DevOps extension build artifacts back to GitHub
       uses: actions/upload-artifact@v2
       with:
         name: azuredevopsextensionpackage
-        path: ${GITHUB_WORKSPACE}\output
+        path: ${{ GITHUB.WORKSPACE }}\output
 
 
 
