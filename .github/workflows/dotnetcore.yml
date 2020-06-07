@@ -23,7 +23,7 @@ jobs:
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/DevOpsMetrics.AzureDevOpsExtension.csproj --configuration Release   
     - name: Copy files
       run: |
-        xcopy /E /I "DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot" "output"
+        xcopy /e /i /y "DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot" "${GITHUB_WORKSPACE}\output"
         cd "${GITHUB_WORKSPACE}\output"
         dir
     - name: Update file with unique version
