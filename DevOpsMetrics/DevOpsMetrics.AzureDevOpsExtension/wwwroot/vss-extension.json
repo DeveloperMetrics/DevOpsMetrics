@@ -1,7 +1,7 @@
 {
   "manifestVersion": 1,
   "id": "high-performing-devops-metrics",
-  "version": "0.1.2",
+  "version": "0.1.0",
   "name": "High performing DevOps metrics",
   "description": "Widgets to measure deployment frequency, lead time for changes, time to restore service and change failure rate",
   "publisher": "SamSmithNZ",
@@ -12,7 +12,7 @@
   "categories": [ "Azure Repos", "Azure Pipelines" ],
   "targets": [
     {
-      "id": "Microsoft.VisualStudio.Services"
+      "id": "Microsoft.VisualStudio.Services.Cloud"
     }
   ],
   "icons": {
