@@ -34,11 +34,15 @@ jobs:
         tfx extension create --manifest-globs vss-extension.json --rev-version
         #tfx extension samsmithnz create --token "${{ secrets.AzureDevOpsPATToken }}"
         #tfx extension publish --help 
+    - name: Check files
+      run: |
+        cd "${GITHUB_WORKSPACE}\output"
+        dir
     - name: Upload Azure DevOps extension build artifacts back to GitHub
       uses: actions/upload-artifact@master
       with:
         name: azuredevopsextensionpackage
-        path: ${GITHUB_WORKSPACE}\output
+        path: output
 
 
   build:
