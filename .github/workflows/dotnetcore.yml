@@ -23,8 +23,8 @@ jobs:
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/DevOpsMetrics.AzureDevOpsExtension.csproj --configuration Release   
     - run: |
         cd\
-        mddir output
-        copy "DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/bin/Release/netcoreapp3.1/publish/wwwroot/" "output"
+        mkdir output
+        Xcopy /E /I "DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/bin/Release/netcoreapp3.1/publish/wwwroot/" "output"
     - name: Build Extension
       run: |
         npm install -g tfx-cli
