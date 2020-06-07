@@ -10,7 +10,7 @@ jobs:
 
   build:
     runs-on: windows-latest
-    #if: github.ref == 'refs/heads/master'   
+    if: github.ref == 'refs/heads/master'   
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -40,9 +40,7 @@ jobs:
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj --configuration Release
     - name: .NET Publish Function
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.NightlyProcessor.Function/DevOpsMetrics.NightlyProcessor.Function.csproj --configuration Release      
-    - name: .NET Publish Azure DevOps Extension
-      run: dotnet publish DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/DevOpsMetrics.AzureDevOpsExtension.csproj --configuration Release    
-      
+
     #Publish build artifacts to GitHub
     - name: Upload web service build artifacts back to GitHub
       uses: actions/upload-artifact@master
@@ -59,18 +57,12 @@ jobs:
       with:
         name: functionapp
         path: DevOpsMetrics/DevOpsMetrics.NightlyProcessor.Function/bin/Release/netcoreapp3.1/publish
-    - name: Upload Azure DevOps extension build artifacts back to GitHub
-      uses: actions/upload-artifact@master
-      with:
-        name: azuredevopsextensionapp
-        path: DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension
-
 
   #Deploy the artifacts to Azure
   deploy:
     runs-on: windows-latest
     needs: build    
-    #if: github.ref == 'refs/heads/master'    
+    if: github.ref == 'refs/heads/master'    
     steps:        
     # Login with the secret SP details
     - name: Log into Azure
@@ -113,11 +105,12 @@ jobs:
     - run: az webapp config appsettings set --name "devopsmetrics-prod-eu-function" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountAccessKey=${{ secrets.AzureStorageAccessKey }}" "AppSettings:WebServiceURL=https://devopsmetrics-prod-eu-service.azurewebsites.net/" 
 
 
-
   #Publish the Azure DevOps extension 
   deployAzureDevOps:
     runs-on: windows-latest
-    needs: build    
+    #needs: build   
+    env:
+      extensionVersion: "0.0.0.0" 
     #if: github.ref == 'refs/heads/master'
     steps:
     - uses: actions/checkout@v2
@@ -138,8 +131,10 @@ jobs:
         $newVersion = "$($splitVersion[0]).$($splitVersion[1]).$($splitVersion[2]).${{ github.run_number }}"
         Write-Host "new version: " $newVersion
         #Save the new version back to the file
+        echo "::set-env name=env.extensionVersion::$newVersion"
         $a.version = $newVersion
         $a | ConvertTo-Json | set-content $pathToJson
+        Write-Host "New env variable " ${env.extensionVersion}
     - name: Build extension
       run: |
         npm install -g tfx-cli
@@ -154,4 +149,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: azuredevopsextensionpackage
-        path: DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot
+        path: DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\SamSmithNZ.high-performing-devops-metrics-${env.extensionVersion}.vsix
