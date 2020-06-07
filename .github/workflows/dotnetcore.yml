@@ -21,7 +21,8 @@ jobs:
         dotnet-version: 3.1.101
     - name: .NET Publish Azure DevOps Extension
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/DevOpsMetrics.AzureDevOpsExtension.csproj --configuration Release   
-    - run: |
+    - name: Copy files
+      run: |
         echo "${GITHUB_WORKSPACE}"
         xcopy /E /I "DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot" "${GITHUB_WORKSPACE}\output"
         cd "${GITHUB_WORKSPACE}\output"
@@ -29,14 +30,14 @@ jobs:
     - name: Build Extension
       run: |
         npm install -g tfx-cli
-        tfx extension create --manifest-globs output/vss-extension.json --rev-version
+        tfx extension create --manifest-globs ${GITHUB_WORKSPACE}\output\vss-extension.json --rev-version
         #tfx extension samsmithnz create --token "${{ secrets.AzureDevOpsPATToken }}"
         #tfx extension publish --help 
     - name: Upload Azure DevOps extension build artifacts back to GitHub
       uses: actions/upload-artifact@master
       with:
         name: azuredevopsextensionpackage
-        path: output
+        path: ${GITHUB_WORKSPACE}\output
 
 
   build:
