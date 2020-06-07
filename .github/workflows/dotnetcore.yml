@@ -30,7 +30,8 @@ jobs:
     - name: Build Extension
       run: |
         npm install -g tfx-cli
-        tfx extension create --manifest-globs "${GITHUB_WORKSPACE}\output\vss-extension.json" --rev-version
+        cd "${GITHUB_WORKSPACE}\output"
+        tfx extension create --manifest-globs vss-extension.json --rev-version
         #tfx extension samsmithnz create --token "${{ secrets.AzureDevOpsPATToken }}"
         #tfx extension publish --help 
     - name: Upload Azure DevOps extension build artifacts back to GitHub
