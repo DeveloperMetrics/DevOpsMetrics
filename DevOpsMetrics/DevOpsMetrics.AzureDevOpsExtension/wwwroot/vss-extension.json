@@ -3,7 +3,7 @@
   "id": "high-performing-devops-metrics",
   "version": "0.1.0",
   "name": "High performing DevOps metrics",
-  "description": "Widgets to measure deployment frequency, lead time for changes, time to restore service and change failure rate",
+  "description": "Widgets to measure high performing DevOps Metrics as identifed by DORA and Accelerate, such as deployment frequency, lead time for changes, time to restore service and change failure rate",
   "publisher": "SamSmithNZ",
   "repository": {
     "type": "git",

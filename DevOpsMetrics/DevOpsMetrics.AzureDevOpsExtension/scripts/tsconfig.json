@@ -8,5 +8,8 @@
   "files": [
     "./app.ts"
   ],
-  "compileOnSave": true
+  "compileOnSave": true,
+  "exclude": [
+    "node_modules"
+  ]
 }
