@@ -23,19 +23,21 @@ jobs:
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/DevOpsMetrics.AzureDevOpsExtension.csproj --configuration Release   
     - name: Copy files
       run: |
-        echo "${GITHUB_WORKSPACE}"
-        xcopy /E /I "DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot" "${GITHUB_WORKSPACE}\output"
+        xcopy /E /I "DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot" "output"
         cd "${GITHUB_WORKSPACE}\output"
         dir
-    - name: Fix version
+    - name: Update file with unique version
       run: |
-        $pathToJson = "${GITHUB_WORKSPACE}\output\vss-extension.json"
+        #Get the current version
+        $pathToJson = "output\vss-extension.json"
         $a = Get-Content $pathToJson -raw | ConvertFrom-Json
         Write-Host "old version: " $a.version
         $splitVersion = $a.version -Split "\." #Split the version by the .
+        #Build a new version, appending the unique GitHub run number to the end
         $newVersion = "$($splitVersion[0]).$($splitVersion[1]).$($splitVersion[2]).${{ github.run_number }}"
-        $a.version = $newVersion
         Write-Host "new version: " $newVersion
+        #Save the new version back to the file
+        $a.version = $newVersion
         $a | ConvertTo-Json | set-content $pathToJson
     - name: Build Extension
       run: |
