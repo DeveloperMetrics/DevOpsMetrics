@@ -54,7 +54,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: azuredevopsextensionpackage
-        path: ${GITHUB_WORKSPACE}\output
+        path: .\output
 
 
 
