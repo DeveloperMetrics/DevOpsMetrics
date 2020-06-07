@@ -27,6 +27,13 @@ jobs:
         xcopy /E /I "DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot" "${GITHUB_WORKSPACE}\output"
         cd "${GITHUB_WORKSPACE}\output"
         dir
+    - name: Fix version
+      run: |
+        $filePath = "${GITHUB_WORKSPACE}\output\vss-extension.json"
+        $a = Get-Content $filePath -raw | ConvertFrom-Json
+        Write-Host $a
+        #$a.update | % {if($_.version -eq 'test1'){$_.version=3.0}}
+        #$a | ConvertTo-Json -depth 32| set-content 'D:\temp\mytestBis.json'
     - name: Build Extension
       run: |
         npm install -g tfx-cli
