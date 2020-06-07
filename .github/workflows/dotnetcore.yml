@@ -110,7 +110,7 @@ jobs:
     runs-on: windows-latest
     needs: build   
     env:
-      extensionVersion: "0.0.0.0" 
+      extensionVersion: "0.0.0" 
     #if: github.ref == 'refs/heads/master'
     steps:
     - uses: actions/checkout@v2
@@ -128,7 +128,7 @@ jobs:
         Write-Host "old version: " $a.version
         $splitVersion = $a.version -Split "\." #Split the version by the .
         #Build a new version, appending the unique GitHub run number to the end
-        $newVersion = "$($splitVersion[0]).$($splitVersion[1]).$($splitVersion[2]).${{ github.run_number }}"
+        $newVersion = "$($splitVersion[0]).$($splitVersion[1]).${{ github.run_number }}"
         Write-Host "new version: " $newVersion
         #Save the new version back to the file
         echo "::set-env name=extensionVersion::$newVersion"
