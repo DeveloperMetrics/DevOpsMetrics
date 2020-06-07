@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Remove="node_modules\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="overview.md" />
   </ItemGroup>
 
