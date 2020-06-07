@@ -21,15 +21,15 @@ jobs:
         dotnet-version: 3.1.101
     - name: .NET Publish Azure DevOps Extension
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/DevOpsMetrics.AzureDevOpsExtension.csproj --configuration Release   
-    - name: Copy files
-      run: |
-        xcopy /e /i /y "DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot" "${GITHUB_WORKSPACE}\output"
-        cd "${GITHUB_WORKSPACE}\output"
-        dir
+    #- name: Copy files
+    #  run: |
+    #    xcopy /e /i /y "DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot" "${GITHUB_WORKSPACE}\output"
+    #    cd "${GITHUB_WORKSPACE}\output"
+    #    dir
     - name: Update file with unique version
       run: |
         #Get the current version
-        $pathToJson = "${GITHUB_WORKSPACE}\output\vss-extension.json"
+        $pathToJson = "DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\vss-extension.json"
         $a = Get-Content $pathToJson -raw | ConvertFrom-Json
         Write-Host "old version: " $a.version
         $splitVersion = $a.version -Split "\." #Split the version by the .
@@ -42,19 +42,18 @@ jobs:
     - name: Build Extension
       run: |
         npm install -g tfx-cli
-        cd "${GITHUB_WORKSPACE}\output"
-        tfx extension create --manifest-globs vss-extension.json #--rev-version
+        tfx extension create --manifest-globs DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\vss-extension.json #--rev-version
         #tfx extension samsmithnz create --token "${{ secrets.AzureDevOpsPATToken }}"
         #tfx extension publish --help 
     - name: Check files
       run: |
-        cd "${GITHUB_WORKSPACE}\output"
+        cd DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\output
         dir
     - name: Upload Azure DevOps extension build artifacts back to GitHub
       uses: actions/upload-artifact@v2
       with:
         name: azuredevopsextensionpackage
-        path: .\output
+        path: DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot
 
 
 
