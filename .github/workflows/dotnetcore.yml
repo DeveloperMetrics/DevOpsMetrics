@@ -29,7 +29,7 @@ jobs:
     - name: Update file with unique version
       run: |
         #Get the current version
-        $pathToJson = "output\vss-extension.json"
+        $pathToJson = "${GITHUB_WORKSPACE}\output\vss-extension.json"
         $a = Get-Content $pathToJson -raw | ConvertFrom-Json
         Write-Host "old version: " $a.version
         $splitVersion = $a.version -Split "\." #Split the version by the .
@@ -54,7 +54,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: azuredevopsextensionpackage
-        path: ${{ GITHUB.WORKSPACE }}\output
+        path: ${GITHUB_WORKSPACE}\output
 
 
 
