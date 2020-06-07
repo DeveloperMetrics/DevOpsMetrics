@@ -62,6 +62,10 @@
     {
       "path": "img",
       "addressable": true
+    },
+    {
+      "path": "screenshots",
+      "addressable": true
     }
   ]
 }
