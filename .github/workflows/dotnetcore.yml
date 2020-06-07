@@ -24,7 +24,8 @@ jobs:
     - run: |
         cd\
         mkdir output
-        Xcopy /E /I "DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/bin/Release/netcoreapp3.1/publish/wwwroot/" "output"
+        cd output
+        xcopy /E /I "DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/bin/Release/netcoreapp3.1/publish/wwwroot" "output"
     - name: Build Extension
       run: |
         npm install -g tfx-cli
