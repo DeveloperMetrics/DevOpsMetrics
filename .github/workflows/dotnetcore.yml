@@ -31,13 +31,11 @@ jobs:
       run: |
         $pathToJson = "${GITHUB_WORKSPACE}\output\vss-extension.json"
         $a = Get-Content $pathToJson -raw | ConvertFrom-Json
-        Write-Host "old version: " + $a.version
-        #Split the version by the .
-        $splitVersion = $a.version -Split "\."
-        Write-Host "Github run number " + ${{ github.run_number }}
+        Write-Host "old version: " $a.version
+        $splitVersion = $a.version -Split "\." #Split the version by the .
         $newVersion = "$($splitVersion[0]).$($splitVersion[1]).$($splitVersion[2]).${{ github.run_number }}"
         $a.version = $newVersion
-        Write-Host "new version: " + $newVersion
+        Write-Host "new version: " $newVersion
         $a | ConvertTo-Json | set-content $pathToJson
     - name: Build Extension
       run: |
@@ -49,9 +47,6 @@ jobs:
     - name: Check files
       run: |
         cd "${GITHUB_WORKSPACE}\output"
-        dir
-        cd\
-        cd "${{ GITHUB.WORKSPACE }}\output"
         dir
     - name: Upload Azure DevOps extension build artifacts back to GitHub
       uses: actions/upload-artifact@v2
