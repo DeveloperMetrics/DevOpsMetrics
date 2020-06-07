@@ -47,7 +47,7 @@ jobs:
         #tfx extension publish --help 
     - name: Check files
       run: |
-        cd DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\output
+        cd DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot
         dir
     - name: Upload Azure DevOps extension build artifacts back to GitHub
       uses: actions/upload-artifact@v2
