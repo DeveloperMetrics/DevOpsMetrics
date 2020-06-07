@@ -131,10 +131,10 @@ jobs:
         $newVersion = "$($splitVersion[0]).$($splitVersion[1]).$($splitVersion[2]).${{ github.run_number }}"
         Write-Host "new version: " $newVersion
         #Save the new version back to the file
-        echo "::set-env name=env.extensionVersion::$newVersion"
+        echo "::set-env name=extensionVersion::$newVersion"
         $a.version = $newVersion
         $a | ConvertTo-Json | set-content $pathToJson
-        Write-Host "New env variable " ${env.extensionVersion}
+        Write-Host "New env variable " ${{ env.extensionVersion }}
     - name: Build extension
       run: |
         npm install -g tfx-cli
@@ -145,8 +145,9 @@ jobs:
       run: |
         cd DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot
         dir
+        Write-Host "New env variable " ${{ env.extensionVersion }}
     - name: Upload Azure DevOps extension build artifacts back to GitHub
       uses: actions/upload-artifact@v2
       with:
         name: azuredevopsextensionpackage
-        path: DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\SamSmithNZ.high-performing-devops-metrics-${env.extensionVersion}.vsix
+        path: DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\SamSmithNZ.high-performing-devops-metrics-${{ env.extensionVersion }}.vsix
