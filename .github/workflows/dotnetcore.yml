@@ -34,9 +34,8 @@ jobs:
         Write-Host "old version: " + $a.version
         #Split the version by the .
         $splitVersion = $a.version -Split "\."
-        Write-Host "Github run number " + $GITHUB_RUN_NUMBER
-        $newSuffix = "$GITHUB_RUN_NUMBER"
-        $newVersion = "$($splitVersion[0]).$($splitVersion[1]).$($splitVersion[2]).$newSuffix"
+        Write-Host "Github run number " + ${GITHUB_RUN_NUMBER}
+        $newVersion = "$($splitVersion[0]).$($splitVersion[1]).$($splitVersion[2]).${GITHUB_RUN_NUMBER}"
         $a.version = $newVersion
         Write-Host "new version: " + $newVersion
         $a | ConvertTo-Json | set-content $pathToJson
