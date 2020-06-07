@@ -31,9 +31,12 @@ jobs:
       run: |
         $filePath = "${GITHUB_WORKSPACE}\output\vss-extension.json"
         $a = Get-Content $filePath -raw | ConvertFrom-Json
-        Write-Host $a
-        #$a.update | % {if($_.version -eq 'test1'){$_.version=3.0}}
-        #$a | ConvertTo-Json -depth 32| set-content 'D:\temp\mytestBis.json'
+        Write-Host $a.version
+        #Split the version by the .
+        $splitVersion = $a.version -Split "\."
+        $newVersion = "$($splitVersion[0]).$($splitVersion[1]).${GITHUB_RUN_NUMBER}"
+        #$a.version = ""
+        #$a | ConvertTo-Json | set-content $pathToJson
     - name: Build Extension
       run: |
         npm install -g tfx-cli
@@ -65,7 +68,7 @@ jobs:
 
   build:
     runs-on: windows-latest
-
+    if: github.ref == 'refs/heads/master'   
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -125,7 +128,7 @@ jobs:
   deploy:
     runs-on: windows-latest
     needs: build    
-    #if: github.ref == 'refs/heads/master'    
+    if: github.ref == 'refs/heads/master'    
     steps:        
     # Login with the secret SP details
     - name: Log into Azure
