@@ -22,7 +22,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Web", "DevOps
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.NightlyProcessor.Function", "DevOpsMetrics.NightlyProcessor.Function\DevOpsMetrics.NightlyProcessor.Function.csproj", "{45166612-DEA4-4362-AE7D-35CA34A1C97D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsMetrics.AzureDevOpsExtension", "DevOpsMetrics.AzureDevOpsExtension\DevOpsMetrics.AzureDevOpsExtension.csproj", "{CF433C20-DD25-4892-B321-37EAE9402BA9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsMetrics.AzureDevOpsExtension", "DevOpsMetrics.AzureDevOpsExtension\DevOpsMetrics.AzureDevOpsExtension.csproj", "{CC37B359-CA89-4E59-A1F3-666A3ECE6442}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,10 +50,10 @@ Global
 		{45166612-DEA4-4362-AE7D-35CA34A1C97D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45166612-DEA4-4362-AE7D-35CA34A1C97D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45166612-DEA4-4362-AE7D-35CA34A1C97D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF433C20-DD25-4892-B321-37EAE9402BA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF433C20-DD25-4892-B321-37EAE9402BA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF433C20-DD25-4892-B321-37EAE9402BA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF433C20-DD25-4892-B321-37EAE9402BA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC37B359-CA89-4E59-A1F3-666A3ECE6442}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC37B359-CA89-4E59-A1F3-666A3ECE6442}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC37B359-CA89-4E59-A1F3-666A3ECE6442}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC37B359-CA89-4E59-A1F3-666A3ECE6442}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "noEmitOnError": true, //Do not emit outputs if any errors were reported.
-    "noImplicitAny": true, //Raise error on expressions and declarations with an implied any type.
-    "sourceMap": true, //Generates corresponding .map file.
-    "target": "es6" //Specify ECMAScript target version.
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "target": "es6"
   },
   "files": [
     "./app.ts"
