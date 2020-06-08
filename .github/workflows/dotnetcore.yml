@@ -155,7 +155,4 @@ jobs:
         path: DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot
     - name: publish extension
       run: |
-        #npm install -g tfx-cli
-        #tfx extension create --manifest-globs vss-extension.json --root DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot --output-path DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot  #--rev-version
-        #tfx extension publish --help 
-        tfx extension publish --manifests "DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\SamSmithNZ.high-performing-devops-metrics-${{ env.extensionVersion }}.vsix" --token ${{ secrets.AzureDevOpsPATToken }}
+        tfx extension publish --vsix "DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\SamSmithNZ.high-performing-devops-metrics-${{ env.extensionVersion }}.vsix" --auth-type pat --token ${{ secrets.AzureDevOpsPATToken }} --trace-level debug
