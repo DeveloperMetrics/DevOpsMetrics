@@ -10,7 +10,7 @@ jobs:
 
   build:
     runs-on: windows-latest
-    #if: github.ref == 'refs/heads/master'   
+    if: github.ref == 'refs/heads/master'   
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -62,7 +62,7 @@ jobs:
   deploy:
     runs-on: windows-latest
     needs: build    
-    #if: github.ref == 'refs/heads/master'    
+    if: github.ref == 'refs/heads/master'    
     steps:        
     # Login with the secret SP details
     - name: Log into Azure
@@ -108,7 +108,7 @@ jobs:
   #Publish the Azure DevOps extension 
   deployAzureDevOps:
     runs-on: windows-latest
-    needs: build   
+    #needs: build   
     env:
       extensionVersion: "0.0.0" 
     #if: github.ref == 'refs/heads/master'
@@ -139,8 +139,8 @@ jobs:
       run: |
         npm install -g tfx-cli
         tfx extension create --manifest-globs vss-extension.json --root DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot --output-path DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot  #--rev-version
-        #tfx extension samsmithnz create --token "${{ secrets.AzureDevOpsPATToken }}"
         #tfx extension publish --help 
+        #tfx extension publish --manifests "DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\SamSmithNZ.high-performing-devops-metrics-${{ env.extensionVersion }}.vsix" --token ${{ secrets.AzureDevOpsPATToken }}
 #    - name: Check files
 #      run: |
 #        cd DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot
@@ -148,6 +148,11 @@ jobs:
 #        Write-Host "New env variable " ${{ env.extensionVersion }}
     - name: Upload Azure DevOps extension build artifacts back to GitHub
       uses: actions/upload-artifact@v2
+      if: always()
       with:
         name: azuredevopsextensionpackage
-        path: DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\SamSmithNZ.high-performing-devops-metrics-${{ env.extensionVersion }}.vsix
+        #path: DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\SamSmithNZ.high-performing-devops-metrics-${{ env.extensionVersion }}.vsix
+        path: DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot
+    - name: publish extension
+      run: |
+        tfx extension publish --vsix "DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\SamSmithNZ.high-performing-devops-metrics-${{ env.extensionVersion }}.vsix" --auth-type pat --token "${{ secrets.AzureDevOpsPATToken }}" --trace-level debug
