@@ -1,10 +1,17 @@
 {
   "manifestVersion": 1,
   "id": "high-performing-devops-metrics",
-  "version": "0.1.0",
-  "name": "High performing DevOps metrics",
-  "description": "Widgets to measure high performing DevOps Metrics as identifed by DORA and Accelerate, such as deployment frequency, lead time for changes, time to restore service and change failure rate",
   "publisher": "SamSmithNZ",
+  "name": "High performing DevOps metrics",
+  "version": "0.2.0",
+  "description": "Widgets to measure high performing DevOps Metrics as identifed by DORA and Accelerate, such as deployment frequency, lead time for changes, time to restore service and change failure rate",
+  "tags": [
+    "DevOps Metrics",
+    "Deployment frequency",
+    "Lead time for changes",
+    "Time to restore services",
+    "Change failure rate"
+  ],
   "repository": {
     "type": "git",
     "uri": "https://github.com/samsmithnz/githubmetrics"
@@ -18,6 +25,28 @@
   "icons": {
     "default": "img/logo.png"
   },
+  "contributions": [
+    {
+      "id": "HelloWorldWidget",
+      "type": "ms.vss-dashboards-web.widget",
+      "targets": [
+        "ms.vss-dashboards-web.widget-catalog"
+      ],
+      "properties": {
+        "name": "Hello World Widget",
+        "description": "My first widget",
+        "catalogIconUrl": "img/CatalogIcon.png",
+        "uri": "hello-world.html",
+        "supportedSizes": [
+          {
+            "rowSpan": 1,
+            "columnSpan": 2
+          }
+        ],
+        "supportedScopes": [ "project_team" ]
+      }
+    }
+  ],
   "scopes": [
     "vso.build",
     "vso.code",
@@ -35,15 +64,6 @@
     },
     {
       "path": "screenshots/ChangeFailureRate.png"
-    }
-  ],
-  "contributions": [
-    {
-      "id": "InitialRelease",
-      "type": "ms.vss-web.action",
-      "targets": [
-        "ms.vss-build-web.completed-build-menu"
-      ]
     }
   ],
   "files": [
