@@ -1,25 +1,14 @@
 {
   "manifestVersion": 1,
   "id": "high-performing-devops-metrics",
-  "publisher": "SamSmithNZ",
-  "name": "High performing DevOps metrics",
   "version": "0.2.0",
-  "description": "Widgets to measure high performing DevOps Metrics as identifed by DORA and Accelerate, such as deployment frequency, lead time for changes, time to restore service and change failure rate",
-  "tags": [
-    "DevOps Metrics",
-    "Deployment frequency",
-    "Lead time for changes",
-    "Time to restore services",
-    "Change failure rate"
-  ],
-  "repository": {
-    "type": "git",
-    "uri": "https://github.com/samsmithnz/githubmetrics"
-  },
-  "categories": [ "Azure Repos", "Azure Pipelines" ],
+  "name": "My First Set of Widgets",
+  "description": "Samples containing different widgets extending dashboards",
+  "publisher": "SamSmithNZ",
+  "categories": [ "Azure Boards" ],
   "targets": [
     {
-      "id": "Microsoft.VisualStudio.Services.Cloud"
+      "id": "Microsoft.VisualStudio.Services"
     }
   ],
   "icons": {
@@ -36,6 +25,7 @@
         "name": "Hello World Widget",
         "description": "My first widget",
         "catalogIconUrl": "img/CatalogIcon.png",
+        "previewImageUrl": "img/preview.png",
         "uri": "hello-world.html",
         "supportedSizes": [
           {
@@ -47,32 +37,9 @@
       }
     }
   ],
-  "scopes": [
-    "vso.build",
-    "vso.code",
-    "vso.release"
-  ],
-  "screenshots": [
-    {
-      "path": "screenshots/DeploymentFrequencyDemo.png"
-    },
-    {
-      "path": "screenshots/LeadTimeForChanges.png"
-    },
-    {
-      "path": "screenshots/TimeToRestoreService.png"
-    },
-    {
-      "path": "screenshots/ChangeFailureRate.png"
-    }
-  ],
   "files": [
     {
       "path": "index.html",
-      "addressable": true
-    },
-    {
-      "path": "overview.md",
       "addressable": true
     },
     {
@@ -81,10 +48,6 @@
     },
     {
       "path": "img",
-      "addressable": true
-    },
-    {
-      "path": "screenshots",
       "addressable": true
     }
   ]

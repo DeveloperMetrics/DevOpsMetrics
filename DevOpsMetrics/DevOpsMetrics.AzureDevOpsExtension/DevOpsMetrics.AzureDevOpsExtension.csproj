@@ -34,6 +34,9 @@
     <Content Update="wwwroot\screenshots\TimeToRestoreService.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\vss-extension - Copy.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\vss-extension.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

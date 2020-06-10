@@ -1,0 +1,102 @@
+{
+  "manifestVersion": 1,
+  "id": "high-performing-devops-metrics",
+  "version": "0.2.0",
+  "name": "High performing DevOps metrics",
+  "description": "Widgets to measure high performing DevOps Metrics as identifed by DORA and Accelerate, such as deployment frequency, lead time for changes, time to restore service and change failure rate",
+  "publisher": "SamSmithNZ",
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "categories": [ "Azure Repos", "Azure Pipelines" ],
+  "tags": [
+    "DevOps Metrics",
+    "Deployment frequency",
+    "Lead time for changes",
+    "Time to restore services",
+    "Change failure rate"
+  ],
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/samsmithnz/githubmetrics"
+  },
+    "icons": {
+    "default": "img/logo.png"
+  },
+  "contributions": [
+    {
+      "id": "HelloWorldWidget",
+      "type": "ms.vss-dashboards-web.widget",
+      "targets": [
+        "ms.vss-dashboards-web.widget-catalog",
+        ".sample-data-widget.configuration"
+      ],
+      "properties": {
+        "name": "Deployment Frequency Widget",
+        "description": "Deployment Frequency widget",
+        "catalogIconUrl": "img/logo.png",
+        "uri": "index.html",
+        "supportedSizes": [
+          {
+            "rowSpan": 1,
+            "columnSpan": 2
+          }
+        ],
+        "supportedScopes": [ "project_team" ]
+      }
+    },
+    {
+      "id": "sample-data-widget.configuration",
+      "type": "ms.vss-dashboards-web.widget-configuration",
+      "targets": [ "ms.vss-dashboards-web.widget-configuration" ],
+      "properties": {
+        "name": "Sample Data Configuration",
+        "description": "Configures Sample Data",
+        "uri": "configuration.html"
+      }
+    }
+  ],
+  "scopes": [
+    "vso.build",
+    "vso.code",
+    "vso.release"
+  ],
+  "screenshots": [
+    {
+      "path": "screenshots/DeploymentFrequencyDemo.png"
+    },
+    {
+      "path": "screenshots/LeadTimeForChanges.png"
+    },
+    {
+      "path": "screenshots/TimeToRestoreService.png"
+    },
+    {
+      "path": "screenshots/ChangeFailureRate.png"
+    }
+  ],
+  "files": [
+    {
+      "path": "index.html",
+      "addressable": true
+    },
+    {
+      "path": "overview.md",
+      "addressable": true
+    },
+    {
+      "path": "scripts",
+      "addressable": true
+    },
+    {
+      "path": "img",
+      "addressable": true
+    },
+    {
+      "path": "screenshots",
+      "addressable": true
+    }
+  ]
+}
