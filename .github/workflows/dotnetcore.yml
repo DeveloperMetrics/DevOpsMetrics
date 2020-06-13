@@ -39,7 +39,7 @@ jobs:
     - name: .NET Publish Website
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj --configuration Release
     - name: .NET Publish Function
-      run: dotnet publish DevOpsMetrics/DevOpsMetrics.NightlyProcessor.Function/DevOpsMetrics.NightlyProcessor.Function.csproj --configuration Release      
+      run: dotnet publish DevOpsMetrics/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj --configuration Release      
 
     #Publish build artifacts to GitHub
     - name: Upload web service build artifacts back to GitHub
@@ -56,7 +56,7 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: functionapp
-        path: DevOpsMetrics/DevOpsMetrics.NightlyProcessor.Function/bin/Release/netcoreapp3.1/publish
+        path: DevOpsMetrics/DevOpsMetrics.Function/bin/Release/netcoreapp3.1/publish
 
   #Deploy the artifacts to Azure
   deploy:
