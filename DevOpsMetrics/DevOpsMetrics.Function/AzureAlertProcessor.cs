@@ -9,7 +9,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace DevOpsMetrics.NightlyProcessor.Function
+namespace DevOpsMetrics.Function
 {
     public static class AzureAlertProcessor
     {
