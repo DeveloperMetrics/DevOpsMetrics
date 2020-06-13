@@ -10,7 +10,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DevOpsMetrics.NightlyProcessor.Function
+namespace DevOpsMetrics.Function
 {
     public class ServiceApiClient
     {

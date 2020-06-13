@@ -1,12 +1,12 @@
 # DevOpsMetrics
 A project to experiment with high performing metrics. A [demo website displaying the metrics can be viewed here](https://devopsmetrics-prod-eu-web.azurewebsites.net/).
 
-All four of these metrics are based on production environments, where the value to our end users is delivered:
+All four of these metrics are based on production environments, where the value to end users is delivered:
 
 - Lead time for changes: Time from committing a change to deployment to production
-- Deployment frequency: How often we deploy to production
-- Mean time to restore (MTTR): How quickly we can restore production in an outage or degradation
-- Change failure rate: after a production deployment, was it successful? Or did we need to deploy a fix/rollback?
+- Deployment frequency: Number of deployments to production
+- Mean time to restore (MTTR): How quickly restoration of production occurs in an outage or degradation
+- Change failure rate: After a production deployment, was it successful? Or was a fix or rollback required?
 
 ![High performing metrics](https://samlearnsazure.files.wordpress.com/2020/04/01highperformers.png)
 (Chart from page 18 of https://services.google.com/fh/files/misc/state-of-devops-2019.pdf)
@@ -14,7 +14,7 @@ All four of these metrics are based on production environments, where the value 
 More information about high performing DevOps metrics can be found in a blog post here: https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/
 
 ## The current solution:
-We currently have all four of the metrics implemented and undergoing a pilot
+**We currently have all four of the metrics implemented and undergoing a pilot. The next phase is to refactor and package into Azure DevOps and GitHub widgets.**
 - **Deployment Frequency**, in both Azure DevOps and GitHub:
   - How does it work? We look at the number of successful pipeline runs. 
   - Assumptions/things we can't currently measure: 

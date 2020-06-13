@@ -10,7 +10,7 @@ using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace DevOpsMetrics.NightlyProcessor.Function
+namespace DevOpsMetrics.Function
 {
     public static class NightlyProcessor
     {
