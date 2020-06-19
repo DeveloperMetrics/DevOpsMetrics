@@ -19,7 +19,7 @@ More information about high performing DevOps metrics can be found in a blog pos
   - How does it work? We look at the number of successful pipeline runs. 
   - Assumptions/things we can't currently measure: 
       - The build is multi-stage, and leads to a deployment in a production environment.
-      - We only look at a single branch (usually the master branch), hence we ignore feature branches (as these probably aren't deploying to production')
+      - We only look at a single branch (usually the main branch), hence we ignore feature branches (as these probably aren't deploying to production')
   - Current limitations: Only one build/run/branch can be specified
 ![Deployment Frequency](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/DeploymentFrequencyDemo.png)
 
@@ -28,9 +28,9 @@ More information about high performing DevOps metrics can be found in a blog pos
   - Assumptions/things we can't currently measure:
       - We currently count the pull request and deployment durations, averaging them for the time period to create the lead time for changes metric.
       - We start measuring at the first commit for a branch. Development is variable that depends on the task, and doesn't help with this measurement.
-      - We assume we are following a git flow process, creating feature branches and merging back to the master branch, which is deployed to production on the completion of pull requests
-      - We assume that the user requires pull requests to merge work into the master branch - we are looking at all work that is not on this master branch - hence we currently only support one master branch.
-  - Current limitations: Only one repo and master branch can be specified
+      - We assume we are following a git flow process, creating feature branches and merging back to the main branch, which is deployed to production on the completion of pull requests
+      - We assume that the user requires pull requests to merge work into the main branch - we are looking at all work that is not on this main branch - hence we currently only support one main branch.
+  - Current limitations: Only one repo and main branch can be specified
 ![Lead time for changes](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/LeadTimeForChanges.png)
 
 - **Time to restore service**, in Azure
@@ -48,7 +48,7 @@ More information about high performing DevOps metrics can be found in a blog pos
   - How does it work? We look at builds, and let the user indicate if it was successful or a failure. By default (currently), the build is considered a failure. (We are going to change this to success by default later) 
   - Assumptions/things we can't currently measure:
       - The build is multi-stage, and leads to a deployment in a production environment.
-      - We only look at a single branch (usually the master branch), hence we ignore feature branches (as these probably aren't deploying to production)
+      - We only look at a single branch (usually the main branch), hence we ignore feature branches (as these probably aren't deploying to production)
       - The user has reviewed the build/deployment and confirmed that the production deployment was successful
   - Current limitations: Only one build/run can be specified
 ![Change failure rate](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/ChangeFailureRate.png)

@@ -12,7 +12,7 @@ namespace DevOpsMetrics.Service.DataAccess
     public class LeadTimeForChangesDA
     {
         public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, TableStorageAuth tableStorageAuth,
-                string organization, string project, string repositoryId, string masterBranch, string buildName, int numberOfDays, int maxNumberOfItems, bool useCache)
+                string organization, string project, string repositoryId, string mainBranch, string buildName, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             ListUtility<PullRequestModel> utility = new ListUtility<PullRequestModel>();
             LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
@@ -23,18 +23,18 @@ namespace DevOpsMetrics.Service.DataAccess
                 BuildsDA buildsDA = new BuildsDA();
                 initialBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageAuth, organization, project, buildName, useCache);
 
-                //Process all builds, filtering by master and feature branchs
-                List<AzureDevOpsBuild> masterBranchBuilds = new List<AzureDevOpsBuild>();
+                //Process all builds, filtering by main and feature branchs
+                List<AzureDevOpsBuild> mainBranchBuilds = new List<AzureDevOpsBuild>();
                 List<AzureDevOpsBuild> featureBranchBuilds = new List<AzureDevOpsBuild>();
                 List<string> branches = new List<string>();
                 foreach (AzureDevOpsBuild item in initialBuilds)
                 {
                     if (item.status == "completed" && item.queueTime > DateTime.Now.AddDays(-numberOfDays))
                     {
-                        if (item.sourceBranch == masterBranch)
+                        if (item.sourceBranch == mainBranch)
                         {
-                            //Save the master branch
-                            masterBranchBuilds.Add(item);
+                            //Save the main branch
+                            mainBranchBuilds.Add(item);
                         }
                         else
                         {
@@ -129,14 +129,14 @@ namespace DevOpsMetrics.Service.DataAccess
                     item.DurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
                 double totalHours = 0;
-                foreach (AzureDevOpsBuild item in masterBranchBuilds)
+                foreach (AzureDevOpsBuild item in mainBranchBuilds)
                 {
                     totalHours += (item.finishTime - item.queueTime).TotalHours;
                 }
                 float averageBuildHours = 0;
-                if (masterBranchBuilds.Count > 0)
+                if (mainBranchBuilds.Count > 0)
                 {
-                    averageBuildHours = (float)totalHours / (float)masterBranchBuilds.Count;
+                    averageBuildHours = (float)totalHours / (float)mainBranchBuilds.Count;
                 }
 
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
@@ -177,7 +177,7 @@ namespace DevOpsMetrics.Service.DataAccess
         }
 
         public async Task<LeadTimeForChangesModel> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, TableStorageAuth tableStorageAuth,
-                string owner, string repo, string masterBranch, string workflowName, string workflowId,
+                string owner, string repo, string mainBranch, string workflowName, string workflowId,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             ListUtility<PullRequestModel> utility = new ListUtility<PullRequestModel>();
@@ -189,18 +189,18 @@ namespace DevOpsMetrics.Service.DataAccess
                 BuildsDA buildsDA = new BuildsDA();
                 initialRuns = await buildsDA.GetGitHubActionRuns(clientId, clientSecret, tableStorageAuth, owner, repo, workflowName, workflowId, useCache);
 
-                //Process all builds, filtering by master and feature branchs
-                List<GitHubActionsRun> masterBranchRuns = new List<GitHubActionsRun>();
+                //Process all builds, filtering by main and feature branchs
+                List<GitHubActionsRun> mainBranchRuns = new List<GitHubActionsRun>();
                 List<GitHubActionsRun> featureBranchRuns = new List<GitHubActionsRun>();
                 List<string> branches = new List<string>();
                 foreach (GitHubActionsRun item in initialRuns)
                 {
                     if (item.status == "completed" && item.created_at > DateTime.Now.AddDays(-numberOfDays))
                     {
-                        if (item.head_branch == masterBranch)
+                        if (item.head_branch == mainBranch)
                         {
-                            //Save the master branch
-                            masterBranchRuns.Add(item);
+                            //Save the main branch
+                            mainBranchRuns.Add(item);
                         }
                         else
                         {
@@ -309,14 +309,14 @@ namespace DevOpsMetrics.Service.DataAccess
                     item.DurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
                 double totalHours = 0;
-                foreach (GitHubActionsRun item in masterBranchRuns)
+                foreach (GitHubActionsRun item in mainBranchRuns)
                 {
                     totalHours += (item.updated_at - item.created_at).TotalHours;
                 }
                 float averageBuildHours = 0;
-                if (masterBranchRuns.Count > 0)
+                if (mainBranchRuns.Count > 0)
                 {
-                    averageBuildHours = (float)totalHours / (float)masterBranchRuns.Count;
+                    averageBuildHours = (float)totalHours / (float)mainBranchRuns.Count;
                 }
 
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
