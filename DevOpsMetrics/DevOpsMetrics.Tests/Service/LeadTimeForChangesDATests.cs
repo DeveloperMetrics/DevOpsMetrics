@@ -34,7 +34,7 @@ namespace DevOpsMetrics.Tests.Service
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string repositoryId = "SamLearnsAzure";
-            string masterBranch = "refs/heads/master";
+            string mainBranch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
@@ -43,7 +43,7 @@ namespace DevOpsMetrics.Tests.Service
             //Act
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
             LeadTimeForChangesModel model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageAuth,
-                    organization, project, repositoryId, masterBranch, buildName, 
+                    organization, project, repositoryId, mainBranch, buildName, 
                     numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
@@ -81,7 +81,7 @@ namespace DevOpsMetrics.Tests.Service
         //    string organization = "samsmithnz";
         //    string project = "SamLearnsAzure";
         //    string repositoryId = "SamLearnsAzure";
-        //    string masterBranch = "refs/heads/master";
+        //    string mainBranch = "refs/heads/master";
         //    string buildName = "SamLearnsAzure.CI";
         //    string buildId = "3673"; //SamLearnsAzure.CI
         //    int numberOfDays = 7;
@@ -91,7 +91,7 @@ namespace DevOpsMetrics.Tests.Service
         //    //Act
         //    LeadTimeForChangesDA da = new LeadTimeForChangesDA();
         //    LeadTimeForChangesModel model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageAuth,
-        //            organization, project, repositoryId, masterBranch, buildName, buildId,
+        //            organization, project, repositoryId, mainBranch, buildName, buildId,
         //            numberOfDays, maxNumberOfItems, useCache);
 
         //    //Assert
@@ -126,7 +126,7 @@ namespace DevOpsMetrics.Tests.Service
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "devopsmetrics";
-            string masterBranch = "master";
+            string mainBranch = "master";
             string workflowName = "DevOpsMetrics.CI";
             string workflowId = "1162561";
             int numberOfDays = 7;
@@ -136,7 +136,7 @@ namespace DevOpsMetrics.Tests.Service
             //Act
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
             LeadTimeForChangesModel model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageAuth,
-                    owner, repo, masterBranch, workflowName, workflowId,
+                    owner, repo, mainBranch, workflowName, workflowId,
                     numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
@@ -174,7 +174,7 @@ namespace DevOpsMetrics.Tests.Service
         //    TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
         //    string owner = "samsmithnz";
         //    string repo = "SamsFeatureFlags";
-        //    string masterBranch = "master";
+        //    string mainBranch = "master";
         //    string workflowName = "SamsFeatureFlags CI/CD";
         //    string workflowId = "108084";
         //    int numberOfDays = 7;
@@ -184,7 +184,7 @@ namespace DevOpsMetrics.Tests.Service
         //    //Act
         //    LeadTimeForChangesDA da = new LeadTimeForChangesDA();
         //    LeadTimeForChangesModel model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageAuth,
-        //            owner, repo, masterBranch, workflowName, workflowId,
+        //            owner, repo, mainBranch, workflowName, workflowId,
         //            numberOfDays, maxNumberOfItems, useCache);
 
         //    //Assert
