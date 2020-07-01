@@ -74,7 +74,8 @@ namespace DevOpsMetrics.Service.DataAccess
                     {
                         if (endingAlerts[j].name == item.Name
                             && endingAlerts[j].resourceName == item.Resource
-                            && endingAlerts[j].resourceGroupName == item.ResourceGroup)
+                            && endingAlerts[j].resourceGroupName == item.ResourceGroup
+                            && endingAlerts[j].timestamp > item.StartTime)
                         {
                             item.EndTime = endingAlerts[j].timestamp;
                             item.Status = "completed";
