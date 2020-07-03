@@ -78,11 +78,11 @@ namespace DevOpsMetrics.Core
             {
                 rating = "Elite";
             }
-            else if (meanTimeToRestoreInHours < dailyDeployment) //less than one day (orginal calculation says < 1 day, but this scales)
+            else if (meanTimeToRestoreInHours < dailyDeployment) //less than one day
             {
                 rating = "High";
             }
-            else if (meanTimeToRestoreInHours < weeklyDeployment) //between one day and one week (orginal calculation says < 1 day, but this scales)
+            else if (meanTimeToRestoreInHours < weeklyDeployment) //less than one day (not a typo, overriding table to between one day and one week to create a range)
             {
                 rating = "Medium";
             }
