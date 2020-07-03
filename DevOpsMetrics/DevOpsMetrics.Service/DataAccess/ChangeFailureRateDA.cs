@@ -122,47 +122,14 @@ namespace DevOpsMetrics.Service.DataAccess
             }
 
             //Using the percent, convert it to a fraction
-            int numerator = 0;
-            int denominator = 0;
-            switch (percentComplete)
-            {
-                case 0:
-                    numerator = 0;
-                    denominator = 1;
-                    break;
-                case 10:
-                    numerator = 1;
-                    denominator = 10;
-                    break;
-                case 25:
-                    numerator = 1;
-                    denominator = 4;
-                    break;
-                case 50:
-                    numerator = 1;
-                    denominator = 2;
-                    break;
-                case 75:
-                    numerator = 3;
-                    denominator = 4;
-                    break;
-                case 98:
-                    numerator = 49;
-                    denominator = 50;
-                    break;
-                case 100:
-                    numerator = 1;
-                    denominator = 1;
-                    break;
-                default:
-                    numerator = 1;
-                    denominator = 1;
-                    break;
-            }
+            FractionConverter converter = new FractionConverter();
+            FractionModel fracationModel = converter.ConvertToFraction(percentComplete);
+            int numerator = fracationModel.Numerator;
+            int denominator = fracationModel.Denominator;
 
             //Get builds for positive (builds we will set DeploymentWasSuccessful=true) and negative (builds we will set to DeploymentWasSuccessful=false)
             Console.WriteLine($"numerator {numerator} / denominator {denominator}");
-            //TODO: remember how this (x, numerator) syntax works. oooof. 
+            //TODO: remember how this (x, numerator) syntax works so it can be documented. oooof. 
             List<ChangeFailureRateBuild> postiveBuilds = builds.Where((x, numerator) => numerator % denominator != 0).ToList();
             List<ChangeFailureRateBuild> negativeBuilds = builds.Where((x, numerator) => numerator % denominator == 0).ToList();
 

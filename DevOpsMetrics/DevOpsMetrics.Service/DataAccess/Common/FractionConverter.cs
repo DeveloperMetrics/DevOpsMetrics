@@ -7,12 +7,12 @@ namespace DevOpsMetrics.Service.DataAccess.Common
 {
     public class FractionConverter
     {
-        public FractionModel ConvertToFraction(int percentComplete)
+        public FractionModel ConvertToFraction(int percent)
         {
             FractionModel model = new FractionModel();
 
             //Using the percent, convert it to a fraction
-            switch (percentComplete)
+            switch (percent)
             {
                 case 0:
                     model.Numerator = 0;
