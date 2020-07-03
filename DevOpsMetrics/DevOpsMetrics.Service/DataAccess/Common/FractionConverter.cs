@@ -7,7 +7,7 @@ namespace DevOpsMetrics.Service.DataAccess.Common
 {
     public class FractionConverter
     {
-        public static FractionModel ConvertToFraction(int percentComplete)
+        public FractionModel ConvertToFraction(int percentComplete)
         {
             FractionModel model = new FractionModel();
 
@@ -55,7 +55,7 @@ namespace DevOpsMetrics.Service.DataAccess.Common
 
     public class FractionModel
     {
-        public int Numerator { get; set; } 
+        public int Numerator { get; set; }
         public int Denominator { get; set; }
     }
 }
