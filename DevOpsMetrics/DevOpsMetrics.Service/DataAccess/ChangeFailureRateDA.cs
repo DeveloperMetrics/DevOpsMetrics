@@ -1,4 +1,5 @@
 ﻿using DevOpsMetrics.Core;
+using DevOpsMetrics.Service.DataAccess.Common;
 using DevOpsMetrics.Service.DataAccess.TableStorage;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
@@ -15,7 +16,7 @@ namespace DevOpsMetrics.Service.DataAccess
     public class ChangeFailureRateDA
     {
         public ChangeFailureRateModel GetChangeFailureRate(bool getSampleData, TableStorageAuth tableStorageAuth,
-                DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName, 
+                DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName,
                 int numberOfDays, int maxNumberOfItems)
         {
             ListUtility<ChangeFailureRateBuild> utility = new ListUtility<ChangeFailureRateBuild>();
@@ -121,48 +122,12 @@ namespace DevOpsMetrics.Service.DataAccess
             }
 
             //Using the percent, convert it to a fraction
-            int numerator = 0;
-            int denominator = 0;
-            switch (percentComplete)
-            {
-                case 0:
-                    numerator = 0;
-                    denominator = 1;
-                    break;
-                case 10:
-                    numerator = 1;
-                    denominator = 10;
-                    break;
-                case 25:
-                    numerator = 1;
-                    denominator = 4;
-                    break;
-                case 50:
-                    numerator = 1;
-                    denominator = 2;
-                    break;
-                case 75:
-                    numerator = 3;
-                    denominator = 4;
-                    break;
-                case 98:
-                    numerator = 49;
-                    denominator = 50;
-                    break;
-                case 100:
-                    numerator = 1;
-                    denominator = 1;
-                    break;
-                default:
-                    numerator = 1;
-                    denominator = 1;
-                    break;
-            }
+            FractionModel fraction = FractionConverter.ConvertToFraction(percentComplete);
 
             //Get builds for positive (builds we will set DeploymentWasSuccessful=true) and negative (builds we will set to DeploymentWasSuccessful=false)
-            Console.WriteLine($"numerator {numerator} / denominator {denominator}");
-            List <ChangeFailureRateBuild> postiveBuilds = builds.Where((x, numerator) => numerator % denominator != 0).ToList();
-            List<ChangeFailureRateBuild> negativeBuilds = builds.Where((x, numerator) => numerator % denominator == 0).ToList();
+            Console.WriteLine($"numerator {fraction.Numerator} / denominator {fraction.Denominator}");
+            List<ChangeFailureRateBuild> postiveBuilds = builds.Where((x, numerator) => fraction.Numerator % fraction.Denominator != 0).ToList();
+            List<ChangeFailureRateBuild> negativeBuilds = builds.Where((x, numerator) => fraction.Numerator % fraction.Denominator == 0).ToList();
 
             //Make the updates
             TableStorageCommonDA tableChangeFailureRateDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableChangeFailureRate);

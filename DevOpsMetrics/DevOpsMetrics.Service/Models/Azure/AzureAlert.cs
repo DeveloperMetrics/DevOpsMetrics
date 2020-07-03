@@ -2,7 +2,7 @@
 using Microsoft.Azure.Cosmos.Table;
 using System;
 
-namespace DevOpsMetrics.Service.Models.Common
+namespace DevOpsMetrics.Service.Models.Azure
 {
     public class AzureAlert
     {

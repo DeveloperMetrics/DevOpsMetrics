@@ -1,4 +1,5 @@
 ﻿using DevOpsMetrics.Core;
+using DevOpsMetrics.Service.DataAccess.Common;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DevOpsMetrics.Service.DataAccess
+namespace DevOpsMetrics.Service.DataAccess.Common
 {
     public class ListUtility<T>
     {
