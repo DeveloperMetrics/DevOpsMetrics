@@ -158,6 +158,7 @@ namespace DevOpsMetrics.Service.DataAccess
             }
             else
             {
+                //Get sample data
                 List<PullRequestModel> samplePullRequests = utility.GetLastNItems(CreatePullRequestsSample(DevOpsPlatform.AzureDevOps), maxNumberOfItems);
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {

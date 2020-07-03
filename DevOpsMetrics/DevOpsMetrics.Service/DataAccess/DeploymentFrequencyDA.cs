@@ -101,6 +101,7 @@ namespace DevOpsMetrics.Service.DataAccess
             }
             else
             {
+                //Get sample data
                 List<Build> builds = utility.GetLastNItems(GetSampleAzureDevOpsBuilds(), maxNumberOfItems);
                 DeploymentFrequencyModel model = new DeploymentFrequencyModel
                 {

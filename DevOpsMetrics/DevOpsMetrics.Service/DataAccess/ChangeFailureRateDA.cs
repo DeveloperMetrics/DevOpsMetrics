@@ -84,7 +84,8 @@ namespace DevOpsMetrics.Service.DataAccess
                 return model;
             }
             else
-            {
+            { 
+                //Get sample data
                 List<ChangeFailureRateBuild> sampleBuilds = utility.GetLastNItems(GetSampleBuilds(), maxNumberOfItems);
                 ChangeFailureRateModel model = new ChangeFailureRateModel
                 {

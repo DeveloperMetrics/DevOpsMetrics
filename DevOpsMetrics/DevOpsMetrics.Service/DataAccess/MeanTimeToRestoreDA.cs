@@ -127,7 +127,7 @@ namespace DevOpsMetrics.Service.DataAccess
             }
             else
             {
-                //Return sample data
+                //Get sample data
                 MeanTimeToRestore mttr = new MeanTimeToRestore();
                 float averageMTTR = CalculateMTTRDuration(GetSampleMTTREvents(resourceGroup));
                 List<MeanTimeToRestoreEvent> sampleEvents = GetSampleMTTREvents(resourceGroup);
