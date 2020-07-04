@@ -358,6 +358,7 @@ namespace DevOpsMetrics.Service.DataAccess
             }
         }
 
+        //Return a sample dataset to help with testing
         private List<PullRequestModel> CreatePullRequestsSample(DevOpsPlatform targetDevOpsPlatform)
         {
             List<PullRequestModel> prs = new List<PullRequestModel>();

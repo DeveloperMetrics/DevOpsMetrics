@@ -161,6 +161,7 @@ namespace DevOpsMetrics.Service.DataAccess
             return average;
         }
 
+        //Return a sample dataset to help with testing
         private List<MeanTimeToRestoreEvent> GetSampleMTTREvents(string resourceGroup)
         {
             List<MeanTimeToRestoreEvent> results = new List<MeanTimeToRestoreEvent>();

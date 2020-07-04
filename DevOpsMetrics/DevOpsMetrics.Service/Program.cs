@@ -22,7 +22,6 @@ namespace DevOpsMetrics.Service
             return Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((context, builder) =>
                 {
-                    // Add other providers for JSON, etc.
                     if (context.HostingEnvironment.IsDevelopment())
                     {
                         builder.AddUserSecrets<Program>();

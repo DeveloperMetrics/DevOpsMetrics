@@ -150,6 +150,7 @@ namespace DevOpsMetrics.Service.DataAccess
             return true;
         }
 
+        //Return a sample dataset to help with testing
         private List<ChangeFailureRateBuild> GetSampleBuilds()
         {
             List<ChangeFailureRateBuild> results = new List<ChangeFailureRateBuild>();

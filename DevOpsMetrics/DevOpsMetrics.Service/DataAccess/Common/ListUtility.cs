@@ -4,16 +4,17 @@ namespace DevOpsMetrics.Service.DataAccess.Common
 {
     public class ListUtility<T>
     {
-        public List<T> GetLastNItems(List<T> items, int maxNumberOfItems)
+        //Get the last items from a list
+        public List<T> GetLastNItems(List<T> items, int numberOfItems)
         {
-            if (items.Count <= maxNumberOfItems)
+            if (items.Count <= numberOfItems)
             {
                 return items;
             }
             else
             {
                 List<T> newItems = new List<T>();
-                for (int i = items.Count - maxNumberOfItems; i < items.Count; i++)
+                for (int i = items.Count - numberOfItems; i < items.Count; i++)
                 {
                     newItems.Add(items[i]);
                 }

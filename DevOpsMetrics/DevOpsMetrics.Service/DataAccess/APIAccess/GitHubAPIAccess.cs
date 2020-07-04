@@ -9,11 +9,12 @@ namespace DevOpsMetrics.Service.DataAccess.APIAccess
     public class GitHubAPIAccess
     {
 
+        //Call the GitHub Rest API to get a JSON array of runs
         public async Task<Newtonsoft.Json.Linq.JArray> GetGitHubActionRunsJArray(string clientId, string clientSecret, string owner, string repo, string workflowId)
         {
             Newtonsoft.Json.Linq.JArray list = null;
             string url = $"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflowId}/runs?per_page=100";
-            string response = await SendGitHubMessage(url, clientId, clientSecret);
+            string response = await GetGitHubMessage(url, clientId, clientSecret);
             if (string.IsNullOrEmpty(response) == false)
             {
                 dynamic jsonObj = JsonConvert.DeserializeObject(response);
@@ -22,28 +23,14 @@ namespace DevOpsMetrics.Service.DataAccess.APIAccess
             return list;
         }
 
-        public async Task<Newtonsoft.Json.Linq.JArray> GetGitHubPullRequestCommitsJArray(string clientId, string clientSecret, string owner, string repo, string pull_number)
-        {
-            Newtonsoft.Json.Linq.JArray list = null;
-            //https://developer.GitHub.com/v3/pulls/#list-commits-on-a-pull-request
-            //GET /repos/:owner/:repo/pulls/:pull_number/commits
-            string url = $"https://api.github.com/repos/{owner}/{repo}/pulls/{pull_number}/commits?per_page=100";
-            string response = await SendGitHubMessage(url, clientId, clientSecret);
-            if (string.IsNullOrEmpty(response) == false)
-            {
-                dynamic buildListObject = JsonConvert.DeserializeObject(response);
-                list = buildListObject;
-            }
-            return list;
-        }
-
+        //Call the GitHub Rest API to get a JSON array of pull requests
         public async Task<Newtonsoft.Json.Linq.JArray> GetGitHubPullRequestsJArray(string clientId, string clientSecret, string owner, string repo, string branch)
         {
             Newtonsoft.Json.Linq.JArray list = null;
             //https://developer.GitHub.com/v3/pulls/#list-pull-requests
             //GET /repos/:owner/:repo/pulls
             string url = $"https://api.github.com/repos/{owner}/{repo}/pulls?state=all&head={branch}&per_page=100";
-            string response = await SendGitHubMessage(url, clientId, clientSecret);
+            string response = await GetGitHubMessage(url, clientId, clientSecret);
             if (string.IsNullOrEmpty(response) == false)
             {
                 dynamic buildListObject = JsonConvert.DeserializeObject(response);
@@ -52,7 +39,23 @@ namespace DevOpsMetrics.Service.DataAccess.APIAccess
             return list;
         }
 
-        public async static Task<string> SendGitHubMessage(string url, string clientId, string clientSecret)
+        //Call the GitHub Rest API to get a JSON array of pull request commits
+        public async Task<Newtonsoft.Json.Linq.JArray> GetGitHubPullRequestCommitsJArray(string clientId, string clientSecret, string owner, string repo, string pull_number)
+        {
+            Newtonsoft.Json.Linq.JArray list = null;
+            //https://developer.GitHub.com/v3/pulls/#list-commits-on-a-pull-request
+            //GET /repos/:owner/:repo/pulls/:pull_number/commits
+            string url = $"https://api.github.com/repos/{owner}/{repo}/pulls/{pull_number}/commits?per_page=100";
+            string response = await GetGitHubMessage(url, clientId, clientSecret);
+            if (string.IsNullOrEmpty(response) == false)
+            {
+                dynamic buildListObject = JsonConvert.DeserializeObject(response);
+                list = buildListObject;
+            }
+            return list;
+        }
+
+        public async static Task<string> GetGitHubMessage(string url, string clientId, string clientSecret)
         {
             Console.WriteLine($"Running GitHub url: {url}");
             string responseBody = "";
