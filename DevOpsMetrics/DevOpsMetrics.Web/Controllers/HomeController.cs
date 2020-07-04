@@ -36,13 +36,19 @@ namespace DevOpsMetrics.Web.Controllers
             return View(result);
         }
 
-        public async Task<IActionResult> Project(string rowKey)
+        [HttpPost]
+        public IActionResult ProjectUpdate(string RowKey, int NumberOfDaysSelected = 30)
+        {
+            return RedirectToAction("Project", "Home", new { rowKey = RowKey, numberOfDays = NumberOfDaysSelected });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Project(string rowKey, int numberOfDays = 30)
         {
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             int maxNumberOfItems = 20;
-            int numberOfDays = 30;
             bool getSampleData = false;
             bool useCache = true;
             ProjectViewModel model = new ProjectViewModel();
@@ -51,6 +57,17 @@ namespace DevOpsMetrics.Web.Controllers
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
+
+            //Create the days to view dropdown
+            List<NumberOfDaysItem> numberOfDaysList = new List<NumberOfDaysItem>
+            {
+                new NumberOfDaysItem { NumberOfDays = 7 },
+                new NumberOfDaysItem { NumberOfDays = 14 },
+                new NumberOfDaysItem { NumberOfDays = 21 },
+                new NumberOfDaysItem { NumberOfDays = 30 },
+                new NumberOfDaysItem { NumberOfDays = 60 },
+                new NumberOfDaysItem { NumberOfDays = 90 }
+            };
 
             //Get Azure DevOps project details
             AzureDevOpsSettings azureDevOpsSetting;
@@ -77,12 +94,15 @@ namespace DevOpsMetrics.Web.Controllers
                     changeFailureRateModel.IsProjectView = true;
                     model = new ProjectViewModel
                     {
+                        RowKey = item.RowKey,
                         ProjectName = item.Project,
                         TargetDevOpsPlatform = DevOpsPlatform.AzureDevOps,
                         DeploymentFrequency = deploymentFrequencyModel,
                         LeadTimeForChanges = leadTimeForChangesModel,
                         MeanTimeToRestore = meanTimeToRestoreModel,
-                        ChangeFailureRate = changeFailureRateModel
+                        ChangeFailureRate = changeFailureRateModel,
+                        NumberOfDays = new SelectList(numberOfDaysList, "NumberOfDays", "NumberOfDays"),
+                        NumberOfDaysSelected = numberOfDays
                     };
                 }
             }
@@ -111,12 +131,15 @@ namespace DevOpsMetrics.Web.Controllers
                     changeFailureRateModel.IsProjectView = true;
                     model = new ProjectViewModel
                     {
+                        RowKey = item.RowKey,
                         ProjectName = item.Repo,
                         TargetDevOpsPlatform = DevOpsPlatform.GitHub,
                         DeploymentFrequency = deploymentFrequencyModel,
                         LeadTimeForChanges = leadTimeForChangesModel,
                         MeanTimeToRestore = meanTimeToRestoreModel,
-                        ChangeFailureRate = changeFailureRateModel
+                        ChangeFailureRate = changeFailureRateModel,
+                        NumberOfDays = new SelectList(numberOfDaysList, "NumberOfDays", "NumberOfDays"),
+                        NumberOfDaysSelected = numberOfDays
                     };
                 }
             }
@@ -166,9 +189,24 @@ namespace DevOpsMetrics.Web.Controllers
                 }
             }
 
+            //Create the days to view dropdown
+            List<NumberOfDaysItem> numberOfDaysList = new List<NumberOfDaysItem>
+            {
+                new NumberOfDaysItem { NumberOfDays = 7 },
+                new NumberOfDaysItem { NumberOfDays = 14 },
+                new NumberOfDaysItem { NumberOfDays = 21 },
+                new NumberOfDaysItem { NumberOfDays = 30 },
+                new NumberOfDaysItem { NumberOfDays = 60 },
+                new NumberOfDaysItem { NumberOfDays = 90 }
+            };
+
             //sort the final list
             items = items.OrderBy(o => o.ItemOrder).ToList();
-            return View(items);
+            return View(new ProjectViewModel
+            {
+                DeploymentFrequency = items[0]
+            }
+            );
         }
 
         public async Task<IActionResult> LeadTimeForChanges()
@@ -353,7 +391,8 @@ namespace DevOpsMetrics.Web.Controllers
                 new NumberOfDaysItem { NumberOfDays = 7 },
                 new NumberOfDaysItem { NumberOfDays = 21 },
                 new NumberOfDaysItem { NumberOfDays = 30 },
-                new NumberOfDaysItem { NumberOfDays = 60 }
+                new NumberOfDaysItem { NumberOfDays = 60 },
+                new NumberOfDaysItem { NumberOfDays = 90 }
             };
 
             ProjectUpdateViewModel model = new ProjectUpdateViewModel
