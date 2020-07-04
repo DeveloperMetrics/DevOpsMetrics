@@ -108,7 +108,8 @@ jobs:
   #Publish the Azure DevOps extension 
   deployAzureDevOps:
     runs-on: windows-latest
-    needs: build   
+    needs: build
+    if: 1==0 # Commented out this task for now   
     env:
       extensionVersion: "0.0.0" 
     #if: github.ref == 'refs/heads/master'
