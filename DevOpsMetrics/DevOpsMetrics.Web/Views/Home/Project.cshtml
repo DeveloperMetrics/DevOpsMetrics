@@ -24,11 +24,10 @@
     }
     <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="ProjectUpdate">
         <h2><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ProjectName high performing DevOps metrics</h2>
-        <div class="row">
-            <div class="col-md-12" style="display: inline-block">
-                <input type="hidden" name="RowKey" value="@Model.RowKey" />
-                <span>Days to display: </span><select asp-for="NumberOfDaysSelected" asp-items="Model.NumberOfDays" style="width: 100px;" onchange="this.form.submit()"></select>
-            </div>
+        <div class="metricSpan">
+            <br />
+            <input type="hidden" name="RowKey" value="@Model.RowKey" />
+            <span>Days to display: </span><select asp-for="NumberOfDaysSelected" asp-items="Model.NumberOfDays" style="width: 100px;" onchange="this.form.submit()"></select>
         </div>
         <div class="row">
             <div class="col-md-6">

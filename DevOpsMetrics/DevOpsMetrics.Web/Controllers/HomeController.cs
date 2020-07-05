@@ -1,16 +1,15 @@
-﻿using DevOpsMetrics.Service.Models.AzureDevOps;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;
 using DevOpsMetrics.Web.Models;
 using DevOpsMetrics.Web.Services;
-using Microsoft.AspNetCore.DataProtection.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Web.Controllers
 {
@@ -25,7 +24,6 @@ namespace DevOpsMetrics.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-
             //Get a list of settings
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
@@ -45,12 +43,12 @@ namespace DevOpsMetrics.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Project(string rowKey, int numberOfDays = 30)
         {
+            int maxNumberOfItems = 20;
+            bool getSampleData = false;
+            bool useCache = false;
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            int maxNumberOfItems = 20;
-            bool getSampleData = false;
-            bool useCache = true;
             ProjectViewModel model = new ProjectViewModel();
 
             //Find the right project to load
@@ -202,11 +200,12 @@ namespace DevOpsMetrics.Web.Controllers
 
             //sort the final list
             items = items.OrderBy(o => o.ItemOrder).ToList();
-            return View(new ProjectViewModel
-            {
-                DeploymentFrequency = items[0]
-            }
-            );
+            //return View(new ProjectViewModel
+            //{
+            //    DeploymentFrequency = items[0]
+            //}
+            //);
+            return View(items);
         }
 
         public async Task<IActionResult> LeadTimeForChanges()
