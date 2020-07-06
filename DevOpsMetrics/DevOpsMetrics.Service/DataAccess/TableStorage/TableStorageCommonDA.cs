@@ -3,6 +3,7 @@ using Microsoft.Azure.Cosmos.Table;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using DevOpsMetrics.Service.Models.Azure;
 
 namespace DevOpsMetrics.Service.DataAccess.TableStorage
 {

@@ -9,6 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Tests", "DevO
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{97B5AD8C-80CA-4C4A-8F8E-264EAB873426}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		..\ReadmeImages\ChangeFailureRate.png = ..\ReadmeImages\ChangeFailureRate.png
 		..\ReadmeImages\DeploymentFrequencyDemo.png = ..\ReadmeImages\DeploymentFrequencyDemo.png
 		..\ReadmeImages\LeadTimeForChanges.png = ..\ReadmeImages\LeadTimeForChanges.png
@@ -20,9 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Service", "De
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Web", "DevOpsMetrics.Web\DevOpsMetrics.Web.csproj", "{432C7262-4877-400D-9719-A601C8F0FABD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.AzureDevOpsExtension", "DevOpsMetrics.AzureDevOpsExtension\DevOpsMetrics.AzureDevOpsExtension.csproj", "{CF433C20-DD25-4892-B321-37EAE9402BA9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsMetrics.Function", "DevOpsMetrics.Function\DevOpsMetrics.Function.csproj", "{16C6AE31-8373-4F37-B291-AFDBE1829E3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Function", "DevOpsMetrics.Function\DevOpsMetrics.Function.csproj", "{16C6AE31-8373-4F37-B291-AFDBE1829E3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,10 +45,6 @@ Global
 		{432C7262-4877-400D-9719-A601C8F0FABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{432C7262-4877-400D-9719-A601C8F0FABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{432C7262-4877-400D-9719-A601C8F0FABD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF433C20-DD25-4892-B321-37EAE9402BA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF433C20-DD25-4892-B321-37EAE9402BA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF433C20-DD25-4892-B321-37EAE9402BA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF433C20-DD25-4892-B321-37EAE9402BA9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{16C6AE31-8373-4F37-B291-AFDBE1829E3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{16C6AE31-8373-4F37-B291-AFDBE1829E3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16C6AE31-8373-4F37-B291-AFDBE1829E3C}.Release|Any CPU.ActiveCfg = Release|Any CPU

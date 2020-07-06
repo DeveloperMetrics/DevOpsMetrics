@@ -1,5 +1,7 @@
 ﻿using DevOpsMetrics.Core;
+using DevOpsMetrics.Service.DataAccess.Common;
 using DevOpsMetrics.Service.DataAccess.TableStorage;
+using DevOpsMetrics.Service.Models.Azure;
 using DevOpsMetrics.Service.Models.Common;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -125,7 +127,7 @@ namespace DevOpsMetrics.Service.DataAccess
             }
             else
             {
-                //Return sample data
+                //Get sample data
                 MeanTimeToRestore mttr = new MeanTimeToRestore();
                 float averageMTTR = CalculateMTTRDuration(GetSampleMTTREvents(resourceGroup));
                 List<MeanTimeToRestoreEvent> sampleEvents = GetSampleMTTREvents(resourceGroup);
@@ -159,6 +161,7 @@ namespace DevOpsMetrics.Service.DataAccess
             return average;
         }
 
+        //Return a sample dataset to help with testing
         private List<MeanTimeToRestoreEvent> GetSampleMTTREvents(string resourceGroup)
         {
             List<MeanTimeToRestoreEvent> results = new List<MeanTimeToRestoreEvent>();

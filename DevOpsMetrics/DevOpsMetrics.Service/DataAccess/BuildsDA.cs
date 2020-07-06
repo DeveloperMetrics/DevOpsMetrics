@@ -32,14 +32,13 @@ namespace DevOpsMetrics.Service.DataAccess
             if (list != null)
             {
                 builds = JsonConvert.DeserializeObject<List<AzureDevOpsBuild>>(list.ToString());
-
-                //We need to do some post processing and loop over the list a couple times to construct a usable url
+                //We need to do some post processing and loop over the list to construct a usable url
                 foreach (AzureDevOpsBuild item in builds)
                 {
                     item.url = $"https://dev.azure.com/{organization}/{project}/_build/results?buildId={item.id}&view=results";
                 }
 
-                //sort the list
+                //sort the final list
                 builds = builds.OrderBy(o => o.queueTime).ToList();
             }
 
@@ -67,7 +66,7 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 runs = JsonConvert.DeserializeObject<List<GitHubActionsRun>>(list.ToString());
 
-                //sort the list
+                //sort the final list
                 runs = runs.OrderBy(o => o.created_at).ToList();
             }
 

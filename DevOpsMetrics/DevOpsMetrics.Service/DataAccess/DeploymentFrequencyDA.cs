@@ -1,4 +1,5 @@
 ﻿using DevOpsMetrics.Core;
+using DevOpsMetrics.Service.DataAccess.Common;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;
@@ -100,6 +101,7 @@ namespace DevOpsMetrics.Service.DataAccess
             }
             else
             {
+                //Get sample data
                 List<Build> builds = utility.GetLastNItems(GetSampleAzureDevOpsBuilds(), maxNumberOfItems);
                 DeploymentFrequencyModel model = new DeploymentFrequencyModel
                 {
@@ -222,6 +224,7 @@ namespace DevOpsMetrics.Service.DataAccess
             }
         }
 
+        //Return a sample dataset to help with testing
         private List<Build> GetSampleAzureDevOpsBuilds()
         {
             List<Build> results = new List<Build>();

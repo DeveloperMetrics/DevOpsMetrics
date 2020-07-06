@@ -22,22 +22,28 @@
         widgetImageName = "Unknown-icon.png";
         widgetName = "Unknown";
     }
-
-    <h2><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ProjectName high performing DevOps metrics</h2>
-    <div class="row">
-        <div class="col-md-6">
-            @await Html.PartialAsync("_Deployments", Model.DeploymentFrequency)
+    <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="ProjectUpdate">
+        <h2><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ProjectName high performing DevOps metrics</h2>
+        <div class="metricSpan">
+            <br />
+            <input type="hidden" name="RowKey" value="@Model.RowKey" />
+            <span>Days to display: </span><select asp-for="NumberOfDaysSelected" asp-items="Model.NumberOfDays" style="width: 100px;" onchange="this.form.submit()"></select>
         </div>
-        <div class="col-md-6">
-            @await Html.PartialAsync("_LeadTimeForChanges", Model.LeadTimeForChanges)
+        <div class="row">
+            <div class="col-md-6">
+                @await Html.PartialAsync("_Deployments", Model.DeploymentFrequency)
+            </div>
+            <div class="col-md-6">
+                @await Html.PartialAsync("_LeadTimeForChanges", Model.LeadTimeForChanges)
+            </div>
+            <div class="col-md-6">
+                @await Html.PartialAsync("_MeanTimeToRestore", Model.MeanTimeToRestore)
+            </div>
+            <div class="col-md-6">
+                @await Html.PartialAsync("_ChangeFailureRate", Model.ChangeFailureRate)
+            </div>
         </div>
-        <div class="col-md-6">
-            @await Html.PartialAsync("_MeanTimeToRestore", Model.MeanTimeToRestore)
-        </div>
-        <div class="col-md-6">
-            @await Html.PartialAsync("_ChangeFailureRate", Model.ChangeFailureRate)
-        </div>
-    </div>
+    </form>
 }
 else
 {

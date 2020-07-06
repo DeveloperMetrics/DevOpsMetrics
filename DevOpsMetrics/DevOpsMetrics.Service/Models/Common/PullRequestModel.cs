@@ -26,7 +26,7 @@ namespace DevOpsMetrics.Service.Models.Common
         }
         public int DurationPercent { get; set; } 
         public List<Commit> Commits { get; set; }
-        public int BuildCount { get; set; } //TODO: Should this actually be the list of builds?
+        public int BuildCount { get; set; } //Note: this could be a list of builds, but currently we have nothing to do with it, so a count will do for now
 
     }
 }

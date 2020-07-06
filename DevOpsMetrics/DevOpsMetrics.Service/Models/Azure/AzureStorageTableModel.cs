@@ -1,7 +1,7 @@
 ﻿using DevOpsMetrics.Service.DataAccess.TableStorage;
 using Microsoft.Azure.Cosmos.Table;
 
-namespace DevOpsMetrics.Service.Models.Common
+namespace DevOpsMetrics.Service.Models.Azure
 {
     public class AzureStorageTableModel : TableEntity
     {

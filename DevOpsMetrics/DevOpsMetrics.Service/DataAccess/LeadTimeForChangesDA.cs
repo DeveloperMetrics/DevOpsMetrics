@@ -1,4 +1,5 @@
 ﻿using DevOpsMetrics.Core;
+using DevOpsMetrics.Service.DataAccess.Common;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;
@@ -157,6 +158,7 @@ namespace DevOpsMetrics.Service.DataAccess
             }
             else
             {
+                //Get sample data
                 List<PullRequestModel> samplePullRequests = utility.GetLastNItems(CreatePullRequestsSample(DevOpsPlatform.AzureDevOps), maxNumberOfItems);
                 LeadTimeForChangesModel model = new LeadTimeForChangesModel
                 {
@@ -356,6 +358,7 @@ namespace DevOpsMetrics.Service.DataAccess
             }
         }
 
+        //Return a sample dataset to help with testing
         private List<PullRequestModel> CreatePullRequestsSample(DevOpsPlatform targetDevOpsPlatform)
         {
             List<PullRequestModel> prs = new List<PullRequestModel>();
