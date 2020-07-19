@@ -59,7 +59,7 @@ namespace DevOpsMetrics.Tests.Service
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string resourceGroup = "SamLearnsAzureProd";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
-            int numberOfDays = 30;
+            int numberOfDays = 60;
             int maxNumberOfItems = 20;
 
             //Act
@@ -86,7 +86,7 @@ namespace DevOpsMetrics.Tests.Service
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string resourceGroup = "SamLearnsAzureProd";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
-            int numberOfDays = 30;
+            int numberOfDays = 60;
             int maxNumberOfItems = 20;
 
             //Act

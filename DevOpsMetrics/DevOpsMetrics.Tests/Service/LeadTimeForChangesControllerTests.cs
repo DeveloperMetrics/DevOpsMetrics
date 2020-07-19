@@ -266,8 +266,8 @@ namespace DevOpsMetrics.Tests.Service
                 Assert.IsTrue(model.LeadTimeForChangesMetric >= 0);
                 Assert.IsTrue(string.IsNullOrEmpty(model.LeadTimeForChangesMetricDescription) == false);
                 Assert.AreEqual(numberOfDays, model.NumberOfDays);
-                Assert.IsTrue(model.MaxNumberOfItems > 0);
-                Assert.IsTrue(model.TotalItems > 0);
+                Assert.IsTrue(model.MaxNumberOfItems >= 0);
+                Assert.IsTrue(model.TotalItems >= 0);
             }
         }
 

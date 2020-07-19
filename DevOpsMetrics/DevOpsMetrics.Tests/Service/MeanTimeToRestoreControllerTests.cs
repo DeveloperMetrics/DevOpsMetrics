@@ -81,7 +81,7 @@ namespace DevOpsMetrics.Tests.Service
             bool getSampleData = false;
             string resourceGroupName = "SamLearnsAzureProd";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
-            int numberOfDays = 30;
+            int numberOfDays = 60;
             int maxNumberOfItems = 20;
             MeanTimeToRestoreController controller = new MeanTimeToRestoreController(Configuration);
 
