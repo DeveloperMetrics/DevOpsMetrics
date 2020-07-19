@@ -41,9 +41,9 @@ jobs:
     - name: .NET Publish Function
       run: dotnet publish DevOpsMetrics/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj --configuration Release      
     - name: DotNET Publish functional tests
-      run: dotnet publish DevOpsMetrics/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj --configuration ${{ env.dotNetConfiguration }}
+      run: dotnet publish DevOpsMetrics/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj --configuration Release 
     - name: Copy chromedriver for functional test
-      run: copy "DevOpsMetrics/DevOpsMetrics.FunctionalTests/bin/${{ env.dotNetConfiguration }}/${{ env.dotNetVersion }}/chromedriver.exe" "DevOpsMetrics/DevOpsMetrics.FunctionalTests/bin/${{ env.dotNetConfiguration }}/${{ env.dotNetVersion }}/publish"
+      run: copy "DevOpsMetrics/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/chromedriver.exe" "DevOpsMetrics/DevOpsMetrics.FunctionalTests/bin/${{ env.dotNetConfiguration }}/${{ env.dotNetVersion }}/publish"
       shell: powershell
       
     #Publish build artifacts to GitHub
