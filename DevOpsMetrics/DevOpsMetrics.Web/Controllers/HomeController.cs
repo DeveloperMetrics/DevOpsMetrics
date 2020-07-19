@@ -45,7 +45,7 @@ namespace DevOpsMetrics.Web.Controllers
         {
             int maxNumberOfItems = 20;
             bool getSampleData = false;
-            bool useCache = false;
+            bool useCache = true;
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
