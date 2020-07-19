@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<RunSettings>
+
+  <!-- Parameters used by tests at runtime -->
+  <TestRunParameters>
+    <Parameter name = "ServiceUrl" value="https://devopsmetrics-prod-eu-service.azurewebsites.net/" />
+    <Parameter name = "WebsiteUrl" value="https://devopsmetrics-prod-eu-web.azurewebsites.net/" />
+  </TestRunParameters>
+
+</RunSettings>

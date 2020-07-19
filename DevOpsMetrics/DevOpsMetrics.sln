@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{97B5AD8C-80CA-4C4A-8F8E-264EAB873426}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		..\ReadmeImages\Architecture.png = ..\ReadmeImages\Architecture.png
 		..\ReadmeImages\ChangeFailureRate.png = ..\ReadmeImages\ChangeFailureRate.png
 		..\ReadmeImages\DeploymentFrequencyDemo.png = ..\ReadmeImages\DeploymentFrequencyDemo.png
 		..\ReadmeImages\LeadTimeForChanges.png = ..\ReadmeImages\LeadTimeForChanges.png
@@ -22,6 +23,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Web", "DevOpsMetrics.Web\DevOpsMetrics.Web.csproj", "{432C7262-4877-400D-9719-A601C8F0FABD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Function", "DevOpsMetrics.Function\DevOpsMetrics.Function.csproj", "{16C6AE31-8373-4F37-B291-AFDBE1829E3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsMetrics.FunctionalTests", "DevOpsMetrics.FunctionalTests\DevOpsMetrics.FunctionalTests.csproj", "{613B7F21-62CF-412F-BCF4-B0500EAE6FCB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +52,10 @@ Global
 		{16C6AE31-8373-4F37-B291-AFDBE1829E3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16C6AE31-8373-4F37-B291-AFDBE1829E3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16C6AE31-8373-4F37-B291-AFDBE1829E3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{613B7F21-62CF-412F-BCF4-B0500EAE6FCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{613B7F21-62CF-412F-BCF4-B0500EAE6FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{613B7F21-62CF-412F-BCF4-B0500EAE6FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{613B7F21-62CF-412F-BCF4-B0500EAE6FCB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -67,6 +67,9 @@ Currently the CI/CD process:
 
 Dependabot runs daily to check for dependency upgrades, and will automatically create a pull request, and approve/close it if all of the tests pass successfully 
 
+![Architecture diagram](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/Architecture.png)
+
+
 # What's next?
 Potentially:
 - Azure DevOps and GitHub integrations, so you can see the changes real time in your project/repo.
