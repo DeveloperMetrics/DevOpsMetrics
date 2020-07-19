@@ -106,7 +106,7 @@ jobs:
 
 
   #Publish the Azure DevOps extension 
-  deployAzureDevOps:
+  publishAzureDevOpsExtension:
     runs-on: windows-latest
     #needs: build   
     env:
