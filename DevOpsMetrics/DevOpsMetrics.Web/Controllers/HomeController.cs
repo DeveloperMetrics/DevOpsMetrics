@@ -211,7 +211,7 @@ namespace DevOpsMetrics.Web.Controllers
         public async Task<IActionResult> LeadTimeForChanges()
         {
             int maxNumberOfItems = 20; //20 is the optimium max that looks good with the current UI            
-            int numberOfDays = 60; //TODO: Move number of days variable to a drop down list on the current UI 
+            int numberOfDays = 30; //TODO: Move number of days variable to a drop down list on the current UI 
             bool getSampleData = false;
             bool useCache = true; //Use Azure storage instead of hitting the API. Quicker, but data may be up to 4 hours out of date
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
@@ -257,7 +257,7 @@ namespace DevOpsMetrics.Web.Controllers
         public async Task<IActionResult> MeanTimeToRestore()
         {
             int maxNumberOfItems = 20; //20 is the optimium max that looks good with the current UI            
-            int numberOfDays = 60; //TODO: Move number of days variable to a drop down list on the current UI 
+            int numberOfDays = 30; //TODO: Move number of days variable to a drop down list on the current UI 
             bool getSampleData = false;
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             List<MeanTimeToRestoreModel> items = new List<MeanTimeToRestoreModel>();
@@ -297,7 +297,7 @@ namespace DevOpsMetrics.Web.Controllers
         public async Task<IActionResult> ChangeFailureRate()
         {
             int maxNumberOfItems = 20; //20 is the optimium max that looks good with the current UI            
-            int numberOfDays = 60; //TODO: Move number of days variable to a drop down list on the current UI 
+            int numberOfDays = 30; //TODO: Move number of days variable to a drop down list on the current UI 
             bool getSampleData = false;
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             List<ChangeFailureRateModel> items = new List<ChangeFailureRateModel>();

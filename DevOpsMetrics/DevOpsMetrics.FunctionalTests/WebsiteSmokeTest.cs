@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium.Chrome;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
@@ -36,27 +37,27 @@ namespace DevOpsMetrics.FunctionalTests
             Assert.AreEqual(data.Text, "High performing DevOps metrics");
         }
 
-        [TestMethod]
-        [TestCategory("SkipWhenLiveUnitTesting")]
-        [TestCategory("SmokeTest")]
-        public void GotoWebHomeDeploymentFrequencyPageTest()
-        {
-            //Arrange
-            bool webLoaded;
+        //[TestMethod]
+        //[TestCategory("SkipWhenLiveUnitTesting")]
+        //[TestCategory("SmokeTest")]
+        //public void GotoWebHomeDeploymentFrequencyPageTest()
+        //{
+        //    //Arrange
+        //    bool webLoaded;
 
-            //Act
-            string webURL = _webUrl + "Home/DeploymentFrequency";
-            Console.WriteLine("webURL:" + webURL);
-            _driver.Navigate().GoToUrl(webURL);
-            webLoaded = (_driver.Url == webURL);
-            OpenQA.Selenium.IWebElement data = _driver.FindElementByXPath(@"/html/body/div/main/h2");
-            Console.WriteLine("data:" + data.Text);
+        //    //Act
+        //    string webURL = _webUrl + "Home/DeploymentFrequency";
+        //    Console.WriteLine("webURL:" + webURL);
+        //    _driver.Navigate().GoToUrl(webURL);
+        //    webLoaded = (_driver.Url == webURL);
+        //    OpenQA.Selenium.IWebElement data = _driver.FindElementByXPath(@"/html/body/div/main/h2");
+        //    Console.WriteLine("data:" + data.Text);
 
-            //Assert
-            Assert.IsTrue(webLoaded);
-            Assert.IsTrue(data != null);
-            Assert.AreEqual(data.Text, "Deployment frequency");
-        }
+        //    //Assert
+        //    Assert.IsTrue(webLoaded);
+        //    Assert.IsTrue(data != null);
+        //    Assert.AreEqual(data.Text, "Deployment frequency");
+        //}
 
         //[TestMethod]
         //[TestCategory("SkipWhenLiveUnitTesting")]
@@ -124,27 +125,27 @@ namespace DevOpsMetrics.FunctionalTests
             Assert.AreEqual(data.Text, "Change failure rate");
         }
 
-        //[TestMethod]
-        //[TestCategory("SkipWhenLiveUnitTesting")]
-        //[TestCategory("SmokeTest")]
-        //public void GotoWebHomeProjectDevOpsMetricsPageTest()
-        //{
-        //    //Arrange
-        //    bool webLoaded;
+        [TestMethod]
+        [TestCategory("SkipWhenLiveUnitTesting")]
+        [TestCategory("SmokeTest")]
+        public void GotoWebHomeProjectDevOpsMetricsPageTest()
+        {
+            //Arrange
+            bool webLoaded;
 
-        //    //Act
-        //    string webURL = _webUrl + "Home//Project?rowKey=samsmithnz_DevOpsMetrics_DevOpsMetrics%20CI%2FCD";
-        //    Console.WriteLine("webURL:" + webURL);
-        //    _driver.Navigate().GoToUrl(webURL);
-        //    webLoaded = (_driver.Url == webURL);
-        //    OpenQA.Selenium.IWebElement data = _driver.FindElementByXPath(@"/html/body/div/main/h2");
-        //    Console.WriteLine("data:" + data.Text);
+            //Act
+            string webURL = _webUrl + "Home//Project?rowKey=samsmithnz_DevOpsMetrics_DevOpsMetrics%20CI%2FCD";
+            Console.WriteLine("webURL:" + webURL);
+            _driver.Navigate().GoToUrl(webURL);
+            webLoaded = (_driver.Url == webURL);
+            OpenQA.Selenium.IWebElement data = _driver.FindElementByXPath(@"/html/body/div/main/form/h2");
+            Debug.WriteLine("data:" + data.Text);
 
-        //    //Assert
-        //    Assert.IsTrue(webLoaded);
-        //    Assert.IsTrue(data != null);
-        //    Assert.AreEqual(data.Text, " GitHub - DevOpsMetrics high performing DevOps metrics");
-        //}
+            //Assert
+            Assert.IsTrue(webLoaded);
+            Assert.IsTrue(data != null);
+            Assert.AreEqual(data.Text, "  GitHub - DevOpsMetrics high performing DevOps metrics");
+        }
 
         [TestInitialize]
         public void SetupTests()
