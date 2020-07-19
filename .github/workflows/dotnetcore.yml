@@ -8,6 +8,7 @@ on:
 
 jobs:
 
+
   build:
     runs-on: windows-latest
     #if: github.ref == 'refs/heads/master'   
@@ -68,6 +69,7 @@ jobs:
         name: functionaltests
         path: DevOpsMetrics/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/publish
 
+
   #Deploy the artifacts to Azure
   deployToStagingSlots:
     runs-on: windows-latest
@@ -105,22 +107,16 @@ jobs:
         app-name: devopsmetrics-prod-eu-service
         package: serviceapp
         slot-name: staging 
-    - name: deploy app settings
-      run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountAccessKey=${{ secrets.AzureStorageAccessKey }}" 
+    - name: deploy web service app settings
+      run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --slot "staging" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountAccessKey=${{ secrets.AzureStorageAccessKey }}" 
     - name: Deploy website to Azure WebApp
       uses: Azure/webapps-deploy@v1
       with:
         app-name: devopsmetrics-prod-eu-web
         package: webapp 
         slot-name: staging         
-    - name: deploy app settings
-      run: az webapp config appsettings set --name devopsmetrics-prod-eu-web --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  
-    - name: Deploy function to Azure WebApp
-      uses: Azure/webapps-deploy@v1
-      with:
-        app-name: devopsmetrics-prod-eu-function
-        package: functionapp 
-    - run: az webapp config appsettings set --name "devopsmetrics-prod-eu-function" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountAccessKey=${{ secrets.AzureStorageAccessKey }}" "AppSettings:WebServiceURL=https://devopsmetrics-prod-eu-service.azurewebsites.net/" 
+    - name: deploy website app settings
+      run: az webapp config appsettings set --name devopsmetrics-prod-eu-web --slot "staging" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  
 
     # Run functional tests on staging slots     
     - name: Functional Tests
@@ -134,8 +130,18 @@ jobs:
         Write-Host "$command"
         Invoke-Expression $command
       shell: powershell
+    
+    # deploy function and settings
+    - name: Deploy function to Azure WebApp
+      uses: Azure/webapps-deploy@v1
+      with:
+        app-name: devopsmetrics-prod-eu-function
+        package: functionapp 
+    - name: deploy function app settings
+      run: az webapp config appsettings set --name "devopsmetrics-prod-eu-function" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountAccessKey=${{ secrets.AzureStorageAccessKey }}" "AppSettings:WebServiceURL=https://devopsmetrics-prod-eu-service.azurewebsites.net/" 
 
-  deploySwapSlots:
+
+  swapDeploymentSlots:
     runs-on: ubuntu-latest # Note, Azure CLI requires a Linux runner...
     needs: [build, deployToStagingSlots]
     #Only deploy if running off the master branch - we don't want to deploy off feature branches
@@ -152,15 +158,20 @@ jobs:
       uses: Azure/cli@v1.0.0
       with:
         inlineScript: az webapp deployment slot swap --name "devopsmetrics-prod-eu-service" --resource-group "devopsmetrics" --slot staging --target-slot production
+    - name: deploy web service app settings
+      run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountAccessKey=${{ secrets.AzureStorageAccessKey }}"     
     - name: Swap web site staging slot to production
       uses: Azure/cli@v1.0.0
       with:
         inlineScript: az webapp deployment slot swap --name "devopsmetrics-prod-eu-web" --resource-group "devopsmetrics" --slot staging --target-slot production
+    - name: deploy website app settings
+      run: az webapp config appsettings set --name devopsmetrics-prod-eu-web --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  
+
 
   #Publish the Azure DevOps extension (Currently disabled)
-  deployAzureDevOps:
+  deployAzureDevOpsExtension:
     runs-on: windows-latest
-    needs: [build, deployToStagingSlots]
+    needs: [build, swapDeploymentSlots]
     if: 1==0 # Commented out/skipping this job for now   
     env:
       extensionVersion: "0.0.0" 
