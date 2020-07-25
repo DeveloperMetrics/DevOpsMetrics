@@ -49,22 +49,22 @@ jobs:
       
     #Publish build artifacts to GitHub
     - name: Upload web service build artifacts back to GitHub
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@v2
       with:
         name: serviceapp
         path: DevOpsMetrics/DevOpsMetrics.Service/bin/Release/netcoreapp3.1/publish
     - name: Upload website build artifacts back to GitHub
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@v2
       with:
         name: webapp
         path: DevOpsMetrics/DevOpsMetrics.Web/bin/Release/netcoreapp3.1/publish
     - name: Upload function build artifacts back to GitHub
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@v2
       with:
         name: functionapp
         path: DevOpsMetrics/DevOpsMetrics.Function/bin/Release/netcoreapp3.1/publish
     - name: Upload function test build artifacts back to GitHub
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@v2
       with:
         name: functionaltests
         path: DevOpsMetrics/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/publish
@@ -144,9 +144,8 @@ jobs:
   swapDeploymentSlots:
     runs-on: ubuntu-latest # Note, Azure CLI requires a Linux runner...
     needs: [build, deployToStagingSlots]
-    #Only deploy if running off the master branch - we don't want to deploy off feature branches
-    #if: github.ref == 'refs/heads/master'
-        
+    #Only swap from staging to production slots if running off the master branch - we don't want to deploy off feature branches/PRs
+    if: github.ref == 'refs/heads/master'     
     steps:
     # Login with the secret SP details
     - name: Log into Azure
