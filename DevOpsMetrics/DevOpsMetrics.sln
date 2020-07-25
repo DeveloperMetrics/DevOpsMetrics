@@ -24,7 +24,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Web", "DevOps
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Function", "DevOpsMetrics.Function\DevOpsMetrics.Function.csproj", "{16C6AE31-8373-4F37-B291-AFDBE1829E3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsMetrics.FunctionalTests", "DevOpsMetrics.FunctionalTests\DevOpsMetrics.FunctionalTests.csproj", "{613B7F21-62CF-412F-BCF4-B0500EAE6FCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.FunctionalTests", "DevOpsMetrics.FunctionalTests\DevOpsMetrics.FunctionalTests.csproj", "{613B7F21-62CF-412F-BCF4-B0500EAE6FCB}"
+EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "DevOpsMetrics.Infrastructure", "DevOpsMetrics.Infrastructure\DevOpsMetrics.Infrastructure.deployproj", "{0465BF7A-C791-49CA-A7DE-27B4EECD2020}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +58,10 @@ Global
 		{613B7F21-62CF-412F-BCF4-B0500EAE6FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{613B7F21-62CF-412F-BCF4-B0500EAE6FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{613B7F21-62CF-412F-BCF4-B0500EAE6FCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0465BF7A-C791-49CA-A7DE-27B4EECD2020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0465BF7A-C791-49CA-A7DE-27B4EECD2020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0465BF7A-C791-49CA-A7DE-27B4EECD2020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0465BF7A-C791-49CA-A7DE-27B4EECD2020}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
