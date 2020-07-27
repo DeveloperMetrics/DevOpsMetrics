@@ -48,7 +48,7 @@ namespace DevOpsMetrics.Service.Models.Common
                 string duration = "0:00";
                 if (EndTime != null && EndTime > DateTime.MinValue)
                 {
-                    TimeSpan timespan = DateTime.UtcNow.Date - EndTime;
+                    TimeSpan timespan = DateTime.UtcNow - EndTime;
                     if (timespan.TotalMinutes < 60)
                     {
                         duration = ((int)timespan.TotalMinutes).ToString() + " mins ago";
