@@ -548,7 +548,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Assert
             Assert.AreEqual("None", model.DeploymentsPerDayMetricDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency-None-white", model.BadgeURL);
+            Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency-None-lightgrey", model.BadgeURL);
         }
     }
 }

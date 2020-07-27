@@ -243,7 +243,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Assert
             Assert.AreEqual("None", model.ChangeFailureRateMetricDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-None-white", model.BadgeURL);
+            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-None-lightgrey", model.BadgeURL);
         }
 
     }

@@ -190,7 +190,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Assert
             Assert.AreEqual("None", model.MTTRAverageDurationDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service-None-white", model.BadgeURL);
+            Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service-None-lightgrey", model.BadgeURL);
         }
 
 

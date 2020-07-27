@@ -64,10 +64,11 @@
 </div>
 @if (Model.RateLimitHit == false)
 {
-    <div class="metricSpan">
-        @*<b>Build time:</b><span> @Model.AverageBuildHours.ToString("0.0") hours</span><br />
+<div class="metricSpan">
+    @*<b>Build time:</b><span> @Model.AverageBuildHours.ToString("0.0") hours</span><br />
         <b>Pull request time:</b><span> @Model.AveragePullRequestHours.ToString("0.0") hours</span><br />*@
-        <b>Lead time for changes:</b><span> @Model.LeadTimeForChangesMetricDisplayMetric.ToString("0.0") @Model.LeadTimeForChangesMetricDisplayUnit</span><br />
-        <b>Lead time for changes ranking:</b><span> @Model.LeadTimeForChangesMetricDescription</span>
-    </div>
+    <b>Lead time for changes:</b><span> @Model.LeadTimeForChangesMetricDisplayMetric.ToString("0.0") @Model.LeadTimeForChangesMetricDisplayUnit</span><br />
+    <b>Lead time for changes ranking:</b><span> @Model.LeadTimeForChangesMetricDescription</span><br />
+    <b>Badge:</b> <img src="@Model.BadgeURL" />
+</div>
 }
