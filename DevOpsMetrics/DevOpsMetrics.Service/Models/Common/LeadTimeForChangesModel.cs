@@ -33,5 +33,13 @@ namespace DevOpsMetrics.Service.Models.Common
         public string LeadTimeForChangesMetricDescription { get; set; }
         public bool RateLimitHit { get; set; }
         public int ItemOrder { get; set; }
+
+        public string BadgeURL { 
+            get
+            {
+                //Example: https://img.shields.io/badge/Lead%20time%20for%20changes-Elite-brightgreen
+                return Badges.BadgeURL("Lead%20time%20for%20changes", LeadTimeForChangesMetricDescription);
+            }
+        }
     }
 }

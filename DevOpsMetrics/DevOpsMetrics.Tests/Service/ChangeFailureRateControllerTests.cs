@@ -161,5 +161,90 @@ namespace DevOpsMetrics.Tests.Service
 
         }
 
+        [TestCategory("APITest")]
+        [TestMethod]
+        public void DeploymentsControllerEliteBadgeTest()
+        {
+            //Arrange
+            ChangeFailureRateModel model = new ChangeFailureRateModel
+            {
+                ChangeFailureRateMetricDescription = "Elite"
+            };
+
+            //Act
+
+            //Assert
+            Assert.AreEqual("Elite", model.ChangeFailureRateMetricDescription);
+            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-Elite-brightgreen", model.BadgeURL);
+        }
+
+        [TestCategory("APITest")]
+        [TestMethod]
+        public void DeploymentsControllerHighBadgeTest()
+        {
+            //Arrange
+            ChangeFailureRateModel model = new ChangeFailureRateModel
+            {
+                ChangeFailureRateMetricDescription = "High"
+            };
+
+            //Act
+
+            //Assert
+            Assert.AreEqual("High", model.ChangeFailureRateMetricDescription);
+            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-High-green", model.BadgeURL);
+        }
+
+        [TestCategory("APITest")]
+        [TestMethod]
+        public void DeploymentsControllerMediumBadgeTest()
+        {
+            //Arrange
+            ChangeFailureRateModel model = new ChangeFailureRateModel
+            {
+                ChangeFailureRateMetricDescription = "Medium"
+            };
+
+            //Act
+
+            //Assert
+            Assert.AreEqual("Medium", model.ChangeFailureRateMetricDescription);
+            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-Medium-orange", model.BadgeURL);
+        }
+
+        [TestCategory("APITest")]
+        [TestMethod]
+        public void DeploymentsControllerLowBadgeTest()
+        {
+            //Arrange
+            ChangeFailureRateModel model = new ChangeFailureRateModel
+            {
+                ChangeFailureRateMetricDescription = "Low"
+            };
+
+            //Act
+
+            //Assert
+            Assert.AreEqual("Low", model.ChangeFailureRateMetricDescription);
+            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-Low-red", model.BadgeURL);
+        }
+
+        [TestCategory("APITest")]
+        [TestMethod]
+        public void DeploymentsControllerNoneBadgeTest()
+        {
+            //Arrange
+            ChangeFailureRateModel model = new ChangeFailureRateModel
+            {
+                ChangeFailureRateMetricDescription = "None"
+            };
+
+            //Act
+
+            //Assert
+            Assert.AreEqual("None", model.ChangeFailureRateMetricDescription);
+            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-None-white", model.BadgeURL);
+        }
+
     }
 }

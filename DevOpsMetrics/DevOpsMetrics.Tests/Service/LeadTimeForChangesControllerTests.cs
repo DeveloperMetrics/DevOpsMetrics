@@ -379,5 +379,90 @@ namespace DevOpsMetrics.Tests.Service
             }
         }
 
+        [TestCategory("APITest")]
+        [TestMethod]
+        public void DeploymentsControllerEliteBadgeTest()
+        {
+            //Arrange
+            LeadTimeForChangesModel model = new LeadTimeForChangesModel
+            {
+                LeadTimeForChangesMetricDescription = "Elite"
+            };
+
+            //Act
+
+            //Assert
+            Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
+            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-Elite-brightgreen", model.BadgeURL);
+        }
+
+        [TestCategory("APITest")]
+        [TestMethod]
+        public void DeploymentsControllerHighBadgeTest()
+        {
+            //Arrange
+            LeadTimeForChangesModel model = new LeadTimeForChangesModel
+            {
+                LeadTimeForChangesMetricDescription = "High"
+            };
+
+            //Act
+
+            //Assert
+            Assert.AreEqual("High", model.LeadTimeForChangesMetricDescription);
+            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-High-green", model.BadgeURL);
+        }
+
+        [TestCategory("APITest")]
+        [TestMethod]
+        public void DeploymentsControllerMediumBadgeTest()
+        {
+            //Arrange
+            LeadTimeForChangesModel model = new LeadTimeForChangesModel
+            {
+                LeadTimeForChangesMetricDescription = "Medium"
+            };
+
+            //Act
+
+            //Assert
+            Assert.AreEqual("Medium", model.LeadTimeForChangesMetricDescription);
+            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-Medium-orange", model.BadgeURL);
+        }
+
+        [TestCategory("APITest")]
+        [TestMethod]
+        public void DeploymentsControllerLowBadgeTest()
+        {
+            //Arrange
+            LeadTimeForChangesModel model = new LeadTimeForChangesModel
+            {
+                LeadTimeForChangesMetricDescription = "Low"
+            };
+
+            //Act
+
+            //Assert
+            Assert.AreEqual("Low", model.LeadTimeForChangesMetricDescription);
+            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-Low-red", model.BadgeURL);
+        }
+
+        [TestCategory("APITest")]
+        [TestMethod]
+        public void DeploymentsControllerNoneBadgeTest()
+        {
+            //Arrange
+            LeadTimeForChangesModel model = new LeadTimeForChangesModel
+            {
+                LeadTimeForChangesMetricDescription = "None"
+            };
+
+            //Act
+
+            //Assert
+            Assert.AreEqual("None", model.LeadTimeForChangesMetricDescription);
+            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-None-white", model.BadgeURL);
+        }
+
     }
 }
