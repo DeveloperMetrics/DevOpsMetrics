@@ -20,7 +20,7 @@
                     color = "red";
                     break;
                 default:
-                    color = "white";
+                    color = "lightgrey";
                     break;
             }
 
