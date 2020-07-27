@@ -14,8 +14,23 @@ namespace DevOpsMetrics.Service.Models.AzureDevOps
         {
             get
             {
-                JToken item = JToken.Parse(parameters);
-                string prBranch = item["system.pullRequest.sourceBranch"].ToString();
+                string prBranch;
+                if (parameters != null)
+                {
+                    JToken item = JToken.Parse(parameters);
+                    if (item["system.pullRequest.sourceBranch"] != null)
+                    {
+                        prBranch = item["system.pullRequest.sourceBranch"].ToString();
+                    }
+                    else
+                    {
+                        prBranch = "";
+                    }
+                }
+                else
+                {
+                    prBranch = "";
+                }
                 return prBranch;
             }
         }
