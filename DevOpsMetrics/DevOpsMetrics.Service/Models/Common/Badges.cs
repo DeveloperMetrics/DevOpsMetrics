@@ -4,26 +4,28 @@
     {
         public static string BadgeURL(string description, string rating)
         {
-            string color = Badges.BadgeColor(rating);
-            //Example: https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen
-            return $"https://img.shields.io/badge/{description}-{rating}-{color}";
-        }
-
-        private static string BadgeColor(string rating)
-        {
+            string color ;
             switch (rating)
             {
                 case "Elite":
-                    return "brightgreen";
+                    color= "brightgreen";
+                    break;
                 case "High":
-                    return "green";
+                    color = "green";
+                    break;
                 case "Medium":
-                    return "orange";
+                    color = "orange";
+                    break;
                 case "Low":
-                    return "red";
-                default: 
-                    return "white";
+                    color = "red";
+                    break;
+                default:
+                    color = "white";
+                    break;
             }
+
+            //Example: https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen
+            return $"https://img.shields.io/badge/{description}-{rating}-{color}";
         }
     }
 }
