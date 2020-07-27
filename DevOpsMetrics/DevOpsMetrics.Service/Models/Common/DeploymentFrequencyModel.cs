@@ -52,5 +52,14 @@ namespace DevOpsMetrics.Service.Models.Common
         public string DeploymentsPerDayMetricDescription { get; set; }
         public bool RateLimitHit { get; set; }
         public int ItemOrder { get; set; }
+
+        public string BadgeURL { 
+            get
+            {
+                //Example: https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen
+                return Badges.BadgeURL("Deployment%20frequency", DeploymentsPerDayMetricDescription);
+            }
+        }
+
     }
 }

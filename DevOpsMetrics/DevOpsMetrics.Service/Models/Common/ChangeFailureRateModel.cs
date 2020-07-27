@@ -13,5 +13,13 @@ namespace DevOpsMetrics.Service.Models.Common
         public List<ChangeFailureRateBuild> ChangeFailureRateBuildList { get; set; }
         public float ChangeFailureRateMetric { get; set; }
         public string ChangeFailureRateMetricDescription { get; set; }
+
+        public string BadgeURL { 
+            get
+            {
+                //Example: https://img.shields.io/badge/Change%20failure%20rate-Elite-brightgreen
+                return Badges.BadgeURL("Change%20failure%20rate", ChangeFailureRateMetricDescription);
+            }
+        }
     }
 }

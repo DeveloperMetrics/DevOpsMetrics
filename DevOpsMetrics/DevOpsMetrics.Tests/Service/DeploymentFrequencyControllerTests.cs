@@ -466,5 +466,89 @@ namespace DevOpsMetrics.Tests.Service
             }
         }
 
+        [TestCategory("APITest")]
+        [TestMethod]
+        public void DeploymentsControllerEliteBadgeTest()
+        {
+            //Arrange
+            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            {
+                DeploymentsPerDayMetricDescription = "Elite"
+            };
+
+            //Act
+
+            //Assert
+            Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen", model.BadgeURL);
+        }
+
+        [TestCategory("APITest")]
+        [TestMethod]
+        public void DeploymentsControllerHighBadgeTest()
+        {
+            //Arrange
+            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            {
+                DeploymentsPerDayMetricDescription = "High"
+            };
+
+            //Act
+
+            //Assert
+            Assert.AreEqual("High", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency-High-green", model.BadgeURL);
+        }
+
+        [TestCategory("APITest")]
+        [TestMethod]
+        public void DeploymentsControllerMediumBadgeTest()
+        {
+            //Arrange
+            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            {
+                DeploymentsPerDayMetricDescription = "Medium"
+            };
+
+            //Act
+
+            //Assert
+            Assert.AreEqual("Medium", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency-Medium-orange", model.BadgeURL);
+        }
+
+        [TestCategory("APITest")]
+        [TestMethod]
+        public void DeploymentsControllerLowBadgeTest()
+        {
+            //Arrange
+            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            {
+                DeploymentsPerDayMetricDescription = "Low"
+            };
+
+            //Act
+
+            //Assert
+            Assert.AreEqual("Low", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency-Low-red", model.BadgeURL);
+        }
+
+        [TestCategory("APITest")]
+        [TestMethod]
+        public void DeploymentsControllerNoneBadgeTest()
+        {
+            //Arrange
+            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            {
+                DeploymentsPerDayMetricDescription = "None"
+            };
+
+            //Act
+
+            //Assert
+            Assert.AreEqual("None", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency-None-white", model.BadgeURL);
+        }
     }
 }
