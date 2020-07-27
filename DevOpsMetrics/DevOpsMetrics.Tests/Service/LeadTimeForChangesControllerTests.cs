@@ -461,7 +461,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Assert
             Assert.AreEqual("None", model.LeadTimeForChangesMetricDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-None-white", model.BadgeURL);
+            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-None-lightgrey", model.BadgeURL);
         }
 
     }
