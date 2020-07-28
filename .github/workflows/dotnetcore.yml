@@ -88,6 +88,8 @@ jobs:
       uses: actions/download-artifact@v1.0.0
       with:
         name: probot 
+    - name: Deploy probot app settings
+      run: az webapp config appsettings set --name devopsmetrics-prod-eu-probot2 --resource-group "DevOpsMetricsProbot" --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true
     - name: Deploy probot to Azure WebApp
       uses: Azure/webapps-deploy@v1
       with:
