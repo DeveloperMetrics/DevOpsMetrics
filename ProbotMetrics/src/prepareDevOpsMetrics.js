@@ -33,7 +33,7 @@ module.exports = (context, data) => {
     body += "|"  + data["buildList"][i]["status"]  + "|\n"; 
   };
 
-  const labels = ['daiy-devops'];
+  const labels = ['daily-devops'];
 
   postDevOpsMetrics(context, {
     owner, repo, title, body, labels,
