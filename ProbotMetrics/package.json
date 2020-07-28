@@ -1,0 +1,54 @@
+{
+  "name": "ProbotMetrics",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Generates a MD file with your DevOps Performance Metrics",
+  "author": "Chris Hanna <christopher.g.hanna@gmail.com>",
+  "license": "ISC",
+  "repository": "https://github.com/ChrisHanna/ProbotMetrics.git",
+  "homepage": "https://github.com/ChrisHanna/ProbotMetrics",
+  "bugs": "https://github.com/ChrisHanna/ProbotMetrics/issues",
+  "keywords": [
+    "probot",
+    "github",
+    "probot-app"
+  ],
+  "scripts": {
+    "dev": "nodemon",
+    "start": "probot run ./index.js",
+    "lint": "standard --fix",
+    "test": "jest && standard",
+    "test:watch": "jest --watch --notify --notifyMode=change --coverage"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "moment": "^2.27.0",
+    "probot": "^9.13.0",
+    "probot-scheduler": "^2.0.0-beta.1"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "nock": "^12.0.0",
+    "nodemon": "^2.0.0",
+    "smee-client": "^1.1.0",
+    "standard": "^14.3.1"
+  },
+  "engines": {
+    "node": ">= 8.3.0"
+  },
+  "standard": {
+    "env": [
+      "jest"
+    ]
+  },
+  "nodemonConfig": {
+    "exec": "npm start",
+    "watch": [
+      ".env",
+      "."
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
