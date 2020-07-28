@@ -19,7 +19,7 @@ jobs:
       with:
         dotnet-version: 3.1.101
     
-    #Build and test service   
+    #Run automated .NET tests   
     - name: Variable Substitution appsettings file for tests
       uses: microsoft/variable-substitution@v1
       with:
@@ -46,7 +46,9 @@ jobs:
     - name: Copy chromedriver for functional test
       run: copy "DevOpsMetrics/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/chromedriver.exe" "DevOpsMetrics/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/publish"
       shell: powershell
-      
+    
+    #Build probot
+    
     #Publish build artifacts to GitHub
     - name: Upload web service build artifacts back to GitHub
       uses: actions/upload-artifact@v2
@@ -68,6 +70,11 @@ jobs:
       with:
         name: functionaltests
         path: DevOpsMetrics/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/publish
+    - name: Upload function test build artifacts back to GitHub
+      uses: actions/upload-artifact@v2
+      with:
+        name: probot
+        path: ProbotMetrics
 
 
   #Deploy the artifacts to Azure
@@ -99,7 +106,11 @@ jobs:
       uses: actions/download-artifact@v1.0.0
       with:
         name: functionaltests
-    
+    - name: Download webapp artifact
+      uses: actions/download-artifact@v1.0.0
+      with:
+        name: probot 
+
     #Deploy service, website, and function to Azure
     - name: Deploy web service to Azure WebApp
       uses: Azure/webapps-deploy@v1
@@ -109,6 +120,7 @@ jobs:
         slot-name: staging 
     - name: deploy web service app settings
       run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --slot "staging" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountAccessKey=${{ secrets.AzureStorageAccessKey }}" 
+    
     - name: Deploy website to Azure WebApp
       uses: Azure/webapps-deploy@v1
       with:
@@ -117,6 +129,14 @@ jobs:
         slot-name: staging         
     - name: deploy website app settings
       run: az webapp config appsettings set --name devopsmetrics-prod-eu-web --slot "staging" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  
+    
+    - name: Deploy probot to Azure WebApp
+      uses: Azure/webapps-deploy@v1
+      with:
+        app-name: devopsmetrics-prod-eu-probot
+        package: probot 
+    - name: deploy probot app settings
+      run: az webapp config appsettings set --name devopsmetrics-prod-eu-probot --resource-group "devopsmetrics" --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true
 
     # Run functional tests on staging slots     
     - name: Functional Tests
