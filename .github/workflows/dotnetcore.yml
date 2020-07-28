@@ -120,6 +120,7 @@ jobs:
         slot-name: staging 
     - name: deploy web service app settings
       run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --slot "staging" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountAccessKey=${{ secrets.AzureStorageAccessKey }}" 
+    
     - name: Deploy website to Azure WebApp
       uses: Azure/webapps-deploy@v1
       with:
@@ -128,7 +129,8 @@ jobs:
         slot-name: staging         
     - name: deploy website app settings
       run: az webapp config appsettings set --name devopsmetrics-prod-eu-web --slot "staging" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  
-    - name: Deploy website to Azure WebApp
+    
+    - name: Deploy probot to Azure WebApp
       uses: Azure/webapps-deploy@v1
       with:
         app-name: devopsmetrics-prod-eu-probot
