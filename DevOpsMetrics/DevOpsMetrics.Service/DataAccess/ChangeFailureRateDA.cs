@@ -1,15 +1,12 @@
-﻿using DevOpsMetrics.Core;
-using DevOpsMetrics.Service.DataAccess.Common;
-using DevOpsMetrics.Service.DataAccess.TableStorage;
-using DevOpsMetrics.Service.Models.AzureDevOps;
-using DevOpsMetrics.Service.Models.Common;
-using DevOpsMetrics.Service.Models.GitHub;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DevOpsMetrics.Core;
+using DevOpsMetrics.Service.DataAccess.Common;
+using DevOpsMetrics.Service.DataAccess.TableStorage;
+using DevOpsMetrics.Service.Models.Common;
+using Newtonsoft.Json;
 
 namespace DevOpsMetrics.Service.DataAccess
 {
@@ -84,7 +81,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 return model;
             }
             else
-            { 
+            {
                 //Get sample data
                 List<ChangeFailureRateBuild> sampleBuilds = utility.GetLastNItems(GetSampleBuilds(), maxNumberOfItems);
                 ChangeFailureRateModel model = new ChangeFailureRateModel
@@ -122,21 +119,13 @@ namespace DevOpsMetrics.Service.DataAccess
                 }
             }
 
-            //Using the percent, convert it to a fraction
-            FractionConverter converter = new FractionConverter();
-            FractionModel fracationModel = converter.ConvertToFraction(percentComplete);
-            int numerator = fracationModel.Numerator;
-            int denominator = fracationModel.Denominator;
-
-            //Get builds for positive (builds we will set DeploymentWasSuccessful=true) and negative (builds we will set to DeploymentWasSuccessful=false)
-            Console.WriteLine($"numerator {numerator} / denominator {denominator}");
-            //TODO: remember how this (x, numerator) syntax works so it can be documented. oooof. 
-            List<ChangeFailureRateBuild> postiveBuilds = builds.Where((x, numerator) => numerator % denominator != 0).ToList();
-            List<ChangeFailureRateBuild> negativeBuilds = builds.Where((x, numerator) => numerator % denominator == 0).ToList();
+            Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> positiveAndNegativeBuilds = GetPositiveAndNegativeLists(percentComplete, builds);
+            List<ChangeFailureRateBuild> positiveBuilds = positiveAndNegativeBuilds.Item1;
+            List<ChangeFailureRateBuild> negativeBuilds = positiveAndNegativeBuilds.Item2;
 
             //Make the updates
             TableStorageCommonDA tableChangeFailureRateDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableChangeFailureRate);
-            foreach (ChangeFailureRateBuild item in postiveBuilds)
+            foreach (ChangeFailureRateBuild item in positiveBuilds)
             {
                 item.DeploymentWasSuccessful = true;
                 await daTableStorage.UpdateChangeFailureRate(tableChangeFailureRateDA, item, partitionKey, true);
@@ -148,6 +137,55 @@ namespace DevOpsMetrics.Service.DataAccess
             }
 
             return true;
+        }
+
+        public Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> GetPositiveAndNegativeLists(int percent, List<ChangeFailureRateBuild> builds)
+        {
+            //Prepare two lists, one with positive items we will eventually set to true
+            List<ChangeFailureRateBuild> positiveBuilds = new List<ChangeFailureRateBuild>();
+            //The other negative items we will eventually set to false
+            List<ChangeFailureRateBuild> negativeBuilds = new List<ChangeFailureRateBuild>();
+
+            //Find the midpoint in the list based on the percent
+            int midPoint = (int)(((double)percent / 100) * builds.Count);
+            //Get all items before the mid point for the positives
+            for (int i = 1; i <= midPoint; i++)
+            {
+                positiveBuilds.Add(builds[i - 1]);
+            }
+            //Get all items after the mid point for the negatives
+            for (int i = midPoint + 1; i <= builds.Count; i++)
+            {
+                negativeBuilds.Add(builds[i - 1]);
+            }
+
+            return new Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>>(positiveBuilds, negativeBuilds);
+        }
+
+        public IEnumerable<IEnumerable<ChangeFailureRateBuild>> Partition(IEnumerable<ChangeFailureRateBuild> items, int partitionSize)
+        {
+            if (partitionSize <= 0)
+            {
+                throw new ArgumentOutOfRangeException("partitionSize");
+            }
+
+            int innerListCounter = 0;
+            int numberOfPackets = 0;
+            foreach (var item in items)
+            {
+                innerListCounter++;
+                if (innerListCounter == partitionSize)
+                {
+                    yield return items.Skip(numberOfPackets * partitionSize).Take(partitionSize);
+                    innerListCounter = 0;
+                    numberOfPackets++;
+                }
+            }
+
+            if (innerListCounter > 0)
+            {
+                yield return items.Skip(numberOfPackets * partitionSize);
+            }
         }
 
         //Return a sample dataset to help with testing
