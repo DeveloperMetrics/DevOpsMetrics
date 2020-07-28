@@ -136,7 +136,7 @@ jobs:
         app-name: devopsmetrics-prod-eu-probot
         package: probot 
     - name: deploy probot app settings
-      run: az webapp config appsettings set --name devopsmetrics-prod-eu-probot --resource-group "devopsmetricsprobot" --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true
+      run: az webapp config appsettings set --name devopsmetrics-prod-eu-probot --resource-group "DevOpsMetricsProbot" --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true
 
     # Run functional tests on staging slots     
     - name: Functional Tests
