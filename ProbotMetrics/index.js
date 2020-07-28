@@ -3,7 +3,7 @@
  * @param {import('probot').Application} app
  */
 const createScheduler = require('probot-scheduler')
-const { generateDevopsMetrics } = require('./src/bin/generateDevopsMetrics');
+const { generateDevopsMetrics } = require('./src/generateDevopsMetrics');
 
 
 module.exports = (app) => {
