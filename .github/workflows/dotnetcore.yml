@@ -68,7 +68,11 @@ jobs:
       with:
         name: functionaltests
         path: DevOpsMetrics/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/publish
-
+    - name: Upload function test build artifacts back to GitHub
+      uses: actions/upload-artifact@v2
+      with:
+        name: probot
+        path: DevOpsMetrics/ProbotMetrics
 
   #Deploy the artifacts to Azure
   deployToStagingSlots:
@@ -99,7 +103,11 @@ jobs:
       uses: actions/download-artifact@v1.0.0
       with:
         name: functionaltests
-    
+    - name: Download webapp artifact
+      uses: actions/download-artifact@v1.0.0
+      with:
+        name: probot 
+
     #Deploy service, website, and function to Azure
     - name: Deploy web service to Azure WebApp
       uses: Azure/webapps-deploy@v1
@@ -117,6 +125,11 @@ jobs:
         slot-name: staging         
     - name: deploy website app settings
       run: az webapp config appsettings set --name devopsmetrics-prod-eu-web --slot "staging" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  
+    - name: Deploy website to Azure WebApp
+      uses: Azure/webapps-deploy@v1
+      with:
+        app-name: devopsmetrics-prod-eu-probot
+        package: probot 
 
     # Run functional tests on staging slots     
     - name: Functional Tests
