@@ -133,10 +133,10 @@ jobs:
     - name: Deploy probot to Azure WebApp
       uses: Azure/webapps-deploy@v1
       with:
-        app-name: devopsmetrics-prod-eu-probot
+        app-name: devopsmetrics-prod-eu-probot2
         package: probot 
     - name: deploy probot app settings
-      run: az webapp config appsettings set --name devopsmetrics-prod-eu-probot --resource-group "DevOpsMetricsProbot" --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true
+      run: az webapp config appsettings set --name devopsmetrics-prod-eu-probot2 --resource-group "DevOpsMetricsProbot" --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true
 
     # Run functional tests on staging slots     
     - name: Functional Tests
