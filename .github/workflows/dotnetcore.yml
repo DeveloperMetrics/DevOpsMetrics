@@ -19,7 +19,7 @@ jobs:
       with:
         dotnet-version: 3.1.101
     
-    #Build and test service   
+    #Run automated .NET tests   
     - name: Variable Substitution appsettings file for tests
       uses: microsoft/variable-substitution@v1
       with:
@@ -46,7 +46,9 @@ jobs:
     - name: Copy chromedriver for functional test
       run: copy "DevOpsMetrics/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/chromedriver.exe" "DevOpsMetrics/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/publish"
       shell: powershell
-      
+    
+    #Build probot
+    
     #Publish build artifacts to GitHub
     - name: Upload web service build artifacts back to GitHub
       uses: actions/upload-artifact@v2
@@ -72,7 +74,8 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: probot
-        path: DevOpsMetrics/ProbotMetrics
+        path: ProbotMetrics
+
 
   #Deploy the artifacts to Azure
   deployToStagingSlots:
@@ -130,6 +133,8 @@ jobs:
       with:
         app-name: devopsmetrics-prod-eu-probot
         package: probot 
+    - name: deploy probot app settings
+      run: az webapp config appsettings set --name devopsmetrics-prod-eu-web --slot "staging" --resource-group "devopsmetrics" --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true
 
     # Run functional tests on staging slots     
     - name: Functional Tests
