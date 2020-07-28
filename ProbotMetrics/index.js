@@ -14,7 +14,7 @@ module.exports = (app) => {
   // Your code here
   app.log('Yay, the app was loaded!')
 
-  let settings = JSON.parse(fs.readFileSync(appRoot + '/settings.json', encoding = "ascii"));
+  let settings = JSON.parse(fs.readFileSync('settings.json', encoding = "ascii"));
 
   createScheduler(app, {
     delay: !!process.env.DISABLE_DELAY, // delay is enabled on first run
