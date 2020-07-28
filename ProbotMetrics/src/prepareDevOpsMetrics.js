@@ -2,7 +2,7 @@
 const moment = require('moment');
 const postDevOpsMetrics = require('./postDevOpsMetrics');
 
-module.exports = (context, data) => {
+module.exports = async (context, data) => {
   console.log(JSON.stringify(data));
   const { owner, repo } = context.repo();
 
@@ -35,7 +35,7 @@ module.exports = (context, data) => {
 
   const labels = ['daily-devops'];
 
-  postDevOpsMetrics(context, {
+  await postDevOpsMetrics(context, {
     owner, repo, title, body, labels,
   }); 
 
