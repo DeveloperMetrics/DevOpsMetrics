@@ -473,7 +473,8 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             DeploymentFrequencyModel model = new DeploymentFrequencyModel
             {
-                DeploymentsPerDayMetricDescription = "Elite"
+                DeploymentsPerDayMetricDescription = "Elite",
+                DeploymentsPerDayMetric = 12
             };
 
             //Act
@@ -481,6 +482,7 @@ namespace DevOpsMetrics.Tests.Service
             //Assert
             Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
             Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen", model.BadgeURL);
+            Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency%20(12.00%20per%20day)-Elite-brightgreen", model.BadgeWithMetricURL);
         }
 
         [TestCategory("APITest")]

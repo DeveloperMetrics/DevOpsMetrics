@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.Controllers
@@ -181,20 +182,39 @@ namespace DevOpsMetrics.Service.Controllers
         }
 
         [HttpGet("GetAzureDevOpsSettings")]
-        public List<AzureDevOpsSettings> GetAzureDevOpsSettings()
+        public List<AzureDevOpsSettings> GetAzureDevOpsSettings(string rowKey = null)
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             List<AzureDevOpsSettings> settings = AzureTableStorageDA.GetAzureDevOpsSettings(tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings);
-
-            return settings;
+            if (rowKey != null)
+            {
+                return new List<AzureDevOpsSettings>
+                {
+                    settings.Where(x => x.RowKey == rowKey).FirstOrDefault()
+                };
+            }
+            else
+            {
+                return settings;
+            }
         }
 
         [HttpGet("GetGitHubSettings")]
-        public List<GitHubSettings> GetGitHubSettings()
+        public List<GitHubSettings> GetGitHubSettings(string rowKey = null)
         {
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             List<GitHubSettings> settings = AzureTableStorageDA.GetGitHubSettings(tableStorageAuth, tableStorageAuth.TableGitHubSettings);
-            return settings;
+            if (rowKey != null)
+            {
+                return new List<GitHubSettings>
+                {
+                    settings.Where(x => x.RowKey == rowKey).FirstOrDefault()
+                };
+            }
+            else
+            {
+                return settings;
+            }
         }
 
         [HttpGet("UpdateAzureDevOpsSetting")]

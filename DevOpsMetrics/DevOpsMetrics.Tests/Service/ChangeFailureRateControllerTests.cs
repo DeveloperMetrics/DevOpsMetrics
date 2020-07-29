@@ -163,12 +163,13 @@ namespace DevOpsMetrics.Tests.Service
 
         [TestCategory("APITest")]
         [TestMethod]
-        public void DeploymentsControllerEliteBadgeTest()
+        public void ChangeFailureRateControllerEliteBadgeTest()
         {
             //Arrange
             ChangeFailureRateModel model = new ChangeFailureRateModel
             {
-                ChangeFailureRateMetricDescription = "Elite"
+                ChangeFailureRateMetricDescription = "Elite",
+                ChangeFailureRateMetric = 0
             };
 
             //Act
@@ -176,11 +177,12 @@ namespace DevOpsMetrics.Tests.Service
             //Assert
             Assert.AreEqual("Elite", model.ChangeFailureRateMetricDescription);
             Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-Elite-brightgreen", model.BadgeURL);
+            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate%20(0.00%25)-Elite-brightgreen", model.BadgeWithMetricURL);
         }
 
         [TestCategory("APITest")]
         [TestMethod]
-        public void DeploymentsControllerHighBadgeTest()
+        public void ChangeFailureRateControllerHighBadgeTest()
         {
             //Arrange
             ChangeFailureRateModel model = new ChangeFailureRateModel
@@ -197,7 +199,7 @@ namespace DevOpsMetrics.Tests.Service
 
         [TestCategory("APITest")]
         [TestMethod]
-        public void DeploymentsControllerMediumBadgeTest()
+        public void ChangeFailureRateControllerMediumBadgeTest()
         {
             //Arrange
             ChangeFailureRateModel model = new ChangeFailureRateModel
@@ -214,7 +216,7 @@ namespace DevOpsMetrics.Tests.Service
 
         [TestCategory("APITest")]
         [TestMethod]
-        public void DeploymentsControllerLowBadgeTest()
+        public void ChangeFailureRateControllerLowBadgeTest()
         {
             //Arrange
             ChangeFailureRateModel model = new ChangeFailureRateModel
@@ -231,7 +233,7 @@ namespace DevOpsMetrics.Tests.Service
 
         [TestCategory("APITest")]
         [TestMethod]
-        public void DeploymentsControllerNoneBadgeTest()
+        public void ChangeFailureRateControllerNoneBadgeTest()
         {
             //Arrange
             ChangeFailureRateModel model = new ChangeFailureRateModel
