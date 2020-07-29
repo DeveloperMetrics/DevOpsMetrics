@@ -22,28 +22,28 @@ jobs:
     - name: Variable Substitution appsettings file for tests
       uses: microsoft/variable-substitution@v1
       with:
-        files: 'DevOpsMetrics/DevOpsMetrics.Tests/appsettings.json'
+        files: 'src/DevOpsMetrics.Tests/appsettings.json'
       env:
         AppSettings.AzureDevOpsPatToken: "${{ secrets.AzureDevOpsPATToken }}"
         AppSettings.GitHubClientId: "${{ secrets.GitHubClientId }}" 
         AppSettings.GitHubClientSecret: "${{ secrets.GitHubClientSecret }}" 
         AppSettings.AzureStorageAccountAccessKey: "${{ secrets.AzureStorageAccessKey }}" 
     - name: view appsettings file after substitution
-      run: Get-Content -Path "DevOpsMetrics/DevOpsMetrics.Tests/appsettings.json"
+      run: Get-Content -Path "src/DevOpsMetrics.Tests/appsettings.json"
     - name: Run automated unit and integration tests
-      run: dotnet test DevOpsMetrics/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Release --logger trx --collect "Code coverage" --settings:./DevOpsMetrics/DevOpsMetrics.Tests/CodeCoverage.runsettings --  
+      run: dotnet test src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Release --logger trx --collect "Code coverage" --settings:./src/DevOpsMetrics.Tests/CodeCoverage.runsettings --  
 
     #Publish dotnet objects
     - name: .NET Publish Web Service
-      run: dotnet publish DevOpsMetrics/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj --configuration Release
+      run: dotnet publish src/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj --configuration Release
     - name: .NET Publish Website
-      run: dotnet publish DevOpsMetrics/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj --configuration Release
+      run: dotnet publish src/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj --configuration Release
     - name: .NET Publish Function
-      run: dotnet publish DevOpsMetrics/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj --configuration Release      
-    - name: DotNET Publish functional tests
-      run: dotnet publish DevOpsMetrics/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj --configuration Release 
+      run: dotnet publish src/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj --configuration Release      
+    - name: .NET Publish functional tests
+      run: dotnet publish src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj --configuration Release 
     - name: Copy chromedriver for functional test
-      run: copy "DevOpsMetrics/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/chromedriver.exe" "DevOpsMetrics/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/publish"
+      run: copy "src/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/chromedriver.exe" "src/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/publish"
       shell: powershell
         
     #Publish build artifacts to GitHub
@@ -51,22 +51,22 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: serviceapp
-        path: DevOpsMetrics/DevOpsMetrics.Service/bin/Release/netcoreapp3.1/publish
+        path: src/DevOpsMetrics.Service/bin/Release/netcoreapp3.1/publish
     - name: Upload website build artifacts back to GitHub
       uses: actions/upload-artifact@v2
       with:
         name: webapp
-        path: DevOpsMetrics/DevOpsMetrics.Web/bin/Release/netcoreapp3.1/publish
+        path: src/DevOpsMetrics.Web/bin/Release/netcoreapp3.1/publish
     - name: Upload function build artifacts back to GitHub
       uses: actions/upload-artifact@v2
       with:
         name: functionapp
-        path: DevOpsMetrics/DevOpsMetrics.Function/bin/Release/netcoreapp3.1/publish
+        path: src/DevOpsMetrics.Function/bin/Release/netcoreapp3.1/publish
     - name: Upload function test build artifacts back to GitHub
       uses: actions/upload-artifact@v2
       with:
         name: functionaltests
-        path: DevOpsMetrics/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/publish
+        path: src/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/publish
     - name: Upload function test build artifacts back to GitHub
       uses: actions/upload-artifact@v2
       with:
@@ -97,11 +97,10 @@ jobs:
       run: az webapp config appsettings set --name devopsmetrics-prod-eu-probot --resource-group "DevOpsMetricsProbot" --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true
 
 
-  #Deploy the artifacts to Azure
+  #Deploy the artifacts to Azure staging slots
   deployToStagingSlots:
     runs-on: windows-latest
-    needs: build    
-    #if: github.ref == 'refs/heads/master'    
+    needs: build      
     steps:        
     # Login with the secret SP details
     - name: Log into Azure
@@ -127,7 +126,6 @@ jobs:
       with:
         name: functionaltests
 
-
     #Deploy service, website, and function to Azure
     - name: Deploy web service to Azure WebApp
       uses: Azure/webapps-deploy@v1
@@ -146,7 +144,6 @@ jobs:
         slot-name: staging         
     - name: Deploy website app settings
       run: az webapp config appsettings set --name devopsmetrics-prod-eu-web --slot "staging" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  
-    
 
     # Run functional tests on staging slots     
     - name: Functional Tests
@@ -212,11 +209,11 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: .NET core Publish Azure DevOps Extension
-      run: dotnet publish DevOpsMetrics/DevOpsMetrics.AzureDevOpsExtension/DevOpsMetrics.AzureDevOpsExtension.csproj --configuration Release   
+      run: dotnet publish src/DevOpsMetrics.AzureDevOpsExtension/DevOpsMetrics.AzureDevOpsExtension.csproj --configuration Release   
     - name: Update manifest file with unique version
       run: |
         #Get the current version
-        $pathToJson = "DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\vss-extension.json"
+        $pathToJson = "src\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\vss-extension.json"
         $a = Get-Content $pathToJson -raw | ConvertFrom-Json
         Write-Host "old version: " $a.version
         $splitVersion = $a.version -Split "\." #Split the version by the .
@@ -231,16 +228,16 @@ jobs:
     - name: Build extension
       run: |
         npm install -g tfx-cli
-        tfx extension create --manifest-globs vss-extension.json --root DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot --output-path DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot  #--rev-version
+        tfx extension create --manifest-globs vss-extension.json --root src\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot --output-path src\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot  #--rev-version
         #tfx extension samsmithnz create --token "${{ secrets.AzureDevOpsPATToken }}"
         #tfx extension publish --help 
 #    - name: Check files
 #      run: |
-#        cd DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot
+#        cd src\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot
 #        dir
 #        Write-Host "New env variable " ${{ env.extensionVersion }}
     - name: Upload Azure DevOps extension build artifacts back to GitHub
       uses: actions/upload-artifact@v2
       with:
         name: azuredevopsextensionpackage
-        path: DevOpsMetrics\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\SamSmithNZ.high-performing-devops-metrics-${{ env.extensionVersion }}.vsix
+        path: src\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\SamSmithNZ.high-performing-devops-metrics-${{ env.extensionVersion }}.vsix
