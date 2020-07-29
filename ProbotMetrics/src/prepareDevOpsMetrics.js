@@ -33,7 +33,7 @@ module.exports = async (context, data) => {
     body += "|"  + data["buildList"][i]["status"]  + "|\n"; 
   };
 
-  const labels = ['daiy-devops'];
+  const labels = ['daily-devops'];
 
   await postDevOpsMetrics(context, {
     owner, repo, title, body, labels,
