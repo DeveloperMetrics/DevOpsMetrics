@@ -26,15 +26,22 @@ module.exports = async (context) => {
 
   await axios(config)
     .then(function (response) {
-      var as = Object.values(response).filter(n => n.repo == repo);
 
-      data_url += "&clientId=" + as["clientId"];
-      data_url += "&clientSecret=" + as["clientSecret"];
-      data_url += "&owner=" + as["owner"];
-      data_url += "&repo=" + as["repo"];
-      data_url += "&branch=" + as["branch"];
-      data_url += "&workflowName=" + as["workflowName"];
-      data_url += "&workflowId=" + as["workflowId"];
+      console.log(response);
+
+      var as = Object.values(response.data).filter(n => n.repo == repo);
+
+      console.log(as);
+
+      data_url += "&clientId=" + as[0]["clientId"];
+      data_url += "&clientSecret=" + as[0]["clientSecret"];
+      data_url += "&owner=" + as[0]["owner"];
+      data_url += "&repo=" + as[0]["repo"];
+      data_url += "&branch=" + as[0]["branch"];
+      data_url += "&workflowName=" + as[0]["workflowName"];
+      data_url += "&workflowId=" + as[0]["workflowId"];
+
+      
 
     })
     .catch(function (error) {
