@@ -28,6 +28,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Function", "D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.FunctionalTests", "DevOpsMetrics.FunctionalTests\DevOpsMetrics.FunctionalTests.csproj", "{613B7F21-62CF-412F-BCF4-B0500EAE6FCB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Probot", "Probot", "{91299047-588F-41CA-8ED2-9876284606F9}"
+	ProjectSection(SolutionItems) = preProject
+		ProbotMetrics\app.yml = ProbotMetrics\app.yml
+		ProbotMetrics\src\generateDevopsMetrics.js = ProbotMetrics\src\generateDevopsMetrics.js
+		ProbotMetrics\src\getGithubSettings.js = ProbotMetrics\src\getGithubSettings.js
+		ProbotMetrics\index.js = ProbotMetrics\index.js
+		ProbotMetrics\src\postDevopsMetrics.js = ProbotMetrics\src\postDevopsMetrics.js
+		ProbotMetrics\src\prepareDevOpsMetrics.js = ProbotMetrics\src\prepareDevOpsMetrics.js
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
