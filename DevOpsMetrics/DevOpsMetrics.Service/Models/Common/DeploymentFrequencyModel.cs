@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DevOpsMetrics.Service.Models.Common
 {
@@ -57,7 +58,18 @@ namespace DevOpsMetrics.Service.Models.Common
             get
             {
                 //Example: https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen
-                return Badges.BadgeURL("Deployment%20frequency", DeploymentsPerDayMetricDescription);
+                string title = Uri.EscapeUriString("Deployment frequency");
+                return Badges.BadgeURL(title, DeploymentsPerDayMetricDescription);
+            }
+        }
+
+        public string BadgeWithMetricURL
+        {
+            get
+            {
+                //Example: https://img.shields.io/badge/Change%20failure%20rate%20(83.33%25)-Elite-brightgreen
+                string title = Uri.EscapeUriString("Deployment frequency (" + DeploymentsToDisplayMetric.ToString("0.00") + " " + DeploymentsToDisplayUnit + ")");
+                return Badges.BadgeURL(title, DeploymentsPerDayMetricDescription);
             }
         }
 

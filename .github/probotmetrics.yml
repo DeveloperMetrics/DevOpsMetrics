@@ -1,5 +1,8 @@
-github_settings_url : "https://devopsmetrics-prod-eu-service.azurewebsites.net/api/TableStorage/GetGitHubSettings"
-data_url : "https://devopsmetrics-prod-eu-service.azurewebsites.net/api/DeploymentFrequency/GetGitHubDeploymentFrequency?getSampleData=False&numberOfDays=30&maxNumberOfItems=20&useCache=True"
-hours_interval : 1
-minutes_interval : 1
-seconds_interval : 60
+
+github_settings_url: "https://devopsmetrics-prod-eu-service.azurewebsites.net/api/TableStorage/GetGitHubSettings"
+deployment_frequency_url: "https://devopsmetrics-prod-eu-service.azurewebsites.net/api/DeploymentFrequency/GetGitHubDeploymentFrequency?getSampleData=False&numberOfDays=30&maxNumberOfItems=20&useCache=True"
+meantime_restore_url: "https://devopsmetrics-prod-eu-service.azurewebsites.net//api/MeanTimeToRestore/GetAzureMeanTimeToRestore?getSampleData=False&targetDevOpsPlatform=GitHub&resourceGroup=DevOpsMetrics&numberOfDays=30&maxNumberOfItems=20"
+lead_time_change_url: "https://devopsmetrics-prod-eu-service.azurewebsites.net//api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?getSampleData=False&clientId=fef7c0b29ce580ee67f8&clientSecret=1dc2401d443c31ad4f0adbe34d1072b133db02ab&owner=samsmithnz&repo=DevOpsMetrics&branch=master&workflowName=DevOpsMetrics CI/CD&workflowId=1162561&numberOfDays=30&maxNumberOfItems=20&useCache=True"
+change_failure_rate_url: "https://devopsmetrics-prod-eu-service.azurewebsites.net//api/ChangeFailureRate/GetChangeFailureRate?getSampleData=False&targetDevOpsPlatform=GitHub&organization_owner=samsmithnz&project_repo=DevOpsMetrics&branch=master&buildName_workflowName=DevOpsMetrics CI/CD&numberOfDays=30&maxNumberOfItems=20"
+
+

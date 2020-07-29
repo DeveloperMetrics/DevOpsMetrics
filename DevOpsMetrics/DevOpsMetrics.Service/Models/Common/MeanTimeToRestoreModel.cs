@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DevOpsMetrics.Service.Models.Common
 {
@@ -19,7 +20,18 @@ namespace DevOpsMetrics.Service.Models.Common
             get
             {
                 //Example: https://img.shields.io/badge/Time%20to%20restore%20service-Elite-brightgreen
-                return Badges.BadgeURL("Time%20to%20restore%20service", MTTRAverageDurationDescription);
+                string title = Uri.EscapeUriString("Time to restore service");
+                return Badges.BadgeURL(title, MTTRAverageDurationDescription);
+            }
+        }
+
+        public string BadgeWithMetricURL
+        {
+            get
+            {
+                //Example: https://img.shields.io/badge/Change%20failure%20rate%20(83.33%25)-Elite-brightgreen
+                string title = Uri.EscapeUriString("Time to restore service (" + MTTRAverageDurationInHours.ToString("0.00") + " hours)");
+                return Badges.BadgeURL(title, MTTRAverageDurationDescription);
             }
         }
     }

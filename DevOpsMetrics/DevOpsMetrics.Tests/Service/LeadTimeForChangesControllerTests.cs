@@ -386,7 +386,8 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             LeadTimeForChangesModel model = new LeadTimeForChangesModel
             {
-                LeadTimeForChangesMetricDescription = "Elite"
+                LeadTimeForChangesMetricDescription = "Elite",
+                LeadTimeForChangesMetric = 5.3f
             };
 
             //Act
@@ -394,6 +395,7 @@ namespace DevOpsMetrics.Tests.Service
             //Assert
             Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
             Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-Elite-brightgreen", model.BadgeURL);
+            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes%20(5.3%20hours)-Elite-brightgreen", model.BadgeWithMetricURL);
         }
 
         [TestCategory("APITest")]

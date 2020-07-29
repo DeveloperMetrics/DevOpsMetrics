@@ -6,7 +6,7 @@ module.exports = async (context, data) => {
   console.log(JSON.stringify(data));
   const { owner, repo } = context.repo();
 
-  const title = 'Daily DevOps - ' + moment().format('DD-MMM-YYYY, h:mm:ss a');    
+  const title = '##Daily DevOps Metrics for ' + moment().format('DD-MMM-YYYY, h:mm:ss a');    
 
   let body = "";
 

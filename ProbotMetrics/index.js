@@ -6,13 +6,13 @@
 const createScheduler = require('probot-scheduler')
 const { generateDevopsMetrics } = require('./src/generateDevopsMetrics');
 
-module.exports = (app) => {
+module.exports = (app) =>  {
   // Your code here
   app.log('Yay, the app was loaded!')
 
   createScheduler(app, {
     delay: !!process.env.DISABLE_DELAY, // delay is enabled on first run
-    interval: 1 * 1 * 60 * 1000
+    interval: 60 * 1000
   })
 
   app.on('schedule.repository', async context => {
