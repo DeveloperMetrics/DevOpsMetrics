@@ -1,37 +1,27 @@
 
 const moment = require('moment');
 const postDevOpsMetrics = require('./postDevOpsMetrics');
+const getConfig = require('probot-config');
 
-module.exports = async (context, data) => {
-  console.log(JSON.stringify(data));
+module.exports = async (context, deployment_frequency_data, meantime_restore_data, lead_time_change_data,change_failure_rate_data) => {
+  console.log(JSON.stringify(deployment_frequency_data));
+  console.log(JSON.stringify(meantime_restore_data));
   const { owner, repo } = context.repo();
 
-  const title = '##Daily DevOps Metrics for ' + moment().format('DD-MMM-YYYY, h:mm:ss a');    
+  const title = 'Daily DevOps Metrics for ' + moment().format('DD-MMM-YYYY');  
+  
+  let repo_config = await getConfig(context,'probotmetrics.yml');
 
   let body = "";
 
-  body += "## Daily DevOps Metrics"; 
-  body += "\n<br/> Days Included In Metrics : " + data["numberOfDays"]
-  body += "\n<br/> ![Devops Badge](" + data["badgeURL"] + ")";
+  body += '## Daily DevOps Metrics for ' + moment().format('DD-MMM-YYYY, h:mm:ss a'); 
+  body += "\n<br/> [![Deployment frequency]("+ deployment_frequency_data["badgeWithMetricURL"] +")](" + repo_config.dashboard_url + owner + "_" + repo + ")";
+  body += "\n<br/> [![Time to restore service]("+ meantime_restore_data["badgeWithMetricURL"] +")](" + repo_config.dashboard_url + owner + "_" + repo + ")";
+  body += "\n<br/> [![Lead time for changes]("+ lead_time_change_data["badgeWithMetricURL"] +")](" + repo_config.dashboard_url + owner + "_" + repo + ")";
+  body += "\n<br/> [![Change failure rate]("+ change_failure_rate_data["badgeWithMetricURL"] +")](" + repo_config.dashboard_url + owner + "_" + repo + ")";
 
-  body += "\n | Metric | Value |\n";
-  body += "| --- | --- |\n";
-  body += "| Deployments Per Day Metric | " + data["deploymentsPerDayMetric"] + "|\n";
-  body += "| Deployments " + data["deploymentsToDisplayUnit"] + " | " + data["deploymentsToDisplayMetric"] + "|\n";
-  
-  body += "\n";
-  body += "## Build History\n"; 
-
-  body += "| buildNumber | startTime | endTime | buildDurationInMinutesAndSeconds | status |\n";
-  body += "| --- | --- | --- | --- | --- |\n";
-
-  for ( var i = 0; i < data["buildList"].length; i++) {
-    body += "|"  + data["buildList"][i]["buildNumber"]; 
-    body += "|"  + moment(data["buildList"][i]["startTime"]).format('DD-MMM-YYYY, h:mm:ss a'); 
-    body += "|"  + moment(data["buildList"][i]["endTime"]).format('DD-MMM-YYYY, h:mm:ss a'); 
-    body += "|"  + data["buildList"][i]["buildDurationInMinutesAndSeconds"]; 
-    body += "|"  + data["buildList"][i]["status"]  + "|\n"; 
-  };
+  body += "\n<br/> **Note:** metrics based on data from the last 30 days";
+  body += "_This issue was created with the DevOps metrics probot. Documentation about the metrics and solution is available at [https://github.com/samsmithnz/devopsmetrics](https://github.com/samsmithnz/devopsmetrics)_";
 
   const labels = ['daiy-devops'];
 
@@ -40,3 +30,4 @@ module.exports = async (context, data) => {
   }); 
 
 };
+
