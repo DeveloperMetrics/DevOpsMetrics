@@ -67,11 +67,11 @@ jobs:
       with:
         name: functionaltests
         path: src/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/publish
-    - name: Upload function test build artifacts back to GitHub
+    - name: Upload probot build artifacts back to GitHub
       uses: actions/upload-artifact@v2
       with:
         name: probot
-        path: ProbotMetrics
+        path: src/ProbotMetrics
 
   #Deploy the artifacts to Azure
   deployProbot:
