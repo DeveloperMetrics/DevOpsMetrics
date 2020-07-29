@@ -21,7 +21,7 @@ module.exports = async (context, deployment_frequency_data, meantime_restore_dat
   body += "\n<br/> [![Change failure rate]("+ change_failure_rate_data["badgeWithMetricURL"] +")](" + repo_config.dashboard_url + owner + "_" + repo + ")";
 
   body += "\n<br/> **Note:** metrics based on data from the last 30 days";
-  body += "_This issue was created with the DevOps metrics probot. Documentation about the metrics and solution is available at [https://github.com/samsmithnz/devopsmetrics](https://github.com/samsmithnz/devopsmetrics)_";
+  body += "\n<br/> _This issue was created with the DevOps metrics probot. Documentation about the metrics and solution is available at [https://github.com/samsmithnz/devopsmetrics](https://github.com/samsmithnz/devopsmetrics)_";
 
   const labels = ['daily-devops'];
 
