@@ -14,7 +14,7 @@ module.exports = (app) => {
   // Your code here
   app.log('Yay, the app was loaded!')
 
-  let repo_config = await getConfig(context, 'probotmetrics.yml');
+  let repo_config = await context.config( 'probotmetrics.yml');
 
   createScheduler(app, {
     delay: !!process.env.DISABLE_DELAY, // delay is enabled on first run
