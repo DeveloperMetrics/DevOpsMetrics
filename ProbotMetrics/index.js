@@ -12,7 +12,7 @@ module.exports = (app) =>  {
 
   createScheduler(app, {
     delay: !!process.env.DISABLE_DELAY, // delay is enabled on first run
-    interval: 1 * 1 * 60 * 1000
+    interval: 60 * 1000
   })
 
   app.on('schedule.repository', async context => {
