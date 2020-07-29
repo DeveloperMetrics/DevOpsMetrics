@@ -14,7 +14,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
     {
         public string CreateAzureDevOpsSettingsPartitionKey(string organization, string project, string repository, string buildName)
         {
-            return organization + "_" + project + "_" + repository + "_" + buildName;
+            return organization + "_" + project + "_" + repository;
         }
 
         public string CreateBuildWorkflowPartitionKey(string organization_owner, string project_repo, string buildName_workflowName)
@@ -34,7 +34,7 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
 
         public string CreateGitHubSettingsPartitionKey(string owner, string repo, string workflowName)
         {
-            return owner + "_" + repo + "_" + workflowName;
+            return owner + "_" + repo;
         }
 
         public string CreateGitHubPRPartitionKey(string owner, string repo)
