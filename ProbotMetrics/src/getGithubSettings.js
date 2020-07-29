@@ -1,14 +1,18 @@
 
-
-var fs = require('fs');
 var axios = require('axios');
+const getConfig = require('probot-config');
 
 module.exports = async (context) => {
 
-  let repo_config = await context.config( 'probotmetrics.yml');
-
   const { owner, repo } = await context.repo();
+
   console.log(context.repo());
+  
+  let repo_config = await getConfig(context,'probotmetrics.yml');
+
+  console.log(repo_config.github_settings_url);
+
+
 
   var config = {
     method: 'get',
