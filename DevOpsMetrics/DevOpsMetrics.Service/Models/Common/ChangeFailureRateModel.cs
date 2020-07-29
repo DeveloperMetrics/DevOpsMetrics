@@ -28,8 +28,9 @@ namespace DevOpsMetrics.Service.Models.Common
         {
             get
             {
+                string changeFailureRate = ChangeFailureRateMetric.ToString("0.00%").Replace("-","");
                 //Example: https://img.shields.io/badge/Change%20failure%20rate%20(83.33%25)-Elite-brightgreen
-                string title = Uri.EscapeUriString("Change failure rate (" + ChangeFailureRateMetric.ToString("0.00%") + ")");
+                string title = Uri.EscapeUriString("Change failure rate (" + changeFailureRate + ")");
                 return Badges.BadgeURL(title, ChangeFailureRateMetricDescription);
             }
         }
