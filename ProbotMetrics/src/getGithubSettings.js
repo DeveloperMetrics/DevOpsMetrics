@@ -1,12 +1,13 @@
 
 
 var fs = require('fs');
-var appRoot = require('app-root-path');
 var axios = require('axios');
 
 module.exports = async (context) => {
 
-  let settings = JSON.parse(fs.readFileSync(appRoot + '/settings.json', encoding = "ascii"));
+  const dir = process.cwd(); 
+
+  let settings = JSON.parse(fs.readFileSync(dir + '/settings.json', encoding = "ascii"));
 
   const { owner, repo } = await context.repo();
   console.log(context.repo());
@@ -37,7 +38,7 @@ module.exports = async (context) => {
     .catch(function (error) {
         console.log(error);      
     });
-    
+
     return data_url;
 
 };
