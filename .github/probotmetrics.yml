@@ -1,3 +1,4 @@
+
 github_settings_url: "https://devopsmetrics-prod-eu-service.azurewebsites.net/api/TableStorage/GetGitHubSettings"
 deployment_frequency_url: "https://devopsmetrics-prod-eu-service.azurewebsites.net/api/DeploymentFrequency/GetGitHubDeploymentFrequency?getSampleData=False&numberOfDays=30&maxNumberOfItems=20&useCache=True"
 meantime_restore_url: "https://devopsmetrics-prod-eu-service.azurewebsites.net//api/MeanTimeToRestore/GetAzureMeanTimeToRestore?getSampleData=False&targetDevOpsPlatform=GitHub&resourceGroup=DevOpsMetrics&numberOfDays=30&maxNumberOfItems=20"
