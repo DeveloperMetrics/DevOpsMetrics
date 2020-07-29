@@ -5,22 +5,20 @@ var axios = require('axios');
 
 module.exports = async (context) => {
 
-  const dir = process.cwd(); 
-
-  let settings = JSON.parse(fs.readFileSync(dir + '/settings.json', encoding = "ascii"));
+  let config = await getConfig(context, 'probotmetrics.yml');
 
   const { owner, repo } = await context.repo();
   console.log(context.repo());
 
   var config = {
     method: 'get',
-    url: settings["github_settings_url"],
+    url: config.github_settings_url,
     headers: {
       'Cookie': 'ARRAffinity=a0e0c7074c47387d9110460567f8cad9199f0fc29dea2a558ac9771a8088f0e7'
     }
   };
 
-  let data_url = settings["data_url"];
+  let data_url = config.data_url;
 
   await axios(config)
     .then(function (response) {

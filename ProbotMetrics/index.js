@@ -14,13 +14,11 @@ module.exports = (app) => {
   // Your code here
   app.log('Yay, the app was loaded!')
 
-  const dir = process.cwd(); 
-  
-  let settings = JSON.parse(fs.readFileSync(dir + '/settings.json', encoding = "ascii"));
+  let config = await getConfig(context, 'probotmetrics.yml');
 
   createScheduler(app, {
     delay: !!process.env.DISABLE_DELAY, // delay is enabled on first run
-    interval: settings["hours_interval"] * settings["minutes_interval"] * settings["seconds_interval"] * 1000
+    interval: config.hours_interval * config.minutes_interval *config.seconds_interval * 1000
   })
 
   app.on('schedule.repository', async context => {
