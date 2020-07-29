@@ -3,6 +3,9 @@
 > A GitHub App built with [Probot](https://github.com/probot/probot) that Generates a MD file with your DevOps Performance Metrics
 
 ## Setup
+1. Make sure you don't have a .env file
+2. Create a settings.json to set your interval and data api locations
+3. Three
 
 ```sh
 # Install dependencies
@@ -18,6 +21,8 @@ If you have suggestions for how ProbotMetrics could be improved, or want to repo
 
 For more, check out the [Contributing Guide](CONTRIBUTING.md).
 
-## License
 
-[ISC](LICENSE) © 2020 Chris Hanna <christopher.g.hanna@gmail.com>
+
+## License
+Enjoy, but don't hold us accountable : )
+© 2020 Chris Hanna <chris@chaxa.com>

@@ -1,0 +1,5 @@
+github_settings_url:"https://devopsmetrics-prod-eu-service.azurewebsites.net/api/TableStorage/GetGitHubSettings"
+data_url : "https://devopsmetrics-prod-eu-service.azurewebsites.net/api/DeploymentFrequency/GetGitHubDeploymentFrequency?getSampleData=False&numberOfDays=30&maxNumberOfItems=20&useCache=True"
+hours_interval : 1
+minutes_interval : 1
+seconds_interval : 60
