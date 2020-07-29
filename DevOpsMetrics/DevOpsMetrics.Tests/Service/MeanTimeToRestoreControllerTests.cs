@@ -115,7 +115,8 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
             {
-                MTTRAverageDurationDescription = "Elite"
+                MTTRAverageDurationDescription = "Elite",
+                MTTRAverageDurationInHours = 0.12f
             };
 
             //Act
@@ -123,6 +124,7 @@ namespace DevOpsMetrics.Tests.Service
             //Assert
             Assert.AreEqual("Elite", model.MTTRAverageDurationDescription);
             Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service-Elite-brightgreen", model.BadgeURL);
+            Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service%20(0.12%20hours)-Elite-brightgreen", model.BadgeWithMetricURL);
         }
 
         [TestCategory("APITest")]
