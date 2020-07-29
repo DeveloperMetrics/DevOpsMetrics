@@ -5,7 +5,7 @@ var axios = require('axios');
 
 module.exports = async (context) => {
 
-  let repo_config = await getConfig(context, 'probotmetrics.yml');
+  let repo_config = await context.config( 'probotmetrics.yml');
 
   const { owner, repo } = await context.repo();
   console.log(context.repo());
