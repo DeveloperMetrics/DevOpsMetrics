@@ -14,14 +14,14 @@ module.exports = async (context, deployment_frequency_data, meantime_restore_dat
 
   let body = "";
 
-  body += '## Daily DevOps Metrics for ' + moment().format('DD-MMM-YYYY, h:mm:ss a'); 
+  body += '## Daily DevOps Metrics for ' + moment().format('DD-MMM-YYYY'); 
   body += "\n<br/> [![Deployment frequency]("+ deployment_frequency_data["badgeWithMetricURL"] +")](" + repo_config.dashboard_url + owner + "_" + repo + ")";
-  body += "\n<br/> [![Time to restore service]("+ meantime_restore_data["badgeWithMetricURL"] +")](" + repo_config.dashboard_url + owner + "_" + repo + ")";
   body += "\n<br/> [![Lead time for changes]("+ lead_time_change_data["badgeWithMetricURL"] +")](" + repo_config.dashboard_url + owner + "_" + repo + ")";
+  body += "\n<br/> [![Time to restore service](" + meantime_restore_data["badgeWithMetricURL"] + ")](" + repo_config.dashboard_url + owner + "_" + repo + ")";
   body += "\n<br/> [![Change failure rate]("+ change_failure_rate_data["badgeWithMetricURL"] +")](" + repo_config.dashboard_url + owner + "_" + repo + ")";
 
   body += "\n<br/> **Note:** metrics based on data from the last 30 days";
-  body += "\n<br/> _This issue was created with the DevOps metrics probot. Documentation about the metrics and solution is available at [https://github.com/samsmithnz/devopsmetrics](https://github.com/samsmithnz/devopsmetrics)_";
+  body += "\n<br/> _This issue was created with the DevOps metrics probot. Documentation about the metrics and source code is available at [https://github.com/samsmithnz/devopsmetrics](https://github.com/samsmithnz/devopsmetrics)_";
 
   const labels = ['daily-devops'];
 
