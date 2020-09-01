@@ -78,7 +78,7 @@ Potentially:
 - Azure DevOps integrations, so you can see the changes real time in your project/repo.
 - Secret management and integration with Azure Key Vault and/or GitHub Secrets
 - Support for more scenarios, releases, etc
-- Badges! Note that these badges are static at this time, but represent what *could* be...
+- Badges! The API can generate  a URL to these static badges (The samples below are static)
 
   [![Build](https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen)](https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen) [![Build](https://img.shields.io/badge/Lead%20time%20for%20changes-High-green)](https://img.shields.io/badge/Lead%20time%20for%20changes-High-green) [![Build](https://img.shields.io/badge/Time%20to%20restore%20service-Medium-orange)](https://img.shields.io/badge/Time%20to%20restore%20service-Medium-orange) [![Build](https://img.shields.io/badge/Change%20failure%20rate-Low-red)](https://img.shields.io/badge/Change%20failure%20rate-Low-red)
 
