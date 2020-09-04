@@ -1,5 +1,5 @@
 # DevOpsMetrics
-A project to experiment with high performing metrics. In DevOps, highlighted by DORA research and Accelerate, four metrics have been identified as driving true high performing teams. We realized quickly that while these metrics are widely used in discussion, there haven't been many efforts to implement and capture the metrics. This project aims to 
+"DevOpsMetrics" is focused on implementing collection and analysis of high performing DevOps metrics. Four metrics have been identified as driving true high performing DevOps teams, highlighted by [DORA research](https://www.devops-research.com/research.html) and [Accelerate](https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339). While these metrics are widely used in DevOps discussion, there haven't been many efforts to date to capture the metrics. This project aims to address that within GitHub and Azure DevOps. 
 
 All four of these metrics are based on production environments, where the value to end users is delivered:
 
