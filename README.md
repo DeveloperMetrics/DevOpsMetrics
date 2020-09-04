@@ -1,7 +1,7 @@
 # DevOps Metrics
-This project is focused on implementing collection and analysis of high performing DevOps metrics. Four metrics have been identified as driving true high performing DevOps teams, highlighted by [DORA research](https://www.devops-research.com/research.html) and [Accelerate](https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339). While these metrics are widely used in DevOps discussion, there haven't been many efforts to date to capture the metrics. This project aims to address that within GitHub and Azure DevOps. 
+This project is focused on collecting and analyzing high performing DevOps metrics from GitHub and Azure DevOps. [DORA research](https://www.devops-research.com/research.html) and [Accelerate](https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339) highlighted four metrics as driving indicators of true high performing DevOps teams. While these metrics are widely used in DevOps discussion, there haven't been many efforts to date to implement and capture the metrics.
 
-All four of these metrics are based on production environments, where the value to end users is delivered:
+All four of these metrics are based on production environments, where the value to end users is delivered (e.g. we aren't delivering value to Dev/QA):
 
 - Lead time for changes: Time from committing a change to deployment to production
 - Deployment frequency: Number of deployments to production
