@@ -1,8 +1,6 @@
 # DevOps Metrics
 This project is focused on collecting and analyzing high performing DevOps metrics from GitHub and Azure DevOps. [DORA's "State of DevOps" research](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf) and [Accelerate](https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339) highlighted four driving indicators of high performing DevOps teams. While these four metrics are widely used in DevOps discussion, there haven't been many efforts to date to implement and capture the metrics.
 
-All four of these metrics are based on production environments, where the value to end users is delivered (e.g. we aren't delivering value to Dev/QA):
-
 - Lead time for changes: Time from committing a change to deployment to production
 - Deployment frequency: Number of deployments to production
 - Mean time to restore (MTTR): How quickly restoration of production occurs in an outage or degradation
