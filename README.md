@@ -1,5 +1,5 @@
 # DevOps Metrics
-This project is focused on collecting and analyzing high performing DevOps metrics from GitHub and Azure DevOps. [DORA research](https://www.devops-research.com/research.html) and [Accelerate](https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339) highlighted four metrics as driving indicators of true high performing DevOps teams. While these metrics are widely used in DevOps discussion, there haven't been many efforts to date to implement and capture the metrics.
+This project is focused on collecting and analyzing high performing DevOps metrics from GitHub and Azure DevOps. [DORA's "State of DevOps" research](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf) and [Accelerate](https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339) highlighted four metrics as driving indicators of true high performing DevOps teams. While these metrics are widely used in DevOps discussion, there haven't been many efforts to date to implement and capture the metrics.
 
 All four of these metrics are based on production environments, where the value to end users is delivered (e.g. we aren't delivering value to Dev/QA):
 
