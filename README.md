@@ -1,16 +1,16 @@
 # DevOpsMetrics
-A project to experiment with high performing metrics. A [demo website displaying the metrics can be viewed here](https://devopsmetrics-prod-eu-web.azurewebsites.net/).
+A project to experiment with high performing metrics. In DevOps, highlighted by DORA research and Accelerate, four metrics have been identified as driving true high performing teams. We realized quickly that while these metrics are widely used in discussion, there haven't been many efforts to implement and capture the metrics. This project aims to 
 
 All four of these metrics are based on production environments, where the value to end users is delivered:
 
 - Lead time for changes: Time from committing a change to deployment to production
 - Deployment frequency: Number of deployments to production
 - Mean time to restore (MTTR): How quickly restoration of production occurs in an outage or degradation
-- Change failure rate: After a production deployment, was it successful? Or was a fix or rollback required?
+- Change failure rate: After a production deployment, was it successful? Or was a fix or rollback required after the fact?
 
 ![High performing metrics](https://samlearnsazure.files.wordpress.com/2020/04/01highperformers.png)
 (Chart from page 18 of https://services.google.com/fh/files/misc/state-of-devops-2019.pdf)
-
+A [demo website displaying the metrics can be viewed here](https://devopsmetrics-prod-eu-web.azurewebsites.net/).
 More information about high performing DevOps metrics can be found in a blog post here: https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/
 
 ## The current solution:
