@@ -1,16 +1,14 @@
-# DevOpsMetrics
-A project to experiment with high performing metrics. A [demo website displaying the metrics can be viewed here](https://devopsmetrics-prod-eu-web.azurewebsites.net/).
+# DevOps Metrics
+This project is focused on collecting and analyzing high performing DevOps metrics from GitHub and Azure DevOps. [DORA's "State of DevOps" research](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf) and [Accelerate](https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339) highlighted four driving indicators of high performing DevOps teams. While these four metrics are widely used in DevOps discussion, there haven't been many efforts to date to implement and capture the metrics.
 
-All four of these metrics are based on production environments, where the value to end users is delivered:
-
-- Lead time for changes: Time from committing a change to deployment to production
-- Deployment frequency: Number of deployments to production
-- Mean time to restore (MTTR): How quickly restoration of production occurs in an outage or degradation
-- Change failure rate: After a production deployment, was it successful? Or was a fix or rollback required?
+- **Deployment frequency**: Number of deployments to production
+- **Lead time for changes**: Time from committing a change to deployment to production
+- **Mean time to restore (MTTR)**: How quickly restoration of production occurs in an outage or degradation
+- **Change failure rate**: After a production deployment, was it successful? Or was a fix or rollback required after the fact?
 
 ![High performing metrics](https://samlearnsazure.files.wordpress.com/2020/04/01highperformers.png)
 (Chart from page 18 of https://services.google.com/fh/files/misc/state-of-devops-2019.pdf)
-
+A [demo website displaying the metrics can be viewed here](https://devopsmetrics-prod-eu-web.azurewebsites.net/).
 More information about high performing DevOps metrics can be found in a blog post here: https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/
 
 ## The current solution:
@@ -72,13 +70,13 @@ Dependabot runs daily to check for dependency upgrades, and will automatically c
 
 
 # What's next?
-Potentially:
 - Upgrades to packaging and setup
-- Upgrades to CosmosDB (currently in Azure storage)
-- Azure DevOps integrations, so you can see the changes real time in your project/repo.
+- Upgrades to store data in CosmosDB (currently in Azure storage)
+- Azure DevOps marketplace integrations, so you can see the changes real time on your project/repo.
+- Reviewing the current GitHub probot approach, to find a better target than issues (perhaps a metrics readme.md file?)
 - Secret management and integration with Azure Key Vault and/or GitHub Secrets
 - Support for more scenarios, releases, etc
-- Badges! The API can generate  a URL to these static badges (The samples below are static)
+- Badges! The API can generate  a URL to these static badges, but more work is needed. Some samples are shown below:
 
   [![Build](https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen)](https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen) [![Build](https://img.shields.io/badge/Lead%20time%20for%20changes-High-green)](https://img.shields.io/badge/Lead%20time%20for%20changes-High-green) [![Build](https://img.shields.io/badge/Time%20to%20restore%20service-Medium-orange)](https://img.shields.io/badge/Time%20to%20restore%20service-Medium-orange) [![Build](https://img.shields.io/badge/Change%20failure%20rate-Low-red)](https://img.shields.io/badge/Change%20failure%20rate-Low-red)
 
