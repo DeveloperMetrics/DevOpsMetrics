@@ -2,7 +2,7 @@
 {
     public class Scaling
     {
-        //We scale the number, so that the lowest number is visible on the charts
+        //scale the number, so that the lowest number is visible on the charts
         public static int ScaleNumberToRange(float number, float currentMin, float currentMax, float targetMin, float targetMax)
         {
             //https://stats.stackexchange.com/questions/281162/scale-a-number-between-a-range/281164
