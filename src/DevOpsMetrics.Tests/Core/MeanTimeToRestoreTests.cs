@@ -17,6 +17,7 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             MeanTimeToRestore metrics = new MeanTimeToRestore();
+            SLA slaMetrics = new SLA();
             int numberOfDays = 7;
             List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = new List<KeyValuePair<DateTime, TimeSpan>>
             {
@@ -26,12 +27,15 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, numberOfDays);
+            float sla = slaMetrics.ProcessSLA(meanTimeToRestoreList, numberOfDays);
             MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
             {
                 MTTRAverageDurationInHours = result,
                 MTTRAverageDurationDescription = metrics.GetMeanTimeToRestoreRating(result),
                 IsProjectView = false,
-                ItemOrder = 1
+                ItemOrder = 1,
+                SLA = sla,
+                SLADescription = slaMetrics.GetSLARating(sla)
             };
 
             //Assert
@@ -40,6 +44,8 @@ namespace DevOpsMetrics.Tests.Core
             Assert.AreEqual("Elite", model.MTTRAverageDurationDescription);
             Assert.AreEqual(false, model.IsProjectView);
             Assert.AreEqual(1, model.ItemOrder);
+            Assert.AreEqual(0.9910714f, model.SLA);
+            Assert.AreEqual("99.0% SLA", model.SLADescription);
         }
 
 

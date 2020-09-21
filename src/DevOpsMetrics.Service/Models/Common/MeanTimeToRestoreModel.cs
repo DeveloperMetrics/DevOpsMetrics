@@ -15,6 +15,8 @@ namespace DevOpsMetrics.Service.Models.Common
         public float MTTRAverageDurationInHours { get; set; }
         public string MTTRAverageDurationDescription { get; set; }  
         public int ItemOrder { get; set; }
+        public float SLA { get; set; }
+        public string SLADescription { get; set; }
 
         public string BadgeURL { 
             get
