@@ -104,7 +104,7 @@ namespace DevOpsMetrics.Tests.Service
                 Assert.IsTrue(model.MeanTimeToRestoreEvents[0].ResourceGroup != "");
                 Assert.IsTrue(model.MeanTimeToRestoreEvents[0].MTTRDurationInHours > 0f);
                 Assert.IsTrue(model.MeanTimeToRestoreEvents[0].MTTRDurationPercent > 0f);
-                Assert.IsTrue(model.MeanTimeToRestoreEvents[0].ItemOrder == 1);
+                Assert.IsTrue(model.MeanTimeToRestoreEvents[0].ItemOrder >= 1);
             }
             Assert.AreEqual(numberOfDays, model.NumberOfDays);
             Assert.IsTrue(model.MaxNumberOfItems >= 0);

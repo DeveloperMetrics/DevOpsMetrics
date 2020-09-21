@@ -38,6 +38,7 @@ More information about high performing DevOps metrics can be found in a blog pos
       - Our project is hosted in Azure
       - The production environment is contained in a single resource group
       - There are appropriate alerts setup on each of the resources, each with action groups to save the alert to Azure Storage 
+      - We generate an SLA, but it's entirely based on the MTTR time - assuming the application is "not available" during this time
   - Current limitations: 
       - Only one production resource group can be specified
       - If there is catastrophic resource group failure, (e.g. deleted), there is a high chance that some/all of the alerts will also be deleted

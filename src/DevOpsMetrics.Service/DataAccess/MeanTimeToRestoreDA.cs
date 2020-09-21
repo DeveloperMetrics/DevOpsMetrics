@@ -3,6 +3,7 @@ using DevOpsMetrics.Service.DataAccess.Common;
 using DevOpsMetrics.Service.DataAccess.TableStorage;
 using DevOpsMetrics.Service.Models.Azure;
 using DevOpsMetrics.Service.Models.Common;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -98,9 +99,14 @@ namespace DevOpsMetrics.Service.DataAccess
 
                 //Calculate the MTTR metric
                 MeanTimeToRestore mttr = new MeanTimeToRestore();
-                float averageMTTR = CalculateMTTRDuration(events);
+                List<KeyValuePair<DateTime, TimeSpan>> dateList = ConvertEventsToDateList(events);
+                float averageMTTR = mttr.ProcessMeanTimeToRestore(dateList, numberOfDays);
 
-                //Filter and sort the final list (May not be needed due to the initial sort on the starting alerts)
+                //Calculate the SLA metric
+                SLA slaMetric = new SLA();
+                float sla = slaMetric.ProcessSLA(dateList, numberOfDays);
+
+                //Filter the list for the UI, and sort the final list (May not be needed due to the initial sort on the starting alerts)
                 List<MeanTimeToRestoreEvent> uiEvents = utility.GetLastNItems(events, maxNumberOfItems);
                 uiEvents = uiEvents.OrderBy(o => o.StartTime).ToList();
 
@@ -121,7 +127,9 @@ namespace DevOpsMetrics.Service.DataAccess
                     MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(averageMTTR),
                     NumberOfDays = numberOfDays,
                     MaxNumberOfItems = uiEvents.Count,
-                    TotalItems = events.Count
+                    TotalItems = events.Count,
+                    SLA = sla,
+                    SLADescription = slaMetric.GetSLARating(sla)
                 };
                 return model;
             }
@@ -129,8 +137,11 @@ namespace DevOpsMetrics.Service.DataAccess
             {
                 //Get sample data
                 MeanTimeToRestore mttr = new MeanTimeToRestore();
-                float averageMTTR = CalculateMTTRDuration(GetSampleMTTREvents(resourceGroup));
                 List<MeanTimeToRestoreEvent> sampleEvents = GetSampleMTTREvents(resourceGroup);
+                List<KeyValuePair<DateTime, TimeSpan>> dateList = ConvertEventsToDateList(sampleEvents);
+                float averageMTTR = mttr.ProcessMeanTimeToRestore(dateList, numberOfDays);
+                SLA slaMetric = new SLA();
+                float sla = slaMetric.ProcessSLA(dateList, numberOfDays);
                 MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
                 {
                     TargetDevOpsPlatform = targetDevOpsPlatform,
@@ -140,26 +151,39 @@ namespace DevOpsMetrics.Service.DataAccess
                     MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(averageMTTR),
                     NumberOfDays = numberOfDays,
                     MaxNumberOfItems = sampleEvents.Count,
-                    TotalItems = sampleEvents.Count
+                    TotalItems = sampleEvents.Count,
+                    SLA = sla,
+                    SLADescription = slaMetric.GetSLARating(sla)
                 };
                 return model;
             }
         }
 
-        private float CalculateMTTRDuration(List<MeanTimeToRestoreEvent> events)
+        private List<KeyValuePair<DateTime, TimeSpan>> ConvertEventsToDateList(List<MeanTimeToRestoreEvent> events)
         {
-            float total = 0f;
+            List<KeyValuePair<DateTime, TimeSpan>> dateList = new List<KeyValuePair<DateTime, TimeSpan>>();
             foreach (MeanTimeToRestoreEvent item in events)
             {
-                total += item.MTTRDurationInHours;
+                dateList.Add(new KeyValuePair<DateTime, TimeSpan>(item.StartTime, item.EndTime - item.StartTime));
             }
-            float average = 0f;
-            if (events.Count > 0)
-            {
-                average = total / events.Count;
-            }
-            return average;
+
+            return dateList;
         }
+
+        //private float CalculateMTTRDuration(List<MeanTimeToRestoreEvent> events)
+        //{
+        //    float total = 0f;
+        //    foreach (MeanTimeToRestoreEvent item in events)
+        //    {
+        //        total += item.MTTRDurationInHours;
+        //    }
+        //    float average = 0f;
+        //    if (events.Count > 0)
+        //    {
+        //        average = total / events.Count;
+        //    }
+        //    return average;
+        //}
 
         //Return a sample dataset to help with testing
         private List<MeanTimeToRestoreEvent> GetSampleMTTREvents(string resourceGroup)
