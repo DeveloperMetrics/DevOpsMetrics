@@ -13,6 +13,25 @@ namespace DevOpsMetrics.Tests.Core
     {
 
         [TestMethod]
+        public void SLANoneTest()
+        {
+            //Goal: We have less than 90.0% uptime (downtime less than the Daily: 2h 24m 0s or Weekly: 16h 48m 0s)
+
+            //Arrange
+            SLA metrics = new SLA();
+            int numberOfDays = 7;
+            List<KeyValuePair<DateTime, TimeSpan>> SLAList = new List<KeyValuePair<DateTime, TimeSpan>>();
+
+            //Act
+            float result = metrics.ProcessSLA(SLAList, numberOfDays);
+            string slaDescription = metrics.GetSLARating(result);
+
+            //Assert
+            Assert.AreEqual(-1, result);
+            Assert.AreEqual("no data", slaDescription);
+        }
+
+        [TestMethod]
         public void SLANoNineTest()
         {
             //Goal: We have less than 90.0% uptime (downtime less than the Daily: 2h 24m 0s or Weekly: 16h 48m 0s)
@@ -53,7 +72,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Assert
             Assert.AreEqual(0.9f, result);
-            Assert.AreEqual("90.0% SLA", slaDescription);
+            Assert.AreEqual("over 90.0% SLA", slaDescription);
         }
 
         [TestMethod]
@@ -75,7 +94,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Assert
             Assert.AreEqual(0.990079343f, result);
-            Assert.AreEqual("99.0% SLA", slaDescription);
+            Assert.AreEqual("over 99.0% SLA", slaDescription);
         }
 
 
@@ -99,7 +118,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Assert
             Assert.AreEqual(0.9990014f, result);
-            Assert.AreEqual("99.9% SLA", slaDescription);
+            Assert.AreEqual("over 99.9% SLA", slaDescription);
         }
 
         [TestMethod]
@@ -121,7 +140,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Assert
             Assert.AreEqual(0.9999008f, result);
-            Assert.AreEqual("99.99% SLA", slaDescription);
+            Assert.AreEqual("over 99.99% SLA", slaDescription);
         }
 
         [TestMethod]
@@ -144,7 +163,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Assert
             Assert.AreEqual(0.9999901f, result);
-            Assert.AreEqual("99.999% SLA", slaDescription);
+            Assert.AreEqual("over 99.999% SLA", slaDescription);
         }
 
         [TestMethod]
@@ -167,7 +186,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Assert
             Assert.AreEqual(1f, result);
-            Assert.AreEqual("99.9999% SLA", slaDescription);
+            Assert.AreEqual("over 99.9999% SLA", slaDescription);
         }
 
 

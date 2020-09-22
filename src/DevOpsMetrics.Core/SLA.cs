@@ -69,6 +69,7 @@ namespace DevOpsMetrics.Core
 
         public string GetSLARating(float SLAPercent)
         {
+            //Adding the most commonly used SLA's
             float oneNine = 0.9f; //90.0%
             float oneNineFive = 0.95f; //95.0%
             float twoNines = 0.99f; //99.0%
