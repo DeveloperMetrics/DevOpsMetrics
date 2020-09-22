@@ -45,7 +45,7 @@ namespace DevOpsMetrics.Tests.Core
             Assert.AreEqual(false, model.IsProjectView);
             Assert.AreEqual(1, model.ItemOrder);
             Assert.AreEqual(0.9910714f, model.SLA);
-            Assert.AreEqual("99.0% SLA", model.SLADescription);
+            Assert.AreEqual("over 99.0% SLA", model.SLADescription);
         }
 
 
