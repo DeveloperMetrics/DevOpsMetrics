@@ -47,6 +47,18 @@
         - The production environment is contained in a single resource group.<br />
         - There are appropriate alerts setup on each of the resources, each with action groups to save the alert to Azure Storage <br />
         <br />
+        <b>What is the SLA?</b><br />
+        This is an experiment, making a bold assumption that when the application is degraded, it is not available.<br />
+        <table>
+            <tr><th>SLA/uptime</th><th>Daily offline limit</th><th>Weekly offline limit</th></tr>
+            <tr><td>90.0%</td><td>2h 24m 0s</td><td>>16h 48m 0s</tr>
+            <tr><td>90.0%</td><td>2h 24m 0s</td><td>16h 48m 0s</tr>
+            <tr><td>99.0%</td><td>14m 24s</td><td>1h 40m 48s</tr>
+            <tr><td>99.9%</td><td>1m 26s</td><td>10m 4s</tr>
+            <tr><td>99.99%</td><td>8s</td><td>1m 0s</tr>
+            <tr><td>99.999%</td><td>0s</td><td>6s</tr>
+            <tr><td>99.9999%</td><td>0s</td><td>0s</tr>
+        </table>
     </div>
 
 </div>
