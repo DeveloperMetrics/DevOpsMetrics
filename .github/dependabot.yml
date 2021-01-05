@@ -1,7 +1,7 @@
 version: 2
 updates:
 - package-ecosystem: nuget
-  directory: "/DevOpsMetrics"
+  directory: "/DevOpsMetrics/src"
   schedule:
     interval: daily
     time: "06:00"
