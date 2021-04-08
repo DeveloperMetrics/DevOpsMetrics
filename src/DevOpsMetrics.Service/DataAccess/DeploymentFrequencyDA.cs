@@ -1,11 +1,11 @@
-﻿using DevOpsMetrics.Core;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using DevOpsMetrics.Core;
 using DevOpsMetrics.Service.DataAccess.Common;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.DataAccess
 {

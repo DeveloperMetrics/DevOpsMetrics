@@ -1,8 +1,7 @@
-using DevOpsMetrics.Core;
-using DevOpsMetrics.Service.Models.Common;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using DevOpsMetrics.Core;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DevOpsMetrics.Tests.Core
 {

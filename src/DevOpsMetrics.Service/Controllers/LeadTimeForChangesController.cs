@@ -1,9 +1,9 @@
-﻿using DevOpsMetrics.Service.DataAccess;
+﻿using System;
+using System.Threading.Tasks;
+using DevOpsMetrics.Service.DataAccess;
 using DevOpsMetrics.Service.Models.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.Controllers
 {

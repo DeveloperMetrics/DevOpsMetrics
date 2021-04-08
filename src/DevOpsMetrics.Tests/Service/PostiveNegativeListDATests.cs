@@ -1,10 +1,8 @@
-﻿using DevOpsMetrics.Service.DataAccess;
-using DevOpsMetrics.Service.Models.Common;
-using Microsoft.Extensions.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using DevOpsMetrics.Service.DataAccess;
+using DevOpsMetrics.Service.Models.Common;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DevOpsMetrics.Tests.Service
 {
