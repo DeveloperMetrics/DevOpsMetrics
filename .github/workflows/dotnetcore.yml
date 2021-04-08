@@ -73,11 +73,13 @@ jobs:
         name: probot
         path: src/ProbotMetrics
 
-  #Deploy the artifacts to Azure
+  #Disabling PROBOT for 2021 reboot to focus on website
+  #Deploy the probot artifacts to Azure
   deployProbot:
     runs-on: ubuntu-latest
     needs: build    
     #if: github.ref == 'refs/heads/master'    
+    if: 0 == 1 #Disabling PROBOT for 2021 reboot to focus on website
     steps:        
     # Login with the secret SP details
     - name: Log into Azure
@@ -145,19 +147,18 @@ jobs:
     - name: Deploy website app settings
       run: az webapp config appsettings set --name devopsmetrics-prod-eu-web --slot "staging" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  
 
-    # Run functional tests on staging slots     
-    # Functional tests are commented out while the selenium issue is resolved.
-    #- name: Functional Tests
-    #  run: |
-    #    $vsTestConsoleExe = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\Common7\\IDE\\Extensions\\TestPlatform\\vstest.console.exe"
-    #    $targetTestDll = "functionaltests\DevOpsMetrics.FunctionalTests.dll"
-    #    $testRunSettings = "/Settings:`"functionaltests\test.runsettings`" "
-    #    $parameters = " -- ServiceUrl=""https://devopsmetrics-prod-eu-service-staging.azurewebsites.net/"" WebsiteUrl=""https://devopsmetrics-prod-eu-web-staging.azurewebsites.net/"" "
-    #    #Note that the `" is an escape character to quote strings, and the `& is needed to start the command
-    #    $command = "`& `"$vsTestConsoleExe`" `"$targetTestDll`" $testRunSettings $parameters " 
-    #    Write-Host "$command"
-    #    Invoke-Expression $command
-    #  shell: powershell
+    # Run functional tests on staging slots
+    - name: Functional Tests
+      run: |
+        $vsTestConsoleExe = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\Common7\\IDE\\Extensions\\TestPlatform\\vstest.console.exe"
+        $targetTestDll = "functionaltests\DevOpsMetrics.FunctionalTests.dll"
+        $testRunSettings = "/Settings:`"functionaltests\test.runsettings`" "
+        $parameters = " -- ServiceUrl=""https://devopsmetrics-prod-eu-service-staging.azurewebsites.net/"" WebsiteUrl=""https://devopsmetrics-prod-eu-web-staging.azurewebsites.net/"" "
+        #Note that the `" is an escape character to quote strings, and the `& is needed to start the command
+        $command = "`& `"$vsTestConsoleExe`" `"$targetTestDll`" $testRunSettings $parameters " 
+        Write-Host "$command"
+        Invoke-Expression $command
+      shell: powershell
     
     # deploy function and settings
     - name: Deploy function to Azure WebApp
