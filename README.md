@@ -1,4 +1,7 @@
 # DevOps Metrics
+
+[![Build](https://GitHub.com/samsmithnz/DevOpsMetrics/workflows/CI/CD/badge.svg)](https://GitHub.com/samsmithnz/DevOpsMetrics/actions?query=workflow%3ACI%2FCD)
+
 This project is focused on collecting and analyzing high performing DevOps metrics from GitHub and Azure DevOps. [DORA's "State of DevOps" research](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf) and [Accelerate](https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339) highlighted four driving indicators of high performing DevOps teams. While these four metrics are widely used in DevOps discussion, there haven't been many efforts to date to implement and capture the metrics.
 
 - **Deployment frequency**: Number of deployments to production
@@ -20,7 +23,7 @@ More information about high performing DevOps metrics can be found in a blog pos
       - The build is multi-stage, and leads to a deployment in a production environment.
       - We only look at a single branch (usually the main branch), hence we ignore feature branches (as these probably aren't deploying to production')
   - Current limitations: Only one build/run/branch can be specified
-![Deployment Frequency](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/DeploymentFrequencyDemo.png)
+![Deployment Frequency](https://github.com/samsmithnz/DevOpsMetrics/blob/main/ReadmeImages/DeploymentFrequencyDemo.png)
 
 - **Lead time for changes**, in both Azure DevOps and GitHub:
   - How does it work? We look at the number of successful pipeline runs and match it with Pull Requests 
@@ -30,7 +33,7 @@ More information about high performing DevOps metrics can be found in a blog pos
       - We assume we are following a git flow process, creating feature branches and merging back to the main branch, which is deployed to production on the completion of pull requests
       - We assume that the user requires pull requests to merge work into the main branch - we are looking at all work that is not on this main branch - hence we currently only support one main branch.
   - Current limitations: Only one repo and main branch can be specified
-![Lead time for changes](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/LeadTimeForChanges.png)
+![Lead time for changes](https://github.com/samsmithnz/DevOpsMetrics/blob/main/ReadmeImages/LeadTimeForChanges.png)
 
 - **Time to restore service**, in Azure
   - How does it work? We setup Azure Monitor alerts on our resources, for example, on our web service, where we have an alerts for HTTP500 and HTTP403 errors, as well as monitoring CPU and RAM. If any of these alerts are triggered, we capture the alert in an Azure function, and save it into a Azure table storage, where we can aggregate and measure the time of the outage. When the alert is later resolved, this also triggers through the same workflow to save the the resolution and record the restoration of service. 
@@ -42,7 +45,7 @@ More information about high performing DevOps metrics can be found in a blog pos
   - Current limitations: 
       - Only one production resource group can be specified
       - If there is catastrophic resource group failure, (e.g. deleted), there is a high chance that some/all of the alerts will also be deleted
-![Time to restore service](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/TimeToRestoreService.png)
+![Time to restore service](https://github.com/samsmithnz/DevOpsMetrics/blob/main/ReadmeImages/TimeToRestoreService.png)
 
 - **Change failure rate**, in Azure DevOps and GitHub
   - How does it work? We look at builds, and let the user indicate if it was successful or a failure. By default (currently), the build is considered a failure. (We are going to change this to success by default later) 
@@ -51,12 +54,10 @@ More information about high performing DevOps metrics can be found in a blog pos
       - We only look at a single branch (usually the main branch), hence we ignore feature branches (as these probably aren't deploying to production)
       - The user has reviewed the build/deployment and confirmed that the production deployment was successful
   - Current limitations: Only one build/run can be specified
-![Change failure rate](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/ChangeFailureRate.png)
+![Change failure rate](https://github.com/samsmithnz/DevOpsMetrics/blob/main/ReadmeImages/ChangeFailureRate.png)
 
 # Architecture
 Uses .Net CORE 3.1 & MSTest. A GitHub action runs the CI/CD process. 
-
-[![Build](https://GitHub.com/samsmithnz/DevOpsMetrics/workflows/CI/CD/badge.svg)](https://GitHub.com/samsmithnz/DevOpsMetrics/actions?query=workflow%3ACI%2FCD)
 
 Currently the CI/CD process: 
 1. Builds the code
@@ -67,7 +68,7 @@ Currently the CI/CD process:
 
 Dependabot runs daily to check for dependency upgrades, and will automatically create a pull request, and approve/close it if all of the tests pass successfully 
 
-![Architecture diagram](https://github.com/samsmithnz/DevOpsMetrics/blob/master/ReadmeImages/Architecture.png)
+![Architecture diagram](https://github.com/samsmithnz/DevOpsMetrics/blob/main/ReadmeImages/Architecture.png)
 
 
 # What's next?
