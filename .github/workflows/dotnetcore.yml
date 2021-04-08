@@ -178,7 +178,7 @@ jobs:
   swapDeploymentSlots:
     runs-on: ubuntu-latest # Note, Azure CLI requires a Linux runner...
     needs: [build, deployToStagingSlots]
-    #Only swap from staging to production slots if running off the master branch - we don't want to deploy off feature branches/PRs
+    #Only swap from staging to production slots if running off the main branch - we don't want to deploy off feature branches/PRs
     if: github.ref == 'refs/heads/main'     
     steps:
     # Login with the secret SP details
