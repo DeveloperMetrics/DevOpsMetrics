@@ -35,15 +35,20 @@ jobs:
 
     #Publish dotnet objects
     - name: .NET Publish Web Service
-      run: dotnet publish src/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj --configuration Release
+      run: dotnet publish src/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj --configuration Release --output ${{ github.workspace }}/webservice
     - name: .NET Publish Website
-      run: dotnet publish src/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj --configuration Release
+      run: dotnet publish src/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj --configuration Release --output ${{ github.workspace }}/web
     - name: .NET Publish Function
-      run: dotnet publish src/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj --configuration Release      
+      run: dotnet publish src/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj --configuration Release --output ${{ github.workspace }}/function     
     - name: .NET Publish functional tests
-      run: dotnet publish src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj --configuration Release 
+      run: dotnet publish src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj --configuration Release --output ${{ github.workspace }}/functionalTests
     - name: Copy chromedriver for functional test
-      run: copy "src/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/chromedriver.exe" "src/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/publish"
+      run: copy "src/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/chromedriver.exe" "${{ github.workspace }}/functionalTests"
+      shell: powershell
+    - name: DotNet restore functional tests to get correct NewtonSoft version
+      run: dotnet restore src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj 
+    - name: Copy new NewtonSoft version for functional test
+      run: copy "src/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/Newtonsoft.Json.dll" "${{ github.workspace }}/functionalTests"
       shell: powershell
         
     #Publish build artifacts to GitHub
@@ -51,22 +56,22 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: serviceapp
-        path: src/DevOpsMetrics.Service/bin/Release/netcoreapp3.1/publish
+        path: ${{ github.workspace }}/webservice
     - name: Upload website build artifacts back to GitHub
       uses: actions/upload-artifact@v2
       with:
         name: webapp
-        path: src/DevOpsMetrics.Web/bin/Release/netcoreapp3.1/publish
+        path: ${{ github.workspace }}/web
     - name: Upload function build artifacts back to GitHub
       uses: actions/upload-artifact@v2
       with:
         name: functionapp
-        path: src/DevOpsMetrics.Function/bin/Release/netcoreapp3.1/publish
+        path: ${{ github.workspace }}/function
     - name: Upload function test build artifacts back to GitHub
       uses: actions/upload-artifact@v2
       with:
         name: functionaltests
-        path: src/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/publish
+        path: ${{ github.workspace }}/functionalTests
     - name: Upload probot build artifacts back to GitHub
       uses: actions/upload-artifact@v2
       with:
