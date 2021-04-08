@@ -1,14 +1,13 @@
-﻿using DevOpsMetrics.Service.Controllers;
+﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using DevOpsMetrics.Service.Controllers;
 using DevOpsMetrics.Service.Models.Common;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Net.Http;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Tests.Service
 {
@@ -65,7 +64,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(10, model.BuildList.Count);
             Assert.AreEqual(70, model.BuildList[0].BuildDurationPercent);
             Assert.AreEqual("1", model.BuildList[0].BuildNumber);
-            Assert.AreEqual("master", model.BuildList[0].Branch);
+            Assert.AreEqual("main", model.BuildList[0].Branch);
             Assert.AreEqual("completed", model.BuildList[0].Status);
             Assert.AreEqual("https://dev.azure.com/samsmithnz/samlearnsazure/1", model.BuildList[0].Url);
             Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
@@ -172,7 +171,7 @@ namespace DevOpsMetrics.Tests.Service
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
-            string branch = "master";
+            string branch = "main";
             string workflowName = "SamsFeatureFlags.CI/CD";
             string workflowId = "108084";
             int numberOfDays = 7;
@@ -191,7 +190,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(10, model.BuildList.Count);
             Assert.AreEqual(70, model.BuildList[0].BuildDurationPercent);
             Assert.AreEqual("1", model.BuildList[0].BuildNumber);
-            Assert.AreEqual("master", model.BuildList[0].Branch);
+            Assert.AreEqual("main", model.BuildList[0].Branch);
             Assert.AreEqual("completed", model.BuildList[0].Status);
             Assert.AreEqual("https://GitHub.com/samsmithnz/devopsmetrics/1", model.BuildList[0].Url);
             Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
@@ -211,7 +210,7 @@ namespace DevOpsMetrics.Tests.Service
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
-            string branch = "master";
+            string branch = "main";
             string workflowName = "SamsFeatureFlags.CI/CD";
             string workflowId = "108084";
             int numberOfDays = 7;
@@ -257,7 +256,7 @@ namespace DevOpsMetrics.Tests.Service
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
-            string branch = "master";
+            string branch = "main";
             string workflowName = "SamsFeatureFlags.CI/CD";
             string workflowId = "108084";
             int numberOfDays = 7;
@@ -347,7 +346,7 @@ namespace DevOpsMetrics.Tests.Service
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
-            string branch = "master";
+            string branch = "main";
             string workflowName = "SamsFeatureFlags.CI/CD";
             string workflowId = "108084";
             int numberOfDays = 7;
@@ -366,7 +365,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(10, model.BuildList.Count);
             Assert.AreEqual(70, model.BuildList[0].BuildDurationPercent);
             Assert.AreEqual("1", model.BuildList[0].BuildNumber);
-            Assert.AreEqual("master", model.BuildList[0].Branch);
+            Assert.AreEqual("main", model.BuildList[0].Branch);
             Assert.AreEqual("completed", model.BuildList[0].Status);
             Assert.AreEqual("https://GitHub.com/samsmithnz/devopsmetrics/1", model.BuildList[0].Url);
             Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
@@ -430,7 +429,7 @@ namespace DevOpsMetrics.Tests.Service
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
-            string branch = "master";
+            string branch = "main";
             string workflowName = "SamsFeatureFlags.CI/CD";
             string workflowId = "108084";
             int numberOfDays = 7;

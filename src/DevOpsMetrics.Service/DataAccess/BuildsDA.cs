@@ -1,12 +1,12 @@
-﻿using DevOpsMetrics.Service.DataAccess.APIAccess;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using DevOpsMetrics.Service.DataAccess.APIAccess;
 using DevOpsMetrics.Service.DataAccess.TableStorage;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
 using DevOpsMetrics.Service.Models.GitHub;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.DataAccess
 {

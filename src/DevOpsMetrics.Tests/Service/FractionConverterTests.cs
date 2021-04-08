@@ -1,6 +1,5 @@
 ﻿using DevOpsMetrics.Service.DataAccess.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace DevOpsMetrics.Tests.Service
 {

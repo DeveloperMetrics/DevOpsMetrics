@@ -1,15 +1,12 @@
-﻿using DevOpsMetrics.Core;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using DevOpsMetrics.Core;
 using DevOpsMetrics.Service.DataAccess.Common;
 using DevOpsMetrics.Service.DataAccess.TableStorage;
 using DevOpsMetrics.Service.Models.Azure;
 using DevOpsMetrics.Service.Models.Common;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.DataAccess
 {

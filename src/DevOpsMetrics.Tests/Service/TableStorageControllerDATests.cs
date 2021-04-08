@@ -1,12 +1,12 @@
-﻿using DevOpsMetrics.Service.DataAccess.TableStorage;
+﻿using System;
+using System.Threading.Tasks;
+using DevOpsMetrics.Service.DataAccess.TableStorage;
 using DevOpsMetrics.Service.Models.AzureDevOps;
 using DevOpsMetrics.Service.Models.Common;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Tests.Service
 {
@@ -181,7 +181,7 @@ namespace DevOpsMetrics.Tests.Service
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
-            string branch = "master";
+            string branch = "main";
             string workflowName = "SamsFeatureFlags.CI/CD";
             string workflowId = "108084";
             int numberOfDays = 30;
@@ -242,7 +242,7 @@ namespace DevOpsMetrics.Tests.Service
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
-            string branch = "master";
+            string branch = "main";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
 

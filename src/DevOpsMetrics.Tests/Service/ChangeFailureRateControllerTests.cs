@@ -1,14 +1,12 @@
-﻿using DevOpsMetrics.Service.Controllers;
+﻿using System;
+using System.Net.Http;
+using DevOpsMetrics.Service.Controllers;
 using DevOpsMetrics.Service.Models.Common;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Net.Http;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Tests.Service
 {
@@ -107,7 +105,7 @@ namespace DevOpsMetrics.Tests.Service
             bool getSampleData = true;
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
-            string branch = "master";
+            string branch = "main";
             string workflowName = "SamsFeatureFlags.CI/CD";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
             int numberOfDays = 7;
@@ -138,7 +136,7 @@ namespace DevOpsMetrics.Tests.Service
             bool getSampleData = false;
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
-            string branch = "master";
+            string branch = "main";
             string workflowName = "SamsFeatureFlags.CI/CD";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
             int numberOfDays = 7;

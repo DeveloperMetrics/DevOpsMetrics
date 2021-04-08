@@ -2,7 +2,6 @@
 using DevOpsMetrics.Service.Models.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.Controllers
 {

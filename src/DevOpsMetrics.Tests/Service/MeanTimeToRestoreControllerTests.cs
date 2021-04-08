@@ -1,14 +1,12 @@
-﻿using DevOpsMetrics.Service.Controllers;
+﻿using System;
+using System.Net.Http;
+using DevOpsMetrics.Service.Controllers;
 using DevOpsMetrics.Service.Models.Common;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Net.Http;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Tests.Service
 {
