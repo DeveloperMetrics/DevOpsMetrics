@@ -335,7 +335,7 @@ namespace DevOpsMetrics.Tests.Service
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
-            string branch = "master";
+            string branch = "main";
             string workflowName = "SamsFeatureFlags.CI/CD";
             string workflowId = "108084";
             int numberOfDays = 20;

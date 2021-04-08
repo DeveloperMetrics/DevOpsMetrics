@@ -97,29 +97,29 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(result == true);
         }
 
-        [TestMethod]
-        public async Task AzUpdatePartsUnlimitedSettingDAIntegrationTest()
-        {
-            //Arrange
-            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
-            string organization = "samsmithnz";
-            string project = "PartsUnlimited";
-            string repositoryId = "PartsUnlimited";
-            string branch = "refs/heads/master";
-            string buildName = "PartsUnlimited.CI";
-            string buildId = "75";
-            string resourceGroupName = "PartsUnlimited";
-            int itemOrder = 4;
+        //[TestMethod]
+        //public async Task AzUpdatePartsUnlimitedSettingDAIntegrationTest()
+        //{
+        //    //Arrange
+        //    string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
+        //    TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+        //    string organization = "samsmithnz";
+        //    string project = "PartsUnlimited";
+        //    string repositoryId = "PartsUnlimited";
+        //    string branch = "refs/heads/master";
+        //    string buildName = "PartsUnlimited.CI";
+        //    string buildId = "75";
+        //    string resourceGroupName = "PartsUnlimited";
+        //    int itemOrder = 4;
 
-            //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            bool result = await da.UpdateAzureDevOpsSetting(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings,
-                    organization, project, repositoryId, branch, buildName, buildId, resourceGroupName, itemOrder);
+        //    //Act
+        //    AzureTableStorageDA da = new AzureTableStorageDA();
+        //    bool result = await da.UpdateAzureDevOpsSetting(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings,
+        //            organization, project, repositoryId, branch, buildName, buildId, resourceGroupName, itemOrder);
 
-            //Assert
-            Assert.IsTrue(result == true);
-        }
+        //    //Assert
+        //    Assert.IsTrue(result == true);
+        //}
 
         [TestMethod]
         public async Task GHUpdateDevOpsMetricsSettingDAIntegrationTest()
@@ -154,7 +154,7 @@ namespace DevOpsMetrics.Tests.Service
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
-            string branch = "master";
+            string branch = "main";
             string workflowName = "SamsFeatureFlags CI/CD";
             string workflowId = "108084";
             string resourceGroupName = "SamLearnsAzureFeatureFlags";

@@ -198,7 +198,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-7).AddMinutes(0),
                 BuildDurationPercent = 70,
                 BuildNumber = "1",
-                Branch = "master",
+                Branch = "main",
                 Status = "completed",
                 Url = "https://dev.azure.com/samsmithnz/samlearnsazure/1",
                 DeploymentWasSuccessful = true
@@ -213,7 +213,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-5).AddMinutes(0),
                 BuildDurationPercent = 40,
                 BuildNumber = "2",
-                Branch = "master",
+                Branch = "main",
                 Status = "completed",
                 Url = "https://dev.azure.com/samsmithnz/samlearnsazure/2",
                 DeploymentWasSuccessful = true
@@ -228,7 +228,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-4).AddMinutes(0),
                 BuildDurationPercent = 20,
                 BuildNumber = "3",
-                Branch = "master",
+                Branch = "main",
                 Status = "failed",
                 Url = "https://dev.azure.com/samsmithnz/samlearnsazure/3",
                 DeploymentWasSuccessful = false
@@ -241,7 +241,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-3).AddMinutes(0),
                 BuildDurationPercent = 50,
                 BuildNumber = "4",
-                Branch = "master",
+                Branch = "main",
                 Status = "completed",
                 Url = "https://dev.azure.com/samsmithnz/samlearnsazure/4",
                 DeploymentWasSuccessful = true
@@ -256,7 +256,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-2).AddMinutes(0),
                 BuildDurationPercent = 60,
                 BuildNumber = "5",
-                Branch = "master",
+                Branch = "main",
                 Status = "completed",
                 Url = "https://dev.azure.com/samsmithnz/samlearnsazure/5",
                 DeploymentWasSuccessful = true
@@ -271,7 +271,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-1).AddMinutes(0),
                 BuildDurationPercent = 70,
                 BuildNumber = "6",
-                Branch = "master",
+                Branch = "main",
                 Status = "inProgress",
                 Url = "https://dev.azure.com/samsmithnz/samlearnsazure/6",
                 DeploymentWasSuccessful = false

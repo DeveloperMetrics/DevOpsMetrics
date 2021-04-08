@@ -234,7 +234,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-7).AddMinutes(0),
                 BuildDurationPercent = 70,
                 BuildNumber = "1",
-                Branch = "master",
+                Branch = "main",
                 Status = "completed",
                 Url = "https://dev.azure.com/samsmithnz/samlearnsazure/1"
             };
@@ -246,7 +246,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-5).AddMinutes(0),
                 BuildDurationPercent = 40,
                 BuildNumber = "2",
-                Branch = "master",
+                Branch = "main",
                 Status = "completed",
                 Url = "https://dev.azure.com/samsmithnz/samlearnsazure/2"
             };
@@ -258,7 +258,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-4).AddMinutes(0),
                 BuildDurationPercent = 20,
                 BuildNumber = "3",
-                Branch = "master",
+                Branch = "main",
                 Status = "failed",
                 Url = "https://dev.azure.com/samsmithnz/samlearnsazure/3"
             };
@@ -269,7 +269,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-3).AddMinutes(0),
                 BuildDurationPercent = 50,
                 BuildNumber = "4",
-                Branch = "master",
+                Branch = "main",
                 Status = "completed",
                 Url = "https://dev.azure.com/samsmithnz/samlearnsazure/4"
             };
@@ -281,7 +281,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-2).AddMinutes(0),
                 BuildDurationPercent = 60,
                 BuildNumber = "5",
-                Branch = "master",
+                Branch = "main",
                 Status = "completed",
                 Url = "https://dev.azure.com/samsmithnz/samlearnsazure/5"
             };
@@ -293,7 +293,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-1).AddMinutes(0),
                 BuildDurationPercent = 70,
                 BuildNumber = "6",
-                Branch = "master",
+                Branch = "main",
                 Status = "inProgress",
                 Url = "https://dev.azure.com/samsmithnz/samlearnsazure/6"
             };
@@ -311,7 +311,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-7).AddMinutes(0),
                 BuildDurationPercent = 70,
                 BuildNumber = "1",
-                Branch = "master",
+                Branch = "main",
                 Status = "completed",
                 Url = "https://GitHub.com/samsmithnz/devopsmetrics/1"
             };
@@ -322,7 +322,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-6).AddMinutes(0),
                 BuildDurationPercent = 90,
                 BuildNumber = "2",
-                Branch = "master",
+                Branch = "main",
                 Status = "completed",
                 Url = "https://GitHub.com/samsmithnz/devopsmetrics/2"
             };
@@ -334,7 +334,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-4).AddMinutes(0),
                 BuildDurationPercent = 40,
                 BuildNumber = "3",
-                Branch = "master",
+                Branch = "main",
                 Status = "failed",
                 Url = "https://GitHub.com/samsmithnz/devopsmetrics/3"
             };
@@ -345,7 +345,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-3).AddMinutes(0),
                 BuildDurationPercent = 45,
                 BuildNumber = "4",
-                Branch = "master",
+                Branch = "main",
                 Status = "completed",
                 Url = "https://GitHub.com/samsmithnz/devopsmetrics/4"
             };
@@ -357,7 +357,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-2).AddMinutes(0),
                 BuildDurationPercent = 50,
                 BuildNumber = "5",
-                Branch = "master",
+                Branch = "main",
                 Status = "failed",
                 Url = "https://GitHub.com/samsmithnz/devopsmetrics/5"
             };
@@ -369,7 +369,7 @@ namespace DevOpsMetrics.Service.DataAccess
                 EndTime = DateTime.Now.AddDays(-1).AddMinutes(0),
                 BuildDurationPercent = 20,
                 BuildNumber = "6",
-                Branch = "master",
+                Branch = "main",
                 Status = "completed",
                 Url = "https://GitHub.com/samsmithnz/devopsmetrics/6"
             };

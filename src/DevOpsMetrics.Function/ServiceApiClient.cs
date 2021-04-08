@@ -1,14 +1,14 @@
-﻿using DevOpsMetrics.Service.Models.AzureDevOps;
-using DevOpsMetrics.Service.Models.Common;
-using DevOpsMetrics.Service.Models.GitHub;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using DevOpsMetrics.Service.Models.AzureDevOps;
+using DevOpsMetrics.Service.Models.Common;
+using DevOpsMetrics.Service.Models.GitHub;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace DevOpsMetrics.Function
 {

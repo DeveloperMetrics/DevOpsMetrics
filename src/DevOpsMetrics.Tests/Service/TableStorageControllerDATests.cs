@@ -181,7 +181,7 @@ namespace DevOpsMetrics.Tests.Service
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
-            string branch = "master";
+            string branch = "main";
             string workflowName = "SamsFeatureFlags.CI/CD";
             string workflowId = "108084";
             int numberOfDays = 30;
@@ -242,7 +242,7 @@ namespace DevOpsMetrics.Tests.Service
             TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
-            string branch = "master";
+            string branch = "main";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
 
