@@ -1,0 +1,45 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "sites_devopsmetrics_prod_eu_web_name": {
+      "value": null
+    },
+    "serverfarms_ASP_DevOpsMetrics_83da_name": {
+      "value": null
+    },
+    "sites_devopsmetrics_prod_eu_service_name": {
+      "value": null
+    },
+    "sites_devopsmetrics_prod_eu_function_name": {
+      "value": null
+    },
+    "serverfarms_devopsmetrics_prod_eu_hosting_name": {
+      "value": null
+    },
+    "storageAccounts_devopsmetricsprodeustore_name": {
+      "value": null
+    },
+    "components_devopsmetrics_prod_eu_appinsights_name": {
+      "value": null
+    },
+    "actionGroups_DevOpsMetricsMonitoringActionName_name": {
+      "value": null
+    },
+    "metricAlerts_ServerErrors_devopsmetrics_prod_eu_web_name": {
+      "value": null
+    },
+    "metricAlerts_ServerErrors_devopsmetrics_prod_eu_service_name": {
+      "value": null
+    },
+    "smartdetectoralertrules_failure_anomalies___devopsmetrics_prod_eu_appinsights_name": {
+      "value": null
+    },
+    "actiongroups_application_insights_smart_detection_externalid": {
+      "value": null
+    },
+    "actiongroups_samsapprecommendationsgroup_externalid": {
+      "value": null
+    }
+  }
+}
