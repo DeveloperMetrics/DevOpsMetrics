@@ -6,6 +6,7 @@ using DevOpsMetrics.Service.Models.GitHub;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Service.DataAccess.TableStorage
@@ -234,10 +235,15 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
             {
                 GitHubPR pr = JsonConvert.DeserializeObject<GitHubPR>(item.ToString());
 
-                if (pr.state == "closed")
+                if (pr.state == "closed" & pr.merged_at != null)
                 {
                     string partitionKey = CreateGitHubPRPartitionKey(owner, repo);
                     string rowKey = pr.number;
+                    Debug.WriteLine($"PartitionKey: {partitionKey}, RowKey: {rowKey}");
+                    //if (rowKey == "242" || rowKey == "239")
+                    //{
+                    //    Debug.WriteLine("here");
+                    //}
                     AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
                     if (await tableDA.AddItem(newItem) == true)
                     {
