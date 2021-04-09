@@ -239,19 +239,13 @@ namespace DevOpsMetrics.Service.DataAccess.TableStorage
                 {
                     string partitionKey = CreateGitHubPRPartitionKey(owner, repo);
                     string rowKey = pr.number;
-                    Debug.WriteLine($"PartitionKey: {partitionKey}, RowKey: {rowKey}");
-                    //if (rowKey == "242" || rowKey == "239")
-                    //{
-                    //    Debug.WriteLine("here");
-                    //}
+                    //Debug.WriteLine($"PartitionKey: {partitionKey}, RowKey: {rowKey}");
                     AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
                     if (await tableDA.AddItem(newItem) == true)
                     {
                         itemsAdded++;
                     }
-
-                    itemsAdded += await UpdateGitHubActionPullRequestCommits(clientId, clientSecret, tableStorageAuth,
-                        owner, repo, pr.number);
+                    itemsAdded += await UpdateGitHubActionPullRequestCommits(clientId, clientSecret, tableStorageAuth, owner, repo, pr.number);
                 }
             }
 
