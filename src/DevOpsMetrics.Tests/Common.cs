@@ -1,4 +1,4 @@
-﻿using DevOpsMetrics.Service.Models.Common;
+﻿using DevOpsMetrics.Core.Models.Common;
 using Microsoft.Extensions.Configuration;
 
 namespace DevOpsMetrics.Tests

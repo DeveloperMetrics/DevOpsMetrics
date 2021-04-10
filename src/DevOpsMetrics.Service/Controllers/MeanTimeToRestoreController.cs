@@ -1,5 +1,5 @@
-﻿using DevOpsMetrics.Service.DataAccess;
-using DevOpsMetrics.Service.Models.Common;
+﻿using DevOpsMetrics.Core.DataAccess;
+using DevOpsMetrics.Core.Models.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 

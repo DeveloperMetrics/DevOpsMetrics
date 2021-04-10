@@ -1,6 +1,6 @@
 ﻿using System;
-using DevOpsMetrics.Service.DataAccess;
-using DevOpsMetrics.Service.Models.Common;
+using DevOpsMetrics.Core.DataAccess;
+using DevOpsMetrics.Core.Models.Common;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

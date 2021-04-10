@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using DevOpsMetrics.Service.Models.Common;
+using DevOpsMetrics.Core.Models.Common;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DevOpsMetrics.Web.Models
