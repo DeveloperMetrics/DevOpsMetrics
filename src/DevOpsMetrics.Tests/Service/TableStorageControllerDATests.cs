@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DevOpsMetrics.Service.DataAccess.TableStorage;
-using DevOpsMetrics.Service.Models.AzureDevOps;
-using DevOpsMetrics.Service.Models.Common;
+using DevOpsMetrics.Core.DataAccess.TableStorage;
+using DevOpsMetrics.Core.Models.AzureDevOps;
+using DevOpsMetrics.Core.Models.Common;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;

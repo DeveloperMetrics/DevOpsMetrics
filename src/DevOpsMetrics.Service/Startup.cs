@@ -1,4 +1,4 @@
-using DevOpsMetrics.Service.DataAccess.TableStorage;
+using DevOpsMetrics.Core.DataAccess.TableStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

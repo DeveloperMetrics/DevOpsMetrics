@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using DevOpsMetrics.Service.Models.AzureDevOps;
-using DevOpsMetrics.Service.Models.Common;
-using DevOpsMetrics.Service.Models.GitHub;
+using DevOpsMetrics.Core.Models.AzureDevOps;
+using DevOpsMetrics.Core.Models.Common;
+using DevOpsMetrics.Core.Models.GitHub;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 

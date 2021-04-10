@@ -1,4 +1,4 @@
-﻿using DevOpsMetrics.Service.DataAccess.Common;
+﻿using DevOpsMetrics.Core.DataAccess.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DevOpsMetrics.Tests.Service

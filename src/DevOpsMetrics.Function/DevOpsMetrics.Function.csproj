@@ -9,7 +9,7 @@
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.11" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DevOpsMetrics.Service\DevOpsMetrics.Service.csproj" />
+    <ProjectReference Include="..\DevOpsMetrics.Core\DevOpsMetrics.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

@@ -13,9 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\ReadmeImages\Architecture.png = ..\ReadmeImages\Architecture.png
 		..\ReadmeImages\ChangeFailureRate.png = ..\ReadmeImages\ChangeFailureRate.png
 		..\ReadmeImages\DeploymentFrequencyDemo.png = ..\ReadmeImages\DeploymentFrequencyDemo.png
-		..\ProbotMetrics\index.js = ..\ProbotMetrics\index.js
+		..\.github\workflows\dotnetcore.yml = ..\.github\workflows\dotnetcore.yml
 		..\ReadmeImages\LeadTimeForChanges.png = ..\ReadmeImages\LeadTimeForChanges.png
-		..\ProbotMetrics\src\prepareDevOpsMetrics.js = ..\ProbotMetrics\src\prepareDevOpsMetrics.js
 		..\README.md = ..\README.md
 		..\ReadmeImages\TimeToRestoreService.png = ..\ReadmeImages\TimeToRestoreService.png
 	EndProjectSection

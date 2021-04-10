@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using DevOpsMetrics.Service.Controllers;
-using DevOpsMetrics.Service.Models.Common;
+using DevOpsMetrics.Core.Models.Common;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
