@@ -31,7 +31,7 @@ jobs:
     - name: DotNet restore functional tests to get correct NewtonSoft version
       run: dotnet restore src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj 
     - name: Copy new NewtonSoft version for functional test
-      run: copy "src/DevOpsMetrics.FunctionalTests/bin/Release/netcoreapp3.1/Newtonsoft.Json.dll" "${{ github.workspace }}/functionalTests"
+      run: copy "src/DevOpsMetrics.FunctionalTests/bin/Release/net5.0/Newtonsoft.Json.dll" "${{ github.workspace }}/functionalTests"
       shell: powershell
         
     #Publish build artifacts to GitHub
