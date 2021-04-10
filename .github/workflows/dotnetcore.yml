@@ -9,8 +9,7 @@ on:
 jobs:
 
   build:
-    runs-on: windows-latest
-    #if: github.ref == 'refs/heads/main'   
+    runs-on: windows-latest 
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -18,33 +17,12 @@ jobs:
       with:
         dotnet-version: 5.0.201
     
-    #Run automated .NET tests   
-    - name: Variable Substitution appsettings file for tests
-      uses: microsoft/variable-substitution@v1
-      with:
-        files: 'src/DevOpsMetrics.Tests/appsettings.json'
-      env:
-        AppSettings.AzureDevOpsPatToken: "${{ secrets.AzureDevOpsPATToken }}"
-        AppSettings.GitHubClientId: "${{ secrets.GitHubClientId }}" 
-        AppSettings.GitHubClientSecret: "${{ secrets.GitHubClientSecret }}" 
-        AppSettings.AzureStorageAccountAccessKey: "${{ secrets.AzureStorageAccessKey }}" 
-    - name: view appsettings file after substitution
-      run: Get-Content -Path "src/DevOpsMetrics.Tests/appsettings.json"
-    - name: Run automated unit and integration tests
-      run: dotnet test src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Release --logger trx /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov --settings:./src/DevOpsMetrics.Tests/CodeCoverage.runsettings 
-    - name: Publish coverage report to coveralls.io
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: src/DevOpsMetrics.Tests/TestResults/coverage.info 
-
     #Publish dotnet objects
     - name: .NET Publish Web Service
       run: dotnet publish src/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj --configuration Release --output ${{ github.workspace }}/webservice
     - name: .NET Publish Website
       run: dotnet publish src/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj --configuration Release --output ${{ github.workspace }}/web
-    - name: .NET Publish Function
-      run: dotnet publish src/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj --configuration Release --output ${{ github.workspace }}/function     
+    
     - name: .NET Publish functional tests
       run: dotnet publish src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj --configuration Release --output ${{ github.workspace }}/functionalTests
     - name: Copy chromedriver for functional test
@@ -67,12 +45,8 @@ jobs:
       with:
         name: webapp
         path: ${{ github.workspace }}/web
-    - name: Upload function build artifacts back to GitHub
-      uses: actions/upload-artifact@v2
-      with:
-        name: functionapp
-        path: ${{ github.workspace }}/function
-    - name: Upload function test build artifacts back to GitHub
+
+    - name: Upload functional test build artifacts back to GitHub
       uses: actions/upload-artifact@v2
       with:
         name: functionaltests
@@ -82,6 +56,53 @@ jobs:
       with:
         name: probot
         path: src/ProbotMetrics
+
+
+  test:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.201
+    #Run automated .NET tests   
+    - name: Variable Substitution appsettings file for tests
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: 'src/DevOpsMetrics.Tests/appsettings.json'
+      env:
+        AppSettings.AzureDevOpsPatToken: "${{ secrets.AzureDevOpsPATToken }}"
+        AppSettings.GitHubClientId: "${{ secrets.GitHubClientId }}" 
+        AppSettings.GitHubClientSecret: "${{ secrets.GitHubClientSecret }}" 
+        AppSettings.AzureStorageAccountAccessKey: "${{ secrets.AzureStorageAccessKey }}" 
+    - name: view appsettings file after substitution
+      run: Get-Content -Path "src/DevOpsMetrics.Tests/appsettings.json"
+    - name: Run automated unit and integration tests
+      run: dotnet test src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Release --logger trx /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov --settings:./src/DevOpsMetrics.Tests/CodeCoverage.runsettings 
+    - name: Publish coverage report to coveralls.io
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: src/DevOpsMetrics.Tests/TestResults/coverage.info 
+
+
+  buildFunction:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.407
+    - name: .NET Publish Function
+      run: dotnet publish src/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj --configuration Release --output ${{ github.workspace }}/function 
+    - name: Upload function build artifacts back to GitHub
+      uses: actions/upload-artifact@v2
+      with:
+        name: functionapp
+        path: ${{ github.workspace }}/function
+
 
   #Disabling PROBOT for 2021 reboot to focus on website
   #Deploy the probot artifacts to Azure
@@ -112,7 +133,10 @@ jobs:
   #Deploy the artifacts to Azure staging slots
   deployToStagingSlots:
     runs-on: windows-latest
-    needs: build      
+    needs: 
+    - build      
+    - test
+    - buildFunction
     steps:        
     # Login with the secret SP details
     - name: Log into Azure
