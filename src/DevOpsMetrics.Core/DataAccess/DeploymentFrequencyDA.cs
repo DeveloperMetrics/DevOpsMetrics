@@ -13,7 +13,7 @@ namespace DevOpsMetrics.Core.DataAccess
     public class DeploymentFrequencyDA
     {
         public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, TableStorageConfiguration tableStorageConfig,
-                string organization, string project, string branch, string buildName,
+                string organization, string project, string repository, string branch, string buildName,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             ListUtility<Build> utility = new ListUtility<Build>();
@@ -22,7 +22,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get the PAT token from the settings
                 AzureTableStorageDA tableStorage = new AzureTableStorageDA();
-                List<AzureDevOpsSettings> settings = tableStorage.GetAzureDevOpsSettings(tableStorageConfig, "DevOpsAzureDevOpsSettings", "");
+                List<AzureDevOpsSettings> settings = tableStorage.GetAzureDevOpsSettings(tableStorageConfig, "DevOpsAzureDevOpsSettings", tableStorage.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository));
                 string patToken = settings[0].PatToken;
 
                 //Get a list of builds

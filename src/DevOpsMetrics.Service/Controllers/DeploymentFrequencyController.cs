@@ -21,7 +21,7 @@ namespace DevOpsMetrics.Service.Controllers
         // Get builds from the Azure DevOps API
         [HttpGet("GetAzureDevOpsDeploymentFrequency")]
         public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData,
-            string organization, string project, string branch, string buildName,
+            string organization, string project, string repository, string branch, string buildName,
             int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             DeploymentFrequencyModel model = new DeploymentFrequencyModel();
@@ -29,7 +29,7 @@ namespace DevOpsMetrics.Service.Controllers
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
                 DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-                model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, tableStorageConfig, organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+                model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, tableStorageConfig, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
             {

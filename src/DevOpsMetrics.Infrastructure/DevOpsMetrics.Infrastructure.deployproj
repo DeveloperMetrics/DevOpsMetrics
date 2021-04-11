@@ -25,11 +25,11 @@
   <ItemGroup>
     <Content Include="azuredeploy.json" />
     <Content Include="azuredeploy.parameters.json" />
+    <None Include="Deploy-AzureResourceGroup.ps1" />
     <None Include="DeployDevOpsMetricsToAzure.ps1" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>
-    <Content Include="Deploy-AzureResourceGroup.ps1" />
     <None Include="installation.md" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />

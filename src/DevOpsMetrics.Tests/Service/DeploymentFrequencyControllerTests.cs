@@ -45,6 +45,7 @@ namespace DevOpsMetrics.Tests.Service
             bool getSampleData = true;
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
+            string repository = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             int numberOfDays = 7;
@@ -53,7 +54,7 @@ namespace DevOpsMetrics.Tests.Service
             DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData,  organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.AreEqual(DevOpsPlatform.AzureDevOps, model.TargetDevOpsPlatform);
@@ -78,6 +79,7 @@ namespace DevOpsMetrics.Tests.Service
             bool getSampleData = false;
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
+            string repository = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             int numberOfDays = 30;
@@ -86,7 +88,7 @@ namespace DevOpsMetrics.Tests.Service
             DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData,  organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -117,12 +119,13 @@ namespace DevOpsMetrics.Tests.Service
         [TestMethod]
         public async Task AzDeploymentsCacheControllerIntegrationTest()
         {
-            //https://devopsmetrics-prod-eu-service.azurewebsites.net//api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData=False&patToken=&organization=samsmithnz&project=SamLearnsAzure&branch=refs/heads/master&buildName=SamLearnsAzure.CI&buildId=3673&numberOfDays=30&maxNumberOfItems=20&useCache=true
+            //https://devopsmetrics-prod-eu-service.azurewebsites.net//api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData=False&patToken=&organization=samsmithnz&project=SamLearnsAzure&repository=SamLearnsAzure&branch=refs/heads/master&buildName=SamLearnsAzure.CI&buildId=3673&numberOfDays=30&maxNumberOfItems=20&useCache=true
 
             //Arrange
             bool getSampleData = false;
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
+            string repository = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             int numberOfDays = 30;
@@ -131,7 +134,7 @@ namespace DevOpsMetrics.Tests.Service
             DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData,  organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -297,6 +300,7 @@ namespace DevOpsMetrics.Tests.Service
             bool getSampleData = false;
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
+            string repository = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             int numberOfDays = 7;
@@ -305,7 +309,7 @@ namespace DevOpsMetrics.Tests.Service
             DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData,  organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -379,6 +383,7 @@ namespace DevOpsMetrics.Tests.Service
             bool getSampleData = false;
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
+            string repository = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             int numberOfDays = 7;
@@ -387,7 +392,7 @@ namespace DevOpsMetrics.Tests.Service
             DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData,  organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);

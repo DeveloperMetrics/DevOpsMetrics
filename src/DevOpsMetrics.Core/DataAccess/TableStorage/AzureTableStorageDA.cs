@@ -14,7 +14,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
 {
     public class AzureTableStorageDA : IAzureTableStorageDA
     {
-        public string CreateAzureDevOpsSettingsPartitionKey(string organization, string project, string repository, string buildName)
+        public string CreateAzureDevOpsSettingsPartitionKey(string organization, string project, string repository)
         {
             return organization + "_" + project + "_" + repository;
         }
@@ -317,7 +317,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
              string organization, string project, string repository, string branch, string buildName, string buildId, string resourceGroupName, int itemOrder)
         {
             string partitionKey = "AzureDevOpsSettings";
-            string rowKey = CreateAzureDevOpsSettingsPartitionKey(organization, project, repository, buildName);
+            string rowKey = CreateAzureDevOpsSettingsPartitionKey(organization, project, repository);
             AzureDevOpsSettings settings = new AzureDevOpsSettings
             {
                 RowKey = rowKey,

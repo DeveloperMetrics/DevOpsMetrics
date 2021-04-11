@@ -11,7 +11,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
     {
         string CreateAzureDevOpsPRCommitPartitionKey(string organization, string project, string pullRequestId);
         string CreateAzureDevOpsPRPartitionKey(string organization, string project);
-        string CreateAzureDevOpsSettingsPartitionKey(string organization, string project, string repository, string buildName);
+        string CreateAzureDevOpsSettingsPartitionKey(string organization, string project, string repository);
         string CreateBuildWorkflowPartitionKey(string organization_owner, string project_repo, string buildName_workflowName);
         string CreateGitHubPRCommitPartitionKey(string owner, string repo, string pullRequestId);
         string CreateGitHubPRPartitionKey(string owner, string repo);
