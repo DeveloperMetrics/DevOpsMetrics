@@ -172,7 +172,6 @@ jobs:
     - name: Deploy web service app settings
       run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --slot "staging" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" 
     
-        AppSettings.AzureStorageAccountConfigurationString: "${{ secrets.AzureStorageConnectionString }}" 
     - name: Deploy website to Azure WebApp
       uses: Azure/webapps-deploy@v1
       with:
