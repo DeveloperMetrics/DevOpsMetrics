@@ -34,7 +34,7 @@ namespace DevOpsMetrics.Tests.Service
             string AzureDevOpsPatToken = Configuration["Appsettings:AzureDevOpsPatToken"];
             string GitHubClientId = Configuration["Appsettings:GitHubClientId"];
             string GitHubClientSecret = Configuration["Appsettings:GitHubClientSecret"];
-            string AccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"];
+            string StorageAccountConnectionString = Configuration["AppSettings:AzureStorageAccountConfigurationString"];
 
             //Act
 
@@ -42,7 +42,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(string.IsNullOrEmpty(AzureDevOpsPatToken) == false);
             Assert.IsTrue(string.IsNullOrEmpty(GitHubClientId) == false);
             Assert.IsTrue(string.IsNullOrEmpty(GitHubClientSecret) == false);
-            Assert.IsTrue(string.IsNullOrEmpty(AccountAccessKey) == false);
+            Assert.IsTrue(string.IsNullOrEmpty(StorageAccountConnectionString) == false);
         }
 
         [TestMethod]
