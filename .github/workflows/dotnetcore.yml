@@ -75,7 +75,7 @@ jobs:
         AppSettings.AzureDevOpsPatToken: "${{ secrets.AzureDevOpsPATToken }}"
         AppSettings.GitHubClientId: "${{ secrets.GitHubClientId }}" 
         AppSettings.GitHubClientSecret: "${{ secrets.GitHubClientSecret }}" 
-        AppSettings.AzureStorageAccountAccessKey: "${{ secrets.AzureStorageAccessKey }}" 
+        AppSettings.AzureStorageAccountConfigurationString: "${{ secrets.AzureStorageConnectionString }}" 
     - name: view appsettings file after substitution
       run: Get-Content -Path "src/DevOpsMetrics.Tests/appsettings.json"
     - name: Run automated unit and integration tests
@@ -170,8 +170,9 @@ jobs:
         package: serviceapp
         slot-name: staging 
     - name: Deploy web service app settings
-      run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --slot "staging" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountAccessKey=${{ secrets.AzureStorageAccessKey }}" 
+      run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --slot "staging" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" 
     
+        AppSettings.AzureStorageAccountConfigurationString: "${{ secrets.AzureStorageConnectionString }}" 
     - name: Deploy website to Azure WebApp
       uses: Azure/webapps-deploy@v1
       with:
@@ -201,7 +202,7 @@ jobs:
         app-name: devopsmetrics-prod-eu-function
         package: functionapp 
     - name: Deploy function app settings
-      run: az webapp config appsettings set --name "devopsmetrics-prod-eu-function" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountAccessKey=${{ secrets.AzureStorageAccessKey }}" "AppSettings:WebServiceURL=https://devopsmetrics-prod-eu-service.azurewebsites.net/" 
+      run: az webapp config appsettings set --name "devopsmetrics-prod-eu-function" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:WebServiceURL=https://devopsmetrics-prod-eu-service.azurewebsites.net/" 
 
 
   swapDeploymentSlots:
@@ -221,7 +222,7 @@ jobs:
       with:
         inlineScript: az webapp deployment slot swap --name "devopsmetrics-prod-eu-service" --resource-group "devopsmetrics" --slot staging --target-slot production
     - name: Deploy web service app settings
-      run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountAccessKey=${{ secrets.AzureStorageAccessKey }}"     
+      run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}"     
     - name: Swap web site staging slot to production
       uses: Azure/cli@v1.0.0
       with:

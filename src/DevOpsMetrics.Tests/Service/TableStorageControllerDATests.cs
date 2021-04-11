@@ -31,7 +31,7 @@ namespace DevOpsMetrics.Tests.Service
         public void AzGetBuildsDAIntegrationTest()
         {
             //Arrange
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string buildName = "SamLearnsAzure.CI";
@@ -49,7 +49,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
@@ -70,7 +70,7 @@ namespace DevOpsMetrics.Tests.Service
         public void AzGetPRsDAIntegrationTest()
         {
             //Arrange
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
 
@@ -87,7 +87,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string repositoryId = "SamLearnsAzure";
@@ -107,7 +107,7 @@ namespace DevOpsMetrics.Tests.Service
         public void AzGetPRCommitsDAIntegrationTest()
         {
             //Arrange
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
 
@@ -135,7 +135,7 @@ namespace DevOpsMetrics.Tests.Service
         public void GHGetBuildsDAIntegrationTest()
         {
             //Arrange
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string workflowName = "DevOpsMetrics CI/CD";
@@ -154,7 +154,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "master";
@@ -178,7 +178,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "main";
@@ -200,7 +200,7 @@ namespace DevOpsMetrics.Tests.Service
         public void GHGetPRsDAIntegrationTest()
         {
             //Arrange
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
 
@@ -218,7 +218,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "master";
@@ -239,7 +239,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "main";

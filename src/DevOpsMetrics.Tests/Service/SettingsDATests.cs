@@ -49,7 +49,7 @@ namespace DevOpsMetrics.Tests.Service
         public void AzGetSamLearnsAzureSettingDAIntegrationTest()
         {
             //Arrange
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
@@ -63,7 +63,7 @@ namespace DevOpsMetrics.Tests.Service
         public void GHGetSamLearnsAzureSettingDAIntegrationTest()
         {
             //Arrange
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
@@ -78,7 +78,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string repositoryId = "SamLearnsAzure";
@@ -127,7 +127,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "master";
@@ -151,7 +151,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "main";

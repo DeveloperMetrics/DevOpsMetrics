@@ -11,7 +11,7 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class PullRequestDA
     {
-        public async Task<AzureDevOpsPR> GetAzureDevOpsPullRequest(string patToken, TableStorageAuth tableStorageAuth, string organization, string project, string repositoryId, string branch, bool useCache)
+        public async Task<AzureDevOpsPR> GetAzureDevOpsPullRequest(string patToken, TableStorageConfiguration tableStorageAuth, string organization, string project, string repositoryId, string branch, bool useCache)
         {
             List<AzureDevOpsPR> prs = new List<AzureDevOpsPR>();
             Newtonsoft.Json.Linq.JArray list;
@@ -45,7 +45,7 @@ namespace DevOpsMetrics.Core.DataAccess
             return pr;
         }
 
-        public async Task<List<AzureDevOpsPRCommit>> GetAzureDevOpsPullRequestCommits(string patToken, TableStorageAuth tableStorageAuth, string organization, string project, string repositoryId, string pullRequestId, bool useCache)
+        public async Task<List<AzureDevOpsPRCommit>> GetAzureDevOpsPullRequestCommits(string patToken, TableStorageConfiguration tableStorageAuth, string organization, string project, string repositoryId, string pullRequestId, bool useCache)
         {
             Newtonsoft.Json.Linq.JArray list;
             if (useCache == true)
@@ -66,7 +66,7 @@ namespace DevOpsMetrics.Core.DataAccess
         }
 
 
-        public async Task<GitHubPR> GetGitHubPullRequest(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, string owner, string repo, string branch, bool useCache)
+        public async Task<GitHubPR> GetGitHubPullRequest(string clientId, string clientSecret, TableStorageConfiguration tableStorageAuth, string owner, string repo, string branch, bool useCache)
         {
             List<GitHubPR> prs = new List<GitHubPR>();
             Newtonsoft.Json.Linq.JArray list;
@@ -100,7 +100,7 @@ namespace DevOpsMetrics.Core.DataAccess
             return pr;
         }
 
-        public async Task<List<GitHubPRCommit>> GetGitHubPullRequestCommits(string clientId, string clientSecret, TableStorageAuth tableStorageAuth, string owner, string repo, string pull_number, bool useCache)
+        public async Task<List<GitHubPRCommit>> GetGitHubPullRequestCommits(string clientId, string clientSecret, TableStorageConfiguration tableStorageAuth, string owner, string repo, string pull_number, bool useCache)
         {
             Newtonsoft.Json.Linq.JArray list;
             if (useCache == true)

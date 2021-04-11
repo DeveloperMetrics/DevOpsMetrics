@@ -12,7 +12,7 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class BuildsDA
     {
-        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsBuilds(string patToken, TableStorageAuth tableStorageAuth,
+        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsBuilds(string patToken, TableStorageConfiguration tableStorageAuth,
                 string organization, string project, string buildName, bool useCache)
         {
             List<AzureDevOpsBuild> builds = new List<AzureDevOpsBuild>();
@@ -45,7 +45,7 @@ namespace DevOpsMetrics.Core.DataAccess
             return builds;
         }
 
-        public async Task<List<GitHubActionsRun>> GetGitHubActionRuns(string clientId, string clientSecret, TableStorageAuth tableStorageAuth,
+        public async Task<List<GitHubActionsRun>> GetGitHubActionRuns(string clientId, string clientSecret, TableStorageConfiguration tableStorageAuth,
                 string owner, string repo, string workflowName, string workflowId, bool useCache)
         {
             List<GitHubActionsRun> runs = new List<GitHubActionsRun>();

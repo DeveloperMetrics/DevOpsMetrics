@@ -27,7 +27,7 @@ namespace DevOpsMetrics.Service.Controllers
             LeadTimeForChangesModel model = new LeadTimeForChangesModel();
             try
             {
-                TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+                TableStorageConfiguration tableStorageAuth = Common.GenerateTableStorageConfiguration(Configuration);
                 LeadTimeForChangesDA da = new LeadTimeForChangesDA();
                 model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageAuth,
                         organization, project, repositoryId, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -56,7 +56,7 @@ namespace DevOpsMetrics.Service.Controllers
             LeadTimeForChangesModel model = new LeadTimeForChangesModel();
             try
             {
-                TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+                TableStorageConfiguration tableStorageAuth = Common.GenerateTableStorageConfiguration(Configuration);
                 LeadTimeForChangesDA da = new LeadTimeForChangesDA();
                 model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageAuth,
                         owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);

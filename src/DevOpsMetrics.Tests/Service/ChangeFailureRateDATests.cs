@@ -29,7 +29,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
@@ -92,7 +92,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "master";
@@ -123,7 +123,7 @@ namespace DevOpsMetrics.Tests.Service
         public async Task UpdateChangeFailureRateDAIntegrationTest()
         {
             //Arrange
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string buildName = "SamLearnsAzure.CI";
