@@ -12,7 +12,7 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class LeadTimeForChangesDA
     {
-        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, TableStorageAuth tableStorageAuth,
+        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, TableStorageConfiguration tableStorageAuth,
                 string organization, string project, string repositoryId, string mainBranch, string buildName, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             ListUtility<PullRequestModel> utility = new ListUtility<PullRequestModel>();
@@ -178,7 +178,7 @@ namespace DevOpsMetrics.Core.DataAccess
             }
         }
 
-        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, TableStorageAuth tableStorageAuth,
+        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, TableStorageConfiguration tableStorageAuth,
                 string owner, string repo, string mainBranch, string workflowName, string workflowId,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {

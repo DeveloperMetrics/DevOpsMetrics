@@ -28,7 +28,7 @@ namespace DevOpsMetrics.Tests.Service
         public async Task AzureMonitorProcessingTest()
         {
             //Arrange
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
             MonitoringEvent monitoringEvent = new MonitoringEvent(@"
 {
   ""schemaId"": ""AzureMonitorMetricAlert"",

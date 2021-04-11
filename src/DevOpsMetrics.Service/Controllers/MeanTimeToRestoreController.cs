@@ -21,7 +21,7 @@ namespace DevOpsMetrics.Service.Controllers
             DevOpsPlatform targetDevOpsPlatform, string resourceGroup,
             int numberOfDays, int maxNumberOfItems)
         {
-            TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageAuth = Common.GenerateTableStorageConfiguration(Configuration);
             MeanTimeToRestoreDA da = new MeanTimeToRestoreDA();
             MeanTimeToRestoreModel model = da.GetAzureMeanTimeToRestore(getSampleData, tableStorageAuth,
                 targetDevOpsPlatform, resourceGroup,

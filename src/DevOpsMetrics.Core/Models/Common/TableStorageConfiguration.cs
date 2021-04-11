@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Core.Models.Common
 {
-    public class TableStorageAuth
+    public class TableStorageConfiguration
     {
-        public string AccountName { get; set; }
-        public string AccountAccessKey { get; set; }
+        //public string StorageAccountName { get; set; }
+        //public string StorageAccountAccessKey { get; set; }
+        public string StorageAccountConnectionString{ get; set; }
         public string TableAzureDevOpsSettings { get; set; }
         public string TableAzureDevOpsBuilds { get; set; }
         public string TableAzureDevOpsPRs { get; set; }

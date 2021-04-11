@@ -13,7 +13,7 @@ namespace DevOpsMetrics.Core.DataAccess
     public class MeanTimeToRestoreDA
     {
         public MeanTimeToRestoreModel GetAzureMeanTimeToRestore(bool getSampleData,
-                TableStorageAuth tableStorageAuth,
+                TableStorageConfiguration tableStorageAuth,
                 DevOpsPlatform targetDevOpsPlatform, string resourceGroup,
                 int numberOfDays, int maxNumberOfItems)
         {

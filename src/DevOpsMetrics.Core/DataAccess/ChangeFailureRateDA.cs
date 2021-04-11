@@ -12,7 +12,7 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class ChangeFailureRateDA
     {
-        public ChangeFailureRateModel GetChangeFailureRate(bool getSampleData, TableStorageAuth tableStorageAuth,
+        public ChangeFailureRateModel GetChangeFailureRate(bool getSampleData, TableStorageConfiguration tableStorageAuth,
                 DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -99,7 +99,7 @@ namespace DevOpsMetrics.Core.DataAccess
             }
         }
 
-        public async Task<bool> UpdateChangeFailureRate(TableStorageAuth tableStorageAuth,
+        public async Task<bool> UpdateChangeFailureRate(TableStorageConfiguration tableStorageAuth,
                string organization_owner, string project_repo, string buildName_workflowName,
                int percentComplete, int numberOfDays)
         {

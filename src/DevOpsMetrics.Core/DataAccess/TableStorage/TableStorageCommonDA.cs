@@ -9,14 +9,16 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
 {
     public class TableStorageCommonDA
     {
-        private readonly string AccountName;
-        private readonly string AccessKey;
+        //private readonly string AccountName;
+        //private readonly string AccessKey;
+        private readonly string ConfigurationString;
         private readonly string TableName;
 
-        public TableStorageCommonDA(TableStorageAuth tableStorageAuth, string tableName)
+        public TableStorageCommonDA(TableStorageConfiguration tableStorageConfig, string tableName)
         {
-            AccountName = tableStorageAuth.AccountName;
-            AccessKey = tableStorageAuth.AccountAccessKey;
+            //    AccountName = tableStorageConfig.StorageAccountName;
+            //    AccessKey = tableStorageConfig.StorageAccountAccessKey;
+            ConfigurationString = tableStorageConfig.StorageAccountConnectionString;
             TableName = tableName;
         }
 
@@ -26,7 +28,8 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
 
         private CloudTable CreateConnection()
         {
-            CloudStorageAccount storageAccount = new CloudStorageAccount(new StorageCredentials(AccountName, AccessKey), true);
+            //CloudStorageAccount storageAccount = new CloudStorageAccount(new StorageCredentials(AccountName, AccessKey), true);
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationString);
 
             // Create the table client.
             CloudTableClient tableClient = storageAccount.CreateCloudTableClient();

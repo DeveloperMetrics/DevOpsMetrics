@@ -5,12 +5,13 @@ namespace DevOpsMetrics.Service
 {
     public class Common
     {
-        public static TableStorageAuth GenerateTableAuthorization(IConfiguration Configuration)
+        public static TableStorageConfiguration GenerateTableStorageConfiguration(IConfiguration Configuration)
         {
-            TableStorageAuth tableStorageAuth = new TableStorageAuth
+            TableStorageConfiguration tableStorageAuth = new TableStorageConfiguration
             {
-                AccountName = Configuration["AppSettings:AzureStorageAccountName"],
-                AccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
+                //StorageAccountName = Configuration["AppSettings:AzureStorageAccountName"],
+                //StorageAccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
+                StorageAccountConnectionString = Configuration["AppSettings:AzureStorageAccountConfigurationString"],
                 TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
                 TableAzureDevOpsPRs = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"],
                 TableAzureDevOpsPRCommits = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits"],

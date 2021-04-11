@@ -27,7 +27,7 @@ namespace DevOpsMetrics.Service.Controllers
             DeploymentFrequencyModel model = new DeploymentFrequencyModel();
             try
             {
-                TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+                TableStorageConfiguration tableStorageAuth = Common.GenerateTableStorageConfiguration(Configuration);
                 DeploymentFrequencyDA da = new DeploymentFrequencyDA();
                 model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageAuth, organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
             }
@@ -55,7 +55,7 @@ namespace DevOpsMetrics.Service.Controllers
             DeploymentFrequencyModel model = new DeploymentFrequencyModel();
             try
             {
-                TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+                TableStorageConfiguration tableStorageAuth = Common.GenerateTableStorageConfiguration(Configuration);
                 DeploymentFrequencyDA da = new DeploymentFrequencyDA();
                 model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, tableStorageAuth, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
             }
