@@ -12,7 +12,7 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class BuildsDA
     {
-        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsBuilds(string patToken, TableStorageConfiguration tableStorageAuth,
+        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsBuilds(string patToken, TableStorageConfiguration tableStorageConfig,
                 string organization, string project, string buildName, bool useCache)
         {
             List<AzureDevOpsBuild> builds = new List<AzureDevOpsBuild>();
@@ -21,7 +21,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get the builds from Azure storage
                 AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
-                list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableAzureDevOpsBuilds, daTableStorage.CreateBuildWorkflowPartitionKey(organization, project, buildName));
+                list = daTableStorage.GetTableStorageItems(tableStorageConfig, tableStorageConfig.TableAzureDevOpsBuilds, daTableStorage.CreateBuildWorkflowPartitionKey(organization, project, buildName));
             }
             else
             {
@@ -45,7 +45,7 @@ namespace DevOpsMetrics.Core.DataAccess
             return builds;
         }
 
-        public async Task<List<GitHubActionsRun>> GetGitHubActionRuns(string clientId, string clientSecret, TableStorageConfiguration tableStorageAuth,
+        public async Task<List<GitHubActionsRun>> GetGitHubActionRuns(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig,
                 string owner, string repo, string workflowName, string workflowId, bool useCache)
         {
             List<GitHubActionsRun> runs = new List<GitHubActionsRun>();
@@ -54,7 +54,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get the builds from Azure storage
                 AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
-                list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableGitHubRuns, daTableStorage.CreateBuildWorkflowPartitionKey(owner, repo, workflowName));
+                list = daTableStorage.GetTableStorageItems(tableStorageConfig, tableStorageConfig.TableGitHubRuns, daTableStorage.CreateBuildWorkflowPartitionKey(owner, repo, workflowName));
             }
             else
             {

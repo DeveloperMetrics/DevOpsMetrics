@@ -75,7 +75,7 @@ namespace DevOpsMetrics.Web.Controllers
                 {
                     azureDevOpsSetting = item;
 
-                    DeploymentFrequencyModel deploymentFrequencyModel = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken,
+                    DeploymentFrequencyModel deploymentFrequencyModel = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, 
                         item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
                     LeadTimeForChangesModel leadTimeForChangesModel = await serviceApiClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken,
@@ -165,7 +165,7 @@ namespace DevOpsMetrics.Web.Controllers
             //Create deployment frequency models from each Azure DevOps settings object
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
-                DeploymentFrequencyModel newDeploymentFrequencyModel = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken,
+                DeploymentFrequencyModel newDeploymentFrequencyModel = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, 
                         item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
                 newDeploymentFrequencyModel.ItemOrder = item.ItemOrder;

@@ -16,18 +16,18 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         string CreateGitHubPRCommitPartitionKey(string owner, string repo, string pullRequestId);
         string CreateGitHubPRPartitionKey(string owner, string repo);
         string CreateGitHubSettingsPartitionKey(string owner, string repo, string workflowName);
-        List<AzureDevOpsSettings> GetAzureDevOpsSettings(TableStorageConfiguration tableStorageAuth, string settingsTable);
-        List<GitHubSettings> GetGitHubSettings(TableStorageConfiguration tableStorageAuth, string settingsTable);
-        JArray GetTableStorageItems(TableStorageConfiguration tableStorageAuth, string tableName, string partitionKey);
-        Task<int> UpdateAzureDevOpsBuilds(string patToken, TableStorageConfiguration tableStorageAuth, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems);
-        Task<int> UpdateAzureDevOpsPullRequestCommits(string patToken, TableStorageConfiguration tableStorageAuth, string organization, string project, string repositoryId, string pullRequestId, int numberOfDays, int maxNumberOfItems);
-        Task<int> UpdateAzureDevOpsPullRequests(string patToken, TableStorageConfiguration tableStorageAuth, string organization, string project, string repositoryId, int numberOfDays, int maxNumberOfItems);
-        Task<bool> UpdateAzureDevOpsSetting(string patToken, TableStorageConfiguration tableStorageAuth, string settingsTable, string organization, string project, string repository, string branch, string buildName, string buildId, string resourceGroupName, int itemOrder);
+        List<AzureDevOpsSettings> GetAzureDevOpsSettings(TableStorageConfiguration tableStorageConfig, string settingsTable, string rowKey);
+        List<GitHubSettings> GetGitHubSettings(TableStorageConfiguration tableStorageConfig, string settingsTable);
+        JArray GetTableStorageItems(TableStorageConfiguration tableStorageConfig, string tableName, string partitionKey);
+        Task<int> UpdateAzureDevOpsBuilds(string patToken, TableStorageConfiguration tableStorageConfig, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems);
+        Task<int> UpdateAzureDevOpsPullRequestCommits(string patToken, TableStorageConfiguration tableStorageConfig, string organization, string project, string repositoryId, string pullRequestId, int numberOfDays, int maxNumberOfItems);
+        Task<int> UpdateAzureDevOpsPullRequests(string patToken, TableStorageConfiguration tableStorageConfig, string organization, string project, string repositoryId, int numberOfDays, int maxNumberOfItems);
+        Task<bool> UpdateAzureDevOpsSetting(string patToken, TableStorageConfiguration tableStorageConfig, string settingsTable, string organization, string project, string repository, string branch, string buildName, string buildId, string resourceGroupName, int itemOrder);
         Task<int> UpdateChangeFailureRate(TableStorageCommonDA tableChangeFailureRateDA, ChangeFailureRateBuild newBuild, string partitionKey, bool forceUpdate = false);
-        Task<bool> UpdateDevOpsMonitoringEvent(TableStorageConfiguration tableStorageAuth, MonitoringEvent monitoringEvent);
-        Task<int> UpdateGitHubActionPullRequestCommits(string clientId, string clientSecret, TableStorageConfiguration tableStorageAuth, string owner, string repo, string pull_number);
-        Task<int> UpdateGitHubActionPullRequests(string clientId, string clientSecret, TableStorageConfiguration tableStorageAuth, string owner, string repo, string branch, int numberOfDays, int maxNumberOfItems);
-        Task<int> UpdateGitHubActionRuns(string clientId, string clientSecret, TableStorageConfiguration tableStorageAuth, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems);
-        Task<bool> UpdateGitHubSetting(string clientId, string clientSecret, TableStorageConfiguration tableStorageAuth, string settingsTable, string owner, string repo, string branch, string workflowName, string workflowId, string resourceGroupName, int itemOrder);
+        Task<bool> UpdateDevOpsMonitoringEvent(TableStorageConfiguration tableStorageConfig, MonitoringEvent monitoringEvent);
+        Task<int> UpdateGitHubActionPullRequestCommits(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string owner, string repo, string pull_number);
+        Task<int> UpdateGitHubActionPullRequests(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string owner, string repo, string branch, int numberOfDays, int maxNumberOfItems);
+        Task<int> UpdateGitHubActionRuns(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems);
+        Task<bool> UpdateGitHubSetting(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string settingsTable, string owner, string repo, string branch, string workflowName, string workflowId, string resourceGroupName, int itemOrder);
     }
 }

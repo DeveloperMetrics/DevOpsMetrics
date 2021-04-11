@@ -25,9 +25,9 @@ namespace DevOpsMetrics.Web.Services
             };
         }
 
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
+        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
-            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&useCache={useCache}";
+            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&useCache={useCache}";
             return await GetResponse<DeploymentFrequencyModel>(Client, url);
         }
 
@@ -79,7 +79,7 @@ namespace DevOpsMetrics.Web.Services
             return await GetResponse<List<GitHubSettings>>(Client, url);
         }
 
-        private async Task<T> GetResponse<T>(HttpClient client, string url)
+        private static async Task<T> GetResponse<T>(HttpClient client, string url)
         {
             T obj = default;
             if (client != null && url != null)

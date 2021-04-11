@@ -30,7 +30,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             bool getSampleData = true;
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string repositoryId = "SamLearnsAzure";
@@ -42,7 +42,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-            LeadTimeForChangesModel model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageAuth,
+            LeadTimeForChangesModel model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageConfig,
                     organization, project, repositoryId, mainBranch, buildName, 
                     numberOfDays, maxNumberOfItems, useCache);
 
@@ -77,7 +77,7 @@ namespace DevOpsMetrics.Tests.Service
         //    //Arrange
         //    bool getSampleData = false;
         //    string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-        //    TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+        //    tableStorageConfig tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
         //    string organization = "samsmithnz";
         //    string project = "SamLearnsAzure";
         //    string repositoryId = "SamLearnsAzure";
@@ -90,7 +90,7 @@ namespace DevOpsMetrics.Tests.Service
 
         //    //Act
         //    LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-        //    LeadTimeForChangesModel model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageAuth,
+        //    LeadTimeForChangesModel model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageConfig,
         //            organization, project, repositoryId, mainBranch, buildName, buildId,
         //            numberOfDays, maxNumberOfItems, useCache);
 
@@ -123,7 +123,7 @@ namespace DevOpsMetrics.Tests.Service
             bool getSampleData = true;
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "devopsmetrics";
             string mainBranch = "master";
@@ -135,7 +135,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-            LeadTimeForChangesModel model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageAuth,
+            LeadTimeForChangesModel model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageConfig,
                     owner, repo, mainBranch, workflowName, workflowId,
                     numberOfDays, maxNumberOfItems, useCache);
 
@@ -171,7 +171,7 @@ namespace DevOpsMetrics.Tests.Service
         //    bool getSampleData = false;
         //    string clientId = Configuration["AppSettings:GitHubClientId"];
         //    string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-        //    TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+        //    tableStorageConfig tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
         //    string owner = "samsmithnz";
         //    string repo = "SamsFeatureFlags";
         //    string mainBranch = "main";
@@ -183,7 +183,7 @@ namespace DevOpsMetrics.Tests.Service
 
         //    //Act
         //    LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-        //    LeadTimeForChangesModel model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageAuth,
+        //    LeadTimeForChangesModel model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageConfig,
         //            owner, repo, mainBranch, workflowName, workflowId,
         //            numberOfDays, maxNumberOfItems, useCache);
 

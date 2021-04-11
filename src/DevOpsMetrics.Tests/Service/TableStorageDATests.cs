@@ -162,7 +162,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
             Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
-            mockDA.Setup(repo => repo.GetAzureDevOpsSettings(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>())).Returns(GetSampleAzureDevOpsSettingsData());
+            mockDA.Setup(repo => repo.GetAzureDevOpsSettings(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), null)).Returns(GetSampleAzureDevOpsSettingsData());
             TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
 
             //Act
@@ -256,17 +256,17 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(true, result);
         }
 
-        private int GetSampleUpdateData()
+        private static int GetSampleUpdateData()
         {
             return 7;
         }
 
-        private List<AzureDevOpsSettings> GetSampleAzureDevOpsSettingsData()
+        private static List<AzureDevOpsSettings> GetSampleAzureDevOpsSettingsData()
         {
             return new List<AzureDevOpsSettings>();
         }
 
-        private List<GitHubSettings> GetSampleGitHubSettingsData()
+        private static List<GitHubSettings> GetSampleGitHubSettingsData()
         {
             return new List<GitHubSettings>();
         }

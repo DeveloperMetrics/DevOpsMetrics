@@ -13,7 +13,7 @@ namespace DevOpsMetrics.Core.DataAccess
     public class MeanTimeToRestoreDA
     {
         public MeanTimeToRestoreModel GetAzureMeanTimeToRestore(bool getSampleData,
-                TableStorageConfiguration tableStorageAuth,
+                TableStorageConfiguration tableStorageConfig,
                 DevOpsPlatform targetDevOpsPlatform, string resourceGroup,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -22,7 +22,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Pull the events from the table storage
                 AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
-                Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableMTTR, resourceGroup);
+                Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageConfig, tableStorageConfig.TableMTTR, resourceGroup);
                 List<AzureAlert> alerts = new List<AzureAlert>();
                 foreach (JToken item in list)
                 {

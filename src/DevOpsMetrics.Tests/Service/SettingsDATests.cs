@@ -49,11 +49,11 @@ namespace DevOpsMetrics.Tests.Service
         public void AzGetSamLearnsAzureSettingDAIntegrationTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            List<AzureDevOpsSettings> results = da.GetAzureDevOpsSettings(tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings);
+            List<AzureDevOpsSettings> results = da.GetAzureDevOpsSettings(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings, null);
 
             //Assert
             Assert.IsTrue(results.Count > 0);
@@ -63,11 +63,11 @@ namespace DevOpsMetrics.Tests.Service
         public void GHGetSamLearnsAzureSettingDAIntegrationTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            List<GitHubSettings> results = da.GetGitHubSettings(tableStorageAuth, tableStorageAuth.TableGitHubSettings);
+            List<GitHubSettings> results = da.GetGitHubSettings(tableStorageConfig, tableStorageConfig.TableGitHubSettings);
 
             //Assert
             Assert.IsTrue(results.Count > 0);
@@ -78,7 +78,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string repositoryId = "SamLearnsAzure";
@@ -90,7 +90,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            bool result = await da.UpdateAzureDevOpsSetting(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings,
+            bool result = await da.UpdateAzureDevOpsSetting(patToken, tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings,
                     organization, project, repositoryId, branch, buildName, buildId, resourceGroupName, itemOrder);
 
             //Assert
@@ -102,7 +102,7 @@ namespace DevOpsMetrics.Tests.Service
         //{
         //    //Arrange
         //    string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-        //    TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+        //    tableStorageConfig tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
         //    string organization = "samsmithnz";
         //    string project = "PartsUnlimited";
         //    string repositoryId = "PartsUnlimited";
@@ -114,7 +114,7 @@ namespace DevOpsMetrics.Tests.Service
 
         //    //Act
         //    AzureTableStorageDA da = new AzureTableStorageDA();
-        //    bool result = await da.UpdateAzureDevOpsSetting(patToken, tableStorageAuth, tableStorageAuth.TableAzureDevOpsSettings,
+        //    bool result = await da.UpdateAzureDevOpsSetting(patToken, tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings,
         //            organization, project, repositoryId, branch, buildName, buildId, resourceGroupName, itemOrder);
 
         //    //Assert
@@ -127,7 +127,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "master";
@@ -138,7 +138,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            bool result = await da.UpdateGitHubSetting(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubSettings,
+            bool result = await da.UpdateGitHubSetting(clientId, clientSecret, tableStorageConfig, tableStorageConfig.TableGitHubSettings,
                     owner, repo, branch, workflowName, workflowId, resourceGroupName, itemOrder);
 
             //Assert
@@ -151,7 +151,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "main";
@@ -162,7 +162,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            bool result = await da.UpdateGitHubSetting(clientId, clientSecret, tableStorageAuth, tableStorageAuth.TableGitHubSettings,
+            bool result = await da.UpdateGitHubSetting(clientId, clientSecret, tableStorageConfig, tableStorageConfig.TableGitHubSettings,
                     owner, repo, branch, workflowName, workflowId, resourceGroupName, itemOrder);
 
             //Assert

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DevOpsMetrics.Core;
 using DevOpsMetrics.Core.DataAccess.Common;
+using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
@@ -11,17 +12,22 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class DeploymentFrequencyDA
     {
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, TableStorageConfiguration tableStorageAuth,
-                string organization, string project, string branch, string buildName, 
+        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, TableStorageConfiguration tableStorageConfig,
+                string organization, string project, string branch, string buildName,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             ListUtility<Build> utility = new ListUtility<Build>();
             DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
             if (getSampleData == false)
             {
+                //Get the PAT token from the settings
+                AzureTableStorageDA tableStorage = new AzureTableStorageDA();
+                List<AzureDevOpsSettings> settings = tableStorage.GetAzureDevOpsSettings(tableStorageConfig, "DevOpsAzureDevOpsSettings", "");
+                string patToken = settings[0].PatToken;
+
                 //Get a list of builds
                 BuildsDA buildsDA = new BuildsDA();
-                List<AzureDevOpsBuild> azureDevOpsBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageAuth, organization, project, buildName, useCache);
+                List<AzureDevOpsBuild> azureDevOpsBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageConfig, organization, project, buildName, useCache);
                 if (azureDevOpsBuilds != null)
                 {
                     //Translate the Azure DevOps build to a generic build object
@@ -118,7 +124,7 @@ namespace DevOpsMetrics.Core.DataAccess
             }
         }
 
-        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, TableStorageConfiguration tableStorageAuth,
+        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig,
                 string owner, string repo, string branch, string workflowName, string workflowId,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
@@ -128,7 +134,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get a list of builds
                 BuildsDA buildsDA = new BuildsDA();
-                List<GitHubActionsRun> gitHubRuns = await buildsDA.GetGitHubActionRuns(clientId, clientSecret, tableStorageAuth, owner, repo, workflowName, workflowId, useCache);
+                List<GitHubActionsRun> gitHubRuns = await buildsDA.GetGitHubActionRuns(clientId, clientSecret, tableStorageConfig, owner, repo, workflowName, workflowId, useCache);
                 if (gitHubRuns != null)
                 {
                     //Translate the GitHub build to a generic build object
