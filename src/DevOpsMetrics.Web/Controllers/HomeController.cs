@@ -46,7 +46,6 @@ namespace DevOpsMetrics.Web.Controllers
             int maxNumberOfItems = 20;
             bool getSampleData = false;
             bool useCache = true;
-            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             ProjectViewModel model = new ProjectViewModel();
@@ -78,7 +77,7 @@ namespace DevOpsMetrics.Web.Controllers
                     DeploymentFrequencyModel deploymentFrequencyModel = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, 
                         item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
-                    LeadTimeForChangesModel leadTimeForChangesModel = await serviceApiClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken,
+                    LeadTimeForChangesModel leadTimeForChangesModel = await serviceApiClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, 
                         item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
                     MeanTimeToRestoreModel meanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
@@ -151,7 +150,6 @@ namespace DevOpsMetrics.Web.Controllers
             int numberOfDays = 60; //TODO: Move number of days variable to a drop down list on the current UI 
             bool getSampleData = false;
             bool useCache = true; //Use Azure storage instead of hitting the API. Quicker, but data may be up to 4 hours out of date
-            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
 
@@ -214,7 +212,6 @@ namespace DevOpsMetrics.Web.Controllers
             int numberOfDays = 30; //TODO: Move number of days variable to a drop down list on the current UI 
             bool getSampleData = false;
             bool useCache = true; //Use Azure storage instead of hitting the API. Quicker, but data may be up to 4 hours out of date
-            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
@@ -227,7 +224,7 @@ namespace DevOpsMetrics.Web.Controllers
             //Create lead time for changes models from each Azure DevOps setting object
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
-                LeadTimeForChangesModel newLeadTimeForChangesModel = await serviceApiClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken,
+                LeadTimeForChangesModel newLeadTimeForChangesModel = await serviceApiClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, 
                         item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
                 newLeadTimeForChangesModel.ItemOrder = item.ItemOrder;

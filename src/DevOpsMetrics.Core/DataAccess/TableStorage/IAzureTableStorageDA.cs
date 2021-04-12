@@ -20,8 +20,8 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         List<GitHubSettings> GetGitHubSettings(TableStorageConfiguration tableStorageConfig, string settingsTable);
         JArray GetTableStorageItems(TableStorageConfiguration tableStorageConfig, string tableName, string partitionKey);
         Task<int> UpdateAzureDevOpsBuilds(string patToken, TableStorageConfiguration tableStorageConfig, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems);
-        Task<int> UpdateAzureDevOpsPullRequestCommits(string patToken, TableStorageConfiguration tableStorageConfig, string organization, string project, string repositoryId, string pullRequestId, int numberOfDays, int maxNumberOfItems);
-        Task<int> UpdateAzureDevOpsPullRequests(string patToken, TableStorageConfiguration tableStorageConfig, string organization, string project, string repositoryId, int numberOfDays, int maxNumberOfItems);
+        Task<int> UpdateAzureDevOpsPullRequestCommits(string patToken, TableStorageConfiguration tableStorageConfig, string organization, string project, string repository, string pullRequestId, int numberOfDays, int maxNumberOfItems);
+        Task<int> UpdateAzureDevOpsPullRequests(string patToken, TableStorageConfiguration tableStorageConfig, string organization, string project, string repository, int numberOfDays, int maxNumberOfItems);
         Task<bool> UpdateAzureDevOpsSetting(string patToken, TableStorageConfiguration tableStorageConfig, string settingsTable, string organization, string project, string repository, string branch, string buildName, string buildId, string resourceGroupName, int itemOrder);
         Task<int> UpdateChangeFailureRate(TableStorageCommonDA tableChangeFailureRateDA, ChangeFailureRateBuild newBuild, string partitionKey, bool forceUpdate = false);
         Task<bool> UpdateDevOpsMonitoringEvent(TableStorageConfiguration tableStorageConfig, MonitoringEvent monitoringEvent);

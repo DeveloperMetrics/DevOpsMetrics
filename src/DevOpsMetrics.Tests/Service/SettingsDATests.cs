@@ -81,7 +81,7 @@ namespace DevOpsMetrics.Tests.Service
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
-            string repositoryId = "SamLearnsAzure";
+            string repository = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             string buildId = "3673";
@@ -91,35 +91,11 @@ namespace DevOpsMetrics.Tests.Service
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
             bool result = await da.UpdateAzureDevOpsSetting(patToken, tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings,
-                    organization, project, repositoryId, branch, buildName, buildId, resourceGroupName, itemOrder);
+                    organization, project, repository, branch, buildName, buildId, resourceGroupName, itemOrder);
 
             //Assert
             Assert.IsTrue(result == true);
         }
-
-        //[TestMethod]
-        //public async Task AzUpdatePartsUnlimitedSettingDAIntegrationTest()
-        //{
-        //    //Arrange
-        //    string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-        //    tableStorageConfig tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
-        //    string organization = "samsmithnz";
-        //    string project = "PartsUnlimited";
-        //    string repositoryId = "PartsUnlimited";
-        //    string branch = "refs/heads/master";
-        //    string buildName = "PartsUnlimited.CI";
-        //    string buildId = "75";
-        //    string resourceGroupName = "PartsUnlimited";
-        //    int itemOrder = 4;
-
-        //    //Act
-        //    AzureTableStorageDA da = new AzureTableStorageDA();
-        //    bool result = await da.UpdateAzureDevOpsSetting(patToken, tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings,
-        //            organization, project, repositoryId, branch, buildName, buildId, resourceGroupName, itemOrder);
-
-        //    //Assert
-        //    Assert.IsTrue(result == true);
-        //}
 
         [TestMethod]
         public async Task GHUpdateDevOpsMetricsSettingDAIntegrationTest()

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DevOpsMetrics.Core;
 using DevOpsMetrics.Core.DataAccess.Common;
+using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
@@ -12,14 +13,19 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class LeadTimeForChangesDA
     {
-        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, TableStorageConfiguration tableStorageConfig,
-                string organization, string project, string repositoryId, string mainBranch, string buildName, int numberOfDays, int maxNumberOfItems, bool useCache)
+        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, TableStorageConfiguration tableStorageConfig,
+                string organization, string project, string repository, string mainBranch, string buildName, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             ListUtility<PullRequestModel> utility = new ListUtility<PullRequestModel>();
             LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
             List<PullRequestModel> pullRequests = new List<PullRequestModel>();
             if (getSampleData == false)
-            {
+            {               
+                //Get the PAT token from the settings
+                AzureTableStorageDA tableStorage = new AzureTableStorageDA();
+                List<AzureDevOpsSettings> settings = tableStorage.GetAzureDevOpsSettings(tableStorageConfig, "DevOpsAzureDevOpsSettings", tableStorage.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository));
+                string patToken = settings[0].PatToken;
+
                 List<AzureDevOpsBuild> initialBuilds = new List<AzureDevOpsBuild>();
                 BuildsDA buildsDA = new BuildsDA();
                 initialBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageConfig, organization, project, buildName, useCache);
@@ -56,10 +62,10 @@ namespace DevOpsMetrics.Core.DataAccess
                 {
                     List<AzureDevOpsBuild> branchBuilds = featureBranchBuilds.Where(a => a.sourceBranch == branch).ToList();
                     PullRequestDA pullRequestDA = new PullRequestDA();
-                    AzureDevOpsPR pr = await pullRequestDA.GetAzureDevOpsPullRequest(patToken, tableStorageConfig, organization, project, repositoryId, branch, useCache);
+                    AzureDevOpsPR pr = await pullRequestDA.GetAzureDevOpsPullRequest(patToken, tableStorageConfig, organization, project, repository, branch, useCache);
                     if (pr != null)
                     {
-                        List<AzureDevOpsPRCommit> pullRequestCommits = await pullRequestDA.GetAzureDevOpsPullRequestCommits(patToken, tableStorageConfig, organization, project, repositoryId, pr.PullRequestId, useCache);
+                        List<AzureDevOpsPRCommit> pullRequestCommits = await pullRequestDA.GetAzureDevOpsPullRequestCommits(patToken, tableStorageConfig, organization, project, repository, pr.PullRequestId, useCache);
                         List<Commit> commits = new List<Commit>();
                         foreach (AzureDevOpsPRCommit item in pullRequestCommits)
                         {
@@ -104,7 +110,7 @@ namespace DevOpsMetrics.Core.DataAccess
                             StartDateTime = minTime,
                             EndDateTime = maxTime,
                             Status = pr.status,
-                            Url = $"https://dev.azure.com/{organization}/{project}/_git/{repositoryId}/pullrequest/{pr.PullRequestId}"
+                            Url = $"https://dev.azure.com/{organization}/{project}/_git/{repository}/pullrequest/{pr.PullRequestId}"
                         };
 
                         leadTimeForChangesList.Add(new KeyValuePair<DateTime, TimeSpan>(minTime, pullRequest.Duration));

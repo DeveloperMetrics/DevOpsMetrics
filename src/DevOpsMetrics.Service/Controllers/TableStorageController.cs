@@ -26,14 +26,20 @@ namespace DevOpsMetrics.Service.Controllers
 
         // Get builds from the Azure DevOps API, and save new records to the storage table
         [HttpGet("UpdateAzureDevOpsBuilds")]
-        public async Task<int> UpdateAzureDevOpsBuilds(string patToken,
-                string organization, string project, string branch, string buildName, string buildId,
+        public async Task<int> UpdateAzureDevOpsBuilds(
+                string organization, string project, string repository, string branch, 
+                string buildName, string buildId,
                 int numberOfDays, int maxNumberOfItems)
         {
             int numberOfRecordsSaved;
             try
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+          
+                //Get the PAT token from the settings
+                List<AzureDevOpsSettings> settings = AzureTableStorageDA.GetAzureDevOpsSettings(tableStorageConfig, "DevOpsAzureDevOpsSettings", AzureTableStorageDA.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository));
+                string patToken = settings[0].PatToken;
+
                 numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsBuilds(patToken, tableStorageConfig, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
@@ -79,7 +85,7 @@ namespace DevOpsMetrics.Service.Controllers
 
         [HttpGet("UpdateAzureDevOpsPullRequests")]
         public async Task<int> UpdateAzureDevOpsPullRequests(string patToken,
-               string organization, string project, string repositoryId,
+               string organization, string project, string repository,
                int numberOfDays, int maxNumberOfItems)
         {
             int numberOfRecordsSaved;
@@ -87,7 +93,7 @@ namespace DevOpsMetrics.Service.Controllers
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
                 numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsPullRequests(patToken, tableStorageConfig,
-                         organization, project, repositoryId, numberOfDays, maxNumberOfItems);
+                         organization, project, repository, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
             {
@@ -131,7 +137,7 @@ namespace DevOpsMetrics.Service.Controllers
 
         [HttpGet("UpdateAzureDevOpsPullRequestCommits")]
         public async Task<int> UpdateAzureDevOpsPullRequestCommits(string patToken,
-               string organization, string project, string repositoryId, string pullRequestId,
+               string organization, string project, string repository, string pullRequestId,
                int numberOfDays, int maxNumberOfItems)
         {
             int numberOfRecordsSaved;
@@ -139,7 +145,7 @@ namespace DevOpsMetrics.Service.Controllers
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
                 numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsPullRequestCommits(patToken, tableStorageConfig,
-                    organization, project, repositoryId, pullRequestId, numberOfDays, maxNumberOfItems);
+                    organization, project, repository, pullRequestId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
             {

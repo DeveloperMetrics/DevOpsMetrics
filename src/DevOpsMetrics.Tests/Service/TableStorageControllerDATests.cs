@@ -90,14 +90,14 @@ namespace DevOpsMetrics.Tests.Service
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
-            string repositoryId = "SamLearnsAzure";
+            string repository = "SamLearnsAzure";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
             int itemsAdded = await da.UpdateAzureDevOpsPullRequests(patToken, tableStorageConfig,
-                organization, project, repositoryId, numberOfDays, maxNumberOfItems);
+                organization, project, repository, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(itemsAdded >= 0);

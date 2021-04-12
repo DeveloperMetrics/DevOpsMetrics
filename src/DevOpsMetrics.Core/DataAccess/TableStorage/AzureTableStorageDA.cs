@@ -109,11 +109,11 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         }
 
         public async Task<int> UpdateAzureDevOpsPullRequests(string patToken, TableStorageConfiguration tableStorageConfig,
-                string organization, string project, string repositoryId,
+                string organization, string project, string repository,
                 int numberOfDays, int maxNumberOfItems)
         {
             AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
-            JArray items = await api.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repositoryId);
+            JArray items = await api.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repository);
 
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig, tableStorageConfig.TableAzureDevOpsPRs);
@@ -131,7 +131,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 }
 
                 itemsAdded += await UpdateAzureDevOpsPullRequestCommits(patToken, tableStorageConfig,
-                    organization, project, repositoryId, pullRequest.PullRequestId,
+                    organization, project, repository, pullRequest.PullRequestId,
                     numberOfDays, maxNumberOfItems);
             }
 
@@ -139,11 +139,11 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         }
 
         public async Task<int> UpdateAzureDevOpsPullRequestCommits(string patToken, TableStorageConfiguration tableStorageConfig,
-                string organization, string project, string repositoryId, string pullRequestId,
+                string organization, string project, string repository, string pullRequestId,
                 int numberOfDays, int maxNumberOfItems)
         {
             AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
-            JArray items = await api.GetAzureDevOpsPullRequestCommitsJArray(patToken, organization, project, repositoryId, pullRequestId);
+            JArray items = await api.GetAzureDevOpsPullRequestCommitsJArray(patToken, organization, project, repository, pullRequestId);
 
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig, tableStorageConfig.TableAzureDevOpsPRCommits);
@@ -318,6 +318,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         {
             string partitionKey = "AzureDevOpsSettings";
             string rowKey = CreateAzureDevOpsSettingsPartitionKey(organization, project, repository);
+          
             AzureDevOpsSettings settings = new AzureDevOpsSettings
             {
                 RowKey = rowKey,

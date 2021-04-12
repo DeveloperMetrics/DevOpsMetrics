@@ -11,7 +11,7 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class PullRequestDA
     {
-        public async Task<AzureDevOpsPR> GetAzureDevOpsPullRequest(string patToken, TableStorageConfiguration tableStorageConfig, string organization, string project, string repositoryId, string branch, bool useCache)
+        public async Task<AzureDevOpsPR> GetAzureDevOpsPullRequest(string patToken, TableStorageConfiguration tableStorageConfig, string organization, string project, string repository, string branch, bool useCache)
         {
             List<AzureDevOpsPR> prs = new List<AzureDevOpsPR>();
             Newtonsoft.Json.Linq.JArray list;
@@ -25,7 +25,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get the pull requests from the Azure DevOps API
                 AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
-                list = await api.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repositoryId);
+                list = await api.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repository);
             }
             if (list != null)
             {
@@ -45,7 +45,7 @@ namespace DevOpsMetrics.Core.DataAccess
             return pr;
         }
 
-        public async Task<List<AzureDevOpsPRCommit>> GetAzureDevOpsPullRequestCommits(string patToken, TableStorageConfiguration tableStorageConfig, string organization, string project, string repositoryId, string pullRequestId, bool useCache)
+        public async Task<List<AzureDevOpsPRCommit>> GetAzureDevOpsPullRequestCommits(string patToken, TableStorageConfiguration tableStorageConfig, string organization, string project, string repository, string pullRequestId, bool useCache)
         {
             Newtonsoft.Json.Linq.JArray list;
             if (useCache == true)
@@ -58,7 +58,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get the commits from the Azure DevOps API
                 AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
-                list = await api.GetAzureDevOpsPullRequestCommitsJArray(patToken, organization, project, repositoryId, pullRequestId);
+                list = await api.GetAzureDevOpsPullRequestCommitsJArray(patToken, organization, project, repository, pullRequestId);
             }
 
             List<AzureDevOpsPRCommit> commits = JsonConvert.DeserializeObject<List<AzureDevOpsPRCommit>>(list.ToString());
