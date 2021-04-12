@@ -7,7 +7,7 @@ namespace DevOpsMetrics.Service
     {
         public static TableStorageConfiguration GenerateTableStorageConfiguration(IConfiguration Configuration)
         {
-            TableStorageConfiguration tableStorageAuth = new TableStorageConfiguration
+            TableStorageConfiguration tableStorageConfig = new TableStorageConfiguration
             {
                 //StorageAccountName = Configuration["AppSettings:AzureStorageAccountName"],
                 //StorageAccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
@@ -23,7 +23,7 @@ namespace DevOpsMetrics.Service
                 TableMTTR = Configuration["AppSettings:AzureStorageAccountContainerMTTR"],
                 TableChangeFailureRate = Configuration["AppSettings:AzureStorageAccountContainerChangeFailureRate"]
             };
-            return tableStorageAuth;
+            return tableStorageConfig;
         }
     }
 }

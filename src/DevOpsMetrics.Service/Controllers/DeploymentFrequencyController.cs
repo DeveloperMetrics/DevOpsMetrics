@@ -20,16 +20,16 @@ namespace DevOpsMetrics.Service.Controllers
 
         // Get builds from the Azure DevOps API
         [HttpGet("GetAzureDevOpsDeploymentFrequency")]
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken,
-            string organization, string project, string branch, string buildName, 
+        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData,
+            string organization, string project, string repository, string branch, string buildName,
             int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             DeploymentFrequencyModel model = new DeploymentFrequencyModel();
             try
             {
-                TableStorageConfiguration tableStorageAuth = Common.GenerateTableStorageConfiguration(Configuration);
+                TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
                 DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-                model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageAuth, organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+                model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, tableStorageConfig, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
             {
@@ -55,9 +55,9 @@ namespace DevOpsMetrics.Service.Controllers
             DeploymentFrequencyModel model = new DeploymentFrequencyModel();
             try
             {
-                TableStorageConfiguration tableStorageAuth = Common.GenerateTableStorageConfiguration(Configuration);
+                TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
                 DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-                model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, tableStorageAuth, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+                model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, tableStorageConfig, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
             {

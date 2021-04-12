@@ -20,17 +20,17 @@ namespace DevOpsMetrics.Service.Controllers
 
         // Get lead time for changes from Azure DevOps API
         [HttpGet("GetAzureDevOpsLeadTimeForChanges")]
-        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, string patToken,
-            string organization, string project, string repositoryId, string branch, string buildName, 
+        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, 
+            string organization, string project, string repository, string branch, string buildName, 
             int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             LeadTimeForChangesModel model = new LeadTimeForChangesModel();
             try
             {
-                TableStorageConfiguration tableStorageAuth = Common.GenerateTableStorageConfiguration(Configuration);
+                TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
                 LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-                model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageAuth,
-                        organization, project, repositoryId, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+                model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, tableStorageConfig,
+                        organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
             {
@@ -56,9 +56,9 @@ namespace DevOpsMetrics.Service.Controllers
             LeadTimeForChangesModel model = new LeadTimeForChangesModel();
             try
             {
-                TableStorageConfiguration tableStorageAuth = Common.GenerateTableStorageConfiguration(Configuration);
+                TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
                 LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-                model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageAuth,
+                model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageConfig,
                         owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)

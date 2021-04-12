@@ -43,10 +43,9 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
-            string repositoryId = "SamLearnsAzure";
+            string repository = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             int numberOfDays = 7;
@@ -55,7 +54,7 @@ namespace DevOpsMetrics.Tests.Service
             LeadTimeForChangesController controller = new LeadTimeForChangesController(Configuration);
 
             //Act
-            LeadTimeForChangesModel model = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, repositoryId, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+            LeadTimeForChangesModel model = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData,  organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -135,10 +134,9 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
-            string repositoryId = "SamLearnsAzure";
+            string repository = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             int numberOfDays = 7;
@@ -147,7 +145,7 @@ namespace DevOpsMetrics.Tests.Service
             LeadTimeForChangesController controller = new LeadTimeForChangesController(Configuration);
 
             //Act
-            LeadTimeForChangesModel model = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, repositoryId, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+            LeadTimeForChangesModel model = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -224,10 +222,9 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = false;
-            string patToken = "";//Configuration["AppSettings:AzureDevOpsPatToken"];
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
-            string repositoryId = "SamLearnsAzure";
+            string repository = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             int numberOfDays = 30;
@@ -236,7 +233,7 @@ namespace DevOpsMetrics.Tests.Service
             LeadTimeForChangesController controller = new LeadTimeForChangesController(Configuration);
 
             //Act
-            LeadTimeForChangesModel model = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData, patToken, organization, project, repositoryId, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+            LeadTimeForChangesModel model = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);

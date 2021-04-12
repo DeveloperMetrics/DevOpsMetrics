@@ -50,9 +50,9 @@ namespace DevOpsMetrics.Function
             return await GetResponse<int>(Client, url);
         }
 
-        public async Task<int> UpdateAzureDevOpsPullRequests(string patToken, string organization, string project, string repositoryId, int numberOfDays, int maxNumberOfItems)
+        public async Task<int> UpdateAzureDevOpsPullRequests(string patToken, string organization, string project, string repository, int numberOfDays, int maxNumberOfItems)
         {
-            string url = $"/api/TableStorage/UpdateAzureDevOpsPullRequests?patToken={patToken}&organization={organization}&project={project}&repositoryId={repositoryId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+            string url = $"/api/TableStorage/UpdateAzureDevOpsPullRequests?patToken={patToken}&organization={organization}&project={project}&repository={repository}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
             return await GetResponse<int>(Client, url);
         }
 

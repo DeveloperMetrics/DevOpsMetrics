@@ -22,9 +22,9 @@ namespace DevOpsMetrics.Service.Controllers
             DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName,
             int numberOfDays, int maxNumberOfItems)
         {
-            TableStorageConfiguration tableStorageAuth = Common.GenerateTableStorageConfiguration(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             ChangeFailureRateDA da = new ChangeFailureRateDA();
-            ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageAuth, targetDevOpsPlatform,
+            ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageConfig, targetDevOpsPlatform,
                 organization_owner, project_repo, branch, buildName_workflowName,
                 numberOfDays, maxNumberOfItems);
             return model;
@@ -33,9 +33,9 @@ namespace DevOpsMetrics.Service.Controllers
         [HttpGet("UpdateChangeFailureRate")]
         public async Task<bool> UpdateChangeFailureRate(string organization_owner, string project_repo, string buildName_workflowName, int percentComplete, int numberOfDays)
         {
-            TableStorageConfiguration tableStorageAuth = Common.GenerateTableStorageConfiguration(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             ChangeFailureRateDA da = new ChangeFailureRateDA();
-            return await da.UpdateChangeFailureRate(tableStorageAuth,
+            return await da.UpdateChangeFailureRate(tableStorageConfig,
                 organization_owner, project_repo, buildName_workflowName,
                 percentComplete, numberOfDays);
 

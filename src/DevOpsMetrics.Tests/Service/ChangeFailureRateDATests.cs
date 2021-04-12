@@ -29,7 +29,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
@@ -40,7 +40,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             ChangeFailureRateDA da = new ChangeFailureRateDA();
-            ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageAuth,
+            ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageConfig,
                targetDevOpsPlatform, organization, project, branch, buildName, numberOfDays, maxNumberOfItems);
 
             //Assert
@@ -61,7 +61,7 @@ namespace DevOpsMetrics.Tests.Service
         //{
         //    //Arrange
         //    bool getSampleData = false;
-        //    TableStorageAuth tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+        //    tableStorageConfig tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
         //    string organization = "samsmithnz";
         //    string project = "PartsUnlimited";
         //    string branch = "refs/heads/master";
@@ -74,7 +74,7 @@ namespace DevOpsMetrics.Tests.Service
 
         //    //Act
         //    ChangeFailureRateDA da = new ChangeFailureRateDA();
-        //    ChangeFailureRateModel model = await da.GetChangeFailureRate(getSampleData, tableStorageAuth,
+        //    ChangeFailureRateModel model = await da.GetChangeFailureRate(getSampleData, tableStorageConfig,
         //       targetDevOpsPlatform, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
 
         //    //Assert
@@ -92,7 +92,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "master";
@@ -103,7 +103,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             ChangeFailureRateDA da = new ChangeFailureRateDA();
-            ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageAuth,
+            ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageConfig,
                targetDevOpsPlatform, owner, repo, branch, workflowName, numberOfDays, maxNumberOfItems);
 
             //Assert
@@ -123,7 +123,7 @@ namespace DevOpsMetrics.Tests.Service
         public async Task UpdateChangeFailureRateDAIntegrationTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string buildName = "SamLearnsAzure.CI";
@@ -132,7 +132,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             ChangeFailureRateDA da = new ChangeFailureRateDA();
-            bool result = await da.UpdateChangeFailureRate(tableStorageAuth,
+            bool result = await da.UpdateChangeFailureRate(tableStorageConfig,
                organization, project, buildName, percent, numberOfDays);
 
             //Assert

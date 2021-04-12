@@ -12,7 +12,7 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class ChangeFailureRateDA
     {
-        public ChangeFailureRateModel GetChangeFailureRate(bool getSampleData, TableStorageConfiguration tableStorageAuth,
+        public ChangeFailureRateModel GetChangeFailureRate(bool getSampleData, TableStorageConfiguration tableStorageConfig,
                 DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -22,7 +22,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Gets a list of change failure rate builds from Azure storage
                 AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
-                Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableChangeFailureRate, daTableStorage.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName));
+                Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageConfig, tableStorageConfig.TableChangeFailureRate, daTableStorage.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName));
                 List<ChangeFailureRateBuild> initialBuilds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
 
                 //Build the date list and then generate the change failure rate metric
@@ -99,14 +99,14 @@ namespace DevOpsMetrics.Core.DataAccess
             }
         }
 
-        public async Task<bool> UpdateChangeFailureRate(TableStorageConfiguration tableStorageAuth,
+        public async Task<bool> UpdateChangeFailureRate(TableStorageConfiguration tableStorageConfig,
                string organization_owner, string project_repo, string buildName_workflowName,
                int percentComplete, int numberOfDays)
         {
             //Gets a list of change failure rate builds
             AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
             string partitionKey = daTableStorage.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName);
-            Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageAuth, tableStorageAuth.TableChangeFailureRate, partitionKey);
+            Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageConfig, tableStorageConfig.TableChangeFailureRate, partitionKey);
             List<ChangeFailureRateBuild> initialBuilds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
 
             //Get the list of items we are going to process, within the date/day range
@@ -124,7 +124,7 @@ namespace DevOpsMetrics.Core.DataAccess
             List<ChangeFailureRateBuild> negativeBuilds = positiveAndNegativeBuilds.Item2;
 
             //Make the updates
-            TableStorageCommonDA tableChangeFailureRateDA = new TableStorageCommonDA(tableStorageAuth, tableStorageAuth.TableChangeFailureRate);
+            TableStorageCommonDA tableChangeFailureRateDA = new TableStorageCommonDA(tableStorageConfig, tableStorageConfig.TableChangeFailureRate);
             foreach (ChangeFailureRateBuild item in positiveBuilds)
             {
                 item.DeploymentWasSuccessful = true;

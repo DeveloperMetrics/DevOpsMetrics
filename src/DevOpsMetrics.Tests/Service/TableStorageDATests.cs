@@ -24,10 +24,11 @@ namespace DevOpsMetrics.Tests.Service
             Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
             Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
             mockDA.Setup(repo => repo.UpdateAzureDevOpsBuilds(It.IsAny<string>(), It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(GetSampleUpdateData()));
+            mockDA.Setup(repo => repo.GetAzureDevOpsSettings(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>())).Returns(new List<AzureDevOpsSettings> { new AzureDevOpsSettings() });
             TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
-            string patToken = "";
             string organization = "";
             string project = "";
+            string repository = "";
             string branch = "";
             string buildName = "";
             string buildId = "";
@@ -35,7 +36,7 @@ namespace DevOpsMetrics.Tests.Service
             int maxNumberOfItems = 0;
 
             //Act
-            int result = await controller.UpdateAzureDevOpsBuilds(patToken, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
+            int result = await controller.UpdateAzureDevOpsBuilds(organization, project, repository, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.AreEqual(7, result);
@@ -77,12 +78,12 @@ namespace DevOpsMetrics.Tests.Service
             string patToken = "";
             string organization = "";
             string project = "";
-            string repositoryId = "";
+            string repository = "";
             int numberOfDays = 0;
             int maxNumberOfItems = 0;
 
             //Act
-            int result = await controller.UpdateAzureDevOpsPullRequests(patToken, organization, project, repositoryId, numberOfDays, maxNumberOfItems);
+            int result = await controller.UpdateAzureDevOpsPullRequests(patToken, organization, project, repository, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.AreEqual(7, result);
@@ -122,13 +123,13 @@ namespace DevOpsMetrics.Tests.Service
             string patToken = "";
             string organization = "";
             string project = "";
-            string repositoryId = "";
+            string repository = "";
             string pullRequestId = "";
             int numberOfDays = 0;
             int maxNumberOfItems = 0;
 
             //Act
-            int result = await controller.UpdateAzureDevOpsPullRequestCommits(patToken, organization, project, repositoryId, pullRequestId, numberOfDays, maxNumberOfItems);
+            int result = await controller.UpdateAzureDevOpsPullRequestCommits(patToken, organization, project, repository, pullRequestId, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.AreEqual(7, result);
@@ -162,7 +163,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
             Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
-            mockDA.Setup(repo => repo.GetAzureDevOpsSettings(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>())).Returns(GetSampleAzureDevOpsSettingsData());
+            mockDA.Setup(repo => repo.GetAzureDevOpsSettings(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), null)).Returns(GetSampleAzureDevOpsSettingsData());
             TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
 
             //Act
@@ -256,17 +257,17 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(true, result);
         }
 
-        private int GetSampleUpdateData()
+        private static int GetSampleUpdateData()
         {
             return 7;
         }
 
-        private List<AzureDevOpsSettings> GetSampleAzureDevOpsSettingsData()
+        private static List<AzureDevOpsSettings> GetSampleAzureDevOpsSettingsData()
         {
             return new List<AzureDevOpsSettings>();
         }
 
-        private List<GitHubSettings> GetSampleGitHubSettingsData()
+        private static List<GitHubSettings> GetSampleGitHubSettingsData()
         {
             return new List<GitHubSettings>();
         }

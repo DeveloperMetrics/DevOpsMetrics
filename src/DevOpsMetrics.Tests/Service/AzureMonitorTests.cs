@@ -28,7 +28,7 @@ namespace DevOpsMetrics.Tests.Service
         public async Task AzureMonitorProcessingTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageAuth = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
             MonitoringEvent monitoringEvent = new MonitoringEvent(@"
 {
   ""schemaId"": ""AzureMonitorMetricAlert"",
@@ -76,7 +76,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            bool result = await da.UpdateDevOpsMonitoringEvent(tableStorageAuth, monitoringEvent);
+            bool result = await da.UpdateDevOpsMonitoringEvent(tableStorageConfig, monitoringEvent);
 
             //Assert
             Assert.IsTrue(result == true);
