@@ -41,7 +41,7 @@ namespace DevOpsMetrics.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Project(string rowKey, int numberOfDays = 30)
+        public async Task<IActionResult> Project(string projectId, int numberOfDays = 30)
         {
             int maxNumberOfItems = 20;
             bool getSampleData = false;
@@ -70,12 +70,12 @@ namespace DevOpsMetrics.Web.Controllers
             AzureDevOpsSettings azureDevOpsSetting;
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
-                if (item.RowKey == rowKey)
+                if (item.RowKey == projectId)
                 {
                     azureDevOpsSetting = item;
 
                     DeploymentFrequencyModel deploymentFrequencyModel = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, 
-                        item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId,
+                        item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
                     LeadTimeForChangesModel leadTimeForChangesModel = await serviceApiClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, 
                         item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId,
@@ -107,7 +107,7 @@ namespace DevOpsMetrics.Web.Controllers
             GitHubSettings githubSetting;
             foreach (GitHubSettings item in githubSettings)
             {
-                if (item.RowKey == rowKey)
+                if (item.RowKey == projectId)
                 {
                     githubSetting = item;
 
@@ -164,7 +164,7 @@ namespace DevOpsMetrics.Web.Controllers
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
                 DeploymentFrequencyModel newDeploymentFrequencyModel = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, 
-                        item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId,
+                        item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
                 newDeploymentFrequencyModel.ItemOrder = item.ItemOrder;
                 if (newDeploymentFrequencyModel != null)

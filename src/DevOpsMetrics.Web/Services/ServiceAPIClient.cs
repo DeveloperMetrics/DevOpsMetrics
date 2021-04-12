@@ -25,9 +25,9 @@ namespace DevOpsMetrics.Web.Services
             };
         }
 
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
+        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string organization, string project, string repository, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
-            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&useCache={useCache}";
+            string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&organization={organization}&project={project}&repository={repository}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&useCache={useCache}";
             return await GetResponse<DeploymentFrequencyModel>(Client, url);
         }
 
