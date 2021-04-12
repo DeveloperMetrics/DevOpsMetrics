@@ -40,8 +40,8 @@ namespace DevOpsMetrics.Function
             foreach (AzureDevOpsSettings item in azSettings)
             {
                 log.LogInformation($"Processing Azure DevOps organization {item.Organization}, project {item.Project}");
-                int buildsUpdated = await api.UpdateAzureDevOpsBuilds(configuration["Appsettings:AzureDevOpsPatToken"], item.Organization, item.Project, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems);
-                int prsUpdated = await api.UpdateAzureDevOpsPullRequests(configuration["Appsettings:AzureDevOpsPatToken"], item.Organization, item.Project, item.Repository, numberOfDays, maxNumberOfItems);
+                int buildsUpdated = await api.UpdateAzureDevOpsBuilds(item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems);
+                int prsUpdated = await api.UpdateAzureDevOpsPullRequests(item.Organization, item.Project, item.Repository, numberOfDays, maxNumberOfItems);
                 log.LogInformation($"Processed Azure DevOps organization {item.Organization}, project {item.Project}. {buildsUpdated} builds and {prsUpdated} prs/commits updated, ");
                 totalResults += buildsUpdated + prsUpdated;
             }
