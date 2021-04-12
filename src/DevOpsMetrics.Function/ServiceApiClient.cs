@@ -38,9 +38,9 @@ namespace DevOpsMetrics.Function
             return await GetResponse<List<GitHubSettings>>(Client, url);
         }
 
-        public async Task<int> UpdateAzureDevOpsBuilds(string patToken, string organization, string project, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems)
+        public async Task<int> UpdateAzureDevOpsBuilds(string organization, string project, string repository, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems)
         {
-            string url = $"/api/TableStorage/UpdateAzureDevOpsBuilds?patToken={patToken}&organization={organization}&project={project}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+            string url = $"/api/TableStorage/UpdateAzureDevOpsBuilds?organization={organization}&project={project}&repository={repository}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
             return await GetResponse<int>(Client, url);
         }
 
@@ -50,9 +50,9 @@ namespace DevOpsMetrics.Function
             return await GetResponse<int>(Client, url);
         }
 
-        public async Task<int> UpdateAzureDevOpsPullRequests(string patToken, string organization, string project, string repository, int numberOfDays, int maxNumberOfItems)
+        public async Task<int> UpdateAzureDevOpsPullRequests(string organization, string project, string repository, int numberOfDays, int maxNumberOfItems)
         {
-            string url = $"/api/TableStorage/UpdateAzureDevOpsPullRequests?patToken={patToken}&organization={organization}&project={project}&repository={repository}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+            string url = $"/api/TableStorage/UpdateAzureDevOpsPullRequests?organization={organization}&project={project}&repository={repository}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
             return await GetResponse<int>(Client, url);
         }
 
