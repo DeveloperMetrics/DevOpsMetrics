@@ -128,13 +128,35 @@ namespace DevOpsMetrics.FunctionalTests
         [TestMethod]
         [TestCategory("SkipWhenLiveUnitTesting")]
         [TestCategory("SmokeTest")]
+        public void GotoWebHomeProjectSamLearnsAzurePageTest()
+        {
+            //Arrange
+            bool webLoaded;
+
+            //Act
+            string webURL = _webUrl + "Home//Project?projectId=samsmithnz_SamLearnsAzure_SamLearnsAzure";
+            Console.WriteLine("webURL:" + webURL);
+            _driver.Navigate().GoToUrl(webURL);
+            webLoaded = (_driver.Url == webURL);
+            OpenQA.Selenium.IWebElement data = _driver.FindElementByXPath(@"/html/body/div/main/form/h2");
+            Debug.WriteLine("data:" + data.Text);
+
+            //Assert
+            Assert.IsTrue(webLoaded);
+            Assert.IsTrue(data != null);
+            Assert.AreEqual(data.Text, "  Azure DevOps - SamLearnsAzure high performing DevOps metrics");
+        }
+
+        [TestMethod]
+        [TestCategory("SkipWhenLiveUnitTesting")]
+        [TestCategory("SmokeTest")]
         public void GotoWebHomeProjectDevOpsMetricsPageTest()
         {
             //Arrange
             bool webLoaded;
 
             //Act
-            string webURL = _webUrl + "Home//Project?rowKey=samsmithnz_DevOpsMetrics";
+            string webURL = _webUrl + "Home//Project?projectId=samsmithnz_DevOpsMetrics";
             Console.WriteLine("webURL:" + webURL);
             _driver.Navigate().GoToUrl(webURL);
             webLoaded = (_driver.Url == webURL);
