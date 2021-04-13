@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
@@ -74,10 +75,10 @@ namespace DevOpsMetrics.Web.Controllers
                 {
                     azureDevOpsSetting = item;
 
-                    DeploymentFrequencyModel deploymentFrequencyModel = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, 
+                    DeploymentFrequencyModel deploymentFrequencyModel = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData,
                         item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
-                    LeadTimeForChangesModel leadTimeForChangesModel = await serviceApiClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, 
+                    LeadTimeForChangesModel leadTimeForChangesModel = await serviceApiClient.GetAzureDevOpsLeadTimeForChanges(getSampleData,
                         item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
                     MeanTimeToRestoreModel meanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
@@ -163,7 +164,7 @@ namespace DevOpsMetrics.Web.Controllers
             //Create deployment frequency models from each Azure DevOps settings object
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
-                DeploymentFrequencyModel newDeploymentFrequencyModel = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData, 
+                DeploymentFrequencyModel newDeploymentFrequencyModel = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData,
                         item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
                 newDeploymentFrequencyModel.ItemOrder = item.ItemOrder;
@@ -224,7 +225,7 @@ namespace DevOpsMetrics.Web.Controllers
             //Create lead time for changes models from each Azure DevOps setting object
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
-                LeadTimeForChangesModel newLeadTimeForChangesModel = await serviceApiClient.GetAzureDevOpsLeadTimeForChanges(getSampleData, 
+                LeadTimeForChangesModel newLeadTimeForChangesModel = await serviceApiClient.GetAzureDevOpsLeadTimeForChanges(getSampleData,
                         item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId,
                         numberOfDays, maxNumberOfItems, useCache);
                 newLeadTimeForChangesModel.ItemOrder = item.ItemOrder;
@@ -460,6 +461,53 @@ namespace DevOpsMetrics.Web.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        [HttpPost]
+        public IActionResult LogsUpdate(string projectId)
+        {
+            return RedirectToAction("Logs", "Home", routeValues: new { projectId = projectId });
+        }
+
+        public async Task<IActionResult> Logs(string projectId = null)
+        {
+            //Get a list of settings
+            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+            List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
+            List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
+            List<KeyValuePair<string, string>> projects = new List<KeyValuePair<string, string>>();
+            foreach (AzureDevOpsSettings item in azureDevOpsSettings)
+            {
+                string partitionKey = PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(item.Organization, item.Project, item.Repository);
+                projects.Add(new KeyValuePair<string, string>(partitionKey, item.Project));
+            }
+            foreach (GitHubSettings item in githubSettings)
+            {
+                string partitionKey = PartitionKeys.CreateGitHubSettingsPartitionKey(item.Owner, item.Repo);
+                projects.Add(new KeyValuePair<string, string>(partitionKey, item.Repo));
+            }
+
+            List<ProjectLog> logs = new List<ProjectLog>();
+            if (projectId != null)
+            {
+                //TODO: This is gross. Fix this, making it easier to maintain and more efficient
+                if (projectId.Split("_").Length == 3)
+                {
+                    logs = await serviceApiClient.GetAzureDevOpsProjectLogs(projectId.Split("_")[0], projectId.Split("_")[1], projectId.Split("_")[2]);
+                }
+                else
+                {
+                    logs = await serviceApiClient.GetGitHubProjectLogs(projectId.Split("_")[0], projectId.Split("_")[1]);
+                }
+            }
+
+            ProjectLogViewModel logViewModel = new ProjectLogViewModel
+            {
+                ProjectId = projectId,
+                Logs = logs,
+                Projects = new SelectList(projects, "Key", "Value")
+            };
+            return View(logViewModel);
         }
 
         public IActionResult Generate500Error()

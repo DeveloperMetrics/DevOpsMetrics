@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
@@ -132,6 +133,24 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
+        public void AzGetSamLearnsAzureLogsDAIntegrationTest()
+        {
+            //Arrange
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            string organization = "samsmithnz";
+            string project = "SamLearnsAzure";
+            string repository = "SamLearnsAzure";
+
+            //Act
+            AzureTableStorageDA da = new AzureTableStorageDA();
+            List<ProjectLog> logs = da.GetProjectLogsFromStorage(tableStorageConfig, PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository));
+
+            //Assert
+            Assert.IsTrue(logs != null);
+            Assert.IsTrue(logs.Count > 0);
+        }
+
+        [TestMethod]
         public void GHGetBuildsDAIntegrationTest()
         {
             //Arrange
@@ -252,6 +271,23 @@ namespace DevOpsMetrics.Tests.Service
 
             //Assert
             Assert.IsTrue(itemsAdded >= 0);
+        }
+
+        [TestMethod]
+        public void GHGetSamsFeatureFlagsLogsDAIntegrationTest()
+        {
+            //Arrange
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            string owner = "samsmithnz";
+            string repo = "SamsFeatureFlags";
+
+            //Act
+            AzureTableStorageDA da = new AzureTableStorageDA();
+            List<ProjectLog> logs = da.GetProjectLogsFromStorage(tableStorageConfig, PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo));
+
+            //Assert
+            Assert.IsTrue(logs != null);
+            Assert.IsTrue(logs.Count > 0);
         }
 
     }

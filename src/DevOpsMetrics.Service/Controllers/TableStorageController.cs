@@ -267,7 +267,6 @@ namespace DevOpsMetrics.Service.Controllers
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             return AzureTableStorageDA.GetProjectLogsFromStorage(tableStorageConfig, partitionKey);
-
         }
 
         [HttpGet("UpdateGitHubProjectLog")]
@@ -280,7 +279,6 @@ namespace DevOpsMetrics.Service.Controllers
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             return await AzureTableStorageDA.UpdateProjectLogInStorage(tableStorageConfig, log);
-
         }
 
     }
