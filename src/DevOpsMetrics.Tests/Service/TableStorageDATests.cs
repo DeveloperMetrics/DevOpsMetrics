@@ -257,6 +257,53 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(true, result);
         }
 
+        [TestMethod]
+        public async Task UpdateAzureDevOpsLogTest()
+        {
+            //Arrange
+            Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
+            Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
+            mockDA.Setup(repo => repo.UpdateAzureDevOpsProjectLogInStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<ProjectLog>())).Returns(Task.FromResult(true));
+            TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
+            string organization = "TestOrg";
+            string project = "TestProject";
+            string repository = "TestRepo";
+            int buildsUpdated = 0;
+            int prsUpdated = 0;
+            string exceptionMessage = null;
+            string exceptionStackTrace = null;
+
+            //Act
+            bool result = await controller.UpdateAzureDevOpsProjectLog(organization, project, repository,
+                buildsUpdated, prsUpdated, exceptionMessage, exceptionStackTrace);
+
+            //Assert
+            Assert.AreEqual(true, result);
+        }
+
+        [TestMethod]
+        public async Task UpdateGitHubLogTest()
+        {
+            //Arrange
+            Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
+            Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
+            mockDA.Setup(repo => repo.UpdateGitHubProjectLogInStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<ProjectLog>())).Returns(Task.FromResult(true));
+            TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
+            string owner = "TestOrg";
+            string repo = "TestRepo";
+            int buildsUpdated = 0;
+            int prsUpdated = 0;
+            string exceptionMessage = null;
+            string exceptionStackTrace = null;
+
+            //Act
+            bool result = await controller.UpdateGitHubProjectLog(owner, repo,
+                buildsUpdated, prsUpdated, exceptionMessage, exceptionStackTrace);
+
+            //Assert
+            Assert.AreEqual(true, result);
+        }
+
         private static int GetSampleUpdateData()
         {
             return 7;

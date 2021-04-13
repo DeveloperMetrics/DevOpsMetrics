@@ -237,25 +237,29 @@ namespace DevOpsMetrics.Service.Controllers
             return await AzureTableStorageDA.UpdateDevOpsMonitoringEventInStorage(tableStorageConfig, monitoringEvent);
         }
 
-        public async Task<bool> LogAzureDevOpsProcessorRun(string organization, string project, string repository, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
+        [HttpGet("UpdateAzureDevOpsProjectLog")]
+        public async Task<bool> UpdateAzureDevOpsProjectLog(string organization, string project, string repository,
+            int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
         {
             ProjectLog log = new ProjectLog(
                 PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository),
                 buildsUpdated, prsUpdated, exceptionMessage, exceptionStackTrace);
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            return await AzureTableStorageDA.LogAzureDevOpsProcessorRunInStorage(tableStorageConfig, log);
+            return await AzureTableStorageDA.UpdateAzureDevOpsProjectLogInStorage(tableStorageConfig, log);
 
         }
 
-        public async Task<bool> LogGitHubProcessorRun(string clientId, string clientSecret, string owner, string repo, string branch, int numberOfDays, int maxNumberOfItems, int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
+        [HttpGet("UpdateGitHubProjectLog")]
+        public async Task<bool> UpdateGitHubProjectLog(string owner, string repo,
+            int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
         {
             ProjectLog log = new ProjectLog(
                 PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo),
                 buildsUpdated, prsUpdated, exceptionMessage, exceptionStackTrace);
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            return await AzureTableStorageDA.LogGitHubProcessorRunInStorage(tableStorageConfig, log);
+            return await AzureTableStorageDA.UpdateGitHubProjectLogInStorage(tableStorageConfig, log);
 
         }
 

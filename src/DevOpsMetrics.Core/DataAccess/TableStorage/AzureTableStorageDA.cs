@@ -339,14 +339,14 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return await tableDA.SaveItem(newItem);
         }
 
-        public async Task<bool> LogAzureDevOpsProcessorRunInStorage(TableStorageConfiguration tableStorageConfig, ProjectLog log)
+        public async Task<bool> UpdateAzureDevOpsProjectLogInStorage(TableStorageConfiguration tableStorageConfig, ProjectLog log)
         {
             AzureStorageTableModel newItem = new AzureStorageTableModel(log.PartitionKey, log.RowKey, log.Json);
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig, tableStorageConfig.TableLog);
             return await tableDA.SaveItem(newItem);
         }
 
-        public async Task<bool> LogGitHubProcessorRunInStorage(TableStorageConfiguration tableStorageConfig, ProjectLog log)
+        public async Task<bool> UpdateGitHubProjectLogInStorage(TableStorageConfiguration tableStorageConfig, ProjectLog log)
         {
             AzureStorageTableModel newItem = new AzureStorageTableModel(log.PartitionKey, log.RowKey, log.Json);
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig, tableStorageConfig.TableLog);
