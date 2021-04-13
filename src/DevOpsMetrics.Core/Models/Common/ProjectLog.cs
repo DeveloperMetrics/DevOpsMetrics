@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace DevOpsMetrics.Core.Models.Common
@@ -29,19 +30,37 @@ namespace DevOpsMetrics.Core.Models.Common
         public int PRsUpdated { get; set; }
         public string ExceptionMessage { get; set; }
         public string ExceptionStackTrace { get; set; }
-        public string Json 
-        { 
-            get
+        private string data;
+        public string Data { get
             {
-                JObject newObject = new JObject(
-                    new JProperty("BuildsUpdated", BuildsUpdated),
-                    new JProperty("PRsUpdated", PRsUpdated),
-                    new JProperty("ExceptionMessage", ExceptionMessage),
-                    new JProperty("ExceptionStackTrace", ExceptionStackTrace)
-                    );
-                return newObject.ToString();
+                return data;
             }
-        }
+            set
+            {
+                data = value;
+                dynamic json = JsonConvert.DeserializeObject(data);
+                if (json != null)
+                {
+                    BuildsUpdated = json["BuildsUpdated"];
+                    PRsUpdated = json["PRsUpdated"];
+                    ExceptionMessage = json["ExceptionMessage"];
+                    ExceptionStackTrace = json["ExceptionStackTrace"];
+                }
+            }
+        } 
+        //public string Json 
+        //{ 
+        //    get
+        //    {
+        //        JObject newObject = new JObject(
+        //            new JProperty("BuildsUpdated", BuildsUpdated),
+        //            new JProperty("PRsUpdated", PRsUpdated),
+        //            new JProperty("ExceptionMessage", ExceptionMessage),
+        //            new JProperty("ExceptionStackTrace", ExceptionStackTrace)
+        //            );
+        //        return newObject.ToString();
+        //    }
+        //}
 
     }
 }

@@ -1,0 +1,66 @@
+﻿@using DevOpsMetrics.Core.Models.Common
+@using DevOpsMetrics.Web.Models
+@model ProjectLogViewModel
+@{
+    ViewData["Title"] = "Logs";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="LogsUpdate">
+            <h2>View project logs</h2>
+            <div class="metricSpan">
+                <br />
+                <span>Project logs to display: </span><select asp-for="ProjectId" asp-items="Model.Projects" style="width: 200px;" onchange="this.form.submit()"></select>
+            </div>
+            @if (Model.Logs.Count > 0)
+            {
+                <style>
+                    table, th, td {
+                      border: 1px solid gray;
+                    }
+                </style>
+                <table>
+                    <tr>
+                        <th>
+                            Partition Key
+                        </th>
+                        <th>
+                            Row Key
+                        </th>
+                        <th>
+                            Builds Updated
+                        </th>
+                        <th>
+                            PRs Updated
+                        </th>
+                        <th>
+                            Exception Message
+                        </th>
+                    </tr>
+                    @foreach (ProjectLog item in Model.Logs)
+                    {
+                        <tr>
+                            <td>
+                                @item.PartitionKey
+                            </td>
+                            <td>
+                                @item.RowKey
+                            </td>
+                            <td style="text-align: right">
+                                @item.BuildsUpdated
+                            </td>
+                            <td style="text-align: right">
+                                @item.PRsUpdated
+                            </td>
+                            <td>
+                                @item.ExceptionMessage
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+        </form>
+
+    </div>
+</div>

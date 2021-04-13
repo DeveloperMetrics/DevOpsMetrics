@@ -15,14 +15,26 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
     public class AzureTableStorageDA : IAzureTableStorageDA
     {
         //Note that this can't be async due to performance issues with Azure Storage when you retrieve items
-        public JArray GetTableStorageItemsFromStorage(TableStorageConfiguration tableStorageConfig, string tableName, string partitionKey)
+        public JArray GetTableStorageItemsFromStorage(TableStorageConfiguration tableStorageConfig, string tableName, string partitionKey, bool includePartitionAndRowKeys = false)
         {
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig, tableName);
             List<AzureStorageTableModel> items = tableDA.GetItems(partitionKey);
             JArray list = new JArray();
             foreach (AzureStorageTableModel item in items)
             {
-                list.Add(JToken.Parse(item.Data));
+                if (includePartitionAndRowKeys == true)
+                {
+                    list.Add(
+                        new JObject(
+                            new JProperty("PartitionKey", item.PartitionKey),
+                                new JProperty("RowKey", item.RowKey),
+                                new JProperty("Data", item.Data.ToString()))
+                    );
+                }
+                else
+                {
+                    list.Add(JToken.Parse(item.Data));
+                }
             }
             return list;
         }
@@ -341,17 +353,18 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         public List<ProjectLog> GetProjectLogsFromStorage(TableStorageConfiguration tableStorageConfig, string partitionKey)
         {
             List<ProjectLog> logs = null;
-            JArray list = GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableLog, partitionKey);
+            JArray list = GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableLog, partitionKey, true);
             if (list != null)
             {
                 logs = JsonConvert.DeserializeObject<List<ProjectLog>>(list.ToString());
             }
+
             return logs;
         }
 
         public async Task<bool> UpdateProjectLogInStorage(TableStorageConfiguration tableStorageConfig, ProjectLog log)
         {
-            AzureStorageTableModel newItem = new AzureStorageTableModel(log.PartitionKey, log.RowKey, log.Json);
+            AzureStorageTableModel newItem = new AzureStorageTableModel(log.PartitionKey, log.RowKey, log.Data);
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig, tableStorageConfig.TableLog);
             return await tableDA.SaveItem(newItem);
         }
