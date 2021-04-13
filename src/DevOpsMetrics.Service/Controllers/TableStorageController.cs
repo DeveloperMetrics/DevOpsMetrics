@@ -237,6 +237,16 @@ namespace DevOpsMetrics.Service.Controllers
             return await AzureTableStorageDA.UpdateDevOpsMonitoringEventInStorage(tableStorageConfig, monitoringEvent);
         }
 
+        [HttpGet("GetAzureDevOpsProjectLog")]
+        public List<ProjectLog> GetAzureDevOpsProjectLog(string organization, string project, string repository)
+        {
+            string partitionKey = PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository);
+
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+            return AzureTableStorageDA.GetProjectLogsFromStorage(tableStorageConfig, partitionKey);
+
+        }
+
         [HttpGet("UpdateAzureDevOpsProjectLog")]
         public async Task<bool> UpdateAzureDevOpsProjectLog(string organization, string project, string repository,
             int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
@@ -246,7 +256,17 @@ namespace DevOpsMetrics.Service.Controllers
                 buildsUpdated, prsUpdated, exceptionMessage, exceptionStackTrace);
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            return await AzureTableStorageDA.UpdateAzureDevOpsProjectLogInStorage(tableStorageConfig, log);
+            return await AzureTableStorageDA.UpdateProjectLogInStorage(tableStorageConfig, log);
+
+        }
+
+        [HttpGet("GetGitHubProjectLog")]
+        public List<ProjectLog> GetGitHubProjectLog(string owner, string repo)
+        {
+            string partitionKey = PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo);
+
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+            return AzureTableStorageDA.GetProjectLogsFromStorage(tableStorageConfig, partitionKey);
 
         }
 
@@ -259,7 +279,7 @@ namespace DevOpsMetrics.Service.Controllers
                 buildsUpdated, prsUpdated, exceptionMessage, exceptionStackTrace);
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            return await AzureTableStorageDA.UpdateGitHubProjectLogInStorage(tableStorageConfig, log);
+            return await AzureTableStorageDA.UpdateProjectLogInStorage(tableStorageConfig, log);
 
         }
 
