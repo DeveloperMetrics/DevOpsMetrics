@@ -69,19 +69,17 @@ namespace DevOpsMetrics.Function
             return await PostResponse(Client, url, monitoringEvent);
         }
 
-        //public async Task<int> LogAzureDevOpsProcessorRun(string organization, string project, string repository, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
-        //{
-        //    string url = $"/api/TableStorage/LogAzureDevOpsProcessorRun?organization={organization}&project={project}&repository={repository}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
-        //    //return await GetResponse<int>(Client, url);
-        //    return 0;
-        //}
+        public async Task<bool> UpdateAzureDevOpsProjectLog(string organization, string project, string repository, int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
+        {
+            string url = $"/api/TableStorage/UpdateAzureDevOpsProjectLog?organization={organization}&project={project}&repository={repository}&buildsUpdated={buildsUpdated}&prsUpdated={prsUpdated}&exceptionMessage={exceptionMessage}&exceptionStackTrace={exceptionStackTrace}";
+            return await GetResponse<bool>(Client, url);
+        }
 
-        //public async Task<int> LogGitHubProcessorRun(string clientId, string clientSecret, string owner, string repo, string branch, int numberOfDays, int maxNumberOfItems, int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
-        //{
-        //    string url = $"/api/TableStorage/LogGitHubProcessorRun?clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
-        //    //return await GetResponse<int>(Client, url);
-        //    return 0;
-        //}
+        public async Task<bool> UpdateGitHubProjectLog(string owner, string repo, int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
+        {
+            string url = $"/api/TableStorage/UpdateGitHubProjectLog?owner={owner}&repo={repo}&buildsUpdated={buildsUpdated}&prsUpdated={prsUpdated}&exceptionMessage={exceptionMessage}&exceptionStackTrace={exceptionStackTrace}";
+            return await GetResponse<bool>(Client, url);
+        }
 
         private async Task<T> GetResponse<T>(HttpClient client, string url)
         {

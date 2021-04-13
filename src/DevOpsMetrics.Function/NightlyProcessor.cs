@@ -41,39 +41,39 @@ namespace DevOpsMetrics.Function
             {
                 int buildsUpdated = 0;
                 int prsUpdated = 0;
-                //try
-                //{
-                log.LogInformation($"Processing Azure DevOps organization {item.Organization}, project {item.Project}");
-                buildsUpdated = await api.UpdateAzureDevOpsBuilds(item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems);
-                prsUpdated = await api.UpdateAzureDevOpsPullRequests(item.Organization, item.Project, item.Repository, numberOfDays, maxNumberOfItems);
-                log.LogInformation($"Processed Azure DevOps organization {item.Organization}, project {item.Project}. {buildsUpdated} builds and {prsUpdated} prs/commits updated, ");
-                totalResults += buildsUpdated + prsUpdated;
-                //api.LogAzureDevOpsProcessorRun(item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems, buildsUpdated, prsUpdated, null, null);
-                //}
-                //catch (Exception ex)
-                //{
-                //    api.LogAzureDevOpsProcessorRun(item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems, buildsUpdated, prsUpdated, ex.Message, ex.ToString());
-                //}
+                try
+                {
+                    log.LogInformation($"Processing Azure DevOps organization {item.Organization}, project {item.Project}");
+                    buildsUpdated = await api.UpdateAzureDevOpsBuilds(item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems);
+                    prsUpdated = await api.UpdateAzureDevOpsPullRequests(item.Organization, item.Project, item.Repository, numberOfDays, maxNumberOfItems);
+                    log.LogInformation($"Processed Azure DevOps organization {item.Organization}, project {item.Project}. {buildsUpdated} builds and {prsUpdated} prs/commits updated, ");
+                    totalResults += buildsUpdated + prsUpdated;
+                    await api.UpdateAzureDevOpsProjectLog(item.Organization, item.Project, item.Repository, buildsUpdated, prsUpdated, null, null);
+                }
+                catch (Exception ex)
+                {
+                    await api.UpdateAzureDevOpsProjectLog(item.Organization, item.Project, item.Repository, buildsUpdated, prsUpdated, ex.Message, null);
+                }
             }
             foreach (GitHubSettings item in ghSettings)
             {
                 int buildsUpdated = 0;
                 int prsUpdated = 0;
-                //try
-                //{
-                log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}");
-                buildsUpdated = await api.UpdateGitHubActionRuns(configuration["Appsettings:GitHubClientId"], configuration["Appsettings:GitHubClientSecret"], item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
-                //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {buildsUpdated} builds updated");
-                prsUpdated = await api.UpdateGitHubActionPullRequests(configuration["Appsettings:GitHubClientId"], configuration["Appsettings:GitHubClientSecret"], item.Owner, item.Repo, item.Branch, numberOfDays, maxNumberOfItems);
-                //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {prsUpdated} pull requests updated");
-                log.LogInformation($"Processed GitHub owner {item.Owner}, repo {item.Repo}. {buildsUpdated} builds and {prsUpdated} prs/commits updated");
-                totalResults += buildsUpdated + prsUpdated;
-                //api.LogGitHubProcessorRun(item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems, buildsUpdated, prsUpdated, null, null);
-                //}
-                //catch (Exception ex)
-                //{
-                //    api.LogGitHubProcessorRun(item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems, buildsUpdated, prsUpdated, ex.Message, ex.ToString());
-                //}
+                try
+                {
+                    log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}");
+                    buildsUpdated = await api.UpdateGitHubActionRuns(configuration["Appsettings:GitHubClientId"], configuration["Appsettings:GitHubClientSecret"], item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
+                    //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {buildsUpdated} builds updated");
+                    prsUpdated = await api.UpdateGitHubActionPullRequests(configuration["Appsettings:GitHubClientId"], configuration["Appsettings:GitHubClientSecret"], item.Owner, item.Repo, item.Branch, numberOfDays, maxNumberOfItems);
+                    //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {prsUpdated} pull requests updated");
+                    log.LogInformation($"Processed GitHub owner {item.Owner}, repo {item.Repo}. {buildsUpdated} builds and {prsUpdated} prs/commits updated");
+                    totalResults += buildsUpdated + prsUpdated;
+                    await api.UpdateGitHubProjectLog(item.Owner, item.Repo, buildsUpdated, prsUpdated, null, null);
+                }
+                catch (Exception ex)
+                {
+                    await api.UpdateGitHubProjectLog(item.Owner, item.Repo, buildsUpdated, prsUpdated, ex.Message, null);
+                }
 
             }
             log.LogInformation($"C# Timer trigger function complete at: {DateTime.Now} after updating {totalResults} records");
