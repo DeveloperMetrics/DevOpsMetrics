@@ -22,7 +22,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Gets a list of change failure rate builds from Azure storage
                 AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
-                Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageConfig, tableStorageConfig.TableChangeFailureRate, daTableStorage.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName));
+                Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableChangeFailureRate, PartitionKeys.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName));
                 List<ChangeFailureRateBuild> initialBuilds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
 
                 //Build the date list and then generate the change failure rate metric
@@ -105,8 +105,8 @@ namespace DevOpsMetrics.Core.DataAccess
         {
             //Gets a list of change failure rate builds
             AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
-            string partitionKey = daTableStorage.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName);
-            Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItems(tableStorageConfig, tableStorageConfig.TableChangeFailureRate, partitionKey);
+            string partitionKey = PartitionKeys.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName);
+            Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableChangeFailureRate, partitionKey);
             List<ChangeFailureRateBuild> initialBuilds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
 
             //Get the list of items we are going to process, within the date/day range

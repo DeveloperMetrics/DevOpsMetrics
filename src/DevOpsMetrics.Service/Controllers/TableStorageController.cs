@@ -27,7 +27,7 @@ namespace DevOpsMetrics.Service.Controllers
         // Get builds from the Azure DevOps API, and save new records to the storage table
         [HttpGet("UpdateAzureDevOpsBuilds")]
         public async Task<int> UpdateAzureDevOpsBuilds(
-                string organization, string project, string repository, string branch, 
+                string organization, string project, string repository, string branch,
                 string buildName, string buildId,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -35,12 +35,12 @@ namespace DevOpsMetrics.Service.Controllers
             try
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-          
+
                 //Get the PAT token from the settings
-                List<AzureDevOpsSettings> settings = AzureTableStorageDA.GetAzureDevOpsSettings(tableStorageConfig, "DevOpsAzureDevOpsSettings", AzureTableStorageDA.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository));
+                List<AzureDevOpsSettings> settings = AzureTableStorageDA.GetAzureDevOpsSettingsFromStorage(tableStorageConfig, "DevOpsAzureDevOpsSettings", PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository));
                 string patToken = settings[0].PatToken;
 
-                numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsBuilds(patToken, tableStorageConfig, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
+                numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsBuildsInStorage(patToken, tableStorageConfig, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
             {
@@ -66,7 +66,7 @@ namespace DevOpsMetrics.Service.Controllers
             try
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-                numberOfRecordsSaved = await AzureTableStorageDA.UpdateGitHubActionRuns(clientId, clientSecret, tableStorageConfig,
+                numberOfRecordsSaved = await AzureTableStorageDA.UpdateGitHubActionRunsInStorage(clientId, clientSecret, tableStorageConfig,
                         owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
@@ -92,7 +92,7 @@ namespace DevOpsMetrics.Service.Controllers
             try
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-                numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsPullRequests(patToken, tableStorageConfig,
+                numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsPullRequestsInStorage(patToken, tableStorageConfig,
                          organization, project, repository, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
@@ -118,7 +118,7 @@ namespace DevOpsMetrics.Service.Controllers
             try
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-                numberOfRecordsSaved = await AzureTableStorageDA.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageConfig,
+                numberOfRecordsSaved = await AzureTableStorageDA.UpdateGitHubActionPullRequestsInStorage(clientId, clientSecret, tableStorageConfig,
                         owner, repo, branch, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
@@ -144,7 +144,7 @@ namespace DevOpsMetrics.Service.Controllers
             try
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-                numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsPullRequestCommits(patToken, tableStorageConfig,
+                numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsPullRequestCommitsInStorage(patToken, tableStorageConfig,
                     organization, project, repository, pullRequestId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
@@ -169,7 +169,7 @@ namespace DevOpsMetrics.Service.Controllers
             try
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-                numberOfRecordsSaved = await AzureTableStorageDA.UpdateGitHubActionPullRequestCommits(clientId, clientSecret, tableStorageConfig,
+                numberOfRecordsSaved = await AzureTableStorageDA.UpdateGitHubActionPullRequestCommitsInStorage(clientId, clientSecret, tableStorageConfig,
                         owner, repo, pull_number);
             }
             catch (Exception ex)
@@ -190,7 +190,7 @@ namespace DevOpsMetrics.Service.Controllers
         public List<AzureDevOpsSettings> GetAzureDevOpsSettings(string rowKey = null)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            List<AzureDevOpsSettings> settings = AzureTableStorageDA.GetAzureDevOpsSettings(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings, rowKey);
+            List<AzureDevOpsSettings> settings = AzureTableStorageDA.GetAzureDevOpsSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings, rowKey);
             return settings;
         }
 
@@ -198,7 +198,7 @@ namespace DevOpsMetrics.Service.Controllers
         public List<GitHubSettings> GetGitHubSettings(string rowKey = null)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            List<GitHubSettings> settings = AzureTableStorageDA.GetGitHubSettings(tableStorageConfig, tableStorageConfig.TableGitHubSettings);
+            List<GitHubSettings> settings = AzureTableStorageDA.GetGitHubSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings);
             if (rowKey != null)
             {
                 return new List<GitHubSettings>
@@ -217,7 +217,7 @@ namespace DevOpsMetrics.Service.Controllers
                 string organization, string project, string repository, string branch, string buildName, string buildId, string resourceGroup, int itemOrder)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            return await AzureTableStorageDA.UpdateAzureDevOpsSetting(patToken, tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings,
+            return await AzureTableStorageDA.UpdateAzureDevOpsSettingInStorage(patToken, tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings,
                      organization, project, repository, branch, buildName, buildId, resourceGroup, itemOrder);
         }
 
@@ -226,7 +226,7 @@ namespace DevOpsMetrics.Service.Controllers
                 string owner, string repo, string branch, string workflowName, string workflowId, string resourceGroup, int itemOrder)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            return await AzureTableStorageDA.UpdateGitHubSetting(clientId, clientSecret, tableStorageConfig, tableStorageConfig.TableGitHubSettings,
+            return await AzureTableStorageDA.UpdateGitHubSettingInStorage(clientId, clientSecret, tableStorageConfig, tableStorageConfig.TableGitHubSettings,
                     owner, repo, branch, workflowName, workflowId, resourceGroup, itemOrder);
         }
 
@@ -234,7 +234,29 @@ namespace DevOpsMetrics.Service.Controllers
         public async Task<bool> UpdateDevOpsMonitoringEvent([FromBody] MonitoringEvent monitoringEvent)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            return await AzureTableStorageDA.UpdateDevOpsMonitoringEvent(tableStorageConfig, monitoringEvent);
+            return await AzureTableStorageDA.UpdateDevOpsMonitoringEventInStorage(tableStorageConfig, monitoringEvent);
+        }
+
+        public async Task<bool> LogAzureDevOpsProcessorRun(string organization, string project, string repository, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
+        {
+            ProjectLog log = new ProjectLog(
+                PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository),
+                buildsUpdated, prsUpdated, exceptionMessage, exceptionStackTrace);
+
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+            return await AzureTableStorageDA.LogAzureDevOpsProcessorRunInStorage(tableStorageConfig, log);
+
+        }
+
+        public async Task<bool> LogGitHubProcessorRun(string clientId, string clientSecret, string owner, string repo, string branch, int numberOfDays, int maxNumberOfItems, int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
+        {
+            ProjectLog log = new ProjectLog(
+                PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo),
+                buildsUpdated, prsUpdated, exceptionMessage, exceptionStackTrace);
+
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+            return await AzureTableStorageDA.LogGitHubProcessorRunInStorage(tableStorageConfig, log);
+
         }
 
     }

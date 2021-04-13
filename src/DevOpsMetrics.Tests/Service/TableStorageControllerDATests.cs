@@ -38,7 +38,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            JArray list = da.GetTableStorageItems(tableStorageConfig, tableStorageConfig.TableAzureDevOpsBuilds, da.CreateBuildWorkflowPartitionKey(organization, project, buildName));
+            JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsBuilds, PartitionKeys.CreateBuildWorkflowPartitionKey(organization, project, buildName));
 
             //Assert
             Assert.IsTrue(list.Count >= 0);
@@ -60,7 +60,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateAzureDevOpsBuilds(patToken, tableStorageConfig, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
+            int itemsAdded = await da.UpdateAzureDevOpsBuildsInStorage(patToken, tableStorageConfig, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(itemsAdded >= 0);
@@ -76,7 +76,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            JArray list = da.GetTableStorageItems(tableStorageConfig, tableStorageConfig.TableAzureDevOpsBuilds, da.CreateAzureDevOpsPRPartitionKey(organization, project));
+            JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsBuilds, PartitionKeys.CreateAzureDevOpsPRPartitionKey(organization, project));
 
             //Assert
             Assert.IsTrue(list.Count >= 0);
@@ -96,7 +96,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateAzureDevOpsPullRequests(patToken, tableStorageConfig,
+            int itemsAdded = await da.UpdateAzureDevOpsPullRequestsInStorage(patToken, tableStorageConfig,
                 organization, project, repository, numberOfDays, maxNumberOfItems);
 
             //Assert
@@ -113,13 +113,13 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            JArray prList = da.GetTableStorageItems(tableStorageConfig, tableStorageConfig.TableAzureDevOpsPRs, da.CreateAzureDevOpsPRPartitionKey(organization, project));
+            JArray prList = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsPRs, PartitionKeys.CreateAzureDevOpsPRPartitionKey(organization, project));
             int itemsAdded = 0;
             foreach (JToken item in prList)
             {
                 AzureDevOpsPR pullRequest = JsonConvert.DeserializeObject<AzureDevOpsPR>(item.ToString());
                 string pullRequestId = pullRequest.PullRequestId;
-                JArray list = da.GetTableStorageItems(tableStorageConfig, tableStorageConfig.TableAzureDevOpsPRCommits, da.CreateAzureDevOpsPRCommitPartitionKey(organization, project, pullRequestId));
+                JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsPRCommits, PartitionKeys.CreateAzureDevOpsPRCommitPartitionKey(organization, project, pullRequestId));
                 if (list.Count > 0)
                 {
                     itemsAdded = list.Count;
@@ -142,7 +142,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            JArray list = da.GetTableStorageItems(tableStorageConfig, tableStorageConfig.TableGitHubRuns, da.CreateBuildWorkflowPartitionKey(owner, repo, workflowName));
+            JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubRuns, PartitionKeys.CreateBuildWorkflowPartitionKey(owner, repo, workflowName));
 
             //Assert
             Assert.IsTrue(list.Count >= 0);
@@ -165,7 +165,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateGitHubActionRuns(clientId, clientSecret, tableStorageConfig,
+            int itemsAdded = await da.UpdateGitHubActionRunsInStorage(clientId, clientSecret, tableStorageConfig,
                     owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
 
             //Assert
@@ -189,7 +189,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateGitHubActionRuns(clientId, clientSecret, tableStorageConfig,
+            int itemsAdded = await da.UpdateGitHubActionRunsInStorage(clientId, clientSecret, tableStorageConfig,
                     owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
 
             //Assert
@@ -206,7 +206,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            JArray list = da.GetTableStorageItems(tableStorageConfig, tableStorageConfig.TableGitHubPRs, da.CreateGitHubPRPartitionKey(owner, repo));
+            JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubPRs, PartitionKeys.CreateGitHubPRPartitionKey(owner, repo));
 
             //Assert
             Assert.IsTrue(list.Count >= 0);
@@ -227,7 +227,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageConfig, owner, repo, branch, numberOfDays, maxNumberOfItems);
+            int itemsAdded = await da.UpdateGitHubActionPullRequestsInStorage(clientId, clientSecret, tableStorageConfig, owner, repo, branch, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(itemsAdded >= 0);
@@ -248,7 +248,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateGitHubActionPullRequests(clientId, clientSecret, tableStorageConfig, owner, repo, branch, numberOfDays, maxNumberOfItems);
+            int itemsAdded = await da.UpdateGitHubActionPullRequestsInStorage(clientId, clientSecret, tableStorageConfig, owner, repo, branch, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(itemsAdded >= 0);

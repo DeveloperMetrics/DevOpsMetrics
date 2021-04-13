@@ -22,7 +22,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get the PAT token from the settings
                 AzureTableStorageDA tableStorage = new AzureTableStorageDA();
-                List<AzureDevOpsSettings> settings = tableStorage.GetAzureDevOpsSettings(tableStorageConfig, "DevOpsAzureDevOpsSettings", tableStorage.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository));
+                List<AzureDevOpsSettings> settings = tableStorage.GetAzureDevOpsSettingsFromStorage(tableStorageConfig, "DevOpsAzureDevOpsSettings", PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository));
                 string patToken = settings[0].PatToken;
 
                 //Get a list of builds

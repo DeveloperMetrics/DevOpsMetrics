@@ -9,15 +9,11 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
 {
     public class TableStorageCommonDA
     {
-        //private readonly string AccountName;
-        //private readonly string AccessKey;
         private readonly string ConfigurationString;
         private readonly string TableName;
 
         public TableStorageCommonDA(TableStorageConfiguration tableStorageConfig, string tableName)
         {
-            //    AccountName = tableStorageConfig.StorageAccountName;
-            //    AccessKey = tableStorageConfig.StorageAccountAccessKey;
             ConfigurationString = tableStorageConfig.StorageAccountConnectionString;
             TableName = tableName;
         }
@@ -143,10 +139,10 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return text;
         }
 
-        public string DecodePartitionKey(string text)
-        {
-            return text.Replace("_", "/");
-        }
+        //public string DecodePartitionKey(string text)
+        //{
+        //    return text.Replace("_", "/");
+        //}
 
     }
 }

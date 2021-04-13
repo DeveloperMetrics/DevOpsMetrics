@@ -53,7 +53,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            List<AzureDevOpsSettings> results = da.GetAzureDevOpsSettings(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings, null);
+            List<AzureDevOpsSettings> results = da.GetAzureDevOpsSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings, null);
 
             //Assert
             Assert.IsTrue(results.Count > 0);
@@ -67,7 +67,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            List<GitHubSettings> results = da.GetGitHubSettings(tableStorageConfig, tableStorageConfig.TableGitHubSettings);
+            List<GitHubSettings> results = da.GetGitHubSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings);
 
             //Assert
             Assert.IsTrue(results.Count > 0);
@@ -90,7 +90,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            bool result = await da.UpdateAzureDevOpsSetting(patToken, tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings,
+            bool result = await da.UpdateAzureDevOpsSettingInStorage(patToken, tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings,
                     organization, project, repository, branch, buildName, buildId, resourceGroupName, itemOrder);
 
             //Assert
@@ -114,7 +114,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            bool result = await da.UpdateGitHubSetting(clientId, clientSecret, tableStorageConfig, tableStorageConfig.TableGitHubSettings,
+            bool result = await da.UpdateGitHubSettingInStorage(clientId, clientSecret, tableStorageConfig, tableStorageConfig.TableGitHubSettings,
                     owner, repo, branch, workflowName, workflowId, resourceGroupName, itemOrder);
 
             //Assert
@@ -138,7 +138,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            bool result = await da.UpdateGitHubSetting(clientId, clientSecret, tableStorageConfig, tableStorageConfig.TableGitHubSettings,
+            bool result = await da.UpdateGitHubSettingInStorage(clientId, clientSecret, tableStorageConfig, tableStorageConfig.TableGitHubSettings,
                     owner, repo, branch, workflowName, workflowId, resourceGroupName, itemOrder);
 
             //Assert
