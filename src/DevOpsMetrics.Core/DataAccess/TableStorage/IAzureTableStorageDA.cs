@@ -22,7 +22,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         Task<int> UpdateGitHubActionPullRequestsInStorage(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string owner, string repo, string branch, int numberOfDays, int maxNumberOfItems);
         Task<int> UpdateGitHubActionRunsInStorage(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems);
         Task<bool> UpdateGitHubSettingInStorage(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string settingsTable, string owner, string repo, string branch, string workflowName, string workflowId, string resourceGroupName, int itemOrder);
-        Task<bool> UpdateAzureDevOpsProjectLogInStorage(TableStorageConfiguration tableStorageConfig, ProjectLog log);
-        Task<bool> UpdateGitHubProjectLogInStorage(TableStorageConfiguration tableStorageConfig, ProjectLog log);
+        List<ProjectLog> GetProjectLogsFromStorage(TableStorageConfiguration tableStorageConfig, string partitionKey);
+        Task<bool> UpdateProjectLogInStorage(TableStorageConfiguration tableStorageConfig, ProjectLog log);
     }
 }

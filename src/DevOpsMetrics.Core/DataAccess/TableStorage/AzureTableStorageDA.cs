@@ -267,7 +267,6 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
 
         public List<GitHubSettings> GetGitHubSettingsFromStorage(TableStorageConfiguration tableStorageConfig, string settingsTable)
         {
-
             List<GitHubSettings> settings = null;
             string partitionKey = "GitHubSettings";
             JArray list = GetTableStorageItemsFromStorage(tableStorageConfig, settingsTable, partitionKey);
@@ -339,14 +338,18 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return await tableDA.SaveItem(newItem);
         }
 
-        public async Task<bool> UpdateAzureDevOpsProjectLogInStorage(TableStorageConfiguration tableStorageConfig, ProjectLog log)
+        public List<ProjectLog> GetProjectLogsFromStorage(TableStorageConfiguration tableStorageConfig, string partitionKey)
         {
-            AzureStorageTableModel newItem = new AzureStorageTableModel(log.PartitionKey, log.RowKey, log.Json);
-            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig, tableStorageConfig.TableLog);
-            return await tableDA.SaveItem(newItem);
+            List<ProjectLog> logs = null;
+            JArray list = GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableLog, partitionKey);
+            if (list != null)
+            {
+                logs = JsonConvert.DeserializeObject<List<ProjectLog>>(list.ToString());
+            }
+            return logs;
         }
 
-        public async Task<bool> UpdateGitHubProjectLogInStorage(TableStorageConfiguration tableStorageConfig, ProjectLog log)
+        public async Task<bool> UpdateProjectLogInStorage(TableStorageConfiguration tableStorageConfig, ProjectLog log)
         {
             AzureStorageTableModel newItem = new AzureStorageTableModel(log.PartitionKey, log.RowKey, log.Json);
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig, tableStorageConfig.TableLog);

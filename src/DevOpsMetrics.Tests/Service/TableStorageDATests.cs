@@ -258,12 +258,32 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
+        public void GetAzureDevOpsLogTest()
+        {
+            //Arrange
+            Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
+            Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
+            mockDA.Setup(repo => repo.GetProjectLogsFromStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>())).Returns(new List<ProjectLog> { new ProjectLog() });
+            TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
+            string organization = "TestOrg";
+            string project = "TestProject";
+            string repository = "TestRepo";
+
+            //Act
+            List<ProjectLog> results = controller.GetAzureDevOpsProjectLog(organization, project, repository);
+
+            //Assert
+            Assert.IsTrue(results != null);
+            Assert.IsTrue(results.Count >= 0);
+        }
+
+        [TestMethod]
         public async Task UpdateAzureDevOpsLogTest()
         {
             //Arrange
             Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
             Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
-            mockDA.Setup(repo => repo.UpdateAzureDevOpsProjectLogInStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<ProjectLog>())).Returns(Task.FromResult(true));
+            mockDA.Setup(repo => repo.UpdateProjectLogInStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<ProjectLog>())).Returns(Task.FromResult(true));
             TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
             string organization = "TestOrg";
             string project = "TestProject";
@@ -282,12 +302,31 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
+        public void GetGitHubLogTest()
+        {
+            //Arrange
+            Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
+            Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
+            mockDA.Setup(repo => repo.GetProjectLogsFromStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>())).Returns(new List<ProjectLog> { new ProjectLog() });
+            TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
+            string owner = "TestOrg";
+            string repo = "TestRepo";
+
+            //Act
+            List<ProjectLog> results = controller.GetGitHubProjectLog(owner, repo);
+
+            //Assert
+            Assert.IsTrue(results != null);
+            Assert.IsTrue(results.Count >= 0);
+        }
+
+        [TestMethod]
         public async Task UpdateGitHubLogTest()
         {
             //Arrange
             Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
             Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
-            mockDA.Setup(repo => repo.UpdateGitHubProjectLogInStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<ProjectLog>())).Returns(Task.FromResult(true));
+            mockDA.Setup(repo => repo.UpdateProjectLogInStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<ProjectLog>())).Returns(Task.FromResult(true));
             TableStorageController controller = new TableStorageController(mockConfig.Object, mockDA.Object);
             string owner = "TestOrg";
             string repo = "TestRepo";
