@@ -76,7 +76,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            bool result = await da.UpdateDevOpsMonitoringEvent(tableStorageConfig, monitoringEvent);
+            bool result = await da.UpdateDevOpsMonitoringEventInStorage(tableStorageConfig, monitoringEvent);
 
             //Assert
             Assert.IsTrue(result == true);

@@ -38,10 +38,7 @@ namespace DevOpsMetrics.Core.DataAccess.Common
                     model.Numerator = 49;
                     model.Denominator = 50;
                     break;
-                case 100:
-                    model.Numerator = 1;
-                    model.Denominator = 1;
-                    break;
+                case 100: //when it's 100% or something else 
                 default:
                     model.Numerator = 1;
                     model.Denominator = 1;

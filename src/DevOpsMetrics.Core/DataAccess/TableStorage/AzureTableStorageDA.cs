@@ -14,43 +14,8 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
 {
     public class AzureTableStorageDA : IAzureTableStorageDA
     {
-        public string CreateAzureDevOpsSettingsPartitionKey(string organization, string project, string repository)
-        {
-            return organization + "_" + project + "_" + repository;
-        }
-
-        public string CreateBuildWorkflowPartitionKey(string organization_owner, string project_repo, string buildName_workflowName)
-        {
-            return organization_owner + "_" + project_repo + "_" + buildName_workflowName;
-        }
-
-        public string CreateAzureDevOpsPRPartitionKey(string organization, string project)
-        {
-            return organization + "_" + project;
-        }
-
-        public string CreateAzureDevOpsPRCommitPartitionKey(string organization, string project, string pullRequestId)
-        {
-            return organization + "_" + project + "_" + pullRequestId;
-        }
-
-        public string CreateGitHubSettingsPartitionKey(string owner, string repo, string workflowName)
-        {
-            return owner + "_" + repo;
-        }
-
-        public string CreateGitHubPRPartitionKey(string owner, string repo)
-        {
-            return owner + "_" + repo;
-        }
-
-        public string CreateGitHubPRCommitPartitionKey(string owner, string repo, string pullRequestId)
-        {
-            return owner + "_" + repo + "_" + pullRequestId;
-        }
-
         //Note that this can't be async due to performance issues with Azure Storage when you retrieve items
-        public JArray GetTableStorageItems(TableStorageConfiguration tableStorageConfig, string tableName, string partitionKey)
+        public JArray GetTableStorageItemsFromStorage(TableStorageConfiguration tableStorageConfig, string tableName, string partitionKey)
         {
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig, tableName);
             List<AzureStorageTableModel> items = tableDA.GetItems(partitionKey);
@@ -62,7 +27,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return list;
         }
 
-        public async Task<int> UpdateAzureDevOpsBuilds(string patToken, TableStorageConfiguration tableStorageConfig,
+        public async Task<int> UpdateAzureDevOpsBuildsInStorage(string patToken, TableStorageConfiguration tableStorageConfig,
                 string organization, string project, string branch, string buildName, string buildId,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -80,7 +45,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 //Save the build information for builds
                 if (build.status == "completed")
                 {
-                    string partitionKey = CreateBuildWorkflowPartitionKey(organization, project, buildName);
+                    string partitionKey = PartitionKeys.CreateBuildWorkflowPartitionKey(organization, project, buildName);
                     string rowKey = build.buildNumber;
                     AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
                     if (await tableBuildsDA.AddItem(newItem) == true)
@@ -100,7 +65,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                         Status = build.status,
                         Url = build.url
                     };
-                    itemsAdded += await UpdateChangeFailureRate(tableChangeFailureRateDA, newBuild, CreateBuildWorkflowPartitionKey(organization, project, buildName));
+                    itemsAdded += await UpdateChangeFailureRate(tableChangeFailureRateDA, newBuild, PartitionKeys.CreateBuildWorkflowPartitionKey(organization, project, buildName));
 
                 }
             }
@@ -108,7 +73,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return itemsAdded;
         }
 
-        public async Task<int> UpdateAzureDevOpsPullRequests(string patToken, TableStorageConfiguration tableStorageConfig,
+        public async Task<int> UpdateAzureDevOpsPullRequestsInStorage(string patToken, TableStorageConfiguration tableStorageConfig,
                 string organization, string project, string repository,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -122,7 +87,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             {
                 AzureDevOpsPR pullRequest = JsonConvert.DeserializeObject<AzureDevOpsPR>(item.ToString());
 
-                string partitionKey = CreateAzureDevOpsPRPartitionKey(organization, project);
+                string partitionKey = PartitionKeys.CreateAzureDevOpsPRPartitionKey(organization, project);
                 string rowKey = pullRequest.PullRequestId;
                 AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
                 if (await tableDA.AddItem(newItem) == true)
@@ -130,7 +95,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                     itemsAdded++;
                 }
 
-                itemsAdded += await UpdateAzureDevOpsPullRequestCommits(patToken, tableStorageConfig,
+                itemsAdded += await UpdateAzureDevOpsPullRequestCommitsInStorage(patToken, tableStorageConfig,
                     organization, project, repository, pullRequest.PullRequestId,
                     numberOfDays, maxNumberOfItems);
             }
@@ -138,7 +103,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return itemsAdded;
         }
 
-        public async Task<int> UpdateAzureDevOpsPullRequestCommits(string patToken, TableStorageConfiguration tableStorageConfig,
+        public async Task<int> UpdateAzureDevOpsPullRequestCommitsInStorage(string patToken, TableStorageConfiguration tableStorageConfig,
                 string organization, string project, string repository, string pullRequestId,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -152,7 +117,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             {
                 AzureDevOpsPRCommit pullRequestCommit = JsonConvert.DeserializeObject<AzureDevOpsPRCommit>(item.ToString());
 
-                string partitionKey = CreateAzureDevOpsPRCommitPartitionKey(organization, project, pullRequestId);
+                string partitionKey = PartitionKeys.CreateAzureDevOpsPRCommitPartitionKey(organization, project, pullRequestId);
                 string rowKey = pullRequestCommit.commitId;
                 AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
                 if (await tableDA.AddItem(newItem) == true)
@@ -164,7 +129,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return itemsAdded;
         }
 
-        public async Task<int> UpdateGitHubActionRuns(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig,
+        public async Task<int> UpdateGitHubActionRunsInStorage(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig,
                 string owner, string repo, string branch, string workflowName, string workflowId,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -182,7 +147,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 //Save the build information for builds
                 if (build.status == "completed")
                 {
-                    string partitionKey = CreateBuildWorkflowPartitionKey(owner, repo, workflowName);
+                    string partitionKey = PartitionKeys.CreateBuildWorkflowPartitionKey(owner, repo, workflowName);
                     string rowKey = build.run_number;
                     AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
                     if (await tableBuildDA.AddItem(newItem) == true)
@@ -202,7 +167,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                         Status = build.status,
                         Url = build.html_url
                     };
-                    itemsAdded += await UpdateChangeFailureRate(tableChangeFailureRateDA, newBuild, CreateBuildWorkflowPartitionKey(owner, repo, workflowName));
+                    itemsAdded += await UpdateChangeFailureRate(tableChangeFailureRateDA, newBuild, PartitionKeys.CreateBuildWorkflowPartitionKey(owner, repo, workflowName));
                 }
 
             }
@@ -222,7 +187,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return itemsAdded;
         }
 
-        public async Task<int> UpdateGitHubActionPullRequests(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig,
+        public async Task<int> UpdateGitHubActionPullRequestsInStorage(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig,
                 string owner, string repo, string branch,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -238,7 +203,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
 
                 if (pr.state == "closed" & pr.merged_at != null)
                 {
-                    string partitionKey = CreateGitHubPRPartitionKey(owner, repo);
+                    string partitionKey = PartitionKeys.CreateGitHubPRPartitionKey(owner, repo);
                     string rowKey = pr.number;
                     //Debug.WriteLine($"PartitionKey: {partitionKey}, RowKey: {rowKey}");
                     AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
@@ -246,14 +211,14 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                     {
                         itemsAdded++;
                     }
-                    itemsAdded += await UpdateGitHubActionPullRequestCommits(clientId, clientSecret, tableStorageConfig, owner, repo, pr.number);
+                    itemsAdded += await UpdateGitHubActionPullRequestCommitsInStorage(clientId, clientSecret, tableStorageConfig, owner, repo, pr.number);
                 }
             }
 
             return itemsAdded;
         }
 
-        public async Task<int> UpdateGitHubActionPullRequestCommits(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig,
+        public async Task<int> UpdateGitHubActionPullRequestCommitsInStorage(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig,
                 string owner, string repo, string pull_number)
         {
             GitHubAPIAccess api = new GitHubAPIAccess();
@@ -266,7 +231,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             {
                 GitHubCommit commit = JsonConvert.DeserializeObject<GitHubCommit>(item.ToString());
 
-                string partitionKey = CreateGitHubPRCommitPartitionKey(owner, repo, pull_number);
+                string partitionKey = PartitionKeys.CreateGitHubPRCommitPartitionKey(owner, repo, pull_number);
                 string rowKey = commit.sha;
                 AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
                 if (await tableDA.AddItem(newItem) == true)
@@ -278,11 +243,11 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return itemsAdded;
         }
 
-        public List<AzureDevOpsSettings> GetAzureDevOpsSettings(TableStorageConfiguration tableStorageConfig, string settingsTable, string rowKey)
+        public List<AzureDevOpsSettings> GetAzureDevOpsSettingsFromStorage(TableStorageConfiguration tableStorageConfig, string settingsTable, string rowKey)
         {
             List<AzureDevOpsSettings> settings = null;
             string partitionKey = "AzureDevOpsSettings";
-            JArray list = GetTableStorageItems(tableStorageConfig, settingsTable, partitionKey);
+            JArray list = GetTableStorageItemsFromStorage(tableStorageConfig, settingsTable, partitionKey);
             if (list != null)
             {
                 settings = JsonConvert.DeserializeObject<List<AzureDevOpsSettings>>(list.ToString());
@@ -300,12 +265,12 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             }
         }
 
-        public List<GitHubSettings> GetGitHubSettings(TableStorageConfiguration tableStorageConfig, string settingsTable)
+        public List<GitHubSettings> GetGitHubSettingsFromStorage(TableStorageConfiguration tableStorageConfig, string settingsTable)
         {
 
             List<GitHubSettings> settings = null;
             string partitionKey = "GitHubSettings";
-            JArray list = GetTableStorageItems(tableStorageConfig, settingsTable, partitionKey);
+            JArray list = GetTableStorageItemsFromStorage(tableStorageConfig, settingsTable, partitionKey);
             if (list != null)
             {
                 settings = JsonConvert.DeserializeObject<List<GitHubSettings>>(list.ToString());
@@ -313,12 +278,12 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return settings;
         }
 
-        public async Task<bool> UpdateAzureDevOpsSetting(string patToken, TableStorageConfiguration tableStorageConfig, string settingsTable,
+        public async Task<bool> UpdateAzureDevOpsSettingInStorage(string patToken, TableStorageConfiguration tableStorageConfig, string settingsTable,
              string organization, string project, string repository, string branch, string buildName, string buildId, string resourceGroupName, int itemOrder)
         {
             string partitionKey = "AzureDevOpsSettings";
-            string rowKey = CreateAzureDevOpsSettingsPartitionKey(organization, project, repository);
-          
+            string rowKey = PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository);
+
             AzureDevOpsSettings settings = new AzureDevOpsSettings
             {
                 RowKey = rowKey,
@@ -339,11 +304,11 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return await tableDA.SaveItem(newItem);
         }
 
-        public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string settingsTable,
+        public async Task<bool> UpdateGitHubSettingInStorage(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string settingsTable,
              string owner, string repo, string branch, string workflowName, string workflowId, string resourceGroupName, int itemOrder)
         {
             string partitionKey = "GitHubSettings";
-            string rowKey = CreateGitHubSettingsPartitionKey(owner, repo, workflowName);
+            string rowKey = PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo);
             GitHubSettings settings = new GitHubSettings
             {
                 RowKey = rowKey,
@@ -364,13 +329,27 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return await tableDA.SaveItem(newItem);
         }
 
-        public async Task<bool> UpdateDevOpsMonitoringEvent(TableStorageConfiguration tableStorageConfig, MonitoringEvent monitoringEvent)
+        public async Task<bool> UpdateDevOpsMonitoringEventInStorage(TableStorageConfiguration tableStorageConfig, MonitoringEvent monitoringEvent)
         {
             string partitionKey = monitoringEvent.PartitionKey;
             string rowKey = monitoringEvent.RowKey;
             string json = monitoringEvent.RequestBody;
             AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, json);
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig, tableStorageConfig.TableMTTR);
+            return await tableDA.SaveItem(newItem);
+        }
+
+        public async Task<bool> UpdateAzureDevOpsProjectLogInStorage(TableStorageConfiguration tableStorageConfig, ProjectLog log)
+        {
+            AzureStorageTableModel newItem = new AzureStorageTableModel(log.PartitionKey, log.RowKey, log.Json);
+            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig, tableStorageConfig.TableLog);
+            return await tableDA.SaveItem(newItem);
+        }
+
+        public async Task<bool> UpdateGitHubProjectLogInStorage(TableStorageConfiguration tableStorageConfig, ProjectLog log)
+        {
+            AzureStorageTableModel newItem = new AzureStorageTableModel(log.PartitionKey, log.RowKey, log.Json);
+            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig, tableStorageConfig.TableLog);
             return await tableDA.SaveItem(newItem);
         }
 

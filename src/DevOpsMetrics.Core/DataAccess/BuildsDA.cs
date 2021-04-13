@@ -21,7 +21,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get the builds from Azure storage
                 AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
-                list = daTableStorage.GetTableStorageItems(tableStorageConfig, tableStorageConfig.TableAzureDevOpsBuilds, daTableStorage.CreateBuildWorkflowPartitionKey(organization, project, buildName));
+                list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsBuilds, PartitionKeys.CreateBuildWorkflowPartitionKey(organization, project, buildName));
             }
             else
             {
@@ -54,7 +54,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get the builds from Azure storage
                 AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
-                list = daTableStorage.GetTableStorageItems(tableStorageConfig, tableStorageConfig.TableGitHubRuns, daTableStorage.CreateBuildWorkflowPartitionKey(owner, repo, workflowName));
+                list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubRuns, PartitionKeys.CreateBuildWorkflowPartitionKey(owner, repo, workflowName));
             }
             else
             {

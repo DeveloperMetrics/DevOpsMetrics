@@ -20,6 +20,7 @@ namespace DevOpsMetrics.Core.Models.Common
         public string TableGitHubPRCommits { get; set; }
         public string TableMTTR { get; set; }
         public string TableChangeFailureRate { get; set; }
+        public string TableLog { get; set; }
 
     }
 }
