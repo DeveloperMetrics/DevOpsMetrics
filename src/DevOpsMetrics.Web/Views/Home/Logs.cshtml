@@ -32,6 +32,9 @@
                         <th>
                             Exception Message
                         </th>
+                        <th>
+                            Custom Exception Message
+                        </th>
                     </tr>
                     @foreach (ProjectLog item in Model.Logs)
                     {
@@ -50,6 +53,9 @@
                             </td>
                             <td>
                                 @item.ExceptionMessage
+                            </td>
+                            <td>
+                                @item.ExceptionStackTrace
                             </td>
                         </tr>
                     }
