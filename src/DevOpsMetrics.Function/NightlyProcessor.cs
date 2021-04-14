@@ -46,13 +46,15 @@ namespace DevOpsMetrics.Function
                     log.LogInformation($"Processing Azure DevOps organization {item.Organization}, project {item.Project}");
                     buildsUpdated = await api.UpdateAzureDevOpsBuilds(item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems);
                     prsUpdated = await api.UpdateAzureDevOpsPullRequests(item.Organization, item.Project, item.Repository, numberOfDays, maxNumberOfItems);
-                    log.LogInformation($"Processed Azure DevOps organization {item.Organization}, project {item.Project}. {buildsUpdated} builds and {prsUpdated} prs/commits updated, ");
+                    log.LogInformation($"Processed Azure DevOps organization {item.Organization}, project {item.Project}. {buildsUpdated} builds and {prsUpdated} prs/commits updated");
                     totalResults += buildsUpdated + prsUpdated;
                     await api.UpdateAzureDevOpsProjectLog(item.Organization, item.Project, item.Repository, buildsUpdated, prsUpdated, null, null);
                 }
                 catch (Exception ex)
                 {
-                    await api.UpdateAzureDevOpsProjectLog(item.Organization, item.Project, item.Repository, buildsUpdated, prsUpdated, ex.Message, null);
+                    string error = $"Exception while processing Azure DevOps organization {item.Organization}, project {item.Project}. {buildsUpdated} builds and {prsUpdated} prs/commits updated";
+                    log.LogInformation(error);
+                    await api.UpdateAzureDevOpsProjectLog(item.Organization, item.Project, item.Repository, buildsUpdated, prsUpdated, ex.Message, error);
                 }
             }
             foreach (GitHubSettings item in ghSettings)
@@ -72,7 +74,9 @@ namespace DevOpsMetrics.Function
                 }
                 catch (Exception ex)
                 {
-                    await api.UpdateGitHubProjectLog(item.Owner, item.Repo, buildsUpdated, prsUpdated, ex.Message, null);
+                    string error = $"Exception while processing GitHub owner {item.Owner}, repo {item.Repo}. {buildsUpdated} builds and {prsUpdated} prs/commits updated";
+                    log.LogInformation(error);
+                    await api.UpdateGitHubProjectLog(item.Owner, item.Repo, buildsUpdated, prsUpdated, ex.Message, error);
                 }
 
             }

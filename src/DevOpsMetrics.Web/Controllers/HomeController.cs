@@ -502,6 +502,9 @@ namespace DevOpsMetrics.Web.Controllers
                 }
             }
 
+            //Flip the logs/ reverse the list of log items
+            logs.Reverse();
+
             ProjectLogViewModel logViewModel = new ProjectLogViewModel
             {
                 ProjectId = projectId,
@@ -509,6 +512,17 @@ namespace DevOpsMetrics.Web.Controllers
                 Projects = new SelectList(projects, "Key", "Value")
             };
             return View(logViewModel);
+        }
+
+        public async Task<IActionResult> Settings()
+        {
+            //Find the right project to load
+            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+            List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
+            List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
+
+            (List<AzureDevOpsSettings>, List<GitHubSettings>) result = (azureDevOpsSettings, githubSettings);
+            return View(result);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
