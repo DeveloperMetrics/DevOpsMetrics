@@ -24,11 +24,12 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             {
                 if (includePartitionAndRowKeys == true)
                 {
+                    string data = item.Data?.ToString();
                     list.Add(
                         new JObject(
                             new JProperty("PartitionKey", item.PartitionKey),
                                 new JProperty("RowKey", item.RowKey),
-                                new JProperty("Data", item.Data.ToString()))
+                                new JProperty("Data", data))
                     );
                 }
                 else

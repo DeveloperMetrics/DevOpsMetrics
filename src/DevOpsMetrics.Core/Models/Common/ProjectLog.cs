@@ -38,13 +38,16 @@ namespace DevOpsMetrics.Core.Models.Common
             set
             {
                 data = value;
-                dynamic json = JsonConvert.DeserializeObject(data);
-                if (json != null)
-                {
-                    BuildsUpdated = json["BuildsUpdated"];
-                    PRsUpdated = json["PRsUpdated"];
-                    ExceptionMessage = json["ExceptionMessage"];
-                    ExceptionStackTrace = json["ExceptionStackTrace"];
+                if (data != null)
+                {              
+                    dynamic json = JsonConvert.DeserializeObject(data);
+                    if (json != null)
+                    {
+                        BuildsUpdated = json["BuildsUpdated"];
+                        PRsUpdated = json["PRsUpdated"];
+                        ExceptionMessage = json["ExceptionMessage"];
+                        ExceptionStackTrace = json["ExceptionStackTrace"];
+                    }
                 }
             }
         } 
