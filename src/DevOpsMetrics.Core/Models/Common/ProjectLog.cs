@@ -50,20 +50,20 @@ namespace DevOpsMetrics.Core.Models.Common
                     }
                 }
             }
-        } 
-        //public string Json 
-        //{ 
-        //    get
-        //    {
-        //        JObject newObject = new JObject(
-        //            new JProperty("BuildsUpdated", BuildsUpdated),
-        //            new JProperty("PRsUpdated", PRsUpdated),
-        //            new JProperty("ExceptionMessage", ExceptionMessage),
-        //            new JProperty("ExceptionStackTrace", ExceptionStackTrace)
-        //            );
-        //        return newObject.ToString();
-        //    }
-        //}
+        }
+        public string Json
+        {
+            get
+            {
+                JObject jsonObject = new JObject(
+                    new JProperty("BuildsUpdated", BuildsUpdated),
+                    new JProperty("PRsUpdated", PRsUpdated),
+                    new JProperty("ExceptionMessage", ExceptionMessage),
+                    new JProperty("ExceptionStackTrace", ExceptionStackTrace)
+                    );
+                return jsonObject.ToString();
+            }
+        }
 
     }
 }
