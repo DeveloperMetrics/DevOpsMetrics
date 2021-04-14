@@ -19,7 +19,7 @@ jobs:
     
     #Publish dotnet objects
     - name: .NET Publish Web Service
-      run: dotnet publish src/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj --configuration Release --output ${{ github.workspace }}/webservice
+      run: dotnet publish src/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj --configuration Debug --output ${{ github.workspace }}/webservice
     - name: .NET Publish Website
       run: dotnet publish src/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj --configuration Release --output ${{ github.workspace }}/web
     
@@ -79,7 +79,7 @@ jobs:
     - name: view appsettings file after substitution
       run: Get-Content -Path "src/DevOpsMetrics.Tests/appsettings.json"
     - name: Run automated unit and integration tests
-      run: dotnet test src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Release --logger trx /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov --settings:./src/DevOpsMetrics.Tests/CodeCoverage.runsettings 
+      run: dotnet test src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Debug --logger trx /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov --settings:./src/DevOpsMetrics.Tests/CodeCoverage.runsettings 
     - name: Publish coverage report to coveralls.io
       uses: coverallsapp/github-action@master
       with:
@@ -96,7 +96,7 @@ jobs:
       with:
         dotnet-version: 3.1.407
     - name: .NET Publish Function
-      run: dotnet publish src/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj --configuration Release --output ${{ github.workspace }}/function 
+      run: dotnet publish src/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj --configuration Debug --output ${{ github.workspace }}/function 
     - name: Upload function build artifacts back to GitHub
       uses: actions/upload-artifact@v2
       with:
