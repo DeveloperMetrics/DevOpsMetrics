@@ -476,6 +476,7 @@ namespace DevOpsMetrics.Web.Controllers
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
             List<KeyValuePair<string, string>> projects = new List<KeyValuePair<string, string>>();
+            projects.Add(new KeyValuePair<string, string>("", "<Select project>"));
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
                 string partitionKey = PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(item.Organization, item.Project, item.Repository);
@@ -488,7 +489,7 @@ namespace DevOpsMetrics.Web.Controllers
             }
 
             List<ProjectLog> logs = new List<ProjectLog>();
-            if (projectId != null)
+            if (string.IsNullOrEmpty(projectId) == false)
             {
                 //TODO: This is gross. Fix this, making it easier to maintain and more efficient
                 if (projectId.Split("_").Length == 3)
@@ -508,11 +509,6 @@ namespace DevOpsMetrics.Web.Controllers
                 Projects = new SelectList(projects, "Key", "Value")
             };
             return View(logViewModel);
-        }
-
-        public IActionResult Generate500Error()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
