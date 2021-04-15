@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using DevOpsMetrics.Core.DataAccess.TableStorage;
 
 namespace DevOpsMetrics.Tests.Service
 {
@@ -16,9 +17,10 @@ namespace DevOpsMetrics.Tests.Service
     [TestClass]
     public class DeploymentFrequencyControllerTests
     {
-        private TestServer _server;
-        public HttpClient Client;
-        public IConfigurationRoot Configuration;
+        //private TestServer _server;
+        //private HttpClient _client;
+        private IConfigurationRoot _configuration;
+        private IAzureTableStorageDA _azureTableStorageDA;
 
         [TestInitialize]
         public void TestStartUp()
@@ -27,14 +29,16 @@ namespace DevOpsMetrics.Tests.Service
                .SetBasePath(AppContext.BaseDirectory)
                .AddJsonFile("appsettings.json");
             config.AddUserSecrets<DeploymentFrequencyControllerTests>();
-            Configuration = config.Build();
+            _configuration = config.Build();
 
-            //Setup the test server
-            _server = new TestServer(WebHost.CreateDefaultBuilder()
-                .UseConfiguration(Configuration)
-                .UseStartup<DevOpsMetrics.Service.Startup>());
-            Client = _server.CreateClient();
-            //Client.BaseAddress = new Uri(Configuration["AppSettings:WebServiceURL"]);
+            _azureTableStorageDA = new AzureTableStorageDA();
+
+            ////Setup the test server
+            //_server = new TestServer(WebHost.CreateDefaultBuilder()
+            //    .UseConfiguration(_configuration)
+            //    .UseStartup<DevOpsMetrics.Service.Startup>());
+            //_client = _server.CreateClient();
+            ////Client.BaseAddress = new Uri(_configuration["AppSettings:WebServiceURL"]);
         }
 
         [TestCategory("ControllerTest")]
@@ -51,7 +55,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = false;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -85,7 +89,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             bool useCache = false;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -131,7 +135,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -167,8 +171,6 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "main";
@@ -177,10 +179,10 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.AreEqual(DevOpsPlatform.GitHub, model.TargetDevOpsPlatform);
@@ -206,8 +208,6 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = false;
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "main";
@@ -216,10 +216,10 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = false;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -252,8 +252,6 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = false;
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "main";
@@ -262,10 +260,10 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -306,7 +304,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -342,8 +340,6 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "main";
@@ -352,10 +348,10 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.AreEqual(DevOpsPlatform.GitHub, model.TargetDevOpsPlatform);
@@ -389,7 +385,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = false;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -425,8 +421,6 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = false;
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "main";
@@ -435,10 +429,10 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = false;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(Configuration);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
 
             //Act
-            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);

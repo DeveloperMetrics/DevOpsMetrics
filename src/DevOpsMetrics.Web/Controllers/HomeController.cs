@@ -475,8 +475,10 @@ namespace DevOpsMetrics.Web.Controllers
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
-            List<KeyValuePair<string, string>> projects = new List<KeyValuePair<string, string>>();
-            projects.Add(new KeyValuePair<string, string>("", "<Select project>"));
+            List<KeyValuePair<string, string>> projects = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("", "<Select project>")
+            };
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
                 string partitionKey = PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(item.Organization, item.Project, item.Repository);

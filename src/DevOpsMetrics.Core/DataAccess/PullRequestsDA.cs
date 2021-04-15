@@ -9,9 +9,10 @@ using Newtonsoft.Json;
 
 namespace DevOpsMetrics.Core.DataAccess
 {
-    public class PullRequestDA
+    public class PullRequestsDA
     {
-        public async Task<AzureDevOpsPR> GetAzureDevOpsPullRequest(string patToken, TableStorageConfiguration tableStorageConfig, string organization, string project, string repository, string branch, bool useCache)
+        public async Task<AzureDevOpsPR> GetAzureDevOpsPullRequest(string patToken, TableStorageConfiguration tableStorageConfig,
+            string organization, string project, string repository, string branch, bool useCache)
         {
             List<AzureDevOpsPR> prs = new List<AzureDevOpsPR>();
             Newtonsoft.Json.Linq.JArray list;
@@ -64,7 +65,6 @@ namespace DevOpsMetrics.Core.DataAccess
             List<AzureDevOpsPRCommit> commits = JsonConvert.DeserializeObject<List<AzureDevOpsPRCommit>>(list.ToString());
             return commits;
         }
-
 
         public async Task<GitHubPR> GetGitHubPullRequest(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string owner, string repo, string branch, bool useCache)
         {

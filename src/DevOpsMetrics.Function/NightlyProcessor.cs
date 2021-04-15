@@ -64,9 +64,9 @@ namespace DevOpsMetrics.Function
                 try
                 {
                     log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}");
-                    buildsUpdated = await api.UpdateGitHubActionRuns(configuration["Appsettings:GitHubClientId"], configuration["Appsettings:GitHubClientSecret"], item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
+                    buildsUpdated = await api.UpdateGitHubActionRuns( item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
                     //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {buildsUpdated} builds updated");
-                    prsUpdated = await api.UpdateGitHubActionPullRequests(configuration["Appsettings:GitHubClientId"], configuration["Appsettings:GitHubClientSecret"], item.Owner, item.Repo, item.Branch, numberOfDays, maxNumberOfItems);
+                    prsUpdated = await api.UpdateGitHubActionPullRequests( item.Owner, item.Repo, item.Branch, numberOfDays, maxNumberOfItems);
                     //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {prsUpdated} pull requests updated");
                     log.LogInformation($"Processed GitHub owner {item.Owner}, repo {item.Repo}. {buildsUpdated} builds and {prsUpdated} prs/commits updated");
                     totalResults += buildsUpdated + prsUpdated;

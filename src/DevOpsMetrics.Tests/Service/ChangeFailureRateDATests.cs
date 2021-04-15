@@ -12,7 +12,7 @@ namespace DevOpsMetrics.Tests.Service
     [TestClass]
     public class ChangeFailureRateDATests
     {
-        public IConfigurationRoot Configuration;
+        private IConfigurationRoot _configuration;
 
         [TestInitialize]
         public void TestStartUp()
@@ -21,7 +21,7 @@ namespace DevOpsMetrics.Tests.Service
                .SetBasePath(AppContext.BaseDirectory)
                .AddJsonFile("appsettings.json");
             config.AddUserSecrets<DeploymentFrequencyDATests>();
-            Configuration = config.Build();
+            _configuration = config.Build();
         }
 
         [TestMethod]
@@ -29,7 +29,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
@@ -61,7 +61,7 @@ namespace DevOpsMetrics.Tests.Service
         //{
         //    //Arrange
         //    bool getSampleData = false;
-        //    tableStorageConfig tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+        //    tableStorageConfig tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
         //    string organization = "samsmithnz";
         //    string project = "PartsUnlimited";
         //    string branch = "refs/heads/master";
@@ -92,7 +92,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "master";
@@ -123,7 +123,7 @@ namespace DevOpsMetrics.Tests.Service
         public async Task UpdateChangeFailureRateDAIntegrationTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string buildName = "SamLearnsAzure.CI";

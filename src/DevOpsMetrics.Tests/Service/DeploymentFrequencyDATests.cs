@@ -12,7 +12,7 @@ namespace DevOpsMetrics.Tests.Service
     [TestClass]
     public class DeploymentFrequencyDATests
     {
-        public IConfigurationRoot Configuration;
+        private IConfigurationRoot _configuration;
 
         [TestInitialize]
         public void TestStartUp()
@@ -21,7 +21,7 @@ namespace DevOpsMetrics.Tests.Service
                .SetBasePath(AppContext.BaseDirectory)
                .AddJsonFile("appsettings.json");
             config.AddUserSecrets<DeploymentFrequencyDATests>();
-            Configuration = config.Build();
+            _configuration = config.Build();
         }
 
         [TestMethod]
@@ -29,7 +29,8 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            string patToken = _configuration["AppSettings:AzureDevOpsPatToken"];
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string repository = "SamLearnsAzure";
@@ -41,7 +42,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             DeploymentFrequencyDA da = new DeploymentFrequencyDA();
-            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, tableStorageConfig, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData,patToken, tableStorageConfig, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
@@ -61,9 +62,9 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            string clientId = _configuration["AppSettings:GitHubClientId"];
+            string clientSecret = _configuration["AppSettings:GitHubClientSecret"];
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "master";

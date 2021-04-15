@@ -15,7 +15,7 @@ namespace DevOpsMetrics.Tests.Service
     [TestClass]
     public class SettingsDATests
     {
-        public IConfigurationRoot Configuration;
+        private IConfigurationRoot _configuration;
 
         [TestInitialize]
         public void TestStartUp()
@@ -24,17 +24,17 @@ namespace DevOpsMetrics.Tests.Service
                .SetBasePath(AppContext.BaseDirectory)
                .AddJsonFile("appsettings.json");
             config.AddUserSecrets<TableStorageDATests>();
-            Configuration = config.Build();
+            _configuration = config.Build();
         }
 
         [TestMethod]
         public void TestAzureSettingsExistTest()
         {
             //Arrange
-            string AzureDevOpsPatToken = Configuration["Appsettings:AzureDevOpsPatToken"];
-            string GitHubClientId = Configuration["Appsettings:GitHubClientId"];
-            string GitHubClientSecret = Configuration["Appsettings:GitHubClientSecret"];
-            string StorageAccountConnectionString = Configuration["AppSettings:AzureStorageAccountConfigurationString"];
+            string AzureDevOpsPatToken = _configuration["Appsettings:AzureDevOpsPatToken"];
+            string GitHubClientId = _configuration["Appsettings:GitHubClientId"];
+            string GitHubClientSecret = _configuration["Appsettings:GitHubClientSecret"];
+            string StorageAccountConnectionString = _configuration["AppSettings:AzureStorageAccountConfigurationString"];
 
             //Act
 
@@ -49,7 +49,7 @@ namespace DevOpsMetrics.Tests.Service
         public void AzGetSamLearnsAzureSettingDAIntegrationTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
@@ -63,11 +63,11 @@ namespace DevOpsMetrics.Tests.Service
         public void GHGetSamLearnsAzureSettingDAIntegrationTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            List<GitHubSettings> results = da.GetGitHubSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings);
+            List<GitHubSettings> results = da.GetGitHubSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings, null);
 
             //Assert
             Assert.IsTrue(results.Count > 0);
@@ -77,8 +77,8 @@ namespace DevOpsMetrics.Tests.Service
         public async Task AzUpdateSamLearnsAzureSettingDAIntegrationTest()
         {
             //Arrange
-            string patToken = Configuration["AppSettings:AzureDevOpsPatToken"];
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            string patToken = _configuration["AppSettings:AzureDevOpsPatToken"];
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string repository = "SamLearnsAzure";
@@ -101,9 +101,9 @@ namespace DevOpsMetrics.Tests.Service
         public async Task GHUpdateDevOpsMetricsSettingDAIntegrationTest()
         {
             //Arrange
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            string clientId = _configuration["AppSettings:GitHubClientId"];
+            string clientSecret = _configuration["AppSettings:GitHubClientSecret"];
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "master";
@@ -125,9 +125,9 @@ namespace DevOpsMetrics.Tests.Service
         public async Task GHUpdateSamsFeatureFlagsSettingDAIntegrationTest()
         {
             //Arrange
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            string clientId = _configuration["AppSettings:GitHubClientId"];
+            string clientSecret = _configuration["AppSettings:GitHubClientSecret"];
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "main";

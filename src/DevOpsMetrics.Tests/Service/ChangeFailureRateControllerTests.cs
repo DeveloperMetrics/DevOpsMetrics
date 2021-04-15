@@ -15,9 +15,9 @@ namespace DevOpsMetrics.Tests.Service
     [TestClass]
     public class ChangeFailureRateControllerTests
     {
-        private TestServer _server;
-        public HttpClient Client;
-        public IConfigurationRoot Configuration;
+        //private TestServer _server;
+        //private HttpClient _client;
+        private IConfigurationRoot _configuration;
 
         [TestInitialize]
         public void TestStartUp()
@@ -26,14 +26,14 @@ namespace DevOpsMetrics.Tests.Service
                .SetBasePath(AppContext.BaseDirectory)
                .AddJsonFile("appsettings.json");
             config.AddUserSecrets<ChangeFailureRateControllerTests>();
-            Configuration = config.Build();
+            _configuration = config.Build();
 
-            //Setup the test server
-            _server = new TestServer(WebHost.CreateDefaultBuilder()
-                .UseConfiguration(Configuration)
-                .UseStartup<DevOpsMetrics.Service.Startup>());
-            Client = _server.CreateClient();
-            //Client.BaseAddress = new Uri(Configuration["AppSettings:WebServiceURL"]);
+            ////Setup the test server
+            //_server = new TestServer(WebHost.CreateDefaultBuilder()
+            //    .UseConfiguration(_configuration)
+            //    .UseStartup<DevOpsMetrics.Service.Startup>());
+            //_client = _server.CreateClient();
+            ////Client.BaseAddress = new Uri(_configuration["AppSettings:WebServiceURL"]);
         }
 
         [TestCategory("ControllerTest")]
@@ -49,7 +49,7 @@ namespace DevOpsMetrics.Tests.Service
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            ChangeFailureRateController controller = new ChangeFailureRateController(Configuration);
+            ChangeFailureRateController controller = new ChangeFailureRateController(_configuration);
 
             //Act
             ChangeFailureRateModel model = controller.GetChangeFailureRate(getSampleData,
@@ -80,7 +80,7 @@ namespace DevOpsMetrics.Tests.Service
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
-            ChangeFailureRateController controller = new ChangeFailureRateController(Configuration);
+            ChangeFailureRateController controller = new ChangeFailureRateController(_configuration);
 
             //Act
             ChangeFailureRateModel model = controller.GetChangeFailureRate(getSampleData,
@@ -110,7 +110,7 @@ namespace DevOpsMetrics.Tests.Service
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            ChangeFailureRateController controller = new ChangeFailureRateController(Configuration);
+            ChangeFailureRateController controller = new ChangeFailureRateController(_configuration);
 
             //Act
             ChangeFailureRateModel model = controller.GetChangeFailureRate(getSampleData,
@@ -141,7 +141,7 @@ namespace DevOpsMetrics.Tests.Service
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            ChangeFailureRateController controller = new ChangeFailureRateController(Configuration);
+            ChangeFailureRateController controller = new ChangeFailureRateController(_configuration);
 
             //Act
             ChangeFailureRateModel model = controller.GetChangeFailureRate(getSampleData,

@@ -28,56 +28,56 @@ namespace DevOpsMetrics.Function
 
         public async Task<List<AzureDevOpsSettings>> GetAzureDevOpsSettings()
         {
-            string url = $"/api/TableStorage/GetAzureDevOpsSettings";
+            string url = $"/api/Settings/GetAzureDevOpsSettings";
             return await GetResponse<List<AzureDevOpsSettings>>(Client, url);
         }
 
         public async Task<List<GitHubSettings>> GetGitHubSettings()
         {
-            string url = $"/api/TableStorage/GetGitHubSettings";
+            string url = $"/api/Settings/GetGitHubSettings";
             return await GetResponse<List<GitHubSettings>>(Client, url);
         }
 
         public async Task<int> UpdateAzureDevOpsBuilds(string organization, string project, string repository, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems)
         {
-            string url = $"/api/TableStorage/UpdateAzureDevOpsBuilds?organization={organization}&project={project}&repository={repository}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+            string url = $"/api/Builds/UpdateAzureDevOpsBuilds?organization={organization}&project={project}&repository={repository}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
             return await GetResponse<int>(Client, url);
         }
 
-        public async Task<int> UpdateGitHubActionRuns(string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems)
+        public async Task<int> UpdateGitHubActionRuns(string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems)
         {
-            string url = $"/api/TableStorage/UpdateGitHubActionRuns?clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+            string url = $"/api/Builds/UpdateGitHubActionRuns?owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
             return await GetResponse<int>(Client, url);
         }
 
         public async Task<int> UpdateAzureDevOpsPullRequests(string organization, string project, string repository, int numberOfDays, int maxNumberOfItems)
         {
-            string url = $"/api/TableStorage/UpdateAzureDevOpsPullRequests?organization={organization}&project={project}&repository={repository}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+            string url = $"/api/PullRequests/UpdateAzureDevOpsPullRequests?organization={organization}&project={project}&repository={repository}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
             return await GetResponse<int>(Client, url);
         }
 
-        public async Task<int> UpdateGitHubActionPullRequests(string clientId, string clientSecret, string owner, string repo, string branch, int numberOfDays, int maxNumberOfItems)
+        public async Task<int> UpdateGitHubActionPullRequests(string owner, string repo, string branch, int numberOfDays, int maxNumberOfItems)
         {
-            string url = $"/api/TableStorage/UpdateGitHubActionPullRequests?clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+            string url = $"/api/PullRequests/UpdateGitHubActionPullRequests?owner={owner}&repo={repo}&branch={branch}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
             return await GetResponse<int>(Client, url);
         }
 
         public async Task<bool> UpdateDevOpsMonitoringEvent(string requestBody)
         {
             MonitoringEvent monitoringEvent = new MonitoringEvent(requestBody);
-            string url = $"/api/TableStorage/UpdateDevOpsMonitoringEvent";
+            string url = $"/api/Settings/UpdateDevOpsMonitoringEvent";
             return await PostResponse(Client, url, monitoringEvent);
         }
 
         public async Task<bool> UpdateAzureDevOpsProjectLog(string organization, string project, string repository, int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
         {
-            string url = $"/api/TableStorage/UpdateAzureDevOpsProjectLog?organization={organization}&project={project}&repository={repository}&buildsUpdated={buildsUpdated}&prsUpdated={prsUpdated}&exceptionMessage={exceptionMessage}&exceptionStackTrace={exceptionStackTrace}";
+            string url = $"/api/Settings/UpdateAzureDevOpsProjectLog?organization={organization}&project={project}&repository={repository}&buildsUpdated={buildsUpdated}&prsUpdated={prsUpdated}&exceptionMessage={exceptionMessage}&exceptionStackTrace={exceptionStackTrace}";
             return await GetResponse<bool>(Client, url);
         }
 
         public async Task<bool> UpdateGitHubProjectLog(string owner, string repo, int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
         {
-            string url = $"/api/TableStorage/UpdateGitHubProjectLog?owner={owner}&repo={repo}&buildsUpdated={buildsUpdated}&prsUpdated={prsUpdated}&exceptionMessage={exceptionMessage}&exceptionStackTrace={exceptionStackTrace}";
+            string url = $"/api/Settings/UpdateGitHubProjectLog?owner={owner}&repo={repo}&buildsUpdated={buildsUpdated}&prsUpdated={prsUpdated}&exceptionMessage={exceptionMessage}&exceptionStackTrace={exceptionStackTrace}";
             return await GetResponse<bool>(Client, url);
         }
 
