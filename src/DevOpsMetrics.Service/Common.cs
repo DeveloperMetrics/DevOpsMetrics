@@ -9,8 +9,6 @@ namespace DevOpsMetrics.Service
         {
             TableStorageConfiguration tableStorageConfig = new TableStorageConfiguration
             {
-                //StorageAccountName = Configuration["AppSettings:AzureStorageAccountName"],
-                //StorageAccountAccessKey = Configuration["AppSettings:AzureStorageAccountAccessKey"],
                 StorageAccountConnectionString = Configuration["AppSettings:AzureStorageAccountConfigurationString"],
                 TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
                 TableAzureDevOpsPRs = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsPRs"],

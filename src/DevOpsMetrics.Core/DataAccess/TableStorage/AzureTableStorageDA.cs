@@ -269,7 +269,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             {
                 return new List<AzureDevOpsSettings>
                 {
-                    settings.Where(x => x.RowKey == rowKey).FirstOrDefault()
+                    settings.Where(x => x.RowKey.ToLower() == rowKey.ToLower()).FirstOrDefault()
                 };
             }
             else
@@ -278,7 +278,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             }
         }
 
-        public List<GitHubSettings> GetGitHubSettingsFromStorage(TableStorageConfiguration tableStorageConfig, string settingsTable)
+        public List<GitHubSettings> GetGitHubSettingsFromStorage(TableStorageConfiguration tableStorageConfig, string settingsTable, string rowKey)
         {
             List<GitHubSettings> settings = null;
             string partitionKey = "GitHubSettings";
@@ -287,7 +287,17 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             {
                 settings = JsonConvert.DeserializeObject<List<GitHubSettings>>(list.ToString());
             }
-            return settings;
+            if (rowKey != null)
+            {
+                return new List<GitHubSettings>
+                {
+                    settings.Where(x => x.RowKey.ToLower() == rowKey.ToLower()).FirstOrDefault()
+                };
+            }
+            else
+            {
+                return settings;
+            }
         }
 
         public async Task<bool> UpdateAzureDevOpsSettingInStorage(string patToken, TableStorageConfiguration tableStorageConfig, string settingsTable,

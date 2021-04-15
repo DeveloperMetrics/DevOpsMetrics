@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using DevOpsMetrics.Core.DataAccess;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
@@ -13,24 +13,25 @@ namespace DevOpsMetrics.Service.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LeadTimeForChangesController : ControllerBase
+    public class BuildsController : ControllerBase
     {
         private readonly IConfiguration Configuration;
         private readonly IAzureTableStorageDA AzureTableStorageDA;
 
-        public LeadTimeForChangesController(IConfiguration configuration, IAzureTableStorageDA azureTableStorageDA)
+        public BuildsController(IConfiguration configuration, IAzureTableStorageDA azureTableStorageDA)
         {
             Configuration = configuration;
             AzureTableStorageDA = azureTableStorageDA;
         }
 
-        // Get lead time for changes from Azure DevOps API
-        [HttpGet("GetAzureDevOpsLeadTimeForChanges")]
-        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, 
-            string organization, string project, string repository, string branch, string buildName, 
-            int numberOfDays, int maxNumberOfItems, bool useCache)
+        // Get builds from the Azure DevOps API, and save new records to the storage table
+        [HttpGet("UpdateAzureDevOpsBuilds")]
+        public async Task<int> UpdateAzureDevOpsBuilds(
+                string organization, string project, string repository, string branch,
+                string buildName, string buildId,
+                int numberOfDays, int maxNumberOfItems)
         {
-            LeadTimeForChangesModel model = new LeadTimeForChangesModel();
+            int numberOfRecordsSaved;
             try
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
@@ -43,32 +44,29 @@ namespace DevOpsMetrics.Service.Controllers
                     patToken = settings[0].PatToken;
                 }
 
-                LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-                model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData,  patToken, tableStorageConfig,
-                        organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+                numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsBuildsInStorage(patToken, tableStorageConfig, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
             {
                 if (ex.Message == "Response status code does not indicate success: 403 (rate limit exceeded).")
                 {
-                    model.ProjectName = project;
-                    model.RateLimitHit = true;
+                    numberOfRecordsSaved = -1;
                 }
                 else
                 {
                     throw;
                 }
             }
-            return model;
+            return numberOfRecordsSaved;
         }
 
-        // Get lead time for changes from GitHub API
-        [HttpGet("GetGitHubLeadTimeForChanges")]
-        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimeForChanges(bool getSampleData, 
-            string owner, string repo, string branch, string workflowName, string workflowId,
-            int numberOfDays, int maxNumberOfItems, bool useCache)
+        // Get builds from the GitHub API
+        [HttpGet("UpdateGitHubActionRuns")]
+        public async Task<int> UpdateGitHubActionRuns(
+                string owner, string repo, string branch, string workflowName, string workflowId,
+                int numberOfDays, int maxNumberOfItems)
         {
-            LeadTimeForChangesModel model = new LeadTimeForChangesModel();
+            int numberOfRecordsSaved;
             try
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
@@ -83,24 +81,22 @@ namespace DevOpsMetrics.Service.Controllers
                     clientSecret = settings[0].ClientSecret;
                 }
 
-                LeadTimeForChangesDA da = new LeadTimeForChangesDA();
-                model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageConfig,
-                        owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+                numberOfRecordsSaved = await AzureTableStorageDA.UpdateGitHubActionRunsInStorage(clientId, clientSecret, tableStorageConfig,
+                        owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
             }
             catch (Exception ex)
             {
                 if (ex.Message == "Response status code does not indicate success: 403 (rate limit exceeded).")
                 {
-                    model.ProjectName = repo;
-                    model.RateLimitHit = true;
+                    numberOfRecordsSaved = -1;
                 }
                 else
                 {
                     throw;
                 }
             }
-            return model;
-
+            return numberOfRecordsSaved;
         }
+
     }
 }

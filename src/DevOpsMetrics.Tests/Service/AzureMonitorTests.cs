@@ -12,7 +12,7 @@ namespace DevOpsMetrics.Tests.Service
     [TestClass]
     public class AzureMonitorTests
     {
-        public IConfigurationRoot Configuration;
+        private IConfigurationRoot _configuration;
 
         [TestInitialize]
         public void TestStartUp()
@@ -21,14 +21,14 @@ namespace DevOpsMetrics.Tests.Service
                .SetBasePath(AppContext.BaseDirectory)
                .AddJsonFile("appsettings.json");
             config.AddUserSecrets<TableStorageDATests>();
-            Configuration = config.Build();
+            _configuration = config.Build();
         }
 
         [TestMethod]
         public async Task AzureMonitorProcessingTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
             MonitoringEvent monitoringEvent = new MonitoringEvent(@"
 {
   ""schemaId"": ""AzureMonitorMetricAlert"",

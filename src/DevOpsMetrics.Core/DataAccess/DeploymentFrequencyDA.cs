@@ -12,7 +12,7 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class DeploymentFrequencyDA
     {
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, TableStorageConfiguration tableStorageConfig,
+        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, TableStorageConfiguration tableStorageConfig,
                 string organization, string project, string repository, string branch, string buildName,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
@@ -20,11 +20,6 @@ namespace DevOpsMetrics.Core.DataAccess
             DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
             if (getSampleData == false)
             {
-                //Get the PAT token from the settings
-                AzureTableStorageDA tableStorage = new AzureTableStorageDA();
-                List<AzureDevOpsSettings> settings = tableStorage.GetAzureDevOpsSettingsFromStorage(tableStorageConfig, "DevOpsAzureDevOpsSettings", PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository));
-                string patToken = settings[0].PatToken;
-
                 //Get a list of builds
                 BuildsDA buildsDA = new BuildsDA();
                 List<AzureDevOpsBuild> azureDevOpsBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageConfig, organization, project, buildName, useCache);
@@ -131,10 +126,10 @@ namespace DevOpsMetrics.Core.DataAccess
             ListUtility<Build> utility = new ListUtility<Build>();
             DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
             if (getSampleData == false)
-            {
-                //Get a list of builds
+            { 
+               //Get a list of builds
                 BuildsDA buildsDA = new BuildsDA();
-                List<GitHubActionsRun> gitHubRuns = await buildsDA.GetGitHubActionRuns(clientId, clientSecret, tableStorageConfig, owner, repo, workflowName, workflowId, useCache);
+                List<GitHubActionsRun> gitHubRuns = await buildsDA.GetGitHubActionRuns(clientId,  clientSecret, tableStorageConfig, owner, repo, workflowName, workflowId, useCache);
                 if (gitHubRuns != null)
                 {
                     //Translate the GitHub build to a generic build object

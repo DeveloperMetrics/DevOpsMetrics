@@ -13,19 +13,14 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class LeadTimeForChangesDA
     {
-        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, TableStorageConfiguration tableStorageConfig,
+        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, TableStorageConfiguration tableStorageConfig,
                 string organization, string project, string repository, string mainBranch, string buildName, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             ListUtility<PullRequestModel> utility = new ListUtility<PullRequestModel>();
             LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
             List<PullRequestModel> pullRequests = new List<PullRequestModel>();
             if (getSampleData == false)
-            {               
-                //Get the PAT token from the settings
-                AzureTableStorageDA tableStorage = new AzureTableStorageDA();
-                List<AzureDevOpsSettings> settings = tableStorage.GetAzureDevOpsSettingsFromStorage(tableStorageConfig, "DevOpsAzureDevOpsSettings", PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository));
-                string patToken = settings[0].PatToken;
-
+            {
                 List<AzureDevOpsBuild> initialBuilds = new List<AzureDevOpsBuild>();
                 BuildsDA buildsDA = new BuildsDA();
                 initialBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageConfig, organization, project, buildName, useCache);
@@ -61,7 +56,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 foreach (string branch in branches)
                 {
                     List<AzureDevOpsBuild> branchBuilds = featureBranchBuilds.Where(a => a.sourceBranch == branch).ToList();
-                    PullRequestDA pullRequestDA = new PullRequestDA();
+                    PullRequestsDA pullRequestDA = new PullRequestsDA();
                     AzureDevOpsPR pr = await pullRequestDA.GetAzureDevOpsPullRequest(patToken, tableStorageConfig, organization, project, repository, branch, useCache);
                     if (pr != null)
                     {
@@ -228,7 +223,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 foreach (string branch in branches)
                 {
                     List<GitHubActionsRun> branchBuilds = featureBranchRuns.Where(a => a.head_branch == branch).ToList();
-                    PullRequestDA pullRequestDA = new PullRequestDA();
+                    PullRequestsDA pullRequestDA = new PullRequestsDA();
                     GitHubPR pr = await pullRequestDA.GetGitHubPullRequest(clientId, clientSecret, tableStorageConfig, owner, repo, branch, useCache);
                     if (pr != null)
                     {
