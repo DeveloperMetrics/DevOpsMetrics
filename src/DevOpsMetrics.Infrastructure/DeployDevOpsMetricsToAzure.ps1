@@ -2,7 +2,7 @@
 #az login
 cls
 
-$apprefix ="DevopsMetrics2"
+$apprefix ="Devops2"
 $region = "East US" #East US
 $regionShort = "eu" #East US
 $environment = "Prod"
@@ -16,7 +16,11 @@ $environmentLC = $Environment.ToLower()
 $functionName = "$apprefixLC-$environmentLC-$regionShort-function"
 $serviceName = "$apprefixLC-$environmentLC-$regionShort-service"
 $webName = "$apprefixLC-$environmentLC-$regionShort-web"
-$storageName = "$($apprefixLC)$($environmentLC)$($regionShort)store".subString(0, 24)
+$storageName = "$($apprefixLC)$($environmentLC)$($regionShort)store"
+if ($storageName.Length -gt 24)
+{
+    $storageName = $storageName.subString(0, 24)
+}
 
 $functionName
 $serviceName
@@ -32,16 +36,52 @@ if ($storageValidation.nameAvailable -eq $false)
     break; #stop the script from running
 }                          
 
-Write-Host "here"
-
-#Create resources
+#Create resource group
 az group create --name $resourceGroup --location $region
 
+#storage account
 az storage account create --name $storageName --resource-group $resourceGroup --sku $storageSKU --tags $tags
 #az storage account show --name $storageName --resource-group $resourceGroup
-#az storage account show --name devopsmetricsprodeustore --resource-group DevOpsMetrics
 #az storage account delete --name $storageName --resource-group $resourceGroup
 
-#Add tables to storage
+$connectionStringJson = az storage account show-connection-string --name $storageName --resource-group $resourceGroup
+$connectionString = $connectionStringJson | ConvertFrom-Json
 
-#
+#Add tables to storage
+$AzureStorageAccountContainerAzureDevOpsBuilds = "DevOpsAzureDevOpsBuilds"
+$AzureStorageAccountContainerAzureDevOpsPRs = "DevOpsAzureDevOpsPRs"
+$AzureStorageAccountContainerAzureDevOpsPRCommits = "DevOpsAzureDevOpsPRCommits"
+$AzureStorageAccountContainerAzureDevOpsSettings = "DevOpsAzureDevOpsSettings"
+$AzureStorageAccountContainerGitHubRuns = "DevOpsGitHubRuns"
+$AzureStorageAccountContainerGitHubPRs = "DevOpsGitHubPRs"
+$AzureStorageAccountContainerGitHubPRCommits = "DevOpsGitHubPRCommits"
+$AzureStorageAccountContainerGitHubSettings = "DevOpsGitHubSettings"
+$AzureStorageAccountContainerMTTR = "DevOpsMTTR"
+$AzureStorageAccountContainerChangeFailureRate = "DevOpsChangeFailureRate"
+$AzureStorageAccountContainerTableLog = "DevOpsLog"
+
+az storage table create --name $AzureStorageAccountContainerAzureDevOpsBuilds --connection-string $connectionString 
+az storage table create --name $AzureStorageAccountContainerAzureDevOpsPRs --connection-string $connectionString 
+az storage table create --name $AzureStorageAccountContainerAzureDevOpsPRCommits --connection-string $connectionString 
+az storage table create --name $AzureStorageAccountContainerAzureDevOpsSettings --connection-string $connectionString 
+az storage table create --name $AzureStorageAccountContainerGitHubRuns --connection-string $connectionString 
+az storage table create --name $AzureStorageAccountContainerGitHubPRs --connection-string $connectionString 
+az storage table create --name $AzureStorageAccountContainerGitHubPRCommits --connection-string $connectionString 
+az storage table create --name $AzureStorageAccountContainerGitHubSettings --connection-string $connectionString 
+az storage table create --name $AzureStorageAccountContainerMTTR --connection-string $connectionString 
+az storage table create --name $AzureStorageAccountContainerChangeFailureRate --connection-string $connectionString 
+az storage table create --name $AzureStorageAccountContainerTableLog --connection-string $connectionString 
+
+
+#Create a web plan
+#Create app insights resource
+
+#Create a web app for the web api
+#Set configurations in the web app
+
+#Create a web app for the website
+#Set configurations in the web app
+
+#Create a function
+#Set configurations in the web app
+
