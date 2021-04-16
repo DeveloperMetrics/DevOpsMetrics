@@ -69,25 +69,25 @@ namespace DevOpsMetrics.Web.Services
 
         public async Task<List<AzureDevOpsSettings>> GetAzureDevOpsSettings()
         {
-            string url = $"/api/TableStorage/GetAzureDevOpsSettings";
+            string url = $"/api/Settings/GetAzureDevOpsSettings";
             return await GetResponse<List<AzureDevOpsSettings>>(Client, url);
         }
 
         public async Task<List<GitHubSettings>> GetGitHubSettings()
         {
-            string url = $"/api/TableStorage/GetGitHubSettings";
+            string url = $"/api/Settings/GetGitHubSettings";
             return await GetResponse<List<GitHubSettings>>(Client, url);
         }
 
         public async Task<List<ProjectLog>> GetAzureDevOpsProjectLogs(string organization, string project, string repository)
         {
-            string url = $"/api/TableStorage/GetAzureDevOpsProjectLog?organization={organization}&project={project}&repository={repository}";
+            string url = $"/api/Settings/GetAzureDevOpsProjectLog?organization={organization}&project={project}&repository={repository}";
             return await GetResponse<List<ProjectLog>>(Client, url);
         }
 
         public async Task<List<ProjectLog>> GetGitHubProjectLogs(string owner, string repo)
         {
-            string url = $"/api/TableStorage/GetGitHubProjectLog?owner={owner}&repo={repo}";
+            string url = $"/api/Settings/GetGitHubProjectLog?owner={owner}&repo={repo}";
             return await GetResponse<List<ProjectLog>>(Client, url);
         }
 
