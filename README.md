@@ -6,9 +6,9 @@
 
 ****WIP****
   
-- **What is this**
-- **Why do I need it**
-- **When do I use it**
+- **What is this:** 
+- **Why do I need it:** 
+- **When do I use it:** 
 
 ****End WIP****
 
