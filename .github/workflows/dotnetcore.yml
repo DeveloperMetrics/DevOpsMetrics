@@ -172,7 +172,7 @@ jobs:
         package: serviceapp
         slot-name: staging 
     - name: Deploy web service app settings
-      run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --slot "staging" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" 
+      run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --slot "staging" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}" 
     
     - name: Deploy website to Azure WebApp
       uses: Azure/webapps-deploy@v1
