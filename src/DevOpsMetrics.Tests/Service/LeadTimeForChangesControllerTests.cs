@@ -1,46 +1,17 @@
 ﻿using System;
-using System.Net.Http;
 using System.Threading.Tasks;
-using DevOpsMetrics.Service.Controllers;
-using DevOpsMetrics.Core.Models.Common;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
+using DevOpsMetrics.Core.Models.Common;
+using DevOpsMetrics.Service.Controllers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DevOpsMetrics.Tests.Service
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("IntegrationTest")]
+    [TestCategory("L1Test")]
     [TestClass]
-    public class LeadTimeForChangesControllerTests
+    public class LeadTimeForChangesControllerTests : BaseConfiguration
     {
-        //private TestServer _server;
-        //private HttpClient _client;
-        private IConfigurationRoot _configuration;
-        private IAzureTableStorageDA _azureTableStorageDA;
-
-        [TestInitialize]
-        public void TestStartUp()
-        {
-            IConfigurationBuilder config = new ConfigurationBuilder()
-               .SetBasePath(AppContext.BaseDirectory)
-               .AddJsonFile("appsettings.json");
-            config.AddUserSecrets<LeadTimeForChangesControllerTests>();
-            _configuration = config.Build();
-
-            _azureTableStorageDA = new AzureTableStorageDA();
-
-            ////Setup the test server
-            //_server = new TestServer(WebHost.CreateDefaultBuilder()
-            //    .UseConfiguration(_configuration)
-            //    .UseStartup<DevOpsMetrics.Service.Startup>());
-            //_client = _server.CreateClient();
-            ////Client.BaseAddress = new Uri(_configuration["AppSettings:WebServiceURL"]);
-        }
-
         [TestCategory("ControllerTest")]
         [TestMethod]
         public async Task AzLeadTimeControllerIntegrationTest()
@@ -55,7 +26,8 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            LeadTimeForChangesController controller = new LeadTimeForChangesController(_configuration, _azureTableStorageDA);
+            IAzureTableStorageDA azureTableStorageDA = new AzureTableStorageDA();
+            LeadTimeForChangesController controller = new LeadTimeForChangesController(base.Configuration, azureTableStorageDA);
 
             //Act
             LeadTimeForChangesModel model = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData,  organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -101,7 +73,8 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            LeadTimeForChangesController controller = new LeadTimeForChangesController(_configuration, _azureTableStorageDA);
+            IAzureTableStorageDA azureTableStorageDA = new AzureTableStorageDA();
+            LeadTimeForChangesController controller = new LeadTimeForChangesController(base.Configuration, azureTableStorageDA);
 
             //Act
             LeadTimeForChangesModel model = await controller.GetGitHubLeadTimeForChanges(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
@@ -130,7 +103,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public async Task AzLeadTimeControllerAPIIntegrationTest()
         {
@@ -144,7 +117,8 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            LeadTimeForChangesController controller = new LeadTimeForChangesController(_configuration, _azureTableStorageDA);
+            IAzureTableStorageDA azureTableStorageDA = new AzureTableStorageDA();
+            LeadTimeForChangesController controller = new LeadTimeForChangesController(base.Configuration, azureTableStorageDA);
 
             //Act
             LeadTimeForChangesModel model = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -173,7 +147,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public async Task GHLeadTimeControllerAPIIntegrationTest()
         {
@@ -187,7 +161,8 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            LeadTimeForChangesController controller = new LeadTimeForChangesController(_configuration, _azureTableStorageDA);
+            IAzureTableStorageDA azureTableStorageDA = new AzureTableStorageDA();
+            LeadTimeForChangesController controller = new LeadTimeForChangesController(base.Configuration, azureTableStorageDA);
 
             //Act
             LeadTimeForChangesModel model = await controller.GetGitHubLeadTimeForChanges(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
@@ -216,7 +191,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public async Task AzLeadTimeControllerAPILiveIntegrationTest()
         {
@@ -230,7 +205,8 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            LeadTimeForChangesController controller = new LeadTimeForChangesController(_configuration, _azureTableStorageDA);
+            IAzureTableStorageDA azureTableStorageDA = new AzureTableStorageDA();
+            LeadTimeForChangesController controller = new LeadTimeForChangesController(base.Configuration, azureTableStorageDA);
 
             //Act
             LeadTimeForChangesModel model = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -268,7 +244,7 @@ namespace DevOpsMetrics.Tests.Service
             }
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public async Task GHLeadTimeControllerAPILiveIntegrationTest()
         {
@@ -282,7 +258,8 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 20;
             int maxNumberOfItems = 60;
             bool useCache = true;
-            LeadTimeForChangesController controller = new LeadTimeForChangesController(_configuration, _azureTableStorageDA);
+            IAzureTableStorageDA azureTableStorageDA = new AzureTableStorageDA();
+            LeadTimeForChangesController controller = new LeadTimeForChangesController(base.Configuration, azureTableStorageDA);
 
             //Act
             LeadTimeForChangesModel model = await controller.GetGitHubLeadTimeForChanges(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
@@ -320,7 +297,7 @@ namespace DevOpsMetrics.Tests.Service
             }
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public async Task GHFeatureFlagsLeadTimeControllerAPILiveIntegrationTest()
         {
@@ -334,7 +311,8 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 20;
             int maxNumberOfItems = 60;
             bool useCache = true;
-            LeadTimeForChangesController controller = new LeadTimeForChangesController(_configuration, _azureTableStorageDA);
+            IAzureTableStorageDA azureTableStorageDA = new AzureTableStorageDA();
+            LeadTimeForChangesController controller = new LeadTimeForChangesController(base.Configuration, azureTableStorageDA);
 
             //Act
             LeadTimeForChangesModel model = await controller.GetGitHubLeadTimeForChanges(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
@@ -372,7 +350,7 @@ namespace DevOpsMetrics.Tests.Service
             }
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public void DeploymentsControllerEliteBadgeTest()
         {
@@ -391,7 +369,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes%20(5.3%20hours)-Elite-brightgreen", model.BadgeWithMetricURL);
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public void DeploymentsControllerHighBadgeTest()
         {
@@ -408,7 +386,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-High-green", model.BadgeURL);
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public void DeploymentsControllerMediumBadgeTest()
         {
@@ -425,7 +403,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-Medium-orange", model.BadgeURL);
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public void DeploymentsControllerLowBadgeTest()
         {
@@ -442,7 +420,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-Low-red", model.BadgeURL);
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public void DeploymentsControllerNoneBadgeTest()
         {
