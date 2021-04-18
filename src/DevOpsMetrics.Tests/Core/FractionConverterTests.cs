@@ -1,14 +1,14 @@
 ﻿using DevOpsMetrics.Core.DataAccess.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DevOpsMetrics.Tests.Service
+namespace DevOpsMetrics.Tests.Core
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("UnitTest")]
+    [TestCategory("L0Test")]
     [TestClass]
     public class FractionConverterTests
     {
-                [TestMethod]
+        [TestMethod]
         public void Fraction0PercentTest()
         {
             //Arrange

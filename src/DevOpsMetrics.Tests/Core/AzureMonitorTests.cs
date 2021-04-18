@@ -5,30 +5,18 @@ using DevOpsMetrics.Core.Models.Common;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DevOpsMetrics.Tests.Service
+namespace DevOpsMetrics.Tests.Core
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("IntegrationTest")]
+    [TestCategory("L1Test")]
     [TestClass]
-    public class AzureMonitorTests
+    public class AzureMonitorTests : BaseConfiguration
     {
-        private IConfigurationRoot _configuration;
-
-        [TestInitialize]
-        public void TestStartUp()
-        {
-            IConfigurationBuilder config = new ConfigurationBuilder()
-               .SetBasePath(AppContext.BaseDirectory)
-               .AddJsonFile("appsettings.json");
-            config.AddUserSecrets<TableStorageDATests>();
-            _configuration = config.Build();
-        }
-
         [TestMethod]
         public async Task AzureMonitorProcessingTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             MonitoringEvent monitoringEvent = new MonitoringEvent(@"
 {
   ""schemaId"": ""AzureMonitorMetricAlert"",

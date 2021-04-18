@@ -4,10 +4,10 @@ using DevOpsMetrics.Core.DataAccess;
 using DevOpsMetrics.Core.Models.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DevOpsMetrics.Tests.Service
+namespace DevOpsMetrics.Tests.Core
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("UnitTest")]
+    [TestCategory("L0Test")]
     [TestClass]
     public class PostiveNegativeListDATests
     {      
@@ -147,7 +147,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(0, negativeBuilds.Count);
         }
 
-        private List<ChangeFailureRateBuild> GenerateSamples(int count)
+        private static List<ChangeFailureRateBuild> GenerateSamples(int count)
         {
             List<ChangeFailureRateBuild> builds = new List<ChangeFailureRateBuild>();
             for (int i = 1; i <= count; i++)

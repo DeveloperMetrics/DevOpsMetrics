@@ -16,6 +16,7 @@ namespace DevOpsMetrics.FunctionalTests
         private string _webUrl = null;
 
         [TestMethod]
+        [TestCategory("L2Test")]
         [TestCategory("SkipWhenLiveUnitTesting")]
         [TestCategory("SmokeTest")]
         public void GotoWebHomeIndexPageTest()
@@ -38,6 +39,7 @@ namespace DevOpsMetrics.FunctionalTests
         }
 
         //[TestMethod]
+        //[TestCategory("L2Test")]
         //[TestCategory("SkipWhenLiveUnitTesting")]
         //[TestCategory("SmokeTest")]
         //public void GotoWebHomeDeploymentFrequencyPageTest()
@@ -60,6 +62,7 @@ namespace DevOpsMetrics.FunctionalTests
         //}
 
         //[TestMethod]
+        //[TestCategory("L2Test")]
         //[TestCategory("SkipWhenLiveUnitTesting")]
         //[TestCategory("SmokeTest")]
         //public void GotoWebHomeLeadTimeForChangesPageTest()
@@ -82,6 +85,7 @@ namespace DevOpsMetrics.FunctionalTests
         //}
 
         [TestMethod]
+        [TestCategory("L2Test")]
         [TestCategory("SkipWhenLiveUnitTesting")]
         [TestCategory("SmokeTest")]
         public void GotoWebHomeMTTRPageTest()
@@ -104,6 +108,7 @@ namespace DevOpsMetrics.FunctionalTests
         }
 
         [TestMethod]
+        [TestCategory("L2Test")]
         [TestCategory("SkipWhenLiveUnitTesting")]
         [TestCategory("SmokeTest")]
         public void GotoWebHomeChangeFailureRatePageTest()
@@ -126,6 +131,7 @@ namespace DevOpsMetrics.FunctionalTests
         }
 
         [TestMethod]
+        [TestCategory("L2Test")]
         [TestCategory("SkipWhenLiveUnitTesting")]
         [TestCategory("SmokeTest")]
         public void GotoWebHomeProjectSamLearnsAzurePageTest()
@@ -148,6 +154,7 @@ namespace DevOpsMetrics.FunctionalTests
         }
 
         [TestMethod]
+        [TestCategory("L2Test")]
         [TestCategory("SkipWhenLiveUnitTesting")]
         [TestCategory("SmokeTest")]
         public void GotoWebHomeProjectDevOpsMetricsPageTest()

@@ -16,6 +16,7 @@ namespace DevOpsMetrics.FunctionalTests
         private string _serviceUrl = null;
 
         [TestMethod]
+        [TestCategory("L2Test")]
         [TestCategory("SkipWhenLiveUnitTesting")]
         [TestCategory("SmokeTest")]
         public void GetAzureDevOpsSettingsTest()
@@ -38,6 +39,7 @@ namespace DevOpsMetrics.FunctionalTests
         }
 
         [TestMethod]
+        [TestCategory("L2Test")]
         [TestCategory("SkipWhenLiveUnitTesting")]
         [TestCategory("SmokeTest")]
         public void GetGitGubSettingsTest()

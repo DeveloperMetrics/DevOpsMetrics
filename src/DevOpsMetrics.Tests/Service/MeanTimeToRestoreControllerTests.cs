@@ -1,41 +1,16 @@
 ﻿using System;
-using System.Net.Http;
-using DevOpsMetrics.Service.Controllers;
 using DevOpsMetrics.Core.Models.Common;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
+using DevOpsMetrics.Service.Controllers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DevOpsMetrics.Tests.Service
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("IntegrationTest")]
+    [TestCategory("L1Test")]
     [TestClass]
-    public class MeanTimeToRestoreControllerTests
+    public class MeanTimeToRestoreControllerTests : BaseConfiguration
     {
-        //private TestServer _server;
-        //private HttpClient _client;
-        private IConfigurationRoot _configuration;
-
-        [TestInitialize]
-        public void TestStartUp()
-        {
-            IConfigurationBuilder config = new ConfigurationBuilder()
-               .SetBasePath(AppContext.BaseDirectory)
-               .AddJsonFile("appsettings.json");
-            config.AddUserSecrets<DeploymentFrequencyControllerTests>();
-            _configuration = config.Build();
-
-            ////Setup the test server
-            //_server = new TestServer(WebHost.CreateDefaultBuilder()
-            //    .UseConfiguration(_configuration)
-            //    .UseStartup<DevOpsMetrics.Service.Startup>());
-            //_client = _server.CreateClient();
-            ////Client.BaseAddress = new Uri(_configuration["AppSettings:WebServiceURL"]);
-        }
-
         [TestCategory("ControllerTest")]
         [TestMethod]
         public void AzureMTTRSampleControllerIntegrationTest()
@@ -46,7 +21,7 @@ namespace DevOpsMetrics.Tests.Service
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            MeanTimeToRestoreController controller = new MeanTimeToRestoreController(_configuration);
+            MeanTimeToRestoreController controller = new MeanTimeToRestoreController(base.Configuration);
 
             //Act
             MeanTimeToRestoreModel model = controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems);
@@ -81,7 +56,7 @@ namespace DevOpsMetrics.Tests.Service
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 60;
             int maxNumberOfItems = 20;
-            MeanTimeToRestoreController controller = new MeanTimeToRestoreController(_configuration);
+            MeanTimeToRestoreController controller = new MeanTimeToRestoreController(base.Configuration);
 
             //Act
             MeanTimeToRestoreModel model = controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems);
@@ -109,7 +84,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems >= 0);
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public void DeploymentsControllerEliteBadgeTest()
         {
@@ -128,7 +103,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service%20(0.12%20hours)-Elite-brightgreen", model.BadgeWithMetricURL);
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public void DeploymentsControllerHighBadgeTest()
         {
@@ -145,7 +120,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service-High-green", model.BadgeURL);
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public void DeploymentsControllerMediumBadgeTest()
         {
@@ -162,7 +137,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service-Medium-orange", model.BadgeURL);
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public void DeploymentsControllerLowBadgeTest()
         {
@@ -179,7 +154,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service-Low-red", model.BadgeURL);
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public void DeploymentsControllerNoneBadgeTest()
         {

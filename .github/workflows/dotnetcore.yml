@@ -76,6 +76,8 @@ jobs:
         AppSettings.GitHubClientId: "${{ secrets.GitHubClientId }}" 
         AppSettings.GitHubClientSecret: "${{ secrets.GitHubClientSecret }}" 
         AppSettings.AzureStorageAccountConfigurationString: "${{ secrets.AzureStorageConnectionString }}" 
+        AppSettings.KeyVaultClientId: "${{ secrets.KeyVaultClientId }}" 
+        AppSettings.KeyVaultClientSecret: "${{ secrets.KeyVaultClientSecret }}" 
     - name: view appsettings file after substitution
       run: Get-Content -Path "src/DevOpsMetrics.Tests/appsettings.json"
     - name: Run automated unit and integration tests

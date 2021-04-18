@@ -6,3 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~M:DevOpsMetrics.FunctionalTests.WebsiteSmokeTest.SetupTests")]
+[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "<Pending>", Scope = "member", Target = "~M:DevOpsMetrics.FunctionalTests.ServiceSmokeTest.SetupTests")]
