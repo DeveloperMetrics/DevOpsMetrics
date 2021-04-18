@@ -81,9 +81,11 @@ jobs:
     - name: view appsettings file after substitution
       run: Get-Content -Path "src/DevOpsMetrics.Tests/appsettings.json"
     - name: Run automated unit and integration tests
+      if: 0==1
       run: dotnet test src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Debug --logger trx /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov --settings:./src/DevOpsMetrics.Tests/CodeCoverage.runsettings 
     - name: Publish coverage report to coveralls.io
       uses: coverallsapp/github-action@master
+      if: 0==1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: src/DevOpsMetrics.Tests/TestResults/coverage.info 
