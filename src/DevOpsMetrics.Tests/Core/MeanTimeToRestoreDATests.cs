@@ -4,31 +4,19 @@ using DevOpsMetrics.Core.Models.Common;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DevOpsMetrics.Tests.Service
+namespace DevOpsMetrics.Tests.Core
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("IntegrationTest")]
+    [TestCategory("L1Test")]
     [TestClass]
-    public class MeanTimeToRestoreDATests
+    public class MeanTimeToRestoreDATests : BaseConfiguration
     {
-        private IConfigurationRoot _configuration;
-
-        [TestInitialize]
-        public void TestStartUp()
-        {
-            IConfigurationBuilder config = new ConfigurationBuilder()
-               .SetBasePath(AppContext.BaseDirectory)
-               .AddJsonFile("appsettings.json");
-            config.AddUserSecrets<DeploymentFrequencyDATests>();
-            _configuration = config.Build();
-        }
-
         [TestMethod]
         public void MeanTimeToRestoreDAIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             string resourceGroup = "DevOpsMetricsTestRG";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 30;
@@ -54,7 +42,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = false;
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             string resourceGroup = "SamLearnsAzureProd";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 30;
@@ -81,7 +69,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = false;
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             string resourceGroup = "SamLearnsAzureProd";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 60;
@@ -108,7 +96,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = false;
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             string resourceGroup = "SamLearnsAzureProd";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 60;

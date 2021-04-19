@@ -1,47 +1,19 @@
 ﻿using System;
-using System.Net.Http;
 using System.Threading.Tasks;
-using DevOpsMetrics.Service.Controllers;
+using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.Common;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
+using DevOpsMetrics.Service.Controllers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DevOpsMetrics.Core.DataAccess.TableStorage;
 
 namespace DevOpsMetrics.Tests.Service
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("IntegrationTest")]
+    [TestCategory("L1Test")]
     [TestClass]
-    public class DeploymentFrequencyControllerTests
+    public class DeploymentFrequencyControllerTests : BaseConfiguration
     {
-        //private TestServer _server;
-        //private HttpClient _client;
-        private IConfigurationRoot _configuration;
-        private IAzureTableStorageDA _azureTableStorageDA;
-
-        [TestInitialize]
-        public void TestStartUp()
-        {
-            IConfigurationBuilder config = new ConfigurationBuilder()
-               .SetBasePath(AppContext.BaseDirectory)
-               .AddJsonFile("appsettings.json");
-            config.AddUserSecrets<DeploymentFrequencyControllerTests>();
-            _configuration = config.Build();
-
-            _azureTableStorageDA = new AzureTableStorageDA();
-
-            ////Setup the test server
-            //_server = new TestServer(WebHost.CreateDefaultBuilder()
-            //    .UseConfiguration(_configuration)
-            //    .UseStartup<DevOpsMetrics.Service.Startup>());
-            //_client = _server.CreateClient();
-            ////Client.BaseAddress = new Uri(_configuration["AppSettings:WebServiceURL"]);
-        }
-
-        [TestCategory("ControllerTest")]
+         [TestCategory("ControllerTest")]
         [TestMethod]
         public async Task AzDeploymentsSampleControllerIntegrationTest()
         {
@@ -54,8 +26,8 @@ namespace DevOpsMetrics.Tests.Service
             string buildName = "SamLearnsAzure.CI";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            bool useCache = false;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
+            bool useCache = false;           
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -88,8 +60,8 @@ namespace DevOpsMetrics.Tests.Service
             string buildName = "SamLearnsAzure.CI";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
-            bool useCache = false;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
+            bool useCache = false;          
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -135,7 +107,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -179,7 +151,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
@@ -216,7 +188,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = false;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
@@ -260,7 +232,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
@@ -290,7 +262,7 @@ namespace DevOpsMetrics.Tests.Service
             }
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public async Task AzDeploymentsControllerAPILiveWithCacheIntegrationTest()
         {
@@ -304,7 +276,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -334,7 +306,7 @@ namespace DevOpsMetrics.Tests.Service
             }
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public async Task GHDeploymentsControllerAPILiveWithCacheIntegrationTest()
         {
@@ -348,7 +320,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
@@ -371,7 +343,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public async Task AzDeploymentsControllerAPILiveIntegrationTest()
         {
@@ -385,7 +357,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = false;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -415,7 +387,7 @@ namespace DevOpsMetrics.Tests.Service
             }
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public async Task GHDeploymentsControllerAPILiveIntegrationTest()
         {
@@ -429,7 +401,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = false;
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(_configuration, _azureTableStorageDA);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
@@ -459,7 +431,8 @@ namespace DevOpsMetrics.Tests.Service
             }
         }
 
-        [TestCategory("APITest")]
+        
+        [TestCategory("L0Test")]
         [TestMethod]
         public void DeploymentsControllerEliteBadgeTest()
         {
@@ -478,7 +451,8 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency%20(12.00%20per%20day)-Elite-brightgreen", model.BadgeWithMetricURL);
         }
 
-        [TestCategory("APITest")]
+        
+        [TestCategory("L0Test")]
         [TestMethod]
         public void DeploymentsControllerHighBadgeTest()
         {
@@ -495,7 +469,8 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency-High-green", model.BadgeURL);
         }
 
-        [TestCategory("APITest")]
+        
+        [TestCategory("L0Test")]
         [TestMethod]
         public void DeploymentsControllerMediumBadgeTest()
         {
@@ -512,7 +487,8 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency-Medium-orange", model.BadgeURL);
         }
 
-        [TestCategory("APITest")]
+        
+        [TestCategory("L0Test")]
         [TestMethod]
         public void DeploymentsControllerLowBadgeTest()
         {
@@ -529,7 +505,8 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency-Low-red", model.BadgeURL);
         }
 
-        [TestCategory("APITest")]
+        
+        [TestCategory("L0Test")]
         [TestMethod]
         public void DeploymentsControllerNoneBadgeTest()
         {
