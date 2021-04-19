@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
@@ -63,7 +61,7 @@ namespace DevOpsMetrics.Service.Controllers
 
         [HttpGet("UpdateGitHubSetting")]
         public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret,
-                string owner, string repo,
+                string owner, string repo, 
                 string branch, string workflowName, string workflowId, string resourceGroup, int itemOrder)
         {
             //Save the Client Id and Client Secret to the key vault
