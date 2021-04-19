@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
@@ -45,18 +46,39 @@ namespace DevOpsMetrics.Service.Controllers
                 string organization, string project, string repository,
                 string branch, string buildName, string buildId, string resourceGroup, int itemOrder)
         {
+            //Save the PAT token to the key vault
+            string patTokenSecretName = PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken(organization, project, repository);
+            if (patTokenSecretName.Length > 12)
+            {
+                await CreateKeyVaultSecret(patTokenSecretName, patToken);
+            }
+
+            //Save everything else to table storage
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            return await AzureTableStorageDA.UpdateAzureDevOpsSettingInStorage(patToken, tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings,
+            return await AzureTableStorageDA.UpdateAzureDevOpsSettingInStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings,
                      organization, project, repository, branch, buildName, buildId, resourceGroup, itemOrder);
         }
 
         [HttpGet("UpdateGitHubSetting")]
         public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret,
-                string owner, string repo,
+                string owner, string repo, 
                 string branch, string workflowName, string workflowId, string resourceGroup, int itemOrder)
         {
+            //Save the Client Id and Client Secret to the key vault
+            string clientIdSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientId(owner, repo);
+            if (clientIdSecretName.Length > 10)
+            {
+                await CreateKeyVaultSecret(clientIdSecretName, clientId);
+            }
+            string clientSecretSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret(owner, repo);
+            if (clientSecretSecretName.Length > 14)
+            {
+                await CreateKeyVaultSecret(clientSecretSecretName, clientSecret);
+            }
+
+            //Save everything else to table storage
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            return await AzureTableStorageDA.UpdateGitHubSettingInStorage(clientId, clientSecret, tableStorageConfig, tableStorageConfig.TableGitHubSettings,
+            return await AzureTableStorageDA.UpdateGitHubSettingInStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings,
                     owner, repo, branch, workflowName, workflowId, resourceGroup, itemOrder);
         }
 
@@ -107,6 +129,13 @@ namespace DevOpsMetrics.Service.Controllers
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             return await AzureTableStorageDA.UpdateProjectLogInStorage(tableStorageConfig, log);
+        }
+
+        private async Task<KeyVaultSecret> CreateKeyVaultSecret(string secretName, string secretValue)
+        {
+            string keyVaultURI = Configuration["AppSettings:KeyVaultURL"];
+            SecretClient secretClient = new SecretClient(new Uri(keyVaultURI), new DefaultAzureCredential());
+            return await secretClient.SetSecretAsync(secretName, secretValue);
         }
 
     }

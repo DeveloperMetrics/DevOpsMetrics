@@ -65,7 +65,6 @@ namespace DevOpsMetrics.Tests.Core
         public async Task AzUpdateSamLearnsAzureSettingDAIntegrationTest()
         {
             //Arrange
-            string patToken = base.Configuration["AppSettings:AzureDevOpsPatToken"];
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
@@ -78,7 +77,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            bool result = await da.UpdateAzureDevOpsSettingInStorage(patToken, tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings,
+            bool result = await da.UpdateAzureDevOpsSettingInStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings,
                     organization, project, repository, branch, buildName, buildId, resourceGroupName, itemOrder);
 
             //Assert
@@ -89,8 +88,6 @@ namespace DevOpsMetrics.Tests.Core
         public async Task GHUpdateDevOpsMetricsSettingDAIntegrationTest()
         {
             //Arrange
-            string clientId = base.Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = base.Configuration["AppSettings:GitHubClientSecret"];
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
@@ -102,7 +99,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            bool result = await da.UpdateGitHubSettingInStorage(clientId, clientSecret, tableStorageConfig, tableStorageConfig.TableGitHubSettings,
+            bool result = await da.UpdateGitHubSettingInStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings,
                     owner, repo, branch, workflowName, workflowId, resourceGroupName, itemOrder);
 
             //Assert
@@ -113,8 +110,6 @@ namespace DevOpsMetrics.Tests.Core
         public async Task GHUpdateSamsFeatureFlagsSettingDAIntegrationTest()
         {
             //Arrange
-            string clientId = base.Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = base.Configuration["AppSettings:GitHubClientSecret"];
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
@@ -126,7 +121,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             AzureTableStorageDA da = new AzureTableStorageDA();
-            bool result = await da.UpdateGitHubSettingInStorage(clientId, clientSecret, tableStorageConfig, tableStorageConfig.TableGitHubSettings,
+            bool result = await da.UpdateGitHubSettingInStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings,
                     owner, repo, branch, workflowName, workflowId, resourceGroupName, itemOrder);
 
             //Assert

@@ -9,8 +9,6 @@ namespace DevOpsMetrics.Core.Models.GitHub
     public class GitHubSettings
     {
         public string RowKey { get; set; }
-        public string ClientId { get; set; }
-        public string ClientSecret { get; set; }
         public string Owner { get; set; }
         public string Repo { get; set; }
         public string Branch { get; set; }

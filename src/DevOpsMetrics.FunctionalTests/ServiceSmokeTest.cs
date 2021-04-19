@@ -1,6 +1,10 @@
+using DevOpsMetrics.Core.Models.AzureDevOps;
+using DevOpsMetrics.Core.Models.GitHub;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using OpenQA.Selenium.Chrome;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -31,11 +35,18 @@ namespace DevOpsMetrics.FunctionalTests
             serviceLoaded = (_driver.Url == serviceUrl);
             OpenQA.Selenium.IWebElement data = _driver.FindElementByXPath(@"/html/body/pre");
             Console.WriteLine("data:" + data.Text);
+            List<AzureDevOpsSettings> settings = new List<AzureDevOpsSettings>();
+            if (string.IsNullOrEmpty(data?.Text) == false)
+            {
+                settings = JsonConvert.DeserializeObject<List<AzureDevOpsSettings>>(data.Text);
+            }
 
             //Assert
             Assert.IsTrue(serviceLoaded);
             Assert.IsTrue(data != null);
-            //Assert.AreEqual(data.Text, "High performing DevOps metrics");
+            Assert.IsTrue(settings.Count >= 0);
+            Assert.IsTrue(settings[0].Organization != null);
+
         }
 
         [TestMethod]
@@ -54,11 +65,17 @@ namespace DevOpsMetrics.FunctionalTests
             serviceLoaded = (_driver.Url == serviceUrl);
             OpenQA.Selenium.IWebElement data = _driver.FindElementByXPath(@"/html/body/pre");
             Console.WriteLine("data:" + data.Text);
+            List<GitHubSettings> settings = new List<GitHubSettings>();
+            if (string.IsNullOrEmpty(data?.Text) == false)
+            {
+                settings = JsonConvert.DeserializeObject<List<GitHubSettings>>(data.Text);
+            }
 
             //Assert
             Assert.IsTrue(serviceLoaded);
             Assert.IsTrue(data != null);
-            //Assert.AreEqual(data.Text, "High performing DevOps metrics");
+            Assert.IsTrue(settings.Count >= 0);
+            Assert.IsTrue(settings[0].Owner != null);
         }
 
         [TestInitialize]
