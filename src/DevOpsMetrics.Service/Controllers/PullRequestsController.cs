@@ -70,13 +70,13 @@ namespace DevOpsMetrics.Service.Controllers
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
 
                 //Get the client id and secret from the settings
-                List<GitHubSettings> settings = AzureTableStorageDA.GetGitHubSettingsFromStorage(tableStorageConfig, "DevOpsGitHubSettings", PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo));
-                string clientId = null;
-                string clientSecret = null;
-                if (settings.Count > 0)
+                string clientIdName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientId(owner, repo);
+                string clientSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret(owner, repo);
+                string clientId = Configuration[clientIdName];
+                string clientSecret = Configuration[clientSecretName];
+                if (string.IsNullOrEmpty(clientId) == true | string.IsNullOrEmpty(clientSecret) == true)
                 {
-                    clientId = settings[0].ClientId;
-                    clientSecret = settings[0].ClientSecret;
+                    throw new Exception($"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault");
                 }
 
                 numberOfRecordsSaved = await AzureTableStorageDA.UpdateGitHubActionPullRequestsInStorage(clientId, clientSecret, tableStorageConfig,
@@ -141,13 +141,13 @@ namespace DevOpsMetrics.Service.Controllers
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
 
                 //Get the client id and secret from the settings
-                List<GitHubSettings> settings = AzureTableStorageDA.GetGitHubSettingsFromStorage(tableStorageConfig, "DevOpsGitHubSettings", PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo));
-                string clientId = null;
-                string clientSecret = null;
-                if (settings.Count > 0)
+                string clientIdName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientId(owner, repo);
+                string clientSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret(owner, repo);
+                string clientId = Configuration[clientIdName];
+                string clientSecret = Configuration[clientSecretName];
+                if (string.IsNullOrEmpty(clientId) == true | string.IsNullOrEmpty(clientSecret) == true)
                 {
-                    clientId = settings[0].ClientId;
-                    clientSecret = settings[0].ClientSecret;
+                    throw new Exception($"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault");
                 }
 
                 numberOfRecordsSaved = await AzureTableStorageDA.UpdateGitHubActionPullRequestCommitsInStorage(clientId, clientSecret, tableStorageConfig,
