@@ -36,12 +36,12 @@ namespace DevOpsMetrics.Service.Controllers
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
 
-                //Get the PAT token from the settings
-                List<AzureDevOpsSettings> settings = AzureTableStorageDA.GetAzureDevOpsSettingsFromStorage(tableStorageConfig, "DevOpsAzureDevOpsSettings", PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository));
-                string patToken = null;
-                if (settings.Count > 0)
+                //Get the PAT token from the key vault
+                string patTokenName = PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken(organization, project, repository);
+                string patToken = Configuration[patTokenName];
+                if (string.IsNullOrEmpty(patToken) == true)
                 {
-                    patToken = settings[0].PatToken;
+                    throw new Exception($"patToken '{patTokenName}' not found in key vault");
                 }
 
                 numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsBuildsInStorage(patToken, tableStorageConfig, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);

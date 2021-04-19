@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
@@ -45,6 +46,9 @@ namespace DevOpsMetrics.Service.Controllers
                 string organization, string project, string repository,
                 string branch, string buildName, string buildId, string resourceGroup, int itemOrder)
         {
+            //Save the PAT token to the key vault
+
+            //Save everything else to table storage
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             return await AzureTableStorageDA.UpdateAzureDevOpsSettingInStorage(patToken, tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings,
                      organization, project, repository, branch, buildName, buildId, resourceGroup, itemOrder);
@@ -55,6 +59,9 @@ namespace DevOpsMetrics.Service.Controllers
                 string owner, string repo,
                 string branch, string workflowName, string workflowId, string resourceGroup, int itemOrder)
         {
+            //Save the Client Id and Client Secret to the key vault
+
+            //Save everything else to table storage
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             return await AzureTableStorageDA.UpdateGitHubSettingInStorage(clientId, clientSecret, tableStorageConfig, tableStorageConfig.TableGitHubSettings,
                     owner, repo, branch, workflowName, workflowId, resourceGroup, itemOrder);
