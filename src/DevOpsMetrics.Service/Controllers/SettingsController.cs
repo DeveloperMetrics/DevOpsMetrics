@@ -50,7 +50,10 @@ namespace DevOpsMetrics.Service.Controllers
         {
             //Save the PAT token to the key vault
             string patTokenSecretName = PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken(organization, project, repository);
-            await CreateKeyVaultSecret(patTokenSecretName, patToken);
+            if (patTokenSecretName.Length > 12)
+            {
+                await CreateKeyVaultSecret(patTokenSecretName, patToken);
+            }
 
             //Save everything else to table storage
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
@@ -65,9 +68,15 @@ namespace DevOpsMetrics.Service.Controllers
         {
             //Save the Client Id and Client Secret to the key vault
             string clientIdSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientId(owner, repo);
-            await CreateKeyVaultSecret(clientIdSecretName, clientId);
+            if (clientIdSecretName.Length > 10)
+            {
+                await CreateKeyVaultSecret(clientIdSecretName, clientId);
+            }
             string clientSecretSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret(owner, repo);
-            await CreateKeyVaultSecret(clientSecretSecretName, clientSecret);
+            if (clientSecretSecretName.Length > 14)
+            {
+                await CreateKeyVaultSecret(clientSecretSecretName, clientSecret);
+            }
 
             //Save everything else to table storage
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);

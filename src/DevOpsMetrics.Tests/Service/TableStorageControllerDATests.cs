@@ -23,6 +23,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             Dictionary<string, string> inMemorySettings = new Dictionary<string, string> {
+                {"AppSettings:KeyVaultURL", "keyvaultURLTest"},
                 {PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken("", "", ""), "patTokenSecret"},
                 {PartitionKeys.CreateGitHubSettingsPartitionKeyClientId("",""), "clientIdTest"},
                 {PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret("",""), "clientSecretTest"}
@@ -120,7 +121,7 @@ namespace DevOpsMetrics.Tests.Service
             int maxNumberOfItems = 0;
 
             //Act
-            int result = await controller.UpdateGitHubActionPullRequests( owner, repo, branch, numberOfDays, maxNumberOfItems);
+            int result = await controller.UpdateGitHubActionPullRequests(owner, repo, branch, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.AreEqual(7, result);
