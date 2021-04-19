@@ -22,7 +22,7 @@ namespace DevOpsMetrics.Tests.Service
         public void TestStart()
         {
             //Arrange
-            var inMemorySettings = new Dictionary<string, string> {
+            Dictionary<string, string> inMemorySettings = new Dictionary<string, string> {
                 {PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken("", "", ""), "patTokenSecret"},
                 {PartitionKeys.CreateGitHubSettingsPartitionKeyClientId("",""), "clientIdTest"},
                 {PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret("",""), "clientSecretTest"}
@@ -209,7 +209,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             //Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
             Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
-            mockDA.Setup(repo => repo.UpdateAzureDevOpsSettingInStorage(It.IsAny<string>(), It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(Task.FromResult(true));
+            mockDA.Setup(repo => repo.UpdateAzureDevOpsSettingInStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(Task.FromResult(true));
             SettingsController controller = new SettingsController(_configuration, mockDA.Object);
             string patToken = "";
             string organization = "";
@@ -234,7 +234,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             //Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
             Mock<IAzureTableStorageDA> mockDA = new Mock<IAzureTableStorageDA>();
-            mockDA.Setup(repo => repo.UpdateGitHubSettingInStorage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(Task.FromResult(true));
+            mockDA.Setup(repo => repo.UpdateGitHubSettingInStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(Task.FromResult(true));
             SettingsController controller = new SettingsController(_configuration, mockDA.Object);
             string clientId = "";
             string clientSecret = "";

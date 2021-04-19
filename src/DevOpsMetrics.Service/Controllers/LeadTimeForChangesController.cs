@@ -16,12 +16,10 @@ namespace DevOpsMetrics.Service.Controllers
     public class LeadTimeForChangesController : ControllerBase
     {
         private readonly IConfiguration Configuration;
-        private readonly IAzureTableStorageDA AzureTableStorageDA;
 
-        public LeadTimeForChangesController(IConfiguration configuration, IAzureTableStorageDA azureTableStorageDA)
+        public LeadTimeForChangesController(IConfiguration configuration)
         {
             Configuration = configuration;
-            AzureTableStorageDA = azureTableStorageDA;
         }
 
         // Get lead time for changes from Azure DevOps API

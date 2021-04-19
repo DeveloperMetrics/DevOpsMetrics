@@ -26,9 +26,8 @@ namespace DevOpsMetrics.Tests.Service
             string buildName = "SamLearnsAzure.CI";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            bool useCache = false;
-            IAzureTableStorageDA azureTableStorageDA = new AzureTableStorageDA();
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration, azureTableStorageDA);
+            bool useCache = false;           
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -61,9 +60,8 @@ namespace DevOpsMetrics.Tests.Service
             string buildName = "SamLearnsAzure.CI";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
-            bool useCache = false;
-            IAzureTableStorageDA azureTableStorageDA = new AzureTableStorageDA();
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration, azureTableStorageDA);
+            bool useCache = false;          
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -109,8 +107,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            IAzureTableStorageDA azureTableStorageDA = new AzureTableStorageDA();
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration, azureTableStorageDA);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -154,8 +151,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            IAzureTableStorageDA azureTableStorageDA = new AzureTableStorageDA();
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration, azureTableStorageDA);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
@@ -192,8 +188,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = false;
-            IAzureTableStorageDA azureTableStorageDA = new AzureTableStorageDA();
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration, azureTableStorageDA);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
@@ -237,8 +232,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            IAzureTableStorageDA azureTableStorageDA = new AzureTableStorageDA();
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration, azureTableStorageDA);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
@@ -282,8 +276,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            IAzureTableStorageDA azureTableStorageDA = new AzureTableStorageDA();
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration, azureTableStorageDA);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -327,8 +320,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            IAzureTableStorageDA azureTableStorageDA = new AzureTableStorageDA();
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration, azureTableStorageDA);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
@@ -365,8 +357,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = false;
-            IAzureTableStorageDA azureTableStorageDA = new AzureTableStorageDA();
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration, azureTableStorageDA);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetAzureDevOpsDeploymentFrequency(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -410,8 +401,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = false;
-            IAzureTableStorageDA azureTableStorageDA = new AzureTableStorageDA();
-            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration, azureTableStorageDA);
+            DeploymentFrequencyController controller = new DeploymentFrequencyController(base.Configuration);
 
             //Act
             DeploymentFrequencyModel model = await controller.GetGitHubDeploymentFrequency(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);

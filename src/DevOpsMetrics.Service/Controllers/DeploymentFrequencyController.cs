@@ -16,12 +16,10 @@ namespace DevOpsMetrics.Service.Controllers
     public class DeploymentFrequencyController : ControllerBase
     {
         private readonly IConfiguration Configuration;
-        private readonly IAzureTableStorageDA AzureTableStorageDA;
 
-        public DeploymentFrequencyController(IConfiguration configuration, IAzureTableStorageDA azureTableStorageDA)
+        public DeploymentFrequencyController(IConfiguration configuration)
         {
             Configuration = configuration;
-            AzureTableStorageDA = azureTableStorageDA;
         }
 
         // Get builds from the Azure DevOps API

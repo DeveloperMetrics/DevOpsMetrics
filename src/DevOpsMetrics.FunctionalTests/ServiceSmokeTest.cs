@@ -46,7 +46,6 @@ namespace DevOpsMetrics.FunctionalTests
             Assert.IsTrue(data != null);
             Assert.IsTrue(settings.Count >= 0);
             Assert.IsTrue(settings[0].Organization != null);
-            Assert.IsTrue(settings[0].PatToken != null);
 
         }
 
@@ -77,8 +76,6 @@ namespace DevOpsMetrics.FunctionalTests
             Assert.IsTrue(data != null);
             Assert.IsTrue(settings.Count >= 0);
             Assert.IsTrue(settings[0].Owner != null);
-            Assert.IsTrue(settings[0].ClientId != null);
-            Assert.IsTrue(settings[0].ClientSecret != null);
         }
 
         [TestInitialize]
