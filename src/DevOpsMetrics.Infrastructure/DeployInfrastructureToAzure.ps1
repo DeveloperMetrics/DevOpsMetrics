@@ -1,16 +1,17 @@
-﻿# C:\Users\samsmit\source\repos\DevOpsMetrics\src\DevOpsMetrics.Infrastructure\DeployInfrastructureToAzure.ps1 -resourceGroupName devopswestus -resourceLocation westus -storageName devopsprodwustorage -keyVaultName "devopsmetrics-prod-wu-keyvault" hostingName "devopsmetrics-prod-wu-hosting" -appInsightsName "devopsmetrics-prod-wu-appinsights" -websiteName "devopsmetrics-prod-wu-web" -serviceName "devopsmetrics-prod-wu-service" -functionName "devopsmetrics-prod-wu-function" -templatesLocation "C:\Users\samsmit\source\repos\DevOpsMetrics\src\DevOpsMetrics.Infrastructure\Templates"
+﻿# C:\Users\samsmit\source\repos\DevOpsMetrics\src\DevOpsMetrics.Infrastructure\DeployInfrastructureToAzure.ps1 -resourceGroupName devopsmetricswestus -resourceLocation westus -keyVaultName "devops-prod-wu-vault" -storageName devopsprodwustorage -hostingName "devops-prod-wu-hosting" -appInsightsName "devops-prod-wu-appinsights" -websiteName "devops-prod-wu-web" -serviceName "devops-prod-wu-service" -functionName "devops-prod-wu-function" -administrationEmailAccount "samsmit@microsoft.com" -templatesLocation "C:\Users\samsmit\source\repos\DevOpsMetrics\src\DevOpsMetrics.Infrastructure\Templates"
 
 param
 (   
     [string] $resourceGroupName,
 	[string] $resourceLocation,
-	[string] $storageName,
     [string] $keyVaultName,
+	[string] $storageName,
 	[string] $hostingName,
 	[string] $appInsightsName,
-	[string] $websiteName,
 	[string] $serviceName,
+	[string] $websiteName,
 	[string] $functionName,
+	[string] $administrationEmailAccount
 	[string] $templatesLocation
 )
 
@@ -21,12 +22,14 @@ Write-Host "1. Deployment started: "$stopwatch.Elapsed.TotalSeconds
 Write-Host "Parameters:"
 Write-Host "resourceGroupName: $resourceGroupName"
 Write-Host "resourceLocation: $resourceLocation"
+Write-Host "keyVaultName: $keyVaultName"
 Write-Host "storageName: $storageName"
 Write-Host "hostingName: $hostingName"
 Write-Host "appInsightsName: $appInsightsName"
-Write-Host "websiteName: $websiteName"
 Write-Host "serviceName: $serviceName"
+Write-Host "websiteName: $websiteName"
 Write-Host "functionName: $functionName"
+Write-Host "administrationEmailAccount: $administrationEmailAccount"
 
 #Variables
 if ($storageName.Length -gt 24)
@@ -34,16 +37,25 @@ if ($storageName.Length -gt 24)
     Write-Host "Storage account name must be 3-24 characters in length"
     Break
 }
+if ($keyVaultName.Length -gt 24)
+{
+    Write-Host "Key vault name must be 3-24 characters in length"
+    Break
+}
 
 $timing = -join($timing, "2. Variables created: ", $stopwatch.Elapsed.TotalSeconds, "`n");
 Write-Host "2. Variables created: "$stopwatch.Elapsed.TotalSeconds
 
 #Resource group
-az group create --location $resourceLocation --name $resourceGroupName
+$resourcegroupDeployment = az group create --location $resourceLocation --name $resourceGroupName
 $timing = -join($timing, "3. Resource group created: ", $stopwatch.Elapsed.TotalSeconds, "`n");
 Write-Host "3. Resource group created: "$stopwatch.Elapsed.TotalSeconds
 
 #key vault
+#Get user object id: https://docs.microsoft.com/en-us/cli/azure/ad/user?view=azure-cli-latest#az_ad_user_show
+$userJson = az ad user show --id $administrationEmailAccount
+$user = $userJson | ConvertFrom-Json
+$administratorUserPrincipalId = $user.objectid
 #Get all deleted key vault names. If it matches, purge it
 #$results = az keyvault list-deleted --subscription 07db7d0b-a6cb-4e58-b07e-e1d541c39f5b
 #$results = $results | ConvertFrom-Json
@@ -58,7 +70,7 @@ Write-Host "3. Resource group created: "$stopwatch.Elapsed.TotalSeconds
 #        }
 #    }
 #}
-az deployment group create --resource-group $resourceGroupName --name $keyVaultName --template-file "$templatesLocation\KeyVault.json" --parameters keyVaultName=$keyVaultName
+$keyvaultDeployment = az deployment group create --resource-group $resourceGroupName --name $keyVaultName --template-file "$templatesLocation\KeyVault.json" --parameters keyVaultName=$keyVaultName administratorUserPrincipalId=$administratorUserPrincipalId
 #if($error)
 #{
 #    #purge any existing key vault because of soft delete
@@ -72,7 +84,7 @@ $timing = -join($timing, "4. Key vault created:: ", $stopwatch.Elapsed.TotalSeco
 Write-Host "4. Key vault created: "$stopwatch.Elapsed.TotalSeconds
 
 #storage
-$storageOutput = az deployment group create --resource-group $resourceGroupName --name $storageAccountName --template-file "$templatesLocation\Storage.json" --parameters storageAccountName=$storageAccountName resourceGroupName=$resourceGroupName
+$storageOutput = az deployment group create --resource-group $resourceGroupName --name $storageName --template-file "$templatesLocation\Storage.json" --parameters storageAccountName=$storageName resourceGroupName=$resourceGroupName
 $storageJSON = $storageOutput | ConvertFrom-Json
 $storageAccountConnectionString = $storageJSON.properties.outputs.storageAccountConnectionString.value
 Write-Host "Setting value storageAccountConnectionString to key vault"
@@ -82,12 +94,12 @@ $timing = -join($timing, "5. Storage created: ", $stopwatch.Elapsed.TotalSeconds
 Write-Host "5. Storage created: "$stopwatch.Elapsed.TotalSeconds
 
 #hosting
-az deployment group create --resource-group $resourceGroupName --name $webhostingName --template-file "$templatesLocation\WebHosting.json" --parameters hostingPlanName=$webhostingName actionGroupName=$actionGroupName 
+az deployment group create --resource-group $resourceGroupName --name $hostingName --template-file "$templatesLocation\WebHosting.json" --parameters hostingPlanName=$hostingName actionGroupName=$actionGroupName 
 $timing = -join($timing, "6. Web hosting created: ", $stopwatch.Elapsed.TotalSeconds, "`n");
 Write-Host "6. Web hosting created: "$stopwatch.Elapsed.TotalSeconds
 
 #app insights
-$applicationInsightsOutput = az deployment group create --resource-group $resourceGroupName --name $applicationInsightsName --template-file "$templatesLocation\ApplicationInsights.json" --parameters applicationInsightsName=$applicationInsightsName applicationInsightsAvailablityTestName="$applicationInsightsAvailablityTestName" websiteDomainName=$websiteDomainName 
+$applicationInsightsOutput = az deployment group create --resource-group $resourceGroupName --name $appInsightsName --template-file "$templatesLocation\ApplicationInsights.json" --parameters applicationInsightsName=$appInsightsName 
 $applicationInsightsJSON = $applicationInsightsOutput | ConvertFrom-Json
 $applicationInsightsInstrumentationKey = $applicationInsightsJSON.properties.outputs.applicationInsightsInstrumentationKeyOutput.value
 #Write-Host "Setting value $ApplicationInsightsInstrumentationKey for $applicationInsightsInstrumentationKeyName to key vault"
@@ -97,25 +109,25 @@ $timing = -join($timing, "7. Application created: ", $stopwatch.Elapsed.TotalSec
 Write-Host "7. Application insights created: "$stopwatch.Elapsed.TotalSeconds
 
 #web service
-az deployment group create --resource-group $resourceGroupName --name $webSiteName --template-file "$templatesLocation\Website.json" --parameters webSiteName=$webSiteName hostingPlanName=$webhostingName
+az deployment group create --resource-group $resourceGroupName --name $serviceName --template-file "$templatesLocation\Website.json" --parameters webSiteName=$serviceName hostingPlanName=$hostingName
 #Set secrets into appsettings 
-Write-Host "Setting appsettings $applicationInsightsName connectionString: $applicationInsightsInstrumentationKey"
-az webapp config appsettings set --resource-group $resourceGroupName --name $webSiteName --slot staging --settings "APPINSIGHTS_INSTRUMENTATIONKEY=$applicationInsightsInstrumentationKey" 
+Write-Host "Setting appsettings $appInsightsName connectionString: $applicationInsightsInstrumentationKey"
+az webapp config appsettings set --resource-group $resourceGroupName --name $serviceName --slot staging --settings "APPINSIGHTS_INSTRUMENTATIONKEY=$applicationInsightsInstrumentationKey" 
 $timing = -join($timing, "8. Web service created: ", $stopwatch.Elapsed.TotalSeconds, "`n");
 Write-Host "8. Web service created: "$stopwatch.Elapsed.TotalSeconds
 
 #Web site
-az deployment group create --resource-group $resourceGroupName --name $webSiteName --template-file "$templatesLocation\Website.json" --parameters webSiteName=$webSiteName hostingPlanName=$webhostingName
+az deployment group create --resource-group $resourceGroupName --name $webSiteName --template-file "$templatesLocation\Website.json" --parameters webSiteName=$webSiteName hostingPlanName=$hostingName
 #Set secrets into appsettings 
-Write-Host "Setting appsettings $applicationInsightsName connectionString: $applicationInsightsInstrumentationKey"
+Write-Host "Setting appsettings $appInsightsName connectionString: $applicationInsightsInstrumentationKey"
 az webapp config appsettings set --resource-group $resourceGroupName --name $webSiteName --slot staging --settings "APPINSIGHTS_INSTRUMENTATIONKEY=$applicationInsightsInstrumentationKey" 
 $timing = -join($timing, "9. Website created: ", $stopwatch.Elapsed.TotalSeconds, "`n");
 Write-Host "9. Website created: "$stopwatch.Elapsed.TotalSeconds
 
 #function
-az deployment group create --resource-group $resourceGroupName --name $functionName --template-file "$templatesLocation\function.json" --parameters webSiteName=$functionName hostingPlanName=$webhostingName 
+az deployment group create --resource-group $resourceGroupName --name $functionName --template-file "$templatesLocation\function.json" --parameters webSiteName=$functionName hostingPlanName=$hostingName 
 #Set secrets into appsettings 
-Write-Host "Setting appsettings $applicationInsightsName connectionString: $applicationInsightsInstrumentationKey"
+Write-Host "Setting appsettings $appInsightsName connectionString: $applicationInsightsInstrumentationKey"
 az webapp config appsettings set --resource-group $resourceGroupName --name $webSiteName --slot staging --settings "APPINSIGHTS_INSTRUMENTATIONKEY=$applicationInsightsInstrumentationKey" 
 $timing = -join($timing, "10. Website created: ", $stopwatch.Elapsed.TotalSeconds, "`n");
 Write-Host "10. Website created: "$stopwatch.Elapsed.TotalSeconds
