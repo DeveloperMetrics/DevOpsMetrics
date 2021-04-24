@@ -7,12 +7,12 @@ namespace DevOpsMetrics.Service.Controllers
     [ApiController]
     public class HealthController : ControllerBase
     {
-        private readonly IConfiguration Configuration;
+        //private readonly IConfiguration Configuration;
 
-        public HealthController(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        //public HealthController(IConfiguration configuration)
+        //{
+        //    Configuration = configuration;
+        //}
 
         [HttpGet("Get")]
         public string Get()

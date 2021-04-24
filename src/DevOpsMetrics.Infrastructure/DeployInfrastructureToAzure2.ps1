@@ -107,9 +107,15 @@ Write-Host "7. Application insights created: "$stopwatch.Elapsed.TotalSeconds
 
 #web service
 az deployment group create --resource-group $resourceGroupName --name $serviceName --template-file "$templatesLocation\Website.json" --parameters webSiteName=$serviceName hostingPlanName=$hostingName
+
+#Deploy web service 
+dotnet publish "C:\Users\samsmit\source\repos\DevOpsMetrics\src\DevOpsMetrics.Service\DevOpsMetrics.Service.csproj" --configuration Debug --self-contained --runtime win-x86 --output "C:\Users\samsmit\source\repos\DevOpsMetrics\src\DevOpsMetrics.Service\bin\webservice" 
+Compress-Archive -Path "C:\Users\samsmit\source\repos\DevOpsMetrics\src\DevOpsMetrics.Service\bin\webservice\*.*" -DestinationPath "C:\Users\samsmit\source\repos\DevOpsMetrics\src\DevOpsMetrics.Service\bin\webservice.zip" -Force
+az webapp deployment source config-zip --resource-group $resourceGroupName --name $serviceName --src "C:\Users\samsmit\source\repos\DevOpsMetrics\src\DevOpsMetrics.Service\bin\webservice.zip"
+
 #Set secrets into appsettings 
 Write-Host "Setting appsettings $appInsightsName connectionString: $applicationInsightsInstrumentationKey"
-az webapp config appsettings set --resource-group $resourceGroupName --name $serviceName --slot staging --settings "APPINSIGHTS_INSTRUMENTATIONKEY=$applicationInsightsInstrumentationKey" 
+az webapp config appsettings set --resource-group $resourceGroupName --name $serviceName --settings "APPINSIGHTS_INSTRUMENTATIONKEY=$applicationInsightsInstrumentationKey" 
 $timing = -join($timing, "8. Web service created: ", $stopwatch.Elapsed.TotalSeconds, "`n");
 Write-Host "8. Web service created: "$stopwatch.Elapsed.TotalSeconds
 
@@ -129,7 +135,14 @@ az webapp config appsettings set --resource-group $resourceGroupName --name $web
 $timing = -join($timing, "10. Website created: ", $stopwatch.Elapsed.TotalSeconds, "`n");
 Write-Host "10. Website created: "$stopwatch.Elapsed.TotalSeconds
 
+
+
+
+
 $timing = -join($timing, "11. All Done: ", $stopwatch.Elapsed.TotalSeconds, "`n");
 Write-Host "11. All Done: "$stopwatch.Elapsed.TotalSeconds
 Write-Host "Timing: `n$timing"
 Write-Host "Were there errors? (If the next line is blank, then no!) $error"
+
+
+
