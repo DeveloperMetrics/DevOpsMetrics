@@ -1,0 +1,136 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "keyVaultName": {
+      "type": "string"
+    },
+    "vaultAdminSecretsPermissions": {
+      "type": "array",
+      "defaultValue": [ "all" ],
+      "metadata": {
+        "description": "Permissions to grant admin secrets in the vault. (Valid values are: all, get, set, list, and delete.)"
+      }
+    },
+    "vaultUserSecretsPermissions": {
+      "type": "array",
+      "defaultValue": [ "get", "list" ],
+      "metadata": {
+        "description": "Permissions to grant user access to get and list secrets in the vault."
+      }
+    },
+    "vaultSku": {
+      "type": "string",
+      "defaultValue": "Standard",
+      "allowedValues": [
+        "Standard",
+        "Premium"
+      ],
+      "metadata": {
+        "description": "SKU for the vault"
+      }
+    },
+    "vaultEnabledForDeployment": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Specifies if the vault is enabled for VM or Service Fabric deployment"
+      }
+    },
+    "vaultEnabledForTemplateDeployment": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "Specifies if the vault is enabled for ARM template deployment"
+      }
+    },
+    "administratorUserPrincipalId": {
+      "type": "string",
+      "metadata": {
+        "description": "Object Id of the AAD user that will have admin access to the SQL server and the Key Vault. Available from the Get-AzureRMADUser or the Get-AzureRMADServicePrincipal cmdlets"
+      }
+    }
+    //,
+    //"azureDevOpsPrincipalId": {
+    //  "type": "string",
+    //  "metadata": {
+    //    "description": "Object Id of the service principal that will have Azure DevOps access to the vault. Available from the Get-AzureRMADUser or the Get-AzureRMADServicePrincipal cmdlets"
+    //  }
+    //}
+    //"integrationTestsPrincipalId": {
+    //  "type": "string",
+    //  "metadata": {
+    //    "description": "Object Id of the service principal that is used to run integration tests. Available from the Get-AzureRMADUser or the Get-AzureRMADServicePrincipal cmdlets"
+    //  }
+    //}
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "name": "[parameters('keyVaultName')]",
+      "apiVersion": "2016-10-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "KeyVault"
+      },
+      "properties": {
+        "enabledForDeployment": "[parameters('vaultEnabledForDeployment')]",
+        "enabledForTemplateDeployment": "[parameters('vaultEnabledForTemplateDeployment')]",
+        "enableSoftDelete": true,
+        "tenantId": "[subscription().tenantid]",
+        "sku": {
+          "family": "A",
+          "name": "[parameters('vaultSku')]"
+        },
+        "accessPolicies": [
+          {
+            "tenantId": "[subscription().tenantid]",
+            "objectId": "[parameters('administratorUserPrincipalId')]",
+            "permissions": {
+              "secrets": "[parameters('vaultAdminSecretsPermissions')]"
+            }
+          }//,
+          //{
+          //  "tenantId": "[subscription().tenantid]",
+          //  "objectId": "[parameters('azureDevOpsPrincipalId')]",
+          //  "permissions": {
+          //    "secrets": "[parameters('vaultAdminSecretsPermissions')]"
+          //  }
+          //}
+          ////{
+          ////  "tenantId": "[subscription().tenantid]",
+          ////  "objectId": "[reference(concat(resourceId('Microsoft.Web/sites', variables('serviceAPIName')), '/providers/Microsoft.ManagedIdentity/Identities/default'), '2015-08-31-PREVIEW').principalId]",
+          ////  "permissions": {
+          ////    "keys": [],
+          ////    "secrets": "[parameters('vaultUserSecretsPermissions')]",
+          ////    "certificates": []
+          ////  }
+          ////},
+          ////{
+          ////  "tenantId": "[subscription().tenantid]",
+          ////  "objectId": "[reference(concat(resourceId('Microsoft.Web/sites', variables('webSiteName')), '/providers/Microsoft.ManagedIdentity/Identities/default'), '2015-08-31-PREVIEW').principalId]",
+          ////  "permissions": {
+          ////    "keys": [],
+          ////    "secrets": "[parameters('vaultUserSecretsPermissions')]",
+          ////    "certificates": []
+          ////  }
+          ////},
+          //{
+          //  "tenantId": "[subscription().tenantid]",
+          //  "objectId": "[parameters('integrationTestsPrincipalId')]",
+          //  "permissions": {
+          //    "keys": [],
+          //    "secrets": "[parameters('vaultUserSecretsPermissions')]",
+          //    "certificates": []
+          //  }
+          //}
+        ]
+      },
+      "resources": []
+    }
+  ],
+  "outputs": {
+  }
+}
