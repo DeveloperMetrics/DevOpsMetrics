@@ -55,7 +55,7 @@ namespace DevOpsMetrics.Web.Services
             return await GetResponse<MeanTimeToRestoreModel>(Client, url);
         }
 
-        public async Task<ChangeFailureRateModel> GetChangeFailureRate(bool getSampleData, DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName,  int numberOfDays, int maxNumberOfItems)
+        public async Task<ChangeFailureRateModel> GetChangeFailureRate(bool getSampleData, DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName, int numberOfDays, int maxNumberOfItems)
         {
             string url = $"/api/ChangeFailureRate/GetChangeFailureRate?getSampleData={getSampleData}&targetDevOpsPlatform={targetDevOpsPlatform}&organization_owner={organization_owner}&project_repo={project_repo}&branch={branch}&buildName_workflowName={buildName_workflowName}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
             return await GetResponse<ChangeFailureRateModel>(Client, url);
@@ -77,6 +77,24 @@ namespace DevOpsMetrics.Web.Services
         {
             string url = $"/api/Settings/GetGitHubSettings";
             return await GetResponse<List<GitHubSettings>>(Client, url);
+        }
+
+        public async Task<bool> UpdateAzureDevOpsSetting(string patToken,
+                string organization, string project, string repository,
+                string branch, string buildName, string buildId, string resourceGroup, int itemOrder)
+        {
+            string url = $"/api/Settings/UpdateAzureDevOpsSetting?patToken={patToken}&organization={organization}&project={project}&repository={repository}&branch={branch}&buildName={buildName}&buildId={buildId}&resourceGroup={resourceGroup}&itemOrder={itemOrder}";
+
+            return await GetResponse<bool>(Client, url);
+        }
+
+        public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret,
+            string owner, string repo,
+            string branch, string workflowName, string workflowId, string resourceGroup, int itemOrder)
+        {
+            string url = $"/api/Settings/UpdateGitHubSetting?clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&resourceGroup={resourceGroup}&itemOrder={itemOrder}";
+
+            return await GetResponse<bool>(Client, url);
         }
 
         public async Task<List<ProjectLog>> GetAzureDevOpsProjectLogs(string organization, string project, string repository)

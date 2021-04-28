@@ -7,6 +7,7 @@ using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
+using DevOpsMetrics.Service.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -47,10 +48,11 @@ namespace DevOpsMetrics.Service.Controllers
                 string branch, string buildName, string buildId, string resourceGroup, int itemOrder)
         {
             //Save the PAT token to the key vault
-            string patTokenSecretName = PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken(organization, project, repository);
-            if (patTokenSecretName.Length > 12)
+            string patTokenName = PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken(organization, project, repository);
+            patTokenName = SecretsProcessing.CleanKey(patTokenName);
+            if (patTokenName.Length > 12)
             {
-                await CreateKeyVaultSecret(patTokenSecretName, patToken);
+                await CreateKeyVaultSecret(patTokenName, patToken);
             }
 
             //Save everything else to table storage
@@ -65,15 +67,17 @@ namespace DevOpsMetrics.Service.Controllers
                 string branch, string workflowName, string workflowId, string resourceGroup, int itemOrder)
         {
             //Save the Client Id and Client Secret to the key vault
-            string clientIdSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientId(owner, repo);
-            if (clientIdSecretName.Length > 10)
+            string clientIdName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientId(owner, repo);
+            clientIdName = SecretsProcessing.CleanKey(clientIdName);
+            if (clientIdName.Length > 10)
             {
-                await CreateKeyVaultSecret(clientIdSecretName, clientId);
+                await CreateKeyVaultSecret(clientIdName, clientId);
             }
-            string clientSecretSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret(owner, repo);
-            if (clientSecretSecretName.Length > 14)
+            string clientSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret(owner, repo);
+            clientSecretName = SecretsProcessing.CleanKey(clientSecretName);
+            if (clientSecretName.Length > 14)
             {
-                await CreateKeyVaultSecret(clientSecretSecretName, clientSecret);
+                await CreateKeyVaultSecret(clientSecretName, clientSecret);
             }
 
             //Save everything else to table storage

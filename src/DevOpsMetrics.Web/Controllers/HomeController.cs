@@ -527,6 +527,50 @@ namespace DevOpsMetrics.Web.Controllers
             return View(result);
         }
 
+        [HttpGet]
+        public IActionResult AddAzureDevOpsSetting()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateAzureDevOpsSetting(string patToken,
+                string organization, string project, string repository,
+                string branch, string buildName, string buildId, string resourceGroup, int itemOrder)
+        {
+            //Find the right project to load
+            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+            if (patToken != null)
+            {
+
+                await serviceApiClient.UpdateAzureDevOpsSetting(patToken,
+                    organization, project, repository,
+                    branch, buildName, buildId, resourceGroup, itemOrder);
+            }
+
+            return RedirectToAction("Settings", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult AddGitHubSetting()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateGitHubSetting(string clientId, string clientSecret,
+            string owner, string repo,
+            string branch, string workflowName, string workflowId, string resourceGroup, int itemOrder)
+        {
+            //Find the right project to load
+            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+            await serviceApiClient.UpdateGitHubSetting(clientId, clientSecret,
+                owner, repo,
+                branch, workflowName, workflowId, resourceGroup, itemOrder);
+
+            return RedirectToAction("Settings", "Home");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
