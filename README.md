@@ -3,12 +3,14 @@
 [![Build](https://GitHub.com/samsmithnz/DevOpsMetrics/workflows/CI/CD/badge.svg)](https://GitHub.com/samsmithnz/DevOpsMetrics/actions?query=workflow%3ACI%2FCD)
 [![Coverage Status](https://coveralls.io/repos/github/samsmithnz/DevOpsMetrics/badge.svg?branch=main)](https://coveralls.io/github/samsmithnz/DevOpsMetrics?branch=main)
 
-This project is focused on collecting and analyzing high performing DevOps metrics from GitHub and Azure DevOps. [DORA's "State of DevOps" research](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf) and [Accelerate](https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339) highlighted four driving indicators of high performing DevOps teams. While these four metrics are widely used in DevOps discussion, there haven't been many efforts to date to implement and capture the metrics.
+**Why should we care about DevOps Metrics and what are they?** All engineering, including software, needs metrics to track performance, but many metrics when measured individually, can be 'gamed', or don't encourage the right behaviors or incentives. This has been an issue with metrics for many years. The [DORA metrics](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf) are a step in the right direction, combining several metrics that encourage the behaviors and incentives - and hence that encourage DevOps teams to perform at a high level of performance.
 
-- **Deployment frequency**: Number of deployments to production
-- **Lead time for changes**: Time from committing a change to deployment to production
-- **Mean time to restore (MTTR)**: How quickly restoration of production occurs in an outage or degradation
-- **Change failure rate**: After a production deployment, was it successful? Or was a fix or rollback required after the fact?
+This project is focused on helping you collect and analyze four key high performing DevOps metrics from GitHub and Azure DevOps. [DORA's "State of DevOps" research](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf) and [Accelerate](https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339) highlighted four driving indicators of high performing DevOps teams. While these four metrics are widely used in DevOps discussion, it's challenging to implement and capture all of the metrics.
+
+- **Deployment frequency: Number of deployments to production.** This is important, as it highlights how often you can deploy to production - which in turn indicates there is a mature automated testing and a mature CI/CD pipeline to release to production.
+- **Lead time for changes: Time from committing a change to deployment to production.** How quickly can we change a line of code and have it running in production? Again, this indicates mature automated testing and a mature CI/CD pipeline able to handle changes.
+- **Mean time to restore (MTTR): How quickly restoration of production occurs in an outage or degradation.** When there is a degradation, how quickly can the system auto-heal itself, scale to handle increased load, and/or This one is contraversal, as it's challenging to compare different events that cause degradation. 
+- **Change failure rate: After a production deployment, was it successful? Or was a fix or rollback required after the fact?** How often is a change we made 'successful'? This ties in well with deployment frequency and lead time for changes, but is challenging to measure - as it requires a signoff off of success. Not just that the code deployed correctly, but that there weren't adverse effects or degradation of the deployment to the system
 
 ![High performing metrics](https://samlearnsazure.files.wordpress.com/2020/04/01highperformers.png)
 (Chart from page 18 of https://services.google.com/fh/files/misc/state-of-devops-2019.pdf)
@@ -58,14 +60,15 @@ More information about high performing DevOps metrics can be found in a blog pos
 ![Change failure rate](https://github.com/samsmithnz/DevOpsMetrics/blob/main/ReadmeImages/ChangeFailureRate.png)
 
 # Architecture
-Uses .Net CORE 3.1 & MSTest. A GitHub action runs the CI/CD process. 
+Uses .NET 5 (except for the function, which is .NET Core 3.1). A GitHub action runs the CI/CD process. 
 
 Currently the CI/CD process: 
 1. Builds the code
 2. Runs the unit tests
-3. Deploys the Probot code to a Azure web app (http://devopsmetrics-prod-eu-probot.azurewebsites.net/)
+3. ~~Deploys the Probot code to a Azure web app (http://devopsmetrics-prod-eu-probot.azurewebsites.net/)~~ (Currently disabled)
 3. Deploys the webservice to a Azure web app (https://devopsmetrics-prod-eu-service.azurewebsites.net)
 4. Deploys the demo website to a Azure web app (https://devopsmetrics-prod-eu-web.azurewebsites.net)
+4. Deploys the function website to a Azure function 
 
 Dependabot runs daily to check for dependency upgrades, and will automatically create a pull request, and approve/close it if all of the tests pass successfully 
 
