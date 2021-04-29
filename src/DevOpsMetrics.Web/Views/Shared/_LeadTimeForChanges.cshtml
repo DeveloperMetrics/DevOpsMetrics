@@ -31,7 +31,14 @@
     {
         <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ProjectName</h4>
     }
-    @if (Model.RateLimitHit == true)
+    @if (Model.Exception != null)
+    {
+        <div style="height:100px">
+            <span>This lead time for changes cannot be displayed</span><br />
+            <span>There was an exception retreiving data from this <a href="@Model.ExceptionUrl" target="_blank">service request</a>.</span>
+        </div>
+    }
+    else if (Model.RateLimitHit == true)
     {
         <div style="height:100px">
             <span>API rate limit has been reached, please try again later</span>

@@ -5,6 +5,11 @@ namespace DevOpsMetrics.Core.Models.Common
 {
     public class ChangeFailureRateModel
     {
+        public ChangeFailureRateModel()
+        {
+            ChangeFailureRateBuildList = new List<ChangeFailureRateBuild>();
+        }
+
         public string DeploymentName { get; set; }
         public DevOpsPlatform TargetDevOpsPlatform { get; set; }
         public bool IsProjectView { get; set; }
@@ -34,5 +39,8 @@ namespace DevOpsMetrics.Core.Models.Common
                 return Badges.BadgeURL(title, ChangeFailureRateMetricDescription);
             }
         }
+
+        public Exception Exception { get; set; }
+        public string ExceptionUrl { get; set; }
     }
 }

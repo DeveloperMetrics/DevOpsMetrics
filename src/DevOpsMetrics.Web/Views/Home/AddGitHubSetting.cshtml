@@ -4,77 +4,79 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h2>View settings (secrets hidden)</h2>
+        <h2>Add new GitHub setting</h2>
 
-        <h3><img src="~/images/GitHub-icon.png" style="width:32px;" />&nbsp; GitHub</h3>
-        <a href="@Url.Action("AddGitHubSetting","Home")">Add new GitHub setting</a><br />
-        <table class="table table-striped table-bordered">
-            <tr>
-                <td>
-                    Client id:
-                </td>
-                <td>
-                    <input name="clientId" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Client secret:
-                </td>
-                <td>
-                    <input name="clientSecret" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Owner:
-                </td>
-                <td>
-                    <input name="owner" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Repo:
-                </td>
-                <td>
-                    <input name="repo" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Branch:
-                </td>
-                <td>
-                    <input name="branch" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Workflow Name:
-                </td>
-                <td>
-                    <input name="workflowName" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Workflow Id:
-                </td>
-                <td>
-                    <input name="workflowId" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Resource Group:
-                </td>
-                <td>
-                    <input name="resourceGroup" type="text" />
-                </td>
-            </tr>
-        </table>
+        <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="UpdateGitHubSetting">
+            <h3><img src="~/images/GitHub-icon.png" style="width:32px;" />&nbsp; GitHub</h3>
+            <a href="@Url.Action("AddGitHubSetting","Home")">Add new GitHub setting</a><br />
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <td>
+                        Client id:
+                    </td>
+                    <td>
+                        <input name="clientId" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Client secret:
+                    </td>
+                    <td>
+                        <input name="clientSecret" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Owner:
+                    </td>
+                    <td>
+                        <input name="owner" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Repo:
+                    </td>
+                    <td>
+                        <input name="repo" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Branch:
+                    </td>
+                    <td>
+                        <input name="branch" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Workflow Name:
+                    </td>
+                    <td>
+                        <input name="workflowName" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Workflow Id: (use https://api.github.com/repos/{owner}/{repo}/actions/workflows to get id)
+                    </td>
+                    <td>
+                        <input name="workflowId" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Resource Group:
+                    </td>
+                    <td>
+                        <input name="resourceGroup" type="text" />
+                    </td>
+                </tr>
+            </table>
 
-        <input type="submit" value="Add new setting" />
+            <input type="submit" value="Add new setting" />
+        </form>
     </div>
 </div>

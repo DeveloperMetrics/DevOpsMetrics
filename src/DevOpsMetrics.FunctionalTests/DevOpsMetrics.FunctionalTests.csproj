@@ -15,7 +15,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="89.0.4389.2300" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="90.0.4430.2400" />
   </ItemGroup>
 
   <ItemGroup>

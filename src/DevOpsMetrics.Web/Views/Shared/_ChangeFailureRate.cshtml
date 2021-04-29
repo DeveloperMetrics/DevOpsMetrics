@@ -31,7 +31,14 @@
     {
         <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.DeploymentName</h4>
     }
-    @if (Model.ChangeFailureRateBuildList.Count == 0)
+    @if (Model.Exception != null)
+    {
+        <div style="height:100px">
+            <span>This change failure rate cannot be displayed</span><br />
+            <span>There was an exception retreiving data from this <a href="@Model.ExceptionUrl" target="_blank">service request</a>.</span>
+        </div>
+    }
+    else if (Model.ChangeFailureRateBuildList.Count == 0)
     {
         <div style="height:100px">
             <span>There is no data to display for this period</span>

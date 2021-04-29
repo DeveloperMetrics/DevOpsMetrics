@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -165,8 +166,8 @@ namespace DevOpsMetrics.Web.Controllers
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
                 DeploymentFrequencyModel newDeploymentFrequencyModel = await serviceApiClient.GetAzureDevOpsDeploymentFrequency(getSampleData,
-                        item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId,
-                        numberOfDays, maxNumberOfItems, useCache);
+                           item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId,
+                           numberOfDays, maxNumberOfItems, useCache);
                 newDeploymentFrequencyModel.ItemOrder = item.ItemOrder;
                 if (newDeploymentFrequencyModel != null)
                 {
@@ -412,7 +413,7 @@ namespace DevOpsMetrics.Web.Controllers
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
 
             //Create project items from each setting and add it to a project list.
-            DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.Unknown;
+            DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.UnknownDevOpsPlatform;
             string organization_owner = "";
             string project_repo = "";
             string repository = "";
