@@ -28,13 +28,42 @@ namespace DevOpsMetrics.Web.Services
         public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string organization, string project, string repository, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             string url = $"/api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData={getSampleData}&organization={organization}&project={project}&repository={repository}&branch={branch}&buildName={buildName}&buildId={buildId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&useCache={useCache}";
-            return await GetResponse<DeploymentFrequencyModel>(Client, url);
+            try
+            {
+                return await GetResponse<DeploymentFrequencyModel>(Client, url);
+            }
+            catch (Exception ex)
+            {
+                return new DeploymentFrequencyModel
+                {
+                    DeploymentName = buildName,
+                    TargetDevOpsPlatform = DevOpsPlatform.AzureDevOps,
+                    DeploymentsPerDayMetricDescription = "None",
+                    Exception = ex,
+                    ExceptionUrl = url
+                };
+            }
         }
 
         public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, string owner, string repo, string branch, string workflowName, string workflowId, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             string url = $"/api/DeploymentFrequency/GetGitHubDeploymentFrequency?getSampleData={getSampleData}&clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&useCache={useCache}";
-            return await GetResponse<DeploymentFrequencyModel>(Client, url);
+            try
+            {
+                return await GetResponse<DeploymentFrequencyModel>(Client, url);
+            }
+            catch (Exception ex)
+            {
+                return new DeploymentFrequencyModel
+                {
+
+                    DeploymentName = workflowName,
+                    TargetDevOpsPlatform = DevOpsPlatform.GitHub,
+                    DeploymentsPerDayMetricDescription = "None",
+                    Exception = ex,
+                    ExceptionUrl = url
+                };
+            }
         }
 
         public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, string organization, string project, string repository, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
@@ -115,13 +144,21 @@ namespace DevOpsMetrics.Web.Services
             if (client != null && url != null)
             {
                 Debug.WriteLine("Running url: " + client.BaseAddress.ToString() + url);
+                Console.WriteLine("Running url: " + client.BaseAddress.ToString() + url);
                 using (HttpResponseMessage response = await client.GetAsync(url))
                 {
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    if (string.IsNullOrEmpty(responseBody) == false)
+                    if (response.IsSuccessStatusCode == true)
                     {
-                        obj = JsonConvert.DeserializeObject<T>(responseBody);
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                        if (string.IsNullOrEmpty(responseBody) == false)
+                        {
+                            obj = JsonConvert.DeserializeObject<T>(responseBody);
+                        }
+                    }
+                    else
+                    {
+                        //Throw an exception
+                        response.EnsureSuccessStatusCode();
                     }
                 }
             }
