@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "Add Azure DevOps setting";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Add new Azure DevOps setting</h2>
+
+        <br />
+        <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="UpdateAzureDevOpsSetting">
+            <h3><img src="~/images/AzureDevops-icon.png" style="width:32px;" />&nbsp; Azure DevOps</h3>
+            <a href="@Url.Action("AddAzureDevOpsSetting","Home")">Add new Azure DevOps setting</a><br />
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <td>
+                        Pat Token:
+                    </td>
+                    <td>
+                        <input name="patToken" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        organization:
+                    </td>
+                    <td>
+                        <input name="organization" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        project:
+                    </td>
+                    <td>
+                        <input name="project" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        repository:
+                    </td>
+                    <td>
+                        <input name="repository" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        branch:
+                    </td>
+                    <td>
+                        <input name="branch" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        buildName:
+                    </td>
+                    <td>
+                        <input name="buildName" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        buildId:
+                    </td>
+                    <td>
+                        <input name="buildId" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        resourceGroup:
+                    </td>
+                    <td>
+                        <input name="resourceGroup" type="text" />
+                    </td>
+                </tr>
+            </table>
+
+            <input type="submit" value="Add new setting" />
+        </form>
+    </div>
+</div>

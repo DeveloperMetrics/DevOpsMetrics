@@ -6,6 +6,7 @@ using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
+using DevOpsMetrics.Service.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -36,6 +37,7 @@ namespace DevOpsMetrics.Service.Controllers
 
                 //Get the PAT token from the key vault
                 string patTokenName = PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken(organization, project, repository);
+                patTokenName = SecretsProcessing.CleanKey(patTokenName);
                 string patToken = Configuration[patTokenName];
                 if (string.IsNullOrEmpty(patToken) == true)
                 {
@@ -71,7 +73,9 @@ namespace DevOpsMetrics.Service.Controllers
 
                 //Get the client id and secret from the settings
                 string clientIdName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientId(owner, repo);
+                clientIdName = SecretsProcessing.CleanKey(clientIdName);
                 string clientSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret(owner, repo);
+                clientSecretName = SecretsProcessing.CleanKey(clientSecretName);
                 string clientId = Configuration[clientIdName];
                 string clientSecret = Configuration[clientSecretName];
                 if (string.IsNullOrEmpty(clientId) == true | string.IsNullOrEmpty(clientSecret) == true)
@@ -108,6 +112,7 @@ namespace DevOpsMetrics.Service.Controllers
 
                 //Get the PAT token from the key vault
                 string patTokenName = PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken(organization, project, repository);
+                patTokenName = SecretsProcessing.CleanKey(patTokenName);
                 string patToken = Configuration[patTokenName];
                 if (string.IsNullOrEmpty(patToken) == true)
                 {
@@ -142,7 +147,9 @@ namespace DevOpsMetrics.Service.Controllers
 
                 //Get the client id and secret from the settings
                 string clientIdName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientId(owner, repo);
+                clientIdName = SecretsProcessing.CleanKey(clientIdName);
                 string clientSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret(owner, repo);
+                clientSecretName = SecretsProcessing.CleanKey(clientSecretName);
                 string clientId = Configuration[clientIdName];
                 string clientSecret = Configuration[clientSecretName];
                 if (string.IsNullOrEmpty(clientId) == true | string.IsNullOrEmpty(clientSecret) == true)
