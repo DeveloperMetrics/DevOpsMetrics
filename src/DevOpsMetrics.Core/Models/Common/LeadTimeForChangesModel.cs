@@ -5,6 +5,10 @@ namespace DevOpsMetrics.Core.Models.Common
 {
     public class LeadTimeForChangesModel
     {
+        public LeadTimeForChangesModel()
+        {
+            PullRequests = new List<PullRequestModel>();
+        }
         public string ProjectName { get; set; }
         public DevOpsPlatform TargetDevOpsPlatform { get; set; }
         public bool IsProjectView { get; set; }
@@ -53,5 +57,8 @@ namespace DevOpsMetrics.Core.Models.Common
                 return Badges.BadgeURL(title, LeadTimeForChangesMetricDescription);
             }
         }
+
+        public Exception Exception { get; set; }
+        public string ExceptionUrl { get; set; }
     }
 }

@@ -5,6 +5,10 @@ namespace DevOpsMetrics.Core.Models.Common
 {
     public class MeanTimeToRestoreModel
     {
+        public MeanTimeToRestoreModel()
+        {
+            MeanTimeToRestoreEvents = new List<MeanTimeToRestoreEvent>();
+        }
         public DevOpsPlatform TargetDevOpsPlatform { get; set; }
         public bool IsProjectView { get; set; }
         public int NumberOfDays { get; set; }
@@ -36,5 +40,8 @@ namespace DevOpsMetrics.Core.Models.Common
                 return Badges.BadgeURL(title, MTTRAverageDurationDescription);
             }
         }
+
+        public Exception Exception { get; set; }
+        public string ExceptionUrl { get; set; }
     }
 }
