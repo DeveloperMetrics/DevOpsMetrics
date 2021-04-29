@@ -5,31 +5,20 @@ using DevOpsMetrics.Core.Models.Common;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DevOpsMetrics.Tests.Service
+namespace DevOpsMetrics.Tests.Core
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("IntegrationTest")]
+    [TestCategory("L1Test")]
     [TestClass]
-    public class ChangeFailureRateDATests
+    public class ChangeFailureRateDATests : BaseConfiguration
     {
-        private IConfigurationRoot _configuration;
-
-        [TestInitialize]
-        public void TestStartUp()
-        {
-            IConfigurationBuilder config = new ConfigurationBuilder()
-               .SetBasePath(AppContext.BaseDirectory)
-               .AddJsonFile("appsettings.json");
-            config.AddUserSecrets<DeploymentFrequencyDATests>();
-            _configuration = config.Build();
-        }
 
         [TestMethod]
         public void AzChangeFailureRateDAIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
@@ -92,7 +81,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "master";
@@ -123,7 +112,7 @@ namespace DevOpsMetrics.Tests.Service
         public async Task UpdateChangeFailureRateDAIntegrationTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string buildName = "SamLearnsAzure.CI";

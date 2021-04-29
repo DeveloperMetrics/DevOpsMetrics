@@ -300,7 +300,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             }
         }
 
-        public async Task<bool> UpdateAzureDevOpsSettingInStorage(string patToken, TableStorageConfiguration tableStorageConfig, string settingsTable,
+        public async Task<bool> UpdateAzureDevOpsSettingInStorage(TableStorageConfiguration tableStorageConfig, string settingsTable,
              string organization, string project, string repository, string branch, string buildName, string buildId, string resourceGroupName, int itemOrder)
         {
             string partitionKey = "AzureDevOpsSettings";
@@ -309,7 +309,6 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             AzureDevOpsSettings settings = new AzureDevOpsSettings
             {
                 RowKey = rowKey,
-                PatToken = patToken,
                 Organization = organization,
                 Project = project,
                 Repository = repository,
@@ -326,7 +325,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return await tableDA.SaveItem(newItem);
         }
 
-        public async Task<bool> UpdateGitHubSettingInStorage(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string settingsTable,
+        public async Task<bool> UpdateGitHubSettingInStorage(TableStorageConfiguration tableStorageConfig, string settingsTable,
              string owner, string repo, string branch, string workflowName, string workflowId, string resourceGroupName, int itemOrder)
         {
             string partitionKey = "GitHubSettings";
@@ -334,8 +333,6 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             GitHubSettings settings = new GitHubSettings
             {
                 RowKey = rowKey,
-                ClientId = clientId,
-                ClientSecret = clientSecret,
                 Owner = owner,
                 Repo = repo,
                 Branch = branch,

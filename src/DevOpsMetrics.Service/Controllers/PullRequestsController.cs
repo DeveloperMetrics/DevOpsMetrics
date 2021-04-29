@@ -6,6 +6,7 @@ using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
+using DevOpsMetrics.Service.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -34,12 +35,13 @@ namespace DevOpsMetrics.Service.Controllers
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
 
-                //Get the PAT token from the settings
-                List<AzureDevOpsSettings> settings = AzureTableStorageDA.GetAzureDevOpsSettingsFromStorage(tableStorageConfig, "DevOpsAzureDevOpsSettings", PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository));
-                string patToken = null;
-                if (settings.Count > 0)
+                //Get the PAT token from the key vault
+                string patTokenName = PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken(organization, project, repository);
+                patTokenName = SecretsProcessing.CleanKey(patTokenName);
+                string patToken = Configuration[patTokenName];
+                if (string.IsNullOrEmpty(patToken) == true)
                 {
-                    patToken = settings[0].PatToken;
+                    throw new Exception($"patToken '{patTokenName}' not found in key vault");
                 }
 
                 numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsPullRequestsInStorage(patToken, tableStorageConfig,
@@ -70,13 +72,15 @@ namespace DevOpsMetrics.Service.Controllers
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
 
                 //Get the client id and secret from the settings
-                List<GitHubSettings> settings = AzureTableStorageDA.GetGitHubSettingsFromStorage(tableStorageConfig, "DevOpsGitHubSettings", PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo));
-                string clientId = null;
-                string clientSecret = null;
-                if (settings.Count > 0)
+                string clientIdName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientId(owner, repo);
+                clientIdName = SecretsProcessing.CleanKey(clientIdName);
+                string clientSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret(owner, repo);
+                clientSecretName = SecretsProcessing.CleanKey(clientSecretName);
+                string clientId = Configuration[clientIdName];
+                string clientSecret = Configuration[clientSecretName];
+                if (string.IsNullOrEmpty(clientId) == true | string.IsNullOrEmpty(clientSecret) == true)
                 {
-                    clientId = settings[0].ClientId;
-                    clientSecret = settings[0].ClientSecret;
+                    throw new Exception($"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault");
                 }
 
                 numberOfRecordsSaved = await AzureTableStorageDA.UpdateGitHubActionPullRequestsInStorage(clientId, clientSecret, tableStorageConfig,
@@ -106,12 +110,13 @@ namespace DevOpsMetrics.Service.Controllers
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
 
-                //Get the PAT token from the settings
-                List<AzureDevOpsSettings> settings = AzureTableStorageDA.GetAzureDevOpsSettingsFromStorage(tableStorageConfig, "DevOpsAzureDevOpsSettings", PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository));
-                string patToken = null;
-                if (settings.Count > 0)
+                //Get the PAT token from the key vault
+                string patTokenName = PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken(organization, project, repository);
+                patTokenName = SecretsProcessing.CleanKey(patTokenName);
+                string patToken = Configuration[patTokenName];
+                if (string.IsNullOrEmpty(patToken) == true)
                 {
-                    patToken = settings[0].PatToken;
+                    throw new Exception($"patToken '{patTokenName}' not found in key vault");
                 }
 
                 numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsPullRequestCommitsInStorage(patToken, tableStorageConfig,
@@ -141,13 +146,15 @@ namespace DevOpsMetrics.Service.Controllers
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
 
                 //Get the client id and secret from the settings
-                List<GitHubSettings> settings = AzureTableStorageDA.GetGitHubSettingsFromStorage(tableStorageConfig, "DevOpsGitHubSettings", PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo));
-                string clientId = null;
-                string clientSecret = null;
-                if (settings.Count > 0)
+                string clientIdName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientId(owner, repo);
+                clientIdName = SecretsProcessing.CleanKey(clientIdName);
+                string clientSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret(owner, repo);
+                clientSecretName = SecretsProcessing.CleanKey(clientSecretName);
+                string clientId = Configuration[clientIdName];
+                string clientSecret = Configuration[clientSecretName];
+                if (string.IsNullOrEmpty(clientId) == true | string.IsNullOrEmpty(clientSecret) == true)
                 {
-                    clientId = settings[0].ClientId;
-                    clientSecret = settings[0].ClientSecret;
+                    throw new Exception($"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault");
                 }
 
                 numberOfRecordsSaved = await AzureTableStorageDA.UpdateGitHubActionPullRequestCommitsInStorage(clientId, clientSecret, tableStorageConfig,

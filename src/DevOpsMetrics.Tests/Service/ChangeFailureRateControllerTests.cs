@@ -1,41 +1,14 @@
-﻿using System;
-using System.Net.Http;
+﻿using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Service.Controllers;
-using DevOpsMetrics.Core.Models.Common;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DevOpsMetrics.Tests.Service
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("IntegrationTest")]
+    [TestCategory("L1Test")]
     [TestClass]
-    public class ChangeFailureRateControllerTests
+    public class ChangeFailureRateControllerTests : BaseConfiguration
     {
-        //private TestServer _server;
-        //private HttpClient _client;
-        private IConfigurationRoot _configuration;
-
-        [TestInitialize]
-        public void TestStartUp()
-        {
-            IConfigurationBuilder config = new ConfigurationBuilder()
-               .SetBasePath(AppContext.BaseDirectory)
-               .AddJsonFile("appsettings.json");
-            config.AddUserSecrets<ChangeFailureRateControllerTests>();
-            _configuration = config.Build();
-
-            ////Setup the test server
-            //_server = new TestServer(WebHost.CreateDefaultBuilder()
-            //    .UseConfiguration(_configuration)
-            //    .UseStartup<DevOpsMetrics.Service.Startup>());
-            //_client = _server.CreateClient();
-            ////Client.BaseAddress = new Uri(_configuration["AppSettings:WebServiceURL"]);
-        }
-
         [TestCategory("ControllerTest")]
         [TestMethod]
         public void AzChangeFailureRateSampleControllerIntegrationTest()
@@ -49,7 +22,7 @@ namespace DevOpsMetrics.Tests.Service
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            ChangeFailureRateController controller = new ChangeFailureRateController(_configuration);
+            ChangeFailureRateController controller = new ChangeFailureRateController(base.Configuration);
 
             //Act
             ChangeFailureRateModel model = controller.GetChangeFailureRate(getSampleData,
@@ -80,7 +53,7 @@ namespace DevOpsMetrics.Tests.Service
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
-            ChangeFailureRateController controller = new ChangeFailureRateController(_configuration);
+            ChangeFailureRateController controller = new ChangeFailureRateController(base.Configuration);
 
             //Act
             ChangeFailureRateModel model = controller.GetChangeFailureRate(getSampleData,
@@ -110,7 +83,7 @@ namespace DevOpsMetrics.Tests.Service
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            ChangeFailureRateController controller = new ChangeFailureRateController(_configuration);
+            ChangeFailureRateController controller = new ChangeFailureRateController(base.Configuration);
 
             //Act
             ChangeFailureRateModel model = controller.GetChangeFailureRate(getSampleData,
@@ -141,7 +114,7 @@ namespace DevOpsMetrics.Tests.Service
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            ChangeFailureRateController controller = new ChangeFailureRateController(_configuration);
+            ChangeFailureRateController controller = new ChangeFailureRateController(base.Configuration);
 
             //Act
             ChangeFailureRateModel model = controller.GetChangeFailureRate(getSampleData,
@@ -159,7 +132,7 @@ namespace DevOpsMetrics.Tests.Service
 
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public void ChangeFailureRateControllerEliteBadgeTest()
         {
@@ -178,7 +151,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate%20(0.00%25)-Elite-brightgreen", model.BadgeWithMetricURL);
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public void ChangeFailureRateControllerHighBadgeTest()
         {
@@ -195,7 +168,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-High-green", model.BadgeURL);
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public void ChangeFailureRateControllerMediumBadgeTest()
         {
@@ -212,7 +185,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-Medium-orange", model.BadgeURL);
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public void ChangeFailureRateControllerLowBadgeTest()
         {
@@ -229,7 +202,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-Low-red", model.BadgeURL);
         }
 
-        [TestCategory("APITest")]
+        
         [TestMethod]
         public void ChangeFailureRateControllerNoneBadgeTest()
         {

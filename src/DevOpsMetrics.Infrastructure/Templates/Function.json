@@ -1,0 +1,36 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "webSiteName": {
+      "type": "string"
+    },
+    "hostingPlanName": {
+      "type": "string"
+    }
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2018-11-01",
+      "name": "[parameters('webSiteName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+      ],
+      "kind": "app",
+      "tags": {
+        "displayName": "Function"
+      },
+      "properties": {
+        "name": "[parameters('webSiteName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+        "httpsOnly": true,
+        "siteConfig": {
+          "alwaysOn": true
+        }
+      }
+    }
+  ]
+}

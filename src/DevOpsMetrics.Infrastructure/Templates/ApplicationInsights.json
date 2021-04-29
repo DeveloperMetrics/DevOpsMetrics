@@ -1,0 +1,121 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "applicationInsightsName": {
+      "type": "string"
+    }
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "name": "[parameters('applicationInsightsName')]",
+      "type": "Microsoft.Insights/components",
+      "apiVersion": "2015-05-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "Application Insights"
+      },
+      "kind": "web",
+      "properties": {
+        "Application_Type": "web",
+        "Flow_Type": "Bluefield",
+        "Request_Source": "rest",
+        "RetentionInDays": 90,
+        "publicNetworkAccessForIngestion": "Enabled",
+        "publicNetworkAccessForQuery": "Enabled"
+      }
+    }//,
+    //{
+    //  "type": "microsoft.insights/webtests",
+    //  "apiVersion": "2015-05-01",
+    //  "name": "[parameters('applicationInsightsAvailablityTestName')]",
+    //  "location": "eastus",
+    //  "tags": {
+    //    "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.insights/components/', parameters('applicationInsightsName'))]": "Resource",
+    //    "displayName": "Availability web test"
+    //  },
+    //  "dependsOn": [
+    //    "[concat('Microsoft.Insights/components/', parameters('applicationInsightsName'))]"
+    //  ],
+    //  "properties": {
+    //    "SyntheticMonitorId": "[parameters('applicationInsightsAvailablityTestName')]",
+    //    "Name": "Home page test",
+    //    "Enabled": true,
+    //    "Frequency": 300,
+    //    "Timeout": 120,
+    //    "Kind": "ping",
+    //    "RetryEnabled": true,
+    //    "Locations": [
+    //      {
+    //        "Id": "us-ca-sjc-azr"
+    //      },
+    //      {
+    //        "Id": "us-tx-sn1-azr"
+    //      },
+    //      {
+    //        "Id": "us-il-ch1-azr"
+    //      },
+    //      {
+    //        "Id": "us-va-ash-azr"
+    //      },
+    //      {
+    //        "Id": "us-fl-mia-edge"
+    //      }
+    //    ],
+    //    "Configuration": {
+    //      "WebTest": "[concat('<WebTest Name=\"Home page test\" Id=\"c960ac1f-b7a1-4a0b-9aa9-33048f24dfe4\" Enabled=\"True\" CssProjectStructure=\"\" CssIteration=\"\" Timeout=\"120\" WorkItemIds=\"\" xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\" Description=\"\" CredentialUserName=\"\" CredentialPassword=\"\" PreAuthenticate=\"True\" Proxy=\"default\" StopOnError=\"False\" RecordedResultFile=\"\" ResultsLocale=\"\"><Items><Request Method=\"GET\" Guid=\"a0814d09-f8e5-28ff-d6b3-2b632e291eeb\" Version=\"1.1\" Url=\"https://', parameters('websiteDomainName'), '\" ThinkTime=\"0\" Timeout=\"120\" ParseDependentRequests=\"False\" FollowRedirects=\"True\" RecordResult=\"True\" Cache=\"False\" ResponseTimeGoal=\"0\" Encoding=\"utf-8\" ExpectedHttpStatusCode=\"200\" ExpectedResponseUrl=\"\" ReportingName=\"\" IgnoreHttpStatusCode=\"False\" /></Items></WebTest>')]"
+    //    }
+    //  }
+    //}
+    //{
+    //  "type": "microsoft.insights/metricalerts",
+    //  "apiVersion": "2018-03-01",
+    //  "name": "[parameters('applicationInsightsAvailablityTestName')]",
+    //  "location": "global",
+    //"dependsOn": [
+    //  "[concat('Microsoft.Insights/components/', parameters('applicationInsightsName'))]"
+    //],
+    //  "tags": {
+    //    "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.insights/components/', parameters('applicationInsightsName'))]": "Resource",
+    //    "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.insights/webtests/', parameters('applicationInsightsAvailablityTestName'))]": "Resource",
+    //    "displayName": "Availability alert"
+    //  },
+    //  "properties": {
+    //    "description": "[concat('Created alert rule for availability test \"', parameters('applicationInsightsAvailablityTestName'), '\"')]",
+    //    "severity": 1,
+    //    "enabled": true,
+    //    "scopes": [
+    //      "[resourceId('microsoft.insights/components', parameters('applicationInsightsName'))]",
+    //      "[resourceId('microsoft.insights/webtests', parameters('applicationInsightsAvailablityTestName'))]"
+    //    ],
+    //    "evaluationFrequency": "PT1M",
+    //    "windowSize": "PT5M",
+    //    "templateType": 8,
+    //    "criteria": {
+    //      "additionalProperties": null,
+    //      "componentId": "[concat(resourceGroup().id, '/providers/microsoft.insights/components/', parameters('applicationInsightsName'))]",
+    //      "failedLocationCount": 2,
+    //      "odatatype": "Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria",
+    //      "webTestId": "[concat(resourceGroup().id, '/providers/microsoft.insights/webtests/', parameters('applicationInsightsAvailablityTestName'))]",
+    //      "actions": []
+    //    }
+    //    //"criteria": {
+    //    //  "additionalProperties": null,
+    //    //  "componentId": "/subscriptions/07db7d0b-a6cb-4e58-b07e-e1d541c39f5b/resourceGroups/SamLearnsAzureProd/providers/microsoft.insights/components/samsapp-prod-eu-appinsights",
+    //    //  "failedLocationCount": 2.0,
+    //    //  "odatatype": "Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria",
+    //    //  "webTestId": "/subscriptions/07db7d0b-a6cb-4e58-b07e-e1d541c39f5b/resourceGroups/SamLearnsAzureProd/providers/microsoft.insights/webtests/Availability home page test-samsapp-prod-eu-appinsights",
+    //    //  "actions": []
+    //    }
+    //  }
+
+  ],
+  "outputs": {
+    "applicationInsightsInstrumentationKeyOutput": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Insights/components', parameters('applicationInsightsName')), '2014-04-01').InstrumentationKey]"
+    }
+  }
+}

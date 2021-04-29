@@ -19,6 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DevOpsMetrics.Core\DevOpsMetrics.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="test.runsettings">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

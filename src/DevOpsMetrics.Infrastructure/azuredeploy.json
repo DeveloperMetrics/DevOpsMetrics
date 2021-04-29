@@ -1,81 +1,43 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "sites_devopsmetrics_prod_eu_web_name": {
-      "defaultValue": "devopsmetrics-prod-eu-web",
+    "resourceLocation": {
+      "defaultValue": "eastus",
       "type": "String"
     },
-    "serverfarms_ASP_DevOpsMetrics_83da_name": {
-      "defaultValue": "ASP-DevOpsMetrics-83da",
-      "type": "String"
-    },
-    "sites_devopsmetrics_prod_eu_service_name": {
-      "defaultValue": "devopsmetrics-prod-eu-service",
-      "type": "String"
-    },
-    "sites_devopsmetrics_prod_eu_function_name": {
-      "defaultValue": "devopsmetrics-prod-eu-function",
-      "type": "String"
-    },
-    "serverfarms_devopsmetrics_prod_eu_hosting_name": {
-      "defaultValue": "devopsmetrics-prod-eu-hosting",
-      "type": "String"
-    },
-    "storageAccounts_devopsmetricsprodeustore_name": {
+    "storageName": {
       "defaultValue": "devopsmetricsprodeustore",
       "type": "String"
     },
-    "components_devopsmetrics_prod_eu_appinsights_name": {
+    "hostingName": {
+      "defaultValue": "devopsmetrics-prod-eu-hosting",
+      "type": "String"
+    },
+    "appInsightsName": {
       "defaultValue": "devopsmetrics-prod-eu-appinsights",
       "type": "String"
     },
-    "actionGroups_DevOpsMetricsMonitoringActionName_name": {
-      "defaultValue": "DevOpsMetricsMonitoringActionName",
+    "websiteName": {
+      "defaultValue": "devopsmetrics-prod-eu-web",
       "type": "String"
     },
-    "metricAlerts_ServerErrors_devopsmetrics_prod_eu_web_name": {
-      "defaultValue": "ServerErrors devopsmetrics-prod-eu-web",
+    "serviceName": {
+      "defaultValue": "devopsmetrics-prod-eu-service",
       "type": "String"
     },
-    "metricAlerts_ServerErrors_devopsmetrics_prod_eu_service_name": {
-      "defaultValue": "ServerErrors devopsmetrics-prod-eu-service",
-      "type": "String"
-    },
-    "smartdetectoralertrules_failure_anomalies___devopsmetrics_prod_eu_appinsights_name": {
-      "defaultValue": "failure anomalies - devopsmetrics-prod-eu-appinsights",
-      "type": "String"
-    },
-    "actiongroups_application_insights_smart_detection_externalid": {
-      "defaultValue": "/subscriptions/07db7d0b-a6cb-4e58-b07e-e1d541c39f5b/resourceGroups/samlearnsazuredev/providers/microsoft.insights/actiongroups/application insights smart detection",
-      "type": "String"
-    },
-    "actiongroups_samsapprecommendationsgroup_externalid": {
-      "defaultValue": "/subscriptions/07db7d0b-a6cb-4e58-b07e-e1d541c39f5b/resourceGroups/activitylogalerts/providers/microsoft.insights/actiongroups/samsapprecommendationsgroup",
+    "functionName": {
+      "defaultValue": "devopsmetrics-prod-eu-function",
       "type": "String"
     }
   },
   "variables": {},
   "resources": [
     {
-      "type": "microsoft.insights/components",
-      "apiVersion": "2018-05-01-preview",
-      "name": "[parameters('components_devopsmetrics_prod_eu_appinsights_name')]",
-      "location": "eastus",
-      "kind": "web",
-      "properties": {
-        "Application_Type": "web",
-        "Request_Source": "IbizaWebAppExtensionCreate",
-        "RetentionInDays": 90,
-        "publicNetworkAccessForIngestion": "Enabled",
-        "publicNetworkAccessForQuery": "Enabled"
-      }
-    },
-    {
       "type": "Microsoft.Storage/storageAccounts",
-      "apiVersion": "2019-06-01",
-      "name": "[parameters('storageAccounts_devopsmetricsprodeustore_name')]",
-      "location": "eastus",
+      "apiVersion": "2021-01-01",
+      "name": "[parameters('storageName')]",
+      "location": "[parameters('resourceLocation')]",
       "sku": {
         "name": "Standard_LRS",
         "tier": "Standard"
@@ -107,33 +69,174 @@
       }
     },
     {
-      "type": "Microsoft.Web/serverfarms",
-      "apiVersion": "2018-02-01",
-      "name": "[parameters('serverfarms_ASP_DevOpsMetrics_83da_name')]",
-      "location": "East US",
+      "type": "Microsoft.Storage/storageAccounts/blobServices",
+      "apiVersion": "2021-01-01",
+      "name": "[concat(parameters('storageName'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+      ],
       "sku": {
-        "name": "Y1",
-        "tier": "Dynamic",
-        "size": "Y1",
-        "family": "Y",
-        "capacity": 0
+        "name": "Standard_LRS",
+        "tier": "Standard"
       },
-      "kind": "functionapp",
       "properties": {
-        "perSiteScaling": false,
-        "maximumElasticWorkerCount": 1,
-        "isSpot": false,
-        "reserved": false,
-        "isXenon": false,
-        "hyperV": false,
-        "targetWorkerCount": 0,
-        "targetWorkerSizeId": 0
+        "cors": {
+          "corsRules": []
+        },
+        "deleteRetentionPolicy": {
+          "enabled": false
+        }
       }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/fileServices",
+      "apiVersion": "2021-01-01",
+      "name": "[concat(parameters('storageName'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+      ],
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "properties": {
+        "protocolSettings": {
+          "smb": {}
+        },
+        "cors": {
+          "corsRules": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/queueServices",
+      "apiVersion": "2021-01-01",
+      "name": "[concat(parameters('storageName'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+      ],
+      "properties": {
+        "cors": {
+          "corsRules": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/tableServices",
+      "apiVersion": "2021-01-01",
+      "name": "[concat(parameters('storageName'), '/default')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+      ],
+      "properties": {
+        "cors": {
+          "corsRules": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
+      "apiVersion": "2021-01-01",
+      "name": "[concat(parameters('storageName'), '/default/DevOpsAzureDevOpsBuilds')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
+      "apiVersion": "2021-01-01",
+      "name": "[concat(parameters('storageName'), '/default/DevOpsAzureDevOpsPRCommits')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
+      "apiVersion": "2021-01-01",
+      "name": "[concat(parameters('storageName'), '/default/DevOpsAzureDevOpsPRs')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
+      "apiVersion": "2021-01-01",
+      "name": "[concat(parameters('storageName'), '/default/DevOpsAzureDevOpsSettings')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
+      "apiVersion": "2021-01-01",
+      "name": "[concat(parameters('storageName'), '/default/DevOpsChangeFailureRate')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
+      "apiVersion": "2021-01-01",
+      "name": "[concat(parameters('storageName'), '/default/DevOpsGitHubPRCommits')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
+      "apiVersion": "2021-01-01",
+      "name": "[concat(parameters('storageName'), '/default/DevOpsGitHubPRs')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
+      "apiVersion": "2021-01-01",
+      "name": "[concat(parameters('storageName'), '/default/DevOpsGitHubRuns')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
+      "apiVersion": "2021-01-01",
+      "name": "[concat(parameters('storageName'), '/default/DevOpsGitHubSettings')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
+      "apiVersion": "2021-01-01",
+      "name": "[concat(parameters('storageName'), '/default/DevOpsLog')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
+      "apiVersion": "2021-01-01",
+      "name": "[concat(parameters('storageName'), '/default/DevOpsMTTR')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+      ]
     },
     {
       "type": "Microsoft.Web/serverfarms",
       "apiVersion": "2018-02-01",
-      "name": "[parameters('serverfarms_devopsmetrics_prod_eu_hosting_name')]",
+      "name": "[parameters('hostingName')]",
       "location": "East US",
       "sku": {
         "name": "S1",
@@ -155,133 +258,47 @@
       }
     },
     {
-      "type": "microsoft.alertsmanagement/smartdetectoralertrules",
-      "apiVersion": "2019-06-01",
-      "name": "[parameters('smartdetectoralertrules_failure_anomalies___devopsmetrics_prod_eu_appinsights_name')]",
-      "location": "global",
-      "dependsOn": [
-        "[resourceId('microsoft.insights/components', parameters('components_devopsmetrics_prod_eu_appinsights_name'))]"
-      ],
+      "type": "microsoft.insights/components",
+      "apiVersion": "2020-02-02-preview",
+      "name": "[parameters('appInsightsName')]",
+      "location": "[parameters('resourceLocation')]",
+      "kind": "web",
       "properties": {
-        "description": "Failure Anomalies notifies you of an unusual rise in the rate of failed HTTP requests or dependency calls.",
-        "state": "Enabled",
-        "severity": "Sev3",
-        "frequency": "PT1M",
-        "detector": {
-          "id": "FailureAnomaliesDetector",
-          "name": "Failure Anomalies",
-          "description": "Detects if your application experiences an abnormal rise in the rate of HTTP requests or dependency calls that are reported as failed. The anomaly detection uses machine learning algorithms and occurs in near real time, therefore there's no need to define a frequency for this signal.<br/></br/>To help you triage and diagnose the problem, an analysis of the characteristics of the failures and related telemetry is provided with the detection. This feature works for any app, hosted in the cloud or on your own servers, that generates request or dependency telemetry - for example, if you have a worker role that calls <a class=\"ext-smartDetecor-link\" href=\\\"https://docs.microsoft.com/azure/application-insights/app-insights-api-custom-events-metrics#trackrequest\\\" target=\\\"_blank\\\">TrackRequest()</a> or <a class=\"ext-smartDetecor-link\" href=\\\"https://docs.microsoft.com/azure/application-insights/app-insights-api-custom-events-metrics#trackdependency\\\" target=\\\"_blank\\\">TrackDependency()</a>.<br/><br/><a class=\"ext-smartDetecor-link\" href=\\\"https://docs.microsoft.com/azure/azure-monitor/app/proactive-failure-diagnostics\\\" target=\\\"_blank\\\">Learn more about Failure Anomalies</a>",
-          "supportedResourceTypes": [
-            "ApplicationInsights"
-          ]
-        },
-        "scope": [
-          "[resourceId('microsoft.insights/components', parameters('components_devopsmetrics_prod_eu_appinsights_name'))]"
-        ],
-        "actionGroups": {
-          "groupIds": [
-            "[parameters('actiongroups_application_insights_smart_detection_externalid')]"
-          ]
-        }
-      }
-    },
-    {
-      "type": "microsoft.insights/actionGroups",
-      "apiVersion": "2019-03-01",
-      "name": "[parameters('actionGroups_DevOpsMetricsMonitoringActionName_name')]",
-      "location": "Global",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_function_name'))]"
-      ],
-      "properties": {
-        "groupShortName": "devopsmetric",
-        "enabled": true,
-        "emailReceivers": [],
-        "smsReceivers": [],
-        "webhookReceivers": [],
-        "itsmReceivers": [],
-        "azureAppPushReceivers": [],
-        "automationRunbookReceivers": [],
-        "voiceReceivers": [],
-        "logicAppReceivers": [],
-        "azureFunctionReceivers": [
-          {
-            "name": "DevOpsMetricsActionName",
-            "functionAppResourceId": "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_function_name'))]",
-            "functionName": "AzureAlertProcessor",
-            "httpTriggerUrl": "https://devopsmetrics-prod-eu-function.azurewebsites.net/api/azurealertprocessor?code=tiRtJVFlOIDltMweJ6/6Q0bHKSFYkWs8afwvlLfnhXib4NKC495OsQ==",
-            "useCommonAlertSchema": false
-          }
-        ]
-      }
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts/blobServices",
-      "apiVersion": "2019-06-01",
-      "name": "[concat(parameters('storageAccounts_devopsmetricsprodeustore_name'), '/default')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_devopsmetricsprodeustore_name'))]"
-      ],
-      "sku": {
-        "name": "Standard_LRS",
-        "tier": "Standard"
-      },
-      "properties": {
-        "cors": {
-          "corsRules": []
-        },
-        "deleteRetentionPolicy": {
-          "enabled": false
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts/fileServices",
-      "apiVersion": "2019-06-01",
-      "name": "[concat(parameters('storageAccounts_devopsmetricsprodeustore_name'), '/default')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_devopsmetricsprodeustore_name'))]"
-      ],
-      "sku": {
-        "name": "Standard_LRS",
-        "tier": "Standard"
-      },
-      "properties": {
-        "cors": {
-          "corsRules": []
-        }
+        "Application_Type": "web",
+        "publicNetworkAccessForIngestion": "Enabled",
+        "publicNetworkAccessForQuery": "Enabled"
       }
     },
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
-      "name": "[parameters('sites_devopsmetrics_prod_eu_function_name')]",
+      "name": "[parameters('functionName')]",
       "location": "East US",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_DevOpsMetrics_83da_name'))]"
+        "[resourceId('Microsoft.Web/serverfarms', parameters('hostingName'))]"
       ],
       "kind": "functionapp",
       "properties": {
         "enabled": true,
         "hostNameSslStates": [
           {
-            "name": "[concat(parameters('sites_devopsmetrics_prod_eu_function_name'), '.azurewebsites.net')]",
+            "name": "[concat(parameters('functionName'), '.azurewebsites.net')]",
             "sslState": "Disabled",
             "hostType": "Standard"
           },
           {
-            "name": "[concat(parameters('sites_devopsmetrics_prod_eu_function_name'), '.scm.azurewebsites.net')]",
+            "name": "[concat(parameters('functionName'), '.scm.azurewebsites.net')]",
             "sslState": "Disabled",
             "hostType": "Repository"
           }
         ],
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_DevOpsMetrics_83da_name'))]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingName'))]",
         "reserved": false,
         "isXenon": false,
         "hyperV": false,
         "siteConfig": {},
         "scmSiteAlsoStopped": false,
-        "clientAffinityEnabled": true,
+        "clientAffinityEnabled": false,
         "clientCertEnabled": false,
         "hostNamesDisabled": false,
         "containerSize": 1536,
@@ -293,27 +310,27 @@
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
-      "name": "[parameters('sites_devopsmetrics_prod_eu_service_name')]",
+      "name": "[parameters('serviceName')]",
       "location": "East US",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_devopsmetrics_prod_eu_hosting_name'))]"
+        "[resourceId('Microsoft.Web/serverfarms', parameters('hostingName'))]"
       ],
       "kind": "app",
       "properties": {
         "enabled": true,
         "hostNameSslStates": [
           {
-            "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '.azurewebsites.net')]",
+            "name": "[concat(parameters('serviceName'), '.azurewebsites.net')]",
             "sslState": "Disabled",
             "hostType": "Standard"
           },
           {
-            "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '.scm.azurewebsites.net')]",
+            "name": "[concat(parameters('serviceName'), '.scm.azurewebsites.net')]",
             "sslState": "Disabled",
             "hostType": "Repository"
           }
         ],
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_devopsmetrics_prod_eu_hosting_name'))]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingName'))]",
         "reserved": false,
         "isXenon": false,
         "hyperV": false,
@@ -326,1019 +343,137 @@
         "dailyMemoryTimeQuota": 0,
         "httpsOnly": false,
         "redundancyMode": "None"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/slots",
+      "apiVersion": "2018-11-01",
+      "name": "[concat(parameters('serviceName'), '/staging')]",
+      "location": "East US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('serviceName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', parameters('hostingName'))]"
+      ],
+      "kind": "app",
+      "properties": {
+        "enabled": true,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingName'))]",
+        "reserved": false,
+        "isXenon": false,
+        "hyperV": false,
+        "siteConfig": {},
+        "scmSiteAlsoStopped": false,
+        "clientAffinityEnabled": true,
+        "clientCertEnabled": false,
+        "hostNamesDisabled": false,
+        "containerSize": 0,
+        "dailyMemoryTimeQuota": 0,
+        "httpsOnly": false,
+        "redundancyMode": "None"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/slots/config",
+      "apiVersion": "2018-11-01",
+      "name": "[concat(parameters('serviceName'), '/staging/web')]",
+      "location": "East US",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites/slots', parameters('serviceName'), 'staging')]",
+        "[resourceId('Microsoft.Web/sites', parameters('serviceName'))]"
+      ],
+      "properties": {
+        "numberOfWorkers": 1,
+        "defaultDocuments": [
+          "Default.htm",
+          "Default.html",
+          "Default.asp",
+          "index.htm",
+          "index.html",
+          "iisstart.htm",
+          "default.aspx",
+          "index.php",
+          "hostingstart.html"
+        ],
+        "netFrameworkVersion": "v4.0",
+        "requestTracingEnabled": false,
+        "remoteDebuggingEnabled": false,
+        "httpLoggingEnabled": false,
+        "logsDirectorySizeLimit": 35,
+        "detailedErrorLoggingEnabled": false,
+        "publishingUsername": "$devopsmetrics-prod-eu-service__staging",
+        "azureStorageAccounts": {},
+        "scmType": "None",
+        "use32BitWorkerProcess": true,
+        "webSocketsEnabled": false,
+        "alwaysOn": false,
+        "managedPipelineMode": "Integrated",
+        "virtualApplications": [
+          {
+            "virtualPath": "/",
+            "physicalPath": "site\\wwwroot",
+            "preloadEnabled": false
+          }
+        ],
+        "loadBalancing": "LeastRequests",
+        "experiments": {
+          "rampUpRules": []
+        },
+        "autoHealEnabled": false,
+        "localMySqlEnabled": false,
+        "ipSecurityRestrictions": [
+          {
+            "ipAddress": "Any",
+            "action": "Allow",
+            "priority": 1,
+            "name": "Allow all",
+            "description": "Allow all access"
+          }
+        ],
+        "scmIpSecurityRestrictions": [
+          {
+            "ipAddress": "Any",
+            "action": "Allow",
+            "priority": 1,
+            "name": "Allow all",
+            "description": "Allow all access"
+          }
+        ],
+        "scmIpSecurityRestrictionsUseMain": false,
+        "http20Enabled": false,
+        "minTlsVersion": "1.2",
+        "ftpsState": "AllAllowed",
+        "reservedInstanceCount": 0
       }
     },
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
-      "name": "[parameters('sites_devopsmetrics_prod_eu_web_name')]",
+      "name": "[parameters('websiteName')]",
       "location": "East US",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_devopsmetrics_prod_eu_hosting_name'))]"
+        "[resourceId('Microsoft.Web/serverfarms', parameters('hostingName'))]"
       ],
       "kind": "app",
+      "identity": {
+        "principalId": "9c6e4522-7210-4fc7-89d2-d4ac734943aa",
+        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+        "type": "SystemAssigned"
+      },
       "properties": {
         "enabled": true,
         "hostNameSslStates": [
           {
-            "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '.azurewebsites.net')]",
+            "name": "[concat(parameters('websiteName'), '.azurewebsites.net')]",
             "sslState": "Disabled",
             "hostType": "Standard"
           },
           {
-            "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '.scm.azurewebsites.net')]",
+            "name": "[concat(parameters('websiteName'), '.scm.azurewebsites.net')]",
             "sslState": "Disabled",
             "hostType": "Repository"
           }
         ],
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_devopsmetrics_prod_eu_hosting_name'))]",
-        "reserved": false,
-        "isXenon": false,
-        "hyperV": false,
-        "siteConfig": {},
-        "scmSiteAlsoStopped": false,
-        "clientAffinityEnabled": true,
-        "clientCertEnabled": false,
-        "hostNamesDisabled": false,
-        "containerSize": 0,
-        "dailyMemoryTimeQuota": 0,
-        "httpsOnly": false,
-        "redundancyMode": "None"
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/config",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_function_name'), '/web')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_function_name'))]"
-      ],
-      "properties": {
-        "numberOfWorkers": -1,
-        "defaultDocuments": [
-          "Default.htm",
-          "Default.html",
-          "Default.asp",
-          "index.htm",
-          "index.html",
-          "iisstart.htm",
-          "default.aspx",
-          "index.php"
-        ],
-        "netFrameworkVersion": "v4.0",
-        "phpVersion": "5.6",
-        "requestTracingEnabled": false,
-        "remoteDebuggingEnabled": false,
-        "httpLoggingEnabled": false,
-        "logsDirectorySizeLimit": 35,
-        "detailedErrorLoggingEnabled": false,
-        "publishingUsername": "$devopsmetrics-prod-eu-function",
-        "scmType": "None",
-        "use32BitWorkerProcess": true,
-        "webSocketsEnabled": false,
-        "alwaysOn": false,
-        "managedPipelineMode": "Integrated",
-        "virtualApplications": [
-          {
-            "virtualPath": "/",
-            "physicalPath": "site\\wwwroot",
-            "preloadEnabled": false
-          }
-        ],
-        "loadBalancing": "LeastRequests",
-        "experiments": {
-          "rampUpRules": []
-        },
-        "autoHealEnabled": false,
-        "cors": {
-          "allowedOrigins": [
-            "https://functions.azure.com",
-            "https://functions-staging.azure.com",
-            "https://functions-next.azure.com"
-          ],
-          "supportCredentials": false
-        },
-        "localMySqlEnabled": false,
-        "ipSecurityRestrictions": [
-          {
-            "ipAddress": "Any",
-            "action": "Allow",
-            "priority": 1,
-            "name": "Allow all",
-            "description": "Allow all access"
-          }
-        ],
-        "scmIpSecurityRestrictions": [
-          {
-            "ipAddress": "Any",
-            "action": "Allow",
-            "priority": 1,
-            "name": "Allow all",
-            "description": "Allow all access"
-          }
-        ],
-        "scmIpSecurityRestrictionsUseMain": false,
-        "http20Enabled": false,
-        "minTlsVersion": "1.2",
-        "ftpsState": "AllAllowed",
-        "reservedInstanceCount": 0
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/config",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/web')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "numberOfWorkers": 1,
-        "defaultDocuments": [
-          "Default.htm",
-          "Default.html",
-          "Default.asp",
-          "index.htm",
-          "index.html",
-          "iisstart.htm",
-          "default.aspx",
-          "index.php",
-          "hostingstart.html"
-        ],
-        "netFrameworkVersion": "v4.0",
-        "requestTracingEnabled": false,
-        "remoteDebuggingEnabled": false,
-        "remoteDebuggingVersion": "VS2019",
-        "httpLoggingEnabled": false,
-        "logsDirectorySizeLimit": 35,
-        "detailedErrorLoggingEnabled": false,
-        "publishingUsername": "$devopsmetrics-prod-eu-service",
-        "scmType": "None",
-        "use32BitWorkerProcess": true,
-        "webSocketsEnabled": false,
-        "alwaysOn": false,
-        "managedPipelineMode": "Integrated",
-        "virtualApplications": [
-          {
-            "virtualPath": "/",
-            "physicalPath": "site\\wwwroot",
-            "preloadEnabled": false
-          }
-        ],
-        "loadBalancing": "LeastRequests",
-        "experiments": {
-          "rampUpRules": []
-        },
-        "autoHealEnabled": false,
-        "localMySqlEnabled": false,
-        "ipSecurityRestrictions": [
-          {
-            "ipAddress": "Any",
-            "action": "Allow",
-            "priority": 1,
-            "name": "Allow all",
-            "description": "Allow all access"
-          }
-        ],
-        "scmIpSecurityRestrictions": [
-          {
-            "ipAddress": "Any",
-            "action": "Allow",
-            "priority": 1,
-            "name": "Allow all",
-            "description": "Allow all access"
-          }
-        ],
-        "scmIpSecurityRestrictionsUseMain": false,
-        "http20Enabled": false,
-        "minTlsVersion": "1.2",
-        "ftpsState": "AllAllowed",
-        "reservedInstanceCount": 0
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/config",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/web')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "numberOfWorkers": 1,
-        "defaultDocuments": [
-          "Default.htm",
-          "Default.html",
-          "Default.asp",
-          "index.htm",
-          "index.html",
-          "iisstart.htm",
-          "default.aspx",
-          "index.php",
-          "hostingstart.html"
-        ],
-        "netFrameworkVersion": "v4.0",
-        "requestTracingEnabled": false,
-        "remoteDebuggingEnabled": false,
-        "remoteDebuggingVersion": "VS2019",
-        "httpLoggingEnabled": false,
-        "logsDirectorySizeLimit": 35,
-        "detailedErrorLoggingEnabled": false,
-        "publishingUsername": "$devopsmetrics-prod-eu-web",
-        "scmType": "None",
-        "use32BitWorkerProcess": true,
-        "webSocketsEnabled": false,
-        "alwaysOn": false,
-        "managedPipelineMode": "Integrated",
-        "virtualApplications": [
-          {
-            "virtualPath": "/",
-            "physicalPath": "site\\wwwroot",
-            "preloadEnabled": false
-          }
-        ],
-        "loadBalancing": "LeastRequests",
-        "experiments": {
-          "rampUpRules": []
-        },
-        "autoHealEnabled": false,
-        "localMySqlEnabled": false,
-        "ipSecurityRestrictions": [
-          {
-            "ipAddress": "Any",
-            "action": "Allow",
-            "priority": 1,
-            "name": "Allow all",
-            "description": "Allow all access"
-          }
-        ],
-        "scmIpSecurityRestrictions": [
-          {
-            "ipAddress": "Any",
-            "action": "Allow",
-            "priority": 1,
-            "name": "Allow all",
-            "description": "Allow all access"
-          }
-        ],
-        "scmIpSecurityRestrictionsUseMain": false,
-        "http20Enabled": false,
-        "minTlsVersion": "1.2",
-        "ftpsState": "AllAllowed",
-        "reservedInstanceCount": 0
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_function_name'), '/00cfe101d52b2522b9b268e710731959b03cffd31595191625735')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_function_name'))]"
-      ],
-      "properties": {
-        "status": 3,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"00cfe101d52b2522b9b268e710731959b03cffd3\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"production\"}",
-        "start_time": "2020-07-19T20:47:10.7630425Z",
-        "end_time": "2020-07-19T20:47:10.7630425Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_function_name'), '/01b0cefcbcf51f222066c62c87761acabb99b3931595193708906')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_function_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"01b0cefcbcf51f222066c62c87761acabb99b393\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"production\"}",
-        "start_time": "2020-07-19T21:21:49.6666577Z",
-        "end_time": "2020-07-19T21:21:49.6666577Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_function_name'), '/04b91506af8d869aacc0b5560ef36d1ba7bdfb8f1595191626089')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_function_name'))]"
-      ],
-      "properties": {
-        "status": 3,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"04b91506af8d869aacc0b5560ef36d1ba7bdfb8f\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"production\"}",
-        "start_time": "2020-07-19T20:47:07.9349207Z",
-        "end_time": "2020-07-19T20:47:07.9349207Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/0c04b547f76c4e6495968b01e7a94fed')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-25T15:56:10.8212943Z",
-        "end_time": "2020-07-25T15:56:17.2639021Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/18d66d28ac206a337283f203e4f5124578a6cd061595177076208')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"18d66d28ac206a337283f203e4f5124578a6cd06\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"production\"}",
-        "start_time": "2020-07-19T16:44:36.5861084Z",
-        "end_time": "2020-07-19T16:44:36.5861084Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/18d66d28ac206a337283f203e4f5124578a6cd061595177146357')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"18d66d28ac206a337283f203e4f5124578a6cd06\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"production\"}",
-        "start_time": "2020-07-19T16:45:46.7451996Z",
-        "end_time": "2020-07-19T16:45:46.7451996Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/2b312151b29649f4b810f6846e490ef6')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T21:42:12.2553497Z",
-        "end_time": "2020-07-19T21:42:19.4449222Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/2c4d63bef63841eb80885fccabe53374')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T21:41:25.435563Z",
-        "end_time": "2020-07-19T21:41:31.4699236Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/30ba1b922c3e46ec919a7baf6138ef56')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T17:56:02.4342071Z",
-        "end_time": "2020-07-19T17:56:25.5892794Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/31f91448e5474fe882d517ee884318c1')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T17:57:06.567436Z",
-        "end_time": "2020-07-19T17:57:13.1775776Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/4b1de12e72be4f729c40924f65e590da')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T16:44:18.7320677Z",
-        "end_time": "2020-07-19T16:44:25.0915541Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_function_name'), '/505762a84f8245ed819df9d373a25345')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_function_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T21:21:31.9218732Z",
-        "end_time": "2020-07-19T21:21:45.3017148Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/55bbe6d51ff74e6fbe49c5192a88417c')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T17:56:02.6870593Z",
-        "end_time": "2020-07-19T17:56:22.823299Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_function_name'), '/678ab08355fa4faaa890796760141e78')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_function_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-25T15:58:45.7678241Z",
-        "end_time": "2020-07-25T15:58:57.7273122Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/740737ae43814fd38547fc7a691e3c1b')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T16:45:31.7942179Z",
-        "end_time": "2020-07-19T16:45:40.4653718Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_function_name'), '/80fbb5d122da016e5c605b1acd03b5daf380954e1595684757794')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_function_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"80fbb5d122da016e5c605b1acd03b5daf380954e\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"production\"}",
-        "start_time": "2020-07-25T13:45:58.2963531Z",
-        "end_time": "2020-07-25T13:45:58.2963531Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/91364819c001756aed4937abc914dfbc12bb61861595194896608')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"91364819c001756aed4937abc914dfbc12bb6186\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"staging\"}",
-        "start_time": "2020-07-19T21:41:36.9488164Z",
-        "end_time": "2020-07-19T21:41:36.9488164Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/91364819c001756aed4937abc914dfbc12bb61861595194944605')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"91364819c001756aed4937abc914dfbc12bb6186\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"staging\"}",
-        "start_time": "2020-07-19T21:42:24.980008Z",
-        "end_time": "2020-07-19T21:42:24.980008Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_function_name'), '/91364819c001756aed4937abc914dfbc12bb61861595195031850')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_function_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"91364819c001756aed4937abc914dfbc12bb6186\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"production\"}",
-        "start_time": "2020-07-19T21:43:52.0616999Z",
-        "end_time": "2020-07-19T21:43:52.0616999Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/9a7747c47d2d5bb025fb8533f0e93ddb01f9e17a1595692583138')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"9a7747c47d2d5bb025fb8533f0e93ddb01f9e17a\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"staging\"}",
-        "start_time": "2020-07-25T15:56:23.4854362Z",
-        "end_time": "2020-07-25T15:56:23.4854362Z",
-        "active": true
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/9a7747c47d2d5bb025fb8533f0e93ddb01f9e17a1595692638261')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"9a7747c47d2d5bb025fb8533f0e93ddb01f9e17a\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"staging\"}",
-        "start_time": "2020-07-25T15:57:18.7953816Z",
-        "end_time": "2020-07-25T15:57:18.7953816Z",
-        "active": true
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_function_name'), '/9a7747c47d2d5bb025fb8533f0e93ddb01f9e17a1595692741163')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_function_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"9a7747c47d2d5bb025fb8533f0e93ddb01f9e17a\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"production\"}",
-        "start_time": "2020-07-25T15:59:01.5872276Z",
-        "end_time": "2020-07-25T15:59:01.5872276Z",
-        "active": true
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/a34adffe4c179b64a4a92788e72764142b4fd2f21595181321285')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"a34adffe4c179b64a4a92788e72764142b4fd2f2\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"production\"}",
-        "start_time": "2020-07-19T17:55:21.8601Z",
-        "end_time": "2020-07-19T17:55:21.8601Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/a34adffe4c179b64a4a92788e72764142b4fd2f21595181386194')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"a34adffe4c179b64a4a92788e72764142b4fd2f2\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"production\"}",
-        "start_time": "2020-07-19T17:56:26.2924328Z",
-        "end_time": "2020-07-19T17:56:26.2924328Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/a34adffe4c179b64a4a92788e72764142b4fd2f21595181390557')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"a34adffe4c179b64a4a92788e72764142b4fd2f2\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"production\"}",
-        "start_time": "2020-07-19T17:56:30.8768931Z",
-        "end_time": "2020-07-19T17:56:30.8768931Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/a34adffe4c179b64a4a92788e72764142b4fd2f21595181438579')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"a34adffe4c179b64a4a92788e72764142b4fd2f2\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"production\"}",
-        "start_time": "2020-07-19T17:57:18.6445106Z",
-        "end_time": "2020-07-19T17:57:18.6445106Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/b14565ab5d7c4c359956bbf7e362006b')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-25T15:57:05.7497323Z",
-        "end_time": "2020-07-25T15:57:14.1762844Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_function_name'), '/b24866192c384c1ea26f63e204a04782')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_function_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-25T13:45:32.0571048Z",
-        "end_time": "2020-07-25T13:45:54.6458085Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_function_name'), '/df61eda36b004691a15e977d7137b9eb')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_function_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T21:43:34.9391568Z",
-        "end_time": "2020-07-19T21:43:48.3427219Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/ffdab14579f042d8aa88764b96ad39ee')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T17:55:03.290736Z",
-        "end_time": "2020-07-19T17:55:15.0580606Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/hostNameBindings",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_function_name'), '/', parameters('sites_devopsmetrics_prod_eu_function_name'), '.azurewebsites.net')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_function_name'))]"
-      ],
-      "properties": {
-        "siteName": "devopsmetrics-prod-eu-function",
-        "hostNameType": "Verified"
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/hostNameBindings",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/', parameters('sites_devopsmetrics_prod_eu_service_name'), '.azurewebsites.net')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "siteName": "devopsmetrics-prod-eu-service",
-        "hostNameType": "Verified"
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/hostNameBindings",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/', parameters('sites_devopsmetrics_prod_eu_web_name'), '.azurewebsites.net')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "siteName": "devopsmetrics-prod-eu-web",
-        "hostNameType": "Verified"
-      }
-    },
-    {
-      "type": "microsoft.insights/metricAlerts",
-      "apiVersion": "2018-03-01",
-      "name": "[parameters('metricAlerts_ServerErrors_devopsmetrics_prod_eu_service_name')]",
-      "location": "global",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]",
-        "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_DevOpsMetricsMonitoringActionName_name'))]"
-      ],
-      "properties": {
-        "severity": 3,
-        "enabled": true,
-        "scopes": [
-          "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-        ],
-        "evaluationFrequency": "PT1M",
-        "windowSize": "PT5M",
-        "criteria": {
-          "allOf": [
-            {
-              "threshold": 10,
-              "name": "Metric1",
-              "metricNamespace": "Microsoft.Web/sites",
-              "metricName": "Http5xx",
-              "dimensions": [],
-              "operator": "GreaterThan",
-              "timeAggregation": "Total",
-              "criterionType": "StaticThresholdCriterion"
-            }
-          ],
-          "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
-        },
-        "autoMitigate": true,
-        "targetResourceType": "Microsoft.Web/sites",
-        "targetResourceRegion": "eastus",
-        "actions": [
-          {
-            "actionGroupId": "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_DevOpsMetricsMonitoringActionName_name'))]",
-            "webHookProperties": {}
-          },
-          {
-            "actionGroupId": "[parameters('actiongroups_samsapprecommendationsgroup_externalid')]",
-            "webHookProperties": {}
-          }
-        ],
-        "description": ""
-      }
-    },
-    {
-      "type": "microsoft.insights/metricAlerts",
-      "apiVersion": "2018-03-01",
-      "name": "[parameters('metricAlerts_ServerErrors_devopsmetrics_prod_eu_web_name')]",
-      "location": "global",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]",
-        "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_DevOpsMetricsMonitoringActionName_name'))]"
-      ],
-      "properties": {
-        "severity": 3,
-        "enabled": true,
-        "scopes": [
-          "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-        ],
-        "evaluationFrequency": "PT1M",
-        "windowSize": "PT5M",
-        "criteria": {
-          "allOf": [
-            {
-              "threshold": 10,
-              "name": "Metric1",
-              "metricNamespace": "Microsoft.Web/sites",
-              "metricName": "Http5xx",
-              "dimensions": [],
-              "operator": "GreaterThan",
-              "timeAggregation": "Total",
-              "criterionType": "StaticThresholdCriterion"
-            }
-          ],
-          "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
-        },
-        "autoMitigate": true,
-        "targetResourceType": "Microsoft.Web/sites",
-        "targetResourceRegion": "eastus",
-        "actions": [
-          {
-            "actionGroupId": "[resourceId('microsoft.insights/actionGroups', parameters('actionGroups_DevOpsMetricsMonitoringActionName_name'))]",
-            "webHookProperties": {}
-          },
-          {
-            "actionGroupId": "[parameters('actiongroups_samsapprecommendationsgroup_externalid')]",
-            "webHookProperties": {}
-          }
-        ],
-        "description": ""
-      }
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-      "apiVersion": "2019-06-01",
-      "name": "[concat(parameters('storageAccounts_devopsmetricsprodeustore_name'), '/default/azure-webjobs-hosts')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_devopsmetricsprodeustore_name'), 'default')]",
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_devopsmetricsprodeustore_name'))]"
-      ],
-      "properties": {
-        "publicAccess": "None"
-      }
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-      "apiVersion": "2019-06-01",
-      "name": "[concat(parameters('storageAccounts_devopsmetricsprodeustore_name'), '/default/azure-webjobs-secrets')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_devopsmetricsprodeustore_name'), 'default')]",
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_devopsmetricsprodeustore_name'))]"
-      ],
-      "properties": {
-        "publicAccess": "None"
-      }
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
-      "apiVersion": "2019-06-01",
-      "name": "[concat(parameters('storageAccounts_devopsmetricsprodeustore_name'), '/default/devopsmetrics-prod-eu-functionb19b')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts/fileServices', parameters('storageAccounts_devopsmetricsprodeustore_name'), 'default')]",
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_devopsmetricsprodeustore_name'))]"
-      ],
-      "properties": {
-        "shareQuota": 5120
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/staging')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]",
-        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_devopsmetrics_prod_eu_hosting_name'))]"
-      ],
-      "kind": "app",
-      "properties": {
-        "enabled": true,
-        "hostNameSslStates": [
-          {
-            "name": "devopsmetrics-prod-eu-service-staging.azurewebsites.net",
-            "sslState": "Disabled",
-            "hostType": "Standard"
-          },
-          {
-            "name": "devopsmetrics-prod-eu-service-staging.scm.azurewebsites.net",
-            "sslState": "Disabled",
-            "hostType": "Repository"
-          }
-        ],
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_devopsmetrics_prod_eu_hosting_name'))]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingName'))]",
         "reserved": false,
         "isXenon": false,
         "hyperV": false,
@@ -1356,28 +491,16 @@
     {
       "type": "Microsoft.Web/sites/slots",
       "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/staging')]",
+      "name": "[concat(parameters('websiteName'), '/staging')]",
       "location": "East US",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]",
-        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_devopsmetrics_prod_eu_hosting_name'))]"
+        "[resourceId('Microsoft.Web/sites', parameters('websiteName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', parameters('hostingName'))]"
       ],
       "kind": "app",
       "properties": {
         "enabled": true,
-        "hostNameSslStates": [
-          {
-            "name": "devopsmetrics-prod-eu-web-staging.azurewebsites.net",
-            "sslState": "Disabled",
-            "hostType": "Standard"
-          },
-          {
-            "name": "devopsmetrics-prod-eu-web-staging.scm.azurewebsites.net",
-            "sslState": "Disabled",
-            "hostType": "Repository"
-          }
-        ],
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_devopsmetrics_prod_eu_hosting_name'))]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingName'))]",
         "reserved": false,
         "isXenon": false,
         "hyperV": false,
@@ -1395,11 +518,11 @@
     {
       "type": "Microsoft.Web/sites/slots/config",
       "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/staging/web')]",
+      "name": "[concat(parameters('websiteName'), '/staging/web')]",
       "location": "East US",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_service_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
+        "[resourceId('Microsoft.Web/sites/slots', parameters('websiteName'), 'staging')]",
+        "[resourceId('Microsoft.Web/sites', parameters('websiteName'))]"
       ],
       "properties": {
         "numberOfWorkers": 1,
@@ -1417,84 +540,11 @@
         "netFrameworkVersion": "v4.0",
         "requestTracingEnabled": false,
         "remoteDebuggingEnabled": false,
-        "remoteDebuggingVersion": "VS2019",
-        "httpLoggingEnabled": false,
-        "logsDirectorySizeLimit": 35,
-        "detailedErrorLoggingEnabled": false,
-        "publishingUsername": "$devopsmetrics-prod-eu-service__staging",
-        "scmType": "None",
-        "use32BitWorkerProcess": true,
-        "webSocketsEnabled": false,
-        "alwaysOn": false,
-        "managedPipelineMode": "Integrated",
-        "virtualApplications": [
-          {
-            "virtualPath": "/",
-            "physicalPath": "site\\wwwroot",
-            "preloadEnabled": false
-          }
-        ],
-        "loadBalancing": "LeastRequests",
-        "experiments": {
-          "rampUpRules": []
-        },
-        "autoHealEnabled": false,
-        "localMySqlEnabled": false,
-        "ipSecurityRestrictions": [
-          {
-            "ipAddress": "Any",
-            "action": "Allow",
-            "priority": 1,
-            "name": "Allow all",
-            "description": "Allow all access"
-          }
-        ],
-        "scmIpSecurityRestrictions": [
-          {
-            "ipAddress": "Any",
-            "action": "Allow",
-            "priority": 1,
-            "name": "Allow all",
-            "description": "Allow all access"
-          }
-        ],
-        "scmIpSecurityRestrictionsUseMain": false,
-        "http20Enabled": false,
-        "minTlsVersion": "1.2",
-        "ftpsState": "AllAllowed",
-        "reservedInstanceCount": 0
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/config",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/staging/web')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_web_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "numberOfWorkers": 1,
-        "defaultDocuments": [
-          "Default.htm",
-          "Default.html",
-          "Default.asp",
-          "index.htm",
-          "index.html",
-          "iisstart.htm",
-          "default.aspx",
-          "index.php",
-          "hostingstart.html"
-        ],
-        "netFrameworkVersion": "v4.0",
-        "requestTracingEnabled": false,
-        "remoteDebuggingEnabled": false,
-        "remoteDebuggingVersion": "VS2019",
         "httpLoggingEnabled": false,
         "logsDirectorySizeLimit": 35,
         "detailedErrorLoggingEnabled": false,
         "publishingUsername": "$devopsmetrics-prod-eu-web__staging",
+        "azureStorageAccounts": {},
         "scmType": "None",
         "use32BitWorkerProcess": true,
         "webSocketsEnabled": false,
@@ -1536,424 +586,6 @@
         "minTlsVersion": "1.2",
         "ftpsState": "AllAllowed",
         "reservedInstanceCount": 0
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/staging/00cfe101d52b2522b9b268e710731959b03cffd31595191530584')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_service_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"00cfe101d52b2522b9b268e710731959b03cffd3\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"staging\"}",
-        "start_time": "2020-07-19T20:45:30.9194652Z",
-        "end_time": "2020-07-19T20:45:30.9194652Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/staging/00cfe101d52b2522b9b268e710731959b03cffd31595191572945')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_web_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"00cfe101d52b2522b9b268e710731959b03cffd3\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"staging\"}",
-        "start_time": "2020-07-19T20:46:13.2825708Z",
-        "end_time": "2020-07-19T20:46:13.2825708Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/staging/01b0cefcbcf51f222066c62c87761acabb99b3931595193573962')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_service_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"01b0cefcbcf51f222066c62c87761acabb99b393\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"staging\"}",
-        "start_time": "2020-07-19T21:19:34.3117747Z",
-        "end_time": "2020-07-19T21:19:34.3117747Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/staging/01b0cefcbcf51f222066c62c87761acabb99b3931595193613864')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_web_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"01b0cefcbcf51f222066c62c87761acabb99b393\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"staging\"}",
-        "start_time": "2020-07-19T21:20:14.2059196Z",
-        "end_time": "2020-07-19T21:20:14.2059196Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/staging/04b91506af8d869aacc0b5560ef36d1ba7bdfb8f1595191554085')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_service_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"04b91506af8d869aacc0b5560ef36d1ba7bdfb8f\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"staging\"}",
-        "start_time": "2020-07-19T20:45:54.1568272Z",
-        "end_time": "2020-07-19T20:45:54.1568272Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/staging/04b91506af8d869aacc0b5560ef36d1ba7bdfb8f1595191599045')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_web_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"04b91506af8d869aacc0b5560ef36d1ba7bdfb8f\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"staging\"}",
-        "start_time": "2020-07-19T20:46:39.1092046Z",
-        "end_time": "2020-07-19T20:46:39.1092046Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/staging/239064ade08841d9b6e14a3fb4e6a0ff')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_service_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T20:45:48.7836474Z",
-        "end_time": "2020-07-19T20:45:52.7812246Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/staging/2943123a06204d21853908a24f907467')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_service_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T20:16:12.7133301Z",
-        "end_time": "2020-07-19T20:16:18.0176759Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/staging/3a0b4343ab844da2a8e842030d88e867')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_service_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-25T13:43:22.3531413Z",
-        "end_time": "2020-07-25T13:43:29.1634199Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/staging/4d857489bdf44469b317549b23aef0e3')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_service_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T20:45:24.5889451Z",
-        "end_time": "2020-07-19T20:45:28.4641092Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/staging/6170b7231c08471f8d01de713be73e85')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_web_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T21:20:08.2492851Z",
-        "end_time": "2020-07-19T21:20:12.3918667Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/staging/72aaaa4b3da0489d9474726327bd3720')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_web_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T20:17:03.7195258Z",
-        "end_time": "2020-07-19T20:17:09.5256558Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/staging/7855e0cc117948708d05f760ce71baa0')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_web_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-25T13:44:11.5330132Z",
-        "end_time": "2020-07-25T13:44:17.7498223Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/staging/80fbb5d122da016e5c605b1acd03b5daf380954e1595684614315')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_service_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"80fbb5d122da016e5c605b1acd03b5daf380954e\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"staging\"}",
-        "start_time": "2020-07-25T13:43:34.7737339Z",
-        "end_time": "2020-07-25T13:43:34.7737339Z",
-        "active": true
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/staging/80fbb5d122da016e5c605b1acd03b5daf380954e1595684663079')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_web_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"80fbb5d122da016e5c605b1acd03b5daf380954e\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"staging\"}",
-        "start_time": "2020-07-25T13:44:23.4601774Z",
-        "end_time": "2020-07-25T13:44:23.4601774Z",
-        "active": true
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/staging/8341d569514b499fa7ec72fc8f59187f')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_web_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T20:46:07.3094681Z",
-        "end_time": "2020-07-19T20:46:11.3827269Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/staging/91e4a9a32c4a77fdf2a431820fe6f0731ba2be5a1595189783697')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_service_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"91e4a9a32c4a77fdf2a431820fe6f0731ba2be5a\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"staging\"}",
-        "start_time": "2020-07-19T20:16:24.0999437Z",
-        "end_time": "2020-07-19T20:16:24.0999437Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/staging/91e4a9a32c4a77fdf2a431820fe6f0731ba2be5a1595189830537')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_web_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author": "samsmithnz",
-        "deployer": "GitHub",
-        "message": "{\"type\":\"Deployment\",\"sha\":\"91e4a9a32c4a77fdf2a431820fe6f0731ba2be5a\",\"repoName\":\"samsmithnz/DevOpsMetrics\",\"slotName\":\"staging\"}",
-        "start_time": "2020-07-19T20:17:10.8634588Z",
-        "end_time": "2020-07-19T20:17:10.8634588Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/staging/b5955db3593b458fb59072a588cb881e')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_web_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T20:46:28.9812825Z",
-        "end_time": "2020-07-19T20:46:32.9192233Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/deployments",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/staging/e33dd86f69a844499ec9116573a7bb65')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_service_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "status": 4,
-        "author_email": "N/A",
-        "author": "N/A",
-        "deployer": "GITHUB_ZIP_DEPLOY",
-        "message": "Created via a push deployment",
-        "start_time": "2020-07-19T21:19:28.2365314Z",
-        "end_time": "2020-07-19T21:19:31.8599168Z",
-        "active": false
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/hostNameBindings",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_service_name'), '/staging/', parameters('sites_devopsmetrics_prod_eu_service_name'), '-staging.azurewebsites.net')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_service_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_service_name'))]"
-      ],
-      "properties": {
-        "siteName": "devopsmetrics-prod-eu-service(staging)",
-        "hostNameType": "Verified"
-      }
-    },
-    {
-      "type": "Microsoft.Web/sites/slots/hostNameBindings",
-      "apiVersion": "2018-11-01",
-      "name": "[concat(parameters('sites_devopsmetrics_prod_eu_web_name'), '/staging/', parameters('sites_devopsmetrics_prod_eu_web_name'), '-staging.azurewebsites.net')]",
-      "location": "East US",
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/sites/slots', parameters('sites_devopsmetrics_prod_eu_web_name'), 'staging')]",
-        "[resourceId('Microsoft.Web/sites', parameters('sites_devopsmetrics_prod_eu_web_name'))]"
-      ],
-      "properties": {
-        "siteName": "devopsmetrics-prod-eu-web(staging)",
-        "hostNameType": "Verified"
       }
     }
   ]
