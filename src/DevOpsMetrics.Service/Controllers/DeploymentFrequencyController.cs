@@ -41,7 +41,7 @@ namespace DevOpsMetrics.Service.Controllers
                 }
 
                 DeploymentFrequencyDA da = new();
-                model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageConfig, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+                model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageConfig, organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
             {
