@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DevOpsMetrics.Tests.Core
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("L2Test")]
+    [TestCategory("L1Test")]
     [TestClass]
     public class SettingsDATests : BaseConfiguration
     {

@@ -8,11 +8,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DevOpsMetrics.Tests.Service
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("L1Test")]
     [TestClass]
-    public class LeadTimeForChangesControllerTests : BaseConfiguration
+    public class LeadTimeForChangesL1s : BaseConfiguration
     {
-        [TestCategory("ControllerTest")]
+        [TestCategory("L1Test")]
         [TestMethod]
         public async Task AzLeadTimeControllerIntegrationTest()
         {
@@ -25,11 +24,11 @@ namespace DevOpsMetrics.Tests.Service
             string buildName = "SamLearnsAzure.CI";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            bool useCache = true;         
+            bool useCache = true;
             LeadTimeForChangesController controller = new LeadTimeForChangesController(base.Configuration);
 
             //Act
-            LeadTimeForChangesModel model = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData,  organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+            LeadTimeForChangesModel model = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -55,7 +54,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        [TestCategory("ControllerTest")]
+        [TestCategory("L1Test")]
         [TestMethod]
         public async Task GHLeadTimeControllerIntegrationTest()
         {
@@ -71,7 +70,7 @@ namespace DevOpsMetrics.Tests.Service
             string workflowId = "1162561";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
-            bool useCache = true;            
+            bool useCache = true;
             LeadTimeForChangesController controller = new LeadTimeForChangesController(base.Configuration);
 
             //Act
@@ -101,7 +100,8 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        
+
+        [TestCategory("L1Test")]
         [TestMethod]
         public async Task AzLeadTimeControllerAPIIntegrationTest()
         {
@@ -144,7 +144,8 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        
+
+        [TestCategory("L1Test")]
         [TestMethod]
         public async Task GHLeadTimeControllerAPIIntegrationTest()
         {
@@ -187,7 +188,8 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        
+
+        [TestCategory("L1Test")]
         [TestMethod]
         public async Task AzLeadTimeControllerAPILiveIntegrationTest()
         {
@@ -239,7 +241,8 @@ namespace DevOpsMetrics.Tests.Service
             }
         }
 
-        
+
+        [TestCategory("L1Test")]
         [TestMethod]
         public async Task GHLeadTimeControllerAPILiveIntegrationTest()
         {
@@ -291,7 +294,8 @@ namespace DevOpsMetrics.Tests.Service
             }
         }
 
-        
+
+        [TestCategory("L1Test")]
         [TestMethod]
         public async Task GHFeatureFlagsLeadTimeControllerAPILiveIntegrationTest()
         {
@@ -343,92 +347,6 @@ namespace DevOpsMetrics.Tests.Service
             }
         }
 
-        
-        [TestMethod]
-        public void DeploymentsControllerEliteBadgeTest()
-        {
-            //Arrange
-            LeadTimeForChangesModel model = new LeadTimeForChangesModel
-            {
-                LeadTimeForChangesMetricDescription = "Elite",
-                LeadTimeForChangesMetric = 5.3f
-            };
-
-            //Act
-
-            //Assert
-            Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-Elite-brightgreen", model.BadgeURL);
-            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes%20(5.3%20hours)-Elite-brightgreen", model.BadgeWithMetricURL);
-        }
-
-        
-        [TestMethod]
-        public void DeploymentsControllerHighBadgeTest()
-        {
-            //Arrange
-            LeadTimeForChangesModel model = new LeadTimeForChangesModel
-            {
-                LeadTimeForChangesMetricDescription = "High"
-            };
-
-            //Act
-
-            //Assert
-            Assert.AreEqual("High", model.LeadTimeForChangesMetricDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-High-green", model.BadgeURL);
-        }
-
-        
-        [TestMethod]
-        public void DeploymentsControllerMediumBadgeTest()
-        {
-            //Arrange
-            LeadTimeForChangesModel model = new LeadTimeForChangesModel
-            {
-                LeadTimeForChangesMetricDescription = "Medium"
-            };
-
-            //Act
-
-            //Assert
-            Assert.AreEqual("Medium", model.LeadTimeForChangesMetricDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-Medium-orange", model.BadgeURL);
-        }
-
-        
-        [TestMethod]
-        public void DeploymentsControllerLowBadgeTest()
-        {
-            //Arrange
-            LeadTimeForChangesModel model = new LeadTimeForChangesModel
-            {
-                LeadTimeForChangesMetricDescription = "Low"
-            };
-
-            //Act
-
-            //Assert
-            Assert.AreEqual("Low", model.LeadTimeForChangesMetricDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-Low-red", model.BadgeURL);
-        }
-
-        
-        [TestMethod]
-        public void DeploymentsControllerNoneBadgeTest()
-        {
-            //Arrange
-            LeadTimeForChangesModel model = new LeadTimeForChangesModel
-            {
-                LeadTimeForChangesMetricDescription = "None"
-            };
-
-            //Act
-
-            //Assert
-            Assert.AreEqual("None", model.LeadTimeForChangesMetricDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-None-lightgrey", model.BadgeURL);
-        }
 
     }
 }

@@ -7,11 +7,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DevOpsMetrics.Tests.Service
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("L1Test")]
     [TestClass]
-    public class MeanTimeToRestoreControllerTests : BaseConfiguration
+    public class MeanTimeToRestoreL1s : BaseConfiguration
     {
-        [TestCategory("ControllerTest")]
+        [TestCategory("L1Test")]
         [TestMethod]
         public void AzureMTTRSampleControllerIntegrationTest()
         {
@@ -46,7 +45,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        [TestCategory("ControllerTest")]
+        [TestCategory("L1Test")]
         [TestMethod]
         public void AzureMTTRsAPIControllerIntegrationTest()
         {
@@ -83,94 +82,6 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.MaxNumberOfItems >= 0);
             Assert.IsTrue(model.TotalItems >= 0);
         }
-
-        
-        [TestMethod]
-        public void DeploymentsControllerEliteBadgeTest()
-        {
-            //Arrange
-            MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
-            {
-                MTTRAverageDurationDescription = "Elite",
-                MTTRAverageDurationInHours = 0.12f
-            };
-
-            //Act
-
-            //Assert
-            Assert.AreEqual("Elite", model.MTTRAverageDurationDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service-Elite-brightgreen", model.BadgeURL);
-            Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service%20(0.12%20hours)-Elite-brightgreen", model.BadgeWithMetricURL);
-        }
-
-        
-        [TestMethod]
-        public void DeploymentsControllerHighBadgeTest()
-        {
-            //Arrange
-            MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
-            {
-                MTTRAverageDurationDescription = "High"
-            };
-
-            //Act
-
-            //Assert
-            Assert.AreEqual("High", model.MTTRAverageDurationDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service-High-green", model.BadgeURL);
-        }
-
-        
-        [TestMethod]
-        public void DeploymentsControllerMediumBadgeTest()
-        {
-            //Arrange
-            MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
-            {
-                MTTRAverageDurationDescription = "Medium"
-            };
-
-            //Act
-
-            //Assert
-            Assert.AreEqual("Medium", model.MTTRAverageDurationDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service-Medium-orange", model.BadgeURL);
-        }
-
-        
-        [TestMethod]
-        public void DeploymentsControllerLowBadgeTest()
-        {
-            //Arrange
-            MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
-            {
-                MTTRAverageDurationDescription = "Low"
-            };
-
-            //Act
-
-            //Assert
-            Assert.AreEqual("Low", model.MTTRAverageDurationDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service-Low-red", model.BadgeURL);
-        }
-
-        
-        [TestMethod]
-        public void DeploymentsControllerNoneBadgeTest()
-        {
-            //Arrange
-            MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
-            {
-                MTTRAverageDurationDescription = "None"
-            };
-
-            //Act
-
-            //Assert
-            Assert.AreEqual("None", model.MTTRAverageDurationDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service-None-lightgrey", model.BadgeURL);
-        }
-
 
     }
 }

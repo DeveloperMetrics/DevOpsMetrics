@@ -7,9 +7,8 @@ namespace DevOpsMetrics.Tests.Service
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [TestCategory("L1Test")]
     [TestClass]
-    public class ChangeFailureRateControllerTests : BaseConfiguration
+    public class ChangeFailureRateTests : BaseConfiguration
     {
-        [TestCategory("ControllerTest")]
         [TestMethod]
         public void AzChangeFailureRateSampleControllerIntegrationTest()
         {
@@ -40,7 +39,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        [TestCategory("ControllerTest")]
+        [TestCategory("L1Test")]
         [TestMethod]
         public void AzChangeFailureRateLiveControllerIntegrationTest()
         {
@@ -70,7 +69,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        [TestCategory("ControllerTest")]
+        [TestCategory("L1Test")]
         [TestMethod]
         public void GHChangeFailureRateSampleControllerIntegrationTest()
         {
@@ -101,7 +100,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        [TestCategory("ControllerTest")]
+        [TestCategory("L1Test")]
         [TestMethod]
         public void GHChangeFailureRateLiveControllerIntegrationTest()
         {
@@ -132,92 +131,6 @@ namespace DevOpsMetrics.Tests.Service
 
         }
 
-        
-        [TestMethod]
-        public void ChangeFailureRateControllerEliteBadgeTest()
-        {
-            //Arrange
-            ChangeFailureRateModel model = new ChangeFailureRateModel
-            {
-                ChangeFailureRateMetricDescription = "Elite",
-                ChangeFailureRateMetric = 0
-            };
-
-            //Act
-
-            //Assert
-            Assert.AreEqual("Elite", model.ChangeFailureRateMetricDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-Elite-brightgreen", model.BadgeURL);
-            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate%20(0.00%25)-Elite-brightgreen", model.BadgeWithMetricURL);
-        }
-
-        
-        [TestMethod]
-        public void ChangeFailureRateControllerHighBadgeTest()
-        {
-            //Arrange
-            ChangeFailureRateModel model = new ChangeFailureRateModel
-            {
-                ChangeFailureRateMetricDescription = "High"
-            };
-
-            //Act
-
-            //Assert
-            Assert.AreEqual("High", model.ChangeFailureRateMetricDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-High-green", model.BadgeURL);
-        }
-
-        
-        [TestMethod]
-        public void ChangeFailureRateControllerMediumBadgeTest()
-        {
-            //Arrange
-            ChangeFailureRateModel model = new ChangeFailureRateModel
-            {
-                ChangeFailureRateMetricDescription = "Medium"
-            };
-
-            //Act
-
-            //Assert
-            Assert.AreEqual("Medium", model.ChangeFailureRateMetricDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-Medium-orange", model.BadgeURL);
-        }
-
-        
-        [TestMethod]
-        public void ChangeFailureRateControllerLowBadgeTest()
-        {
-            //Arrange
-            ChangeFailureRateModel model = new ChangeFailureRateModel
-            {
-                ChangeFailureRateMetricDescription = "Low"
-            };
-
-            //Act
-
-            //Assert
-            Assert.AreEqual("Low", model.ChangeFailureRateMetricDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-Low-red", model.BadgeURL);
-        }
-
-        
-        [TestMethod]
-        public void ChangeFailureRateControllerNoneBadgeTest()
-        {
-            //Arrange
-            ChangeFailureRateModel model = new ChangeFailureRateModel
-            {
-                ChangeFailureRateMetricDescription = "None"
-            };
-
-            //Act
-
-            //Assert
-            Assert.AreEqual("None", model.ChangeFailureRateMetricDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-None-lightgrey", model.BadgeURL);
-        }
 
     }
 }
