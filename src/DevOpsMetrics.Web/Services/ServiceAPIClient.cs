@@ -166,18 +166,20 @@ namespace DevOpsMetrics.Web.Services
 
         public async Task<bool> UpdateAzureDevOpsSetting(string patToken,
                 string organization, string project, string repository,
-                string branch, string buildName, string buildId, string resourceGroup, int itemOrder)
+                string branch, string buildName, string buildId, string resourceGroup, 
+                int itemOrder, bool showSetting)
         {
-            string url = $"/api/Settings/UpdateAzureDevOpsSetting?patToken={patToken}&organization={organization}&project={project}&repository={repository}&branch={branch}&buildName={buildName}&buildId={buildId}&resourceGroup={resourceGroup}&itemOrder={itemOrder}";
+            string url = $"/api/Settings/UpdateAzureDevOpsSetting?patToken={patToken}&organization={organization}&project={project}&repository={repository}&branch={branch}&buildName={buildName}&buildId={buildId}&resourceGroup={resourceGroup}&itemOrder={itemOrder}&showSetting={showSetting}";
 
             return await GetResponse<bool>(Client, url);
         }
 
         public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret,
             string owner, string repo,
-            string branch, string workflowName, string workflowId, string resourceGroup, int itemOrder)
+            string branch, string workflowName, string workflowId, string resourceGroup, 
+            int itemOrder, bool showSetting)
         {
-            string url = $"/api/Settings/UpdateGitHubSetting?clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&resourceGroup={resourceGroup}&itemOrder={itemOrder}";
+            string url = $"/api/Settings/UpdateGitHubSetting?clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&resourceGroup={resourceGroup}&itemOrder={itemOrder}&showSetting={showSetting}";
 
             return await GetResponse<bool>(Client, url);
         }

@@ -8,6 +8,8 @@ using System.Reflection;
 namespace DevOpsMetrics.FunctionalTests
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [TestCategory("L2Test")]
+    [TestCategory("SkipWhenLiveUnitTesting")]
     [TestClass]
     public class WebsiteSmokeTest
     {
@@ -16,9 +18,6 @@ namespace DevOpsMetrics.FunctionalTests
         private string _webUrl = null;
 
         [TestMethod]
-        [TestCategory("L2Test")]
-        [TestCategory("SkipWhenLiveUnitTesting")]
-        [TestCategory("SmokeTest")]
         public void GotoWebHomeIndexPageTest()
         {
             //Arrange
@@ -39,9 +38,6 @@ namespace DevOpsMetrics.FunctionalTests
         }
 
         //[TestMethod]
-        //[TestCategory("L2Test")]
-        //[TestCategory("SkipWhenLiveUnitTesting")]
-        //[TestCategory("SmokeTest")]
         //public void GotoWebHomeDeploymentFrequencyPageTest()
         //{
         //    //Arrange
@@ -62,9 +58,6 @@ namespace DevOpsMetrics.FunctionalTests
         //}
 
         //[TestMethod]
-        //[TestCategory("L2Test")]
-        //[TestCategory("SkipWhenLiveUnitTesting")]
-        //[TestCategory("SmokeTest")]
         //public void GotoWebHomeLeadTimeForChangesPageTest()
         //{
         //    //Arrange
@@ -85,9 +78,6 @@ namespace DevOpsMetrics.FunctionalTests
         //}
 
         [TestMethod]
-        [TestCategory("L2Test")]
-        [TestCategory("SkipWhenLiveUnitTesting")]
-        [TestCategory("SmokeTest")]
         public void GotoWebHomeMTTRPageTest()
         {
             //Arrange
@@ -108,9 +98,6 @@ namespace DevOpsMetrics.FunctionalTests
         }
 
         [TestMethod]
-        [TestCategory("L2Test")]
-        [TestCategory("SkipWhenLiveUnitTesting")]
-        [TestCategory("SmokeTest")]
         public void GotoWebHomeChangeFailureRatePageTest()
         {
             //Arrange
@@ -131,9 +118,6 @@ namespace DevOpsMetrics.FunctionalTests
         }
 
         [TestMethod]
-        [TestCategory("L2Test")]
-        [TestCategory("SkipWhenLiveUnitTesting")]
-        [TestCategory("SmokeTest")]
         public void GotoWebHomeProjectSamLearnsAzurePageTest()
         {
             //Arrange
@@ -154,9 +138,6 @@ namespace DevOpsMetrics.FunctionalTests
         }
 
         [TestMethod]
-        [TestCategory("L2Test")]
-        [TestCategory("SkipWhenLiveUnitTesting")]
-        [TestCategory("SmokeTest")]
         public void GotoWebHomeProjectDevOpsMetricsPageTest()
         {
             //Arrange

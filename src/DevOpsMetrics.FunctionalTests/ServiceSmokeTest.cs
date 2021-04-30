@@ -12,6 +12,8 @@ using System.Reflection;
 namespace DevOpsMetrics.FunctionalTests
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [TestCategory("L2Test")]
+    [TestCategory("SkipWhenLiveUnitTesting")]
     [TestClass]
     public class ServiceSmokeTest
     {
@@ -20,9 +22,6 @@ namespace DevOpsMetrics.FunctionalTests
         private string _serviceUrl = null;
 
         [TestMethod]
-        [TestCategory("L2Test")]
-        [TestCategory("SkipWhenLiveUnitTesting")]
-        [TestCategory("SmokeTest")]
         public void GetAzureDevOpsSettingsTest()
         {
             //Arrange
@@ -50,9 +49,6 @@ namespace DevOpsMetrics.FunctionalTests
         }
 
         [TestMethod]
-        [TestCategory("L2Test")]
-        [TestCategory("SkipWhenLiveUnitTesting")]
-        [TestCategory("SmokeTest")]
         public void GetGitGubSettingsTest()
         {
             //Arrange

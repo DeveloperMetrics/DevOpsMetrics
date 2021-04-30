@@ -148,6 +148,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         {
             GitHubAPIAccess api = new GitHubAPIAccess();
             JArray items = await api.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, workflowId);
+            Debug.WriteLine($"{items.Count} builds found for {owner}/{repo}/{workflowName}");
 
             int itemsAdded = 0;
             TableStorageCommonDA tableBuildDA = new TableStorageCommonDA(tableStorageConfig, tableStorageConfig.TableGitHubRuns);
@@ -167,6 +168,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                     {
                         itemsAdded++;
                     }
+                    //Debug.WriteLine($"Processing build {build.run_number} with items adding={itemsAdded}");
 
                     //Save the build information for change failure rate
                     ChangeFailureRateBuild newBuild = new ChangeFailureRateBuild
@@ -181,9 +183,11 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                         Url = build.html_url
                     };
                     itemsAdded += await UpdateChangeFailureRate(tableChangeFailureRateDA, newBuild, PartitionKeys.CreateBuildWorkflowPartitionKey(owner, repo, workflowName));
-                }
+                    //Debug.WriteLine($"UpdateChangeFailureRate for build {build.run_number} with items adding={itemsAdded}");
 
+                }
             }
+            Debug.WriteLine($"{items.Count} builds updated for {owner}/{repo}/{workflowName}");
             return itemsAdded;
         }
 
@@ -301,7 +305,8 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         }
 
         public async Task<bool> UpdateAzureDevOpsSettingInStorage(TableStorageConfiguration tableStorageConfig, string settingsTable,
-             string organization, string project, string repository, string branch, string buildName, string buildId, string resourceGroupName, int itemOrder)
+             string organization, string project, string repository, string branch, string buildName, string buildId, string resourceGroupName, 
+             int itemOrder, bool showSetting)
         {
             string partitionKey = "AzureDevOpsSettings";
             string rowKey = PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository);
@@ -316,7 +321,8 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 BuildName = buildName,
                 BuildId = buildId,
                 ProductionResourceGroup = resourceGroupName,
-                ItemOrder = itemOrder
+                ItemOrder = itemOrder,
+                ShowSetting = showSetting
             };
 
             string json = JsonConvert.SerializeObject(settings);
@@ -326,7 +332,8 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         }
 
         public async Task<bool> UpdateGitHubSettingInStorage(TableStorageConfiguration tableStorageConfig, string settingsTable,
-             string owner, string repo, string branch, string workflowName, string workflowId, string resourceGroupName, int itemOrder)
+             string owner, string repo, string branch, string workflowName, string workflowId, string resourceGroupName, 
+             int itemOrder, bool showSetting)
         {
             string partitionKey = "GitHubSettings";
             string rowKey = PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo);
@@ -339,7 +346,8 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 WorkflowName = workflowName,
                 WorkflowId = workflowId,
                 ProductionResourceGroup = resourceGroupName,
-                ItemOrder = itemOrder
+                ItemOrder = itemOrder,
+                ShowSetting = showSetting
             };
 
             string json = JsonConvert.SerializeObject(settings);

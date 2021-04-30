@@ -1,10 +1,4 @@
-﻿using DevOpsMetrics.Core.Models.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace DevOpsMetrics.Core.Models.AzureDevOps
+﻿namespace DevOpsMetrics.Core.Models.AzureDevOps
 {
     public class AzureDevOpsSettings
     {
@@ -17,5 +11,6 @@ namespace DevOpsMetrics.Core.Models.AzureDevOps
         public string BuildId { get; set; }
         public string ProductionResourceGroup { get; set; }
         public int ItemOrder { get; set; }
+        public bool ShowSetting { get; set; }
     }
 }
