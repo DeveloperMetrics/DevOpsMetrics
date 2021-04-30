@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Service.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

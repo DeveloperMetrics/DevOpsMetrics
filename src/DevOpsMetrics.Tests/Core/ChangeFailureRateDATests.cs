@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DevOpsMetrics.Core.DataAccess;
 using DevOpsMetrics.Core.Models.Common;
-using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DevOpsMetrics.Tests.Core

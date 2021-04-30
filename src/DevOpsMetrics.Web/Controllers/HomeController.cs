@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,7 +26,7 @@ namespace DevOpsMetrics.Web.Controllers
         public async Task<IActionResult> Index()
         {
             //Get a list of settings
-            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration);
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
 
@@ -50,15 +49,15 @@ namespace DevOpsMetrics.Web.Controllers
             bool useCache = true;
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            ProjectViewModel model = new ProjectViewModel();
+            ProjectViewModel model = new();
 
             //Find the right project to load
-            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration);
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
 
             //Create the days to view dropdown
-            List<NumberOfDaysItem> numberOfDaysList = new List<NumberOfDaysItem>
+            List<NumberOfDaysItem> numberOfDaysList = new()
             {
                 new NumberOfDaysItem { NumberOfDays = 7 },
                 new NumberOfDaysItem { NumberOfDays = 14 },
@@ -155,8 +154,8 @@ namespace DevOpsMetrics.Web.Controllers
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
 
-            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
-            List<DeploymentFrequencyModel> items = new List<DeploymentFrequencyModel>();
+            ServiceApiClient serviceApiClient = new(Configuration);
+            List<DeploymentFrequencyModel> items = new();
 
             //Get a list of settings
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
@@ -188,7 +187,7 @@ namespace DevOpsMetrics.Web.Controllers
             }
 
             //Create the days to view dropdown
-            List<NumberOfDaysItem> numberOfDaysList = new List<NumberOfDaysItem>
+            List<NumberOfDaysItem> numberOfDaysList = new()
             {
                 new NumberOfDaysItem { NumberOfDays = 7 },
                 new NumberOfDaysItem { NumberOfDays = 14 },
@@ -216,8 +215,8 @@ namespace DevOpsMetrics.Web.Controllers
             bool useCache = true; //Use Azure storage instead of hitting the API. Quicker, but data may be up to 4 hours out of date
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
-            List<LeadTimeForChangesModel> items = new List<LeadTimeForChangesModel>();
+            ServiceApiClient serviceApiClient = new(Configuration);
+            List<LeadTimeForChangesModel> items = new();
 
             //Get a list of settings
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
@@ -258,8 +257,8 @@ namespace DevOpsMetrics.Web.Controllers
             int maxNumberOfItems = 20; //20 is the optimium max that looks good with the current UI            
             int numberOfDays = 30; //TODO: Move number of days variable to a drop down list on the current UI 
             bool getSampleData = false;
-            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
-            List<MeanTimeToRestoreModel> items = new List<MeanTimeToRestoreModel>();
+            ServiceApiClient serviceApiClient = new(Configuration);
+            List<MeanTimeToRestoreModel> items = new();
 
             //Get a list of settings
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
@@ -298,8 +297,8 @@ namespace DevOpsMetrics.Web.Controllers
             int maxNumberOfItems = 20; //20 is the optimium max that looks good with the current UI            
             int numberOfDays = 30; //TODO: Move number of days variable to a drop down list on the current UI 
             bool getSampleData = false;
-            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
-            List<ChangeFailureRateModel> items = new List<ChangeFailureRateModel>();
+            ServiceApiClient serviceApiClient = new(Configuration);
+            List<ChangeFailureRateModel> items = new();
 
             //Get a list of settings
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
@@ -342,17 +341,17 @@ namespace DevOpsMetrics.Web.Controllers
 
         public async Task<IActionResult> ChangeFailureRateUpdates()
         {
-            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration);
 
             //Get a list of settings
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
 
             //Create project items from each Azure DevOps setting and add it to a project list.
-            List<ProjectUpdateItem> projectList = new List<ProjectUpdateItem>();
+            List<ProjectUpdateItem> projectList = new();
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
-                ProjectUpdateItem newItem = new ProjectUpdateItem
+                ProjectUpdateItem newItem = new()
                 {
                     ProjectId = item.RowKey,
                     ProjectName = item.Project
@@ -362,7 +361,7 @@ namespace DevOpsMetrics.Web.Controllers
             //Create project items from each GitHub setting and add it to a project list.
             foreach (GitHubSettings item in githubSettings)
             {
-                ProjectUpdateItem newItem = new ProjectUpdateItem
+                ProjectUpdateItem newItem = new()
                 {
                     ProjectId = item.RowKey,
                     ProjectName = item.Repo
@@ -371,7 +370,7 @@ namespace DevOpsMetrics.Web.Controllers
             }
 
             //Create a percentage completed dropdown
-            List<CompletionPercentItem> completionList = new List<CompletionPercentItem>
+            List<CompletionPercentItem> completionList = new()
             {
                 new CompletionPercentItem { CompletionPercent = 0 },
                 new CompletionPercentItem { CompletionPercent = 10 },
@@ -383,7 +382,7 @@ namespace DevOpsMetrics.Web.Controllers
             };
 
             //Create the days to process dropdown
-            List<NumberOfDaysItem> numberOfDaysList = new List<NumberOfDaysItem>
+            List<NumberOfDaysItem> numberOfDaysList = new()
             {
                 new NumberOfDaysItem { NumberOfDays = 1 },
                 new NumberOfDaysItem { NumberOfDays = 7 },
@@ -393,7 +392,7 @@ namespace DevOpsMetrics.Web.Controllers
                 new NumberOfDaysItem { NumberOfDays = 90 }
             };
 
-            ProjectUpdateViewModel model = new ProjectUpdateViewModel
+            ProjectUpdateViewModel model = new()
             {
                 ProjectList = new SelectList(projectList, "ProjectId", "ProjectName"),
                 CompletionPercentList = new SelectList(completionList, "CompletionPercent", "CompletionPercent"),
@@ -406,7 +405,7 @@ namespace DevOpsMetrics.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateChangeFailureRate(string ProjectIdSelected, int CompletionPercentSelected, int NumberOfDaysSelected)
         {
-            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration);
 
             //Get a list of settings
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
@@ -473,10 +472,10 @@ namespace DevOpsMetrics.Web.Controllers
         public async Task<IActionResult> Logs(string projectId = null)
         {
             //Get a list of settings
-            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration);
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
-            List<KeyValuePair<string, string>> projects = new List<KeyValuePair<string, string>>
+            List<KeyValuePair<string, string>> projects = new()
             {
                 new("", "<Select project>")
             };
@@ -497,7 +496,7 @@ namespace DevOpsMetrics.Web.Controllers
                 }
             }
 
-            List<ProjectLog> logs = new List<ProjectLog>();
+            List<ProjectLog> logs = new();
             if (string.IsNullOrEmpty(projectId) == false)
             {
                 //TODO: This is gross. Fix this, making it easier to maintain and more efficient
@@ -514,7 +513,7 @@ namespace DevOpsMetrics.Web.Controllers
             //Flip the logs/ reverse the list of log items
             logs.Reverse();
 
-            ProjectLogViewModel logViewModel = new ProjectLogViewModel
+            ProjectLogViewModel logViewModel = new()
             {
                 ProjectId = projectId,
                 Logs = logs,
@@ -526,7 +525,7 @@ namespace DevOpsMetrics.Web.Controllers
         public async Task<IActionResult> Settings()
         {
             //Find the right project to load
-            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration);
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
 
@@ -547,7 +546,7 @@ namespace DevOpsMetrics.Web.Controllers
                 int itemOrder, bool showSetting)
         {
             //Find the right project to load
-            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration);
             if (patToken != null)
             {
 
@@ -573,7 +572,7 @@ namespace DevOpsMetrics.Web.Controllers
             int itemOrder, bool showSetting)
         {
             //Find the right project to load
-            ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration);
             await serviceApiClient.UpdateGitHubSetting(clientId, clientSecret,
                 owner, repo,
                 branch, workflowName, workflowId, resourceGroup,

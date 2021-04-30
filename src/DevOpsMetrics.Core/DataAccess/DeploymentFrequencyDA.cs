@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DevOpsMetrics.Core;
 using DevOpsMetrics.Core.DataAccess.Common;
-using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
@@ -13,7 +11,7 @@ namespace DevOpsMetrics.Core.DataAccess
     public class DeploymentFrequencyDA
     {
         public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, TableStorageConfiguration tableStorageConfig,
-                string organization, string project, string repository, string branch, string buildName,
+                string organization, string project, string branch, string buildName,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             ListUtility<Build> utility = new ListUtility<Build>();

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DevOpsMetrics.Core.DataAccess;
 using DevOpsMetrics.Core.Models.Common;
-using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DevOpsMetrics.Tests.Core
@@ -21,7 +19,6 @@ namespace DevOpsMetrics.Tests.Core
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
-            string repository = "SamLearnsAzure";
             string branch = "refs/heads/master";
             string buildName = "SamLearnsAzure.CI";
             int numberOfDays = 30;
@@ -30,7 +27,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             DeploymentFrequencyDA da = new();
-            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData,patToken, tableStorageConfig, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData,patToken, tableStorageConfig, organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);

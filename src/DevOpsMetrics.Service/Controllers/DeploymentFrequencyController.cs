@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using DevOpsMetrics.Core.DataAccess;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
-using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
-using DevOpsMetrics.Core.Models.GitHub;
 using DevOpsMetrics.Service.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -44,7 +41,7 @@ namespace DevOpsMetrics.Service.Controllers
                 }
 
                 DeploymentFrequencyDA da = new();
-                model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageConfig, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+                model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageConfig, organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
             {

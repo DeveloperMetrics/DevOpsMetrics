@@ -1,7 +1,6 @@
 ﻿using System;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Service.Controllers;
-using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DevOpsMetrics.Tests.Service
