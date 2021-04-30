@@ -55,7 +55,7 @@ namespace DevOpsMetrics.Tests.Core
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
-            string branch = "master";
+            string branch = "main";
             string workflowName = "DevOpsMetrics CI/CD";
             string workflowId = "1162561";
             int numberOfDays = 30;

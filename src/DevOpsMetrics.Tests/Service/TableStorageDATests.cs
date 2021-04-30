@@ -24,7 +24,7 @@ namespace DevOpsMetrics.Tests.Service
             string buildName = "SamLearnsAzure.CI";
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsBuilds, PartitionKeys.CreateBuildWorkflowPartitionKey(organization, project, buildName));
 
             //Assert
@@ -38,15 +38,15 @@ namespace DevOpsMetrics.Tests.Service
             string patToken = base.Configuration["AppSettings:AzureDevOpsPatToken"];
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildName = "SamLearnsAzure.CI";
-            string buildId = "3673"; //SamLearnsAzure.CI
+            string project = "AzDevOpsMetricsTest";
+            string branch = "refs/heads/main";
+            string buildName = "AzDevOpsMetricsTest";
+            string buildId = "217"; 
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             int itemsAdded = await da.UpdateAzureDevOpsBuildsInStorage(patToken, tableStorageConfig, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems);
 
             //Assert
@@ -62,7 +62,7 @@ namespace DevOpsMetrics.Tests.Service
             string project = "SamLearnsAzure";
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsBuilds, PartitionKeys.CreateAzureDevOpsPRPartitionKey(organization, project));
 
             //Assert
@@ -76,13 +76,13 @@ namespace DevOpsMetrics.Tests.Service
             string patToken = base.Configuration["AppSettings:AzureDevOpsPatToken"];
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string repository = "SamLearnsAzure";
+            string project = "AzDevOpsMetricsTest";
+            string repository = "AzDevOpsMetricsTest";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             int itemsAdded = await da.UpdateAzureDevOpsPullRequestsInStorage(patToken, tableStorageConfig,
                 organization, project, repository, numberOfDays, maxNumberOfItems);
 
@@ -99,7 +99,7 @@ namespace DevOpsMetrics.Tests.Service
             string project = "SamLearnsAzure";
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             JArray prList = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsPRs, PartitionKeys.CreateAzureDevOpsPRPartitionKey(organization, project));
             int itemsAdded = 0;
             foreach (JToken item in prList)
@@ -128,7 +128,7 @@ namespace DevOpsMetrics.Tests.Service
             string repository = "SamLearnsAzure";
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             List<ProjectLog> logs = da.GetProjectLogsFromStorage(tableStorageConfig, PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository));
 
             //Assert
@@ -146,7 +146,7 @@ namespace DevOpsMetrics.Tests.Service
             string workflowName = "DevOpsMetrics CI/CD";
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubRuns, PartitionKeys.CreateBuildWorkflowPartitionKey(owner, repo, workflowName));
 
             //Assert
@@ -162,14 +162,14 @@ namespace DevOpsMetrics.Tests.Service
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
-            string branch = "master";
+            string branch = "main";
             string workflowName = "DevOpsMetrics CI/CD";
             string workflowId = "1162561";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             int itemsAdded = await da.UpdateGitHubActionRunsInStorage(clientId, clientSecret, tableStorageConfig,
                     owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
 
@@ -193,7 +193,7 @@ namespace DevOpsMetrics.Tests.Service
             int maxNumberOfItems = 20;
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             int itemsAdded = await da.UpdateGitHubActionRunsInStorage(clientId, clientSecret, tableStorageConfig,
                     owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
 
@@ -210,7 +210,7 @@ namespace DevOpsMetrics.Tests.Service
             string repo = "DevOpsMetrics";
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubPRs, PartitionKeys.CreateGitHubPRPartitionKey(owner, repo));
 
             //Assert
@@ -218,41 +218,43 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public async Task GHUpdateDevOpsMetricsPRsDAIntegrationTest()
+        public async Task GHUpdateBuildsDAIntegrationTest()
         {
             //Arrange
             string clientId = base.Configuration["AppSettings:GitHubClientId"];
             string clientSecret = base.Configuration["AppSettings:GitHubClientSecret"];
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             string owner = "samsmithnz";
-            string repo = "DevOpsMetrics";
-            string branch = "master";
+            string repo = "ghDevOpsMetricsTest";
+            string branch = "main";
+            string workflowName = "CI";
+            string workflowId = "8670653";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
-            int itemsAdded = await da.UpdateGitHubActionPullRequestsInStorage(clientId, clientSecret, tableStorageConfig, owner, repo, branch, numberOfDays, maxNumberOfItems);
+            AzureTableStorageDA da = new();
+            int itemsAdded = await da.UpdateGitHubActionRunsInStorage(clientId, clientSecret, tableStorageConfig, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(itemsAdded >= 0);
         }
 
         [TestMethod]
-        public async Task GHUpdateSamsFeatureFlagsPRsDAIntegrationTest()
+        public async Task GHUpdatePRsDAIntegrationTest()
         {
             //Arrange
             string clientId = base.Configuration["AppSettings:GitHubClientId"];
             string clientSecret = base.Configuration["AppSettings:GitHubClientSecret"];
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             string owner = "samsmithnz";
-            string repo = "SamsFeatureFlags";
+            string repo = "ghDevOpsMetricsTest";
             string branch = "main";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             int itemsAdded = await da.UpdateGitHubActionPullRequestsInStorage(clientId, clientSecret, tableStorageConfig, owner, repo, branch, numberOfDays, maxNumberOfItems);
 
             //Assert
@@ -268,7 +270,7 @@ namespace DevOpsMetrics.Tests.Service
             string repo = "SamsFeatureFlags";
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             List<ProjectLog> logs = da.GetProjectLogsFromStorage(tableStorageConfig, PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo));
 
             //Assert

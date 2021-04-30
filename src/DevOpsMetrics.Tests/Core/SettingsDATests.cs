@@ -40,7 +40,7 @@ namespace DevOpsMetrics.Tests.Core
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             List<AzureDevOpsSettings> results = da.GetAzureDevOpsSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings, null);
 
             //Assert
@@ -54,7 +54,7 @@ namespace DevOpsMetrics.Tests.Core
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             List<GitHubSettings> results = da.GetGitHubSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings, null);
 
             //Assert
@@ -74,11 +74,12 @@ namespace DevOpsMetrics.Tests.Core
             string buildId = "3673";
             string resourceGroupName = "SamLearnsAzureProd";
             int itemOrder = 1;
+            bool showSetting = false;
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             bool result = await da.UpdateAzureDevOpsSettingInStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings,
-                    organization, project, repository, branch, buildName, buildId, resourceGroupName, itemOrder);
+                    organization, project, repository, branch, buildName, buildId, resourceGroupName, itemOrder, showSetting);
 
             //Assert
             Assert.IsTrue(result == true);
@@ -91,16 +92,17 @@ namespace DevOpsMetrics.Tests.Core
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
-            string branch = "master";
+            string branch = "main";
             string workflowName = "DevOpsMetrics CI/CD";
             string workflowId = "1162561";
             string resourceGroupName = "DevOpsMetrics";
             int itemOrder = 2;
+            bool showSetting = false;
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             bool result = await da.UpdateGitHubSettingInStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings,
-                    owner, repo, branch, workflowName, workflowId, resourceGroupName, itemOrder);
+                    owner, repo, branch, workflowName, workflowId, resourceGroupName, itemOrder, showSetting);
 
             //Assert
             Assert.IsTrue(result == true);
@@ -118,11 +120,12 @@ namespace DevOpsMetrics.Tests.Core
             string workflowId = "108084";
             string resourceGroupName = "SamLearnsAzureFeatureFlags";
             int itemOrder = 3;
+            bool showSetting = false;
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             bool result = await da.UpdateGitHubSettingInStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings,
-                    owner, repo, branch, workflowName, workflowId, resourceGroupName, itemOrder);
+                    owner, repo, branch, workflowName, workflowId, resourceGroupName, itemOrder, showSetting);
 
             //Assert
             Assert.IsTrue(result == true);

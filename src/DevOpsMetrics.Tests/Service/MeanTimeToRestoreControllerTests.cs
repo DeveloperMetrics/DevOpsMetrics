@@ -20,7 +20,7 @@ namespace DevOpsMetrics.Tests.Service
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
-            MeanTimeToRestoreController controller = new MeanTimeToRestoreController(base.Configuration);
+            MeanTimeToRestoreController controller = new(base.Configuration);
 
             //Act
             MeanTimeToRestoreModel model = controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems);
@@ -55,7 +55,7 @@ namespace DevOpsMetrics.Tests.Service
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 60;
             int maxNumberOfItems = 20;
-            MeanTimeToRestoreController controller = new MeanTimeToRestoreController(base.Configuration);
+            MeanTimeToRestoreController controller = new(base.Configuration);
 
             //Act
             MeanTimeToRestoreModel model = controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems);

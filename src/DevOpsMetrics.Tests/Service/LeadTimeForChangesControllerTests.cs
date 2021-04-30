@@ -25,7 +25,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            LeadTimeForChangesController controller = new LeadTimeForChangesController(base.Configuration);
+            LeadTimeForChangesController controller = new(base.Configuration);
 
             //Act
             LeadTimeForChangesModel model = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -65,13 +65,13 @@ namespace DevOpsMetrics.Tests.Service
             bool getSampleData = true;
             string owner = "samsmithnz";
             string repo = "devopsmetrics";
-            string branch = "master";
+            string branch = "main";
             string workflowName = "DevOpsMetrics.CICD";
             string workflowId = "1162561";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            LeadTimeForChangesController controller = new LeadTimeForChangesController(base.Configuration);
+            LeadTimeForChangesController controller = new(base.Configuration);
 
             //Act
             LeadTimeForChangesModel model = await controller.GetGitHubLeadTimeForChanges(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
@@ -115,7 +115,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            LeadTimeForChangesController controller = new LeadTimeForChangesController(base.Configuration);
+            LeadTimeForChangesController controller = new(base.Configuration);
 
             //Act
             LeadTimeForChangesModel model = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -153,13 +153,13 @@ namespace DevOpsMetrics.Tests.Service
             bool getSampleData = true;
             string owner = "samsmithnz";
             string repo = "devopsmetrics";
-            string branch = "master";
+            string branch = "main";
             string workflowName = "DevOpsMetrics.CICD";
             string workflowId = "1162561";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            LeadTimeForChangesController controller = new LeadTimeForChangesController(base.Configuration);
+            LeadTimeForChangesController controller = new(base.Configuration);
 
             //Act
             LeadTimeForChangesModel model = await controller.GetGitHubLeadTimeForChanges(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
@@ -203,7 +203,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             bool useCache = true;
-            LeadTimeForChangesController controller = new LeadTimeForChangesController(base.Configuration);
+            LeadTimeForChangesController controller = new(base.Configuration);
 
             //Act
             LeadTimeForChangesModel model = await controller.GetAzureDevOpsLeadTimeForChanges(getSampleData, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
@@ -250,13 +250,13 @@ namespace DevOpsMetrics.Tests.Service
             bool getSampleData = false;
             string owner = "samsmithnz";
             string repo = "devopsmetrics";
-            string branch = "master";
+            string branch = "main";
             string workflowName = "DevOpsMetrics.CICD";
             string workflowId = "1162561";
             int numberOfDays = 20;
             int maxNumberOfItems = 60;
             bool useCache = true;
-            LeadTimeForChangesController controller = new LeadTimeForChangesController(base.Configuration);
+            LeadTimeForChangesController controller = new(base.Configuration);
 
             //Act
             LeadTimeForChangesModel model = await controller.GetGitHubLeadTimeForChanges(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
@@ -309,7 +309,7 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 20;
             int maxNumberOfItems = 60;
             bool useCache = true;
-            LeadTimeForChangesController controller = new LeadTimeForChangesController(base.Configuration);
+            LeadTimeForChangesController controller = new(base.Configuration);
 
             //Act
             LeadTimeForChangesModel model = await controller.GetGitHubLeadTimeForChanges(getSampleData, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);

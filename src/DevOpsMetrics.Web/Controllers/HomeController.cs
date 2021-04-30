@@ -537,7 +537,8 @@ namespace DevOpsMetrics.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateAzureDevOpsSetting(string patToken,
                 string organization, string project, string repository,
-                string branch, string buildName, string buildId, string resourceGroup, int itemOrder)
+                string branch, string buildName, string buildId, string resourceGroup, 
+                int itemOrder, bool showSetting)
         {
             //Find the right project to load
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
@@ -546,7 +547,8 @@ namespace DevOpsMetrics.Web.Controllers
 
                 await serviceApiClient.UpdateAzureDevOpsSetting(patToken,
                     organization, project, repository,
-                    branch, buildName, buildId, resourceGroup, itemOrder);
+                    branch, buildName, buildId, resourceGroup, 
+                    itemOrder, showSetting);
             }
 
             return RedirectToAction("Settings", "Home");
@@ -561,13 +563,15 @@ namespace DevOpsMetrics.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateGitHubSetting(string clientId, string clientSecret,
             string owner, string repo,
-            string branch, string workflowName, string workflowId, string resourceGroup, int itemOrder)
+            string branch, string workflowName, string workflowId, string resourceGroup, 
+            int itemOrder, bool showSetting)
         {
             //Find the right project to load
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             await serviceApiClient.UpdateGitHubSetting(clientId, clientSecret,
                 owner, repo,
-                branch, workflowName, workflowId, resourceGroup, itemOrder);
+                branch, workflowName, workflowId, resourceGroup, 
+                itemOrder, showSetting);
 
             return RedirectToAction("Settings", "Home");
         }

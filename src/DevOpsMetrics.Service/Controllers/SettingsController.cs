@@ -45,7 +45,8 @@ namespace DevOpsMetrics.Service.Controllers
         [HttpGet("UpdateAzureDevOpsSetting")]
         public async Task<bool> UpdateAzureDevOpsSetting(string patToken,
                 string organization, string project, string repository,
-                string branch, string buildName, string buildId, string resourceGroup, int itemOrder)
+                string branch, string buildName, string buildId, string resourceGroup, 
+                int itemOrder, bool showSetting)
         {
             //Save the PAT token to the key vault
             string patTokenName = PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken(organization, project, repository);
@@ -58,13 +59,14 @@ namespace DevOpsMetrics.Service.Controllers
             //Save everything else to table storage
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             return await AzureTableStorageDA.UpdateAzureDevOpsSettingInStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings,
-                     organization, project, repository, branch, buildName, buildId, resourceGroup, itemOrder);
+                     organization, project, repository, branch, buildName, buildId, resourceGroup, itemOrder, showSetting);
         }
 
         [HttpGet("UpdateGitHubSetting")]
         public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret,
                 string owner, string repo, 
-                string branch, string workflowName, string workflowId, string resourceGroup, int itemOrder)
+                string branch, string workflowName, string workflowId, string resourceGroup, 
+                int itemOrder, bool showSetting)
         {
             //Save the Client Id and Client Secret to the key vault
             string clientIdName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientId(owner, repo);
@@ -83,7 +85,7 @@ namespace DevOpsMetrics.Service.Controllers
             //Save everything else to table storage
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             return await AzureTableStorageDA.UpdateGitHubSettingInStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings,
-                    owner, repo, branch, workflowName, workflowId, resourceGroup, itemOrder);
+                    owner, repo, branch, workflowName, workflowId, resourceGroup, itemOrder, showSetting);
         }
 
         [HttpPost("UpdateDevOpsMonitoringEvent")]
@@ -106,7 +108,7 @@ namespace DevOpsMetrics.Service.Controllers
         public async Task<bool> UpdateAzureDevOpsProjectLog(string organization, string project, string repository,
             int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
         {
-            ProjectLog log = new ProjectLog(
+            ProjectLog log = new(
                 PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository),
                 buildsUpdated, prsUpdated, exceptionMessage, exceptionStackTrace);
 
@@ -127,7 +129,7 @@ namespace DevOpsMetrics.Service.Controllers
         public async Task<bool> UpdateGitHubProjectLog(string owner, string repo,
             int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
         {
-            ProjectLog log = new ProjectLog(
+            ProjectLog log = new(
                 PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo),
                 buildsUpdated, prsUpdated, exceptionMessage, exceptionStackTrace);
 
@@ -138,7 +140,7 @@ namespace DevOpsMetrics.Service.Controllers
         private async Task<KeyVaultSecret> CreateKeyVaultSecret(string secretName, string secretValue)
         {
             string keyVaultURI = Configuration["AppSettings:KeyVaultURL"];
-            SecretClient secretClient = new SecretClient(new Uri(keyVaultURI), new DefaultAzureCredential());
+            SecretClient secretClient = new(new Uri(keyVaultURI), new DefaultAzureCredential());
             return await secretClient.SetSecretAsync(secretName, secretValue);
         }
 

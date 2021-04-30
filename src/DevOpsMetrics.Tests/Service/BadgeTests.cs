@@ -14,7 +14,7 @@ namespace DevOpsMetrics.Tests.Service
         public void DeploymentFrequencyEliteBadgeTest()
         {
             //Arrange
-            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetricDescription = "Elite",
                 DeploymentsPerDayMetric = 12
@@ -34,7 +34,7 @@ namespace DevOpsMetrics.Tests.Service
         public void DeploymentFrequencyHighBadgeTest()
         {
             //Arrange
-            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetricDescription = "High"
             };
@@ -52,7 +52,7 @@ namespace DevOpsMetrics.Tests.Service
         public void DeploymentFrequencyMediumBadgeTest()
         {
             //Arrange
-            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetricDescription = "Medium"
             };
@@ -70,7 +70,7 @@ namespace DevOpsMetrics.Tests.Service
         public void DeploymentFrequencyLowBadgeTest()
         {
             //Arrange
-            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetricDescription = "Low"
             };
@@ -88,7 +88,7 @@ namespace DevOpsMetrics.Tests.Service
         public void DeploymentFrequencyNoneBadgeTest()
         {
             //Arrange
-            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetricDescription = "None"
             };
@@ -105,7 +105,7 @@ namespace DevOpsMetrics.Tests.Service
         public void ChangeFailureRateControllerEliteBadgeTest()
         {
             //Arrange
-            ChangeFailureRateModel model = new ChangeFailureRateModel
+            ChangeFailureRateModel model = new()
             {
                 ChangeFailureRateMetricDescription = "Elite",
                 ChangeFailureRateMetric = 0
@@ -124,7 +124,7 @@ namespace DevOpsMetrics.Tests.Service
         public void ChangeFailureRateControllerHighBadgeTest()
         {
             //Arrange
-            ChangeFailureRateModel model = new ChangeFailureRateModel
+            ChangeFailureRateModel model = new()
             {
                 ChangeFailureRateMetricDescription = "High"
             };
@@ -142,7 +142,7 @@ namespace DevOpsMetrics.Tests.Service
         public void ChangeFailureRateControllerMediumBadgeTest()
         {
             //Arrange
-            ChangeFailureRateModel model = new ChangeFailureRateModel
+            ChangeFailureRateModel model = new()
             {
                 ChangeFailureRateMetricDescription = "Medium"
             };
@@ -160,7 +160,7 @@ namespace DevOpsMetrics.Tests.Service
         public void ChangeFailureRateControllerLowBadgeTest()
         {
             //Arrange
-            ChangeFailureRateModel model = new ChangeFailureRateModel
+            ChangeFailureRateModel model = new()
             {
                 ChangeFailureRateMetricDescription = "Low"
             };
@@ -178,7 +178,7 @@ namespace DevOpsMetrics.Tests.Service
         public void ChangeFailureRateControllerNoneBadgeTest()
         {
             //Arrange
-            ChangeFailureRateModel model = new ChangeFailureRateModel
+            ChangeFailureRateModel model = new()
             {
                 ChangeFailureRateMetricDescription = "None"
             };
@@ -195,7 +195,7 @@ namespace DevOpsMetrics.Tests.Service
         public void LeadTimeForChangesEliteBadgeTest()
         {
             //Arrange
-            LeadTimeForChangesModel model = new LeadTimeForChangesModel
+            LeadTimeForChangesModel model = new()
             {
                 LeadTimeForChangesMetricDescription = "Elite",
                 LeadTimeForChangesMetric = 5.3f
@@ -215,7 +215,7 @@ namespace DevOpsMetrics.Tests.Service
         public void LeadTimeForChangesHighBadgeTest()
         {
             //Arrange
-            LeadTimeForChangesModel model = new LeadTimeForChangesModel
+            LeadTimeForChangesModel model = new()
             {
                 LeadTimeForChangesMetricDescription = "High"
             };
@@ -233,7 +233,7 @@ namespace DevOpsMetrics.Tests.Service
         public void LeadTimeForChangesMediumBadgeTest()
         {
             //Arrange
-            LeadTimeForChangesModel model = new LeadTimeForChangesModel
+            LeadTimeForChangesModel model = new()
             {
                 LeadTimeForChangesMetricDescription = "Medium"
             };
@@ -251,7 +251,7 @@ namespace DevOpsMetrics.Tests.Service
         public void LeadTimeForChangesLowBadgeTest()
         {
             //Arrange
-            LeadTimeForChangesModel model = new LeadTimeForChangesModel
+            LeadTimeForChangesModel model = new()
             {
                 LeadTimeForChangesMetricDescription = "Low"
             };
@@ -269,7 +269,7 @@ namespace DevOpsMetrics.Tests.Service
         public void LeadTimeForChangesNoneBadgeTest()
         {
             //Arrange
-            LeadTimeForChangesModel model = new LeadTimeForChangesModel
+            LeadTimeForChangesModel model = new()
             {
                 LeadTimeForChangesMetricDescription = "None"
             };
@@ -287,7 +287,7 @@ namespace DevOpsMetrics.Tests.Service
         public void MeanTimeToRestoreEliteBadgeTest()
         {
             //Arrange
-            MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
+            MeanTimeToRestoreModel model = new()
             {
                 MTTRAverageDurationDescription = "Elite",
                 MTTRAverageDurationInHours = 0.12f
@@ -307,7 +307,7 @@ namespace DevOpsMetrics.Tests.Service
         public void MeanTimeToRestoreHighBadgeTest()
         {
             //Arrange
-            MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
+            MeanTimeToRestoreModel model = new()
             {
                 MTTRAverageDurationDescription = "High"
             };
@@ -325,7 +325,7 @@ namespace DevOpsMetrics.Tests.Service
         public void MeanTimeToRestoreMediumBadgeTest()
         {
             //Arrange
-            MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
+            MeanTimeToRestoreModel model = new()
             {
                 MTTRAverageDurationDescription = "Medium"
             };
@@ -343,7 +343,7 @@ namespace DevOpsMetrics.Tests.Service
         public void MeanTimeToRestoreLowBadgeTest()
         {
             //Arrange
-            MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
+            MeanTimeToRestoreModel model = new()
             {
                 MTTRAverageDurationDescription = "Low"
             };
@@ -361,7 +361,7 @@ namespace DevOpsMetrics.Tests.Service
         public void MeanTimeToRestoreNoneBadgeTest()
         {
             //Arrange
-            MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
+            MeanTimeToRestoreModel model = new()
             {
                 MTTRAverageDurationDescription = "None"
             };

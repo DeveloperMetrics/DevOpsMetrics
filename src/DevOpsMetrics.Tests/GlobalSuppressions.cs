@@ -6,5 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "<Pending>", Scope = "member", Target = "~M:DevOpsMetrics.Tests.TestResponse`1.GetResponse(System.Net.Http.HttpClient,System.String)~System.Threading.Tasks.Task{`0}")]
-[assembly: SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "This is a 'silly' rule. It doesn't make sense.", Scope = "namespaceanddescendants", Target = "DevOpsMetrics.Tests")]
 [assembly: SuppressMessage("CodeQuality", "IDE0077:Avoid legacy format target in 'SuppressMessageAttribute'", Justification = "<Pending>")]
