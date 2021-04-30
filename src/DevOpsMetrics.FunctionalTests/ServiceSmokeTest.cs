@@ -34,7 +34,7 @@ namespace DevOpsMetrics.FunctionalTests
             serviceLoaded = (_driver.Url == serviceUrl);
             OpenQA.Selenium.IWebElement data = _driver.FindElementByXPath(@"/html/body/pre");
             Console.WriteLine("data:" + data.Text);
-            List<AzureDevOpsSettings> settings = new List<AzureDevOpsSettings>();
+            List<AzureDevOpsSettings> settings = new();
             if (string.IsNullOrEmpty(data?.Text) == false)
             {
                 settings = JsonConvert.DeserializeObject<List<AzureDevOpsSettings>>(data.Text);
@@ -61,7 +61,7 @@ namespace DevOpsMetrics.FunctionalTests
             serviceLoaded = (_driver.Url == serviceUrl);
             OpenQA.Selenium.IWebElement data = _driver.FindElementByXPath(@"/html/body/pre");
             Console.WriteLine("data:" + data.Text);
-            List<GitHubSettings> settings = new List<GitHubSettings>();
+            List<GitHubSettings> settings = new();
             if (string.IsNullOrEmpty(data?.Text) == false)
             {
                 settings = JsonConvert.DeserializeObject<List<GitHubSettings>>(data.Text);
@@ -77,7 +77,7 @@ namespace DevOpsMetrics.FunctionalTests
         [TestInitialize]
         public void SetupTests()
         {
-            ChromeOptions chromeOptions = new ChromeOptions();
+            ChromeOptions chromeOptions = new();
             chromeOptions.AddArguments("headless");
             _driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), chromeOptions);
 

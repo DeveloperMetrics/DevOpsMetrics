@@ -1,6 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
 using Newtonsoft.Json.Linq;
-using System;
 
 namespace DevOpsMetrics.Core.Models.Common
 {
