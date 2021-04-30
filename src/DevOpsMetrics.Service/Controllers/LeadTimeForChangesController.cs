@@ -29,7 +29,7 @@ namespace DevOpsMetrics.Service.Controllers
             string organization, string project, string repository, string branch, string buildName, 
             int numberOfDays, int maxNumberOfItems, bool useCache)
         {
-            LeadTimeForChangesModel model = new LeadTimeForChangesModel();
+            LeadTimeForChangesModel model = new();
             try
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
@@ -43,7 +43,7 @@ namespace DevOpsMetrics.Service.Controllers
                     throw new Exception($"patToken '{patTokenName}' not found in key vault");
                 }
 
-                LeadTimeForChangesDA da = new LeadTimeForChangesDA();
+                LeadTimeForChangesDA da = new();
                 model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData,  patToken, tableStorageConfig,
                         organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
             }
@@ -68,7 +68,7 @@ namespace DevOpsMetrics.Service.Controllers
             string owner, string repo, string branch, string workflowName, string workflowId,
             int numberOfDays, int maxNumberOfItems, bool useCache)
         {
-            LeadTimeForChangesModel model = new LeadTimeForChangesModel();
+            LeadTimeForChangesModel model = new();
             try
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
@@ -85,7 +85,7 @@ namespace DevOpsMetrics.Service.Controllers
                     throw new Exception($"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault");
                 }
 
-                LeadTimeForChangesDA da = new LeadTimeForChangesDA();
+                LeadTimeForChangesDA da = new();
                 model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageConfig,
                         owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
             }

@@ -15,16 +15,16 @@ namespace DevOpsMetrics.Tests.Core
         public void DeploymentFrequencySingleOneDayTest()
         {
             //Arrange
-            DeploymentFrequency metrics = new DeploymentFrequency();
+            DeploymentFrequency metrics = new();
             int numberOfDays = 1;
-            List<KeyValuePair<DateTime, DateTime>> deploymentFrequencyList = new List<KeyValuePair<DateTime, DateTime>>
+            List<KeyValuePair<DateTime, DateTime>> deploymentFrequencyList = new()
             {
                 new KeyValuePair<DateTime, DateTime>(DateTime.Now, DateTime.Now)
             };
 
             //Act
             float metric = metrics.ProcessDeploymentFrequency(deploymentFrequencyList, numberOfDays);
-            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetric = metric,
                 DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
@@ -42,13 +42,13 @@ namespace DevOpsMetrics.Tests.Core
         public void DeploymentFrequencyNullOneDayTest()
         {
             //Arrange
-            DeploymentFrequency metrics = new DeploymentFrequency();
+            DeploymentFrequency metrics = new();
             int numberOfDays = 1;
             List<KeyValuePair<DateTime, DateTime>> deploymentFrequencyList = null;
 
             //Act
             float metric = metrics.ProcessDeploymentFrequency(deploymentFrequencyList, numberOfDays);
-            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetric = metric,
                 DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric),
@@ -72,9 +72,9 @@ namespace DevOpsMetrics.Tests.Core
         public void DeploymentFrequencyFiveSevenDaysTest()
         {
             //Arrange
-            DeploymentFrequency metrics = new DeploymentFrequency();
+            DeploymentFrequency metrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, DateTime>> deploymentFrequencyList = new List<KeyValuePair<DateTime, DateTime>>
+            List<KeyValuePair<DateTime, DateTime>> deploymentFrequencyList = new()
             {
                 new KeyValuePair<DateTime, DateTime>(DateTime.Now, DateTime.Now),
                 new KeyValuePair<DateTime, DateTime>(DateTime.Now.AddDays(-1), DateTime.Now.AddDays(-1)),
@@ -86,7 +86,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float metric = metrics.ProcessDeploymentFrequency(deploymentFrequencyList, numberOfDays);
-            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetric = metric,
                 DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
@@ -104,11 +104,11 @@ namespace DevOpsMetrics.Tests.Core
         public void DeploymentFrequencyRatingEliteTest()
         {
             //Arrange
-            DeploymentFrequency metrics = new DeploymentFrequency();
+            DeploymentFrequency metrics = new();
             float metric = 1.01f; //daily
 
             //Act
-            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetric = metric,
                 DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
@@ -126,11 +126,11 @@ namespace DevOpsMetrics.Tests.Core
         public void DeploymentFrequencyRatingHighTest()
         {
             //Arrange
-            DeploymentFrequency metrics = new DeploymentFrequency();
+            DeploymentFrequency metrics = new();
             float metric = 1f / 7f; //weekly
 
             //Act
-            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetric = metric,
                 DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
@@ -148,11 +148,11 @@ namespace DevOpsMetrics.Tests.Core
         public void DeploymentFrequencyRatingMediumTest()
         {
             //Arrange
-            DeploymentFrequency metrics = new DeploymentFrequency();
+            DeploymentFrequency metrics = new();
             float metric = 1f / 30f; //monthly
 
             //Act
-            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetric = metric,
                 DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
@@ -171,11 +171,11 @@ namespace DevOpsMetrics.Tests.Core
         public void DeploymentFrequencyRatingLowTest()
         {
             //Arrange
-            DeploymentFrequency metrics = new DeploymentFrequency();
+            DeploymentFrequency metrics = new();
             float metric = (1f / 30f) - 0.01f; //monthly
 
             //Act
-            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetric = metric,
                 DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
@@ -193,11 +193,11 @@ namespace DevOpsMetrics.Tests.Core
         public void DeploymentFrequencyRatingZeroNoneTest()
         {
             //Arrange
-            DeploymentFrequency metrics = new DeploymentFrequency();
+            DeploymentFrequency metrics = new();
             float metric = 0f; //None
 
             //Act
-            DeploymentFrequencyModel model = new DeploymentFrequencyModel
+            DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetric = metric,
                 DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)

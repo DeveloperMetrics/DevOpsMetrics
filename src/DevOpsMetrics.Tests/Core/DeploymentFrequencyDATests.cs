@@ -29,7 +29,7 @@ namespace DevOpsMetrics.Tests.Core
             bool useCache = true;
 
             //Act
-            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
+            DeploymentFrequencyDA da = new();
             DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData,patToken, tableStorageConfig, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
@@ -63,7 +63,7 @@ namespace DevOpsMetrics.Tests.Core
             bool useCache = true;
 
             //Act
-            DeploymentFrequencyDA da = new DeploymentFrequencyDA();
+            DeploymentFrequencyDA da = new();
             DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, tableStorageConfig, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert

@@ -16,16 +16,16 @@ namespace DevOpsMetrics.Tests.Core
         public void LeadTimeForChangesSingleOneDayTest()
         {
             //Arrange
-            LeadTimeForChanges metrics = new LeadTimeForChanges();
+            LeadTimeForChanges metrics = new();
             int numberOfDays = 1;
-            List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>
+            List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new()
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, new TimeSpan(0,45,0))
             };
 
             //Act
             float result = metrics.ProcessLeadTimeForChanges(leadTimeForChangesList, numberOfDays);
-            LeadTimeForChangesModel model = new LeadTimeForChangesModel
+            LeadTimeForChangesModel model = new()
             {
                 LeadTimeForChangesMetric = result,
                 LeadTimeForChangesMetricDescription = metrics.GetLeadTimeForChangesRating(result),
@@ -49,7 +49,7 @@ namespace DevOpsMetrics.Tests.Core
         public void LeadTimeForChangesNullOneDayTest()
         {
             //Arrange
-            LeadTimeForChanges metrics = new LeadTimeForChanges();
+            LeadTimeForChanges metrics = new();
             int numberOfDays = 1;
             List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = null;
 
@@ -64,9 +64,9 @@ namespace DevOpsMetrics.Tests.Core
         public void LeadTimeForChangesFiveSevenDaysEliteTest()
         {
             //Arrange
-            LeadTimeForChanges metrics = new LeadTimeForChanges();
+            LeadTimeForChanges metrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>
+            List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new()
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, new TimeSpan(2, 0, 0)),
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-1),new TimeSpan(0, 45, 0)),
@@ -89,9 +89,9 @@ namespace DevOpsMetrics.Tests.Core
         public void LeadTimeForChangesFiveSevenDaysHighTest()
         {
             //Arrange
-            LeadTimeForChanges metrics = new LeadTimeForChanges();
+            LeadTimeForChanges metrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>
+            List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new()
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, new TimeSpan(2, 0, 0,0,0)),
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-34),  new TimeSpan(12, 0, 0)) //this record should be out of range
@@ -110,9 +110,9 @@ namespace DevOpsMetrics.Tests.Core
         public void LeadTimeForChangesFiveSevenDaysMediumTest()
         {
             //Arrange
-            LeadTimeForChanges metrics = new LeadTimeForChanges();
+            LeadTimeForChanges metrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>
+            List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new()
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, new TimeSpan(8, 0, 0,0,0)),
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-34),  new TimeSpan(12, 0, 0)) //this record should be out of range
@@ -131,9 +131,9 @@ namespace DevOpsMetrics.Tests.Core
         public void LeadTimeForChangesFiveSevenDaysLowTest()
         {
             //Arrange
-            LeadTimeForChanges metrics = new LeadTimeForChanges();
+            LeadTimeForChanges metrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>
+            List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new()
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, new TimeSpan(31, 0, 0,0,0)),
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-34),  new TimeSpan(12, 0, 0)) //this record should be out of range
@@ -154,7 +154,7 @@ namespace DevOpsMetrics.Tests.Core
         public void LeadTimeForChangesFiveSevenDaysNoneTest()
         {
             //Arrange
-            LeadTimeForChanges metrics = new LeadTimeForChanges();
+            LeadTimeForChanges metrics = new();
             
             //Act
             float result = 0f;

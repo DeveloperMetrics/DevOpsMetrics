@@ -7,7 +7,7 @@ namespace DevOpsMetrics.Service
     {
         public static TableStorageConfiguration GenerateTableStorageConfiguration(IConfiguration Configuration)
         {
-            TableStorageConfiguration tableStorageConfig = new TableStorageConfiguration
+            TableStorageConfiguration tableStorageConfig = new()
             {
                 StorageAccountConnectionString = Configuration["AppSettings:AzureStorageAccountConfigurationString"],
                 TableAzureDevOpsBuilds = Configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],

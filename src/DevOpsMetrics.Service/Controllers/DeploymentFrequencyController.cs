@@ -29,7 +29,7 @@ namespace DevOpsMetrics.Service.Controllers
             string organization, string project, string repository, string branch, string buildName,
             int numberOfDays, int maxNumberOfItems, bool useCache)
         {
-            DeploymentFrequencyModel model = new DeploymentFrequencyModel();
+            DeploymentFrequencyModel model = new();
             try
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
@@ -43,7 +43,7 @@ namespace DevOpsMetrics.Service.Controllers
                     throw new Exception($"patToken '{patTokenName}' not found in key vault");
                 }
 
-                DeploymentFrequencyDA da = new DeploymentFrequencyDA();
+                DeploymentFrequencyDA da = new();
                 model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageConfig, organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
@@ -67,7 +67,7 @@ namespace DevOpsMetrics.Service.Controllers
             string owner, string repo, string branch, string workflowName, string workflowId,
             int numberOfDays, int maxNumberOfItems, bool useCache)
         {
-            DeploymentFrequencyModel model = new DeploymentFrequencyModel();
+            DeploymentFrequencyModel model = new();
             try
             {
                 TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
@@ -84,7 +84,7 @@ namespace DevOpsMetrics.Service.Controllers
                     throw new Exception($"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault");
                 }
 
-                DeploymentFrequencyDA da = new DeploymentFrequencyDA();
+                DeploymentFrequencyDA da = new();
                 model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, tableStorageConfig, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)

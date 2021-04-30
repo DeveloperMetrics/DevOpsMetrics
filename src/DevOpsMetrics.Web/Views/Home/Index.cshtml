@@ -24,11 +24,17 @@
         <ul>
             @foreach (AzureDevOpsSettings item in Model.Item1)
             {
-                <li><img src="~/images/AzureDevops-icon.png" style="width:32px;" />&nbsp; <a href="@Url.Action("Project", "Home", new { projectId = item.RowKey } )">@item.Project</a></li>
+                if (item.ShowSetting == true)
+                {
+                    <li><img src="~/images/AzureDevops-icon.png" style="width:32px;" />&nbsp; <a href="@Url.Action("Project", "Home", new { projectId = item.RowKey } )">@item.Project</a></li>
+                }
             }
             @foreach (GitHubSettings item in Model.Item2)
             {
-                <li><img src="~/images/GitHub-icon.png" style="width:32px;" />&nbsp; <a href="@Url.Action("Project", "Home", new { projectId = item.RowKey })">@item.Repo</a></li>
+                if (item.ShowSetting == true)
+                {
+                    <li><img src="~/images/GitHub-icon.png" style="width:32px;" />&nbsp; <a href="@Url.Action("Project", "Home", new { projectId = item.RowKey })">@item.Repo</a></li>
+                }
             }
         </ul>
     </div>
