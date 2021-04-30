@@ -22,7 +22,7 @@ namespace DevOpsMetrics.Service.Controllers
             int numberOfDays, int maxNumberOfItems)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            MeanTimeToRestoreDA da = new MeanTimeToRestoreDA();
+            MeanTimeToRestoreDA da = new();
             MeanTimeToRestoreModel model = da.GetAzureMeanTimeToRestore(getSampleData, tableStorageConfig,
                 targetDevOpsPlatform, resourceGroup,
                 numberOfDays, maxNumberOfItems);

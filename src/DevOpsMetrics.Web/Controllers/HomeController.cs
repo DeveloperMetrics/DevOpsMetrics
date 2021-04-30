@@ -478,17 +478,23 @@ namespace DevOpsMetrics.Web.Controllers
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
             List<KeyValuePair<string, string>> projects = new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("", "<Select project>")
+                new("", "<Select project>")
             };
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
-                string partitionKey = PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(item.Organization, item.Project, item.Repository);
-                projects.Add(new KeyValuePair<string, string>(partitionKey, item.Project));
+                if (item.ShowSetting == true)
+                {
+                    string partitionKey = PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(item.Organization, item.Project, item.Repository);
+                    projects.Add(new KeyValuePair<string, string>(partitionKey, item.Project));
+                }
             }
             foreach (GitHubSettings item in githubSettings)
             {
-                string partitionKey = PartitionKeys.CreateGitHubSettingsPartitionKey(item.Owner, item.Repo);
-                projects.Add(new KeyValuePair<string, string>(partitionKey, item.Repo));
+                if (item.ShowSetting == true)
+                {
+                    string partitionKey = PartitionKeys.CreateGitHubSettingsPartitionKey(item.Owner, item.Repo);
+                    projects.Add(new KeyValuePair<string, string>(partitionKey, item.Repo));
+                }
             }
 
             List<ProjectLog> logs = new List<ProjectLog>();
@@ -537,7 +543,7 @@ namespace DevOpsMetrics.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateAzureDevOpsSetting(string patToken,
                 string organization, string project, string repository,
-                string branch, string buildName, string buildId, string resourceGroup, 
+                string branch, string buildName, string buildId, string resourceGroup,
                 int itemOrder, bool showSetting)
         {
             //Find the right project to load
@@ -547,7 +553,7 @@ namespace DevOpsMetrics.Web.Controllers
 
                 await serviceApiClient.UpdateAzureDevOpsSetting(patToken,
                     organization, project, repository,
-                    branch, buildName, buildId, resourceGroup, 
+                    branch, buildName, buildId, resourceGroup,
                     itemOrder, showSetting);
             }
 
@@ -563,14 +569,14 @@ namespace DevOpsMetrics.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateGitHubSetting(string clientId, string clientSecret,
             string owner, string repo,
-            string branch, string workflowName, string workflowId, string resourceGroup, 
+            string branch, string workflowName, string workflowId, string resourceGroup,
             int itemOrder, bool showSetting)
         {
             //Find the right project to load
             ServiceApiClient serviceApiClient = new ServiceApiClient(Configuration);
             await serviceApiClient.UpdateGitHubSetting(clientId, clientSecret,
                 owner, repo,
-                branch, workflowName, workflowId, resourceGroup, 
+                branch, workflowName, workflowId, resourceGroup,
                 itemOrder, showSetting);
 
             return RedirectToAction("Settings", "Home");

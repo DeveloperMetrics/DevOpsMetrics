@@ -16,9 +16,9 @@ namespace DevOpsMetrics.Tests.Core
         public void ChangeFailureRateEliteTest()
         {
             //Arrange
-            ChangeFailureRate metrics = new ChangeFailureRate();
+            ChangeFailureRate metrics = new();
             int numberOfDays = 1;
-            List<KeyValuePair<DateTime, bool>> changeFailureRateList = new List<KeyValuePair<DateTime, bool>>
+            List<KeyValuePair<DateTime, bool>> changeFailureRateList = new()
             {
                 new KeyValuePair<DateTime, bool>(DateTime.Now, true),
                 new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(1), true),
@@ -29,7 +29,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessChangeFailureRate(changeFailureRateList, numberOfDays);
-            ChangeFailureRateModel model = new ChangeFailureRateModel
+            ChangeFailureRateModel model = new()
             {
                 ChangeFailureRateMetric = result,
                 ChangeFailureRateMetricDescription = metrics.GetChangeFailureRateRating(result),
@@ -47,9 +47,9 @@ namespace DevOpsMetrics.Tests.Core
         public void ChangeFailureRateHighTest()
         {
             //Arrange
-            ChangeFailureRate metrics = new ChangeFailureRate();
+            ChangeFailureRate metrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, bool>> changeFailureRateList = new List<KeyValuePair<DateTime, bool>>
+            List<KeyValuePair<DateTime, bool>> changeFailureRateList = new()
             {
                 new KeyValuePair<DateTime, bool>(DateTime.Now, true),
                 new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(1), true),
@@ -71,9 +71,9 @@ namespace DevOpsMetrics.Tests.Core
         public void ChangeFailureRateMediumTest()
         {
             //Arrange
-            ChangeFailureRate metrics = new ChangeFailureRate();
+            ChangeFailureRate metrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, bool>> changeFailureRateList = new List<KeyValuePair<DateTime, bool>>
+            List<KeyValuePair<DateTime, bool>> changeFailureRateList = new()
             {
                 new KeyValuePair<DateTime, bool>(DateTime.Now, true),
                 new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(1), true),
@@ -95,9 +95,9 @@ namespace DevOpsMetrics.Tests.Core
         public void ChangeFailureRateLowTest()
         {
             //Arrange
-            ChangeFailureRate metrics = new ChangeFailureRate();
+            ChangeFailureRate metrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, bool>> changeFailureRateList = new List<KeyValuePair<DateTime, bool>>
+            List<KeyValuePair<DateTime, bool>> changeFailureRateList = new()
             {
                 new KeyValuePair<DateTime, bool>(DateTime.Now, true),
                 new KeyValuePair<DateTime, bool>(DateTime.Now.AddDays(1), true),
@@ -119,7 +119,7 @@ namespace DevOpsMetrics.Tests.Core
         public void ChangeFailureRateNullTest()
         {
             //Arrange
-            ChangeFailureRate metrics = new ChangeFailureRate();
+            ChangeFailureRate metrics = new();
             int numberOfDays = 1;
             List<KeyValuePair<DateTime, bool>> changeFailureRateList = null;
 

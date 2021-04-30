@@ -28,7 +28,7 @@ namespace DevOpsMetrics.Tests.Core
             int maxNumberOfItems = 20;
 
             //Act
-            ChangeFailureRateDA da = new ChangeFailureRateDA();
+            ChangeFailureRateDA da = new();
             ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageConfig,
                targetDevOpsPlatform, organization, project, branch, buildName, numberOfDays, maxNumberOfItems);
 
@@ -62,7 +62,7 @@ namespace DevOpsMetrics.Tests.Core
         //    bool useCache = true;
 
         //    //Act
-        //    ChangeFailureRateDA da = new ChangeFailureRateDA();
+        //    ChangeFailureRateDA da = new();
         //    ChangeFailureRateModel model = await da.GetChangeFailureRate(getSampleData, tableStorageConfig,
         //       targetDevOpsPlatform, organization, project, branch, buildName, buildId, numberOfDays, maxNumberOfItems, useCache);
 
@@ -91,7 +91,7 @@ namespace DevOpsMetrics.Tests.Core
             int maxNumberOfItems = 20;
 
             //Act
-            ChangeFailureRateDA da = new ChangeFailureRateDA();
+            ChangeFailureRateDA da = new();
             ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageConfig,
                targetDevOpsPlatform, owner, repo, branch, workflowName, numberOfDays, maxNumberOfItems);
 
@@ -120,7 +120,7 @@ namespace DevOpsMetrics.Tests.Core
             int numberOfDays = 1;
 
             //Act
-            ChangeFailureRateDA da = new ChangeFailureRateDA();
+            ChangeFailureRateDA da = new();
             bool result = await da.UpdateChangeFailureRate(tableStorageConfig,
                organization, project, buildName, percent, numberOfDays);
 

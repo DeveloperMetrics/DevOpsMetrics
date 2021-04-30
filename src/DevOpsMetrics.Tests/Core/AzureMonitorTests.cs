@@ -17,7 +17,7 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
-            MonitoringEvent monitoringEvent = new MonitoringEvent(@"
+            MonitoringEvent monitoringEvent = new(@"
 {
   ""schemaId"": ""AzureMonitorMetricAlert"",
   ""data"": {
@@ -63,7 +63,7 @@ namespace DevOpsMetrics.Tests.Core
 ");
 
             //Act
-            AzureTableStorageDA da = new AzureTableStorageDA();
+            AzureTableStorageDA da = new();
             bool result = await da.UpdateDevOpsMonitoringEventInStorage(tableStorageConfig, monitoringEvent);
 
             //Assert

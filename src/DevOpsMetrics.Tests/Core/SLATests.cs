@@ -17,9 +17,9 @@ namespace DevOpsMetrics.Tests.Core
             //Goal: We have less than 90.0% uptime (downtime less than the Daily: 2h 24m 0s or Weekly: 16h 48m 0s)
 
             //Arrange
-            SLA metrics = new SLA();
+            SLA metrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, TimeSpan>> SLAList = new List<KeyValuePair<DateTime, TimeSpan>>();
+            List<KeyValuePair<DateTime, TimeSpan>> SLAList = new();
 
             //Act
             float result = metrics.ProcessSLA(SLAList, numberOfDays);
@@ -36,9 +36,9 @@ namespace DevOpsMetrics.Tests.Core
             //Goal: We have less than 90.0% uptime (downtime less than the Daily: 2h 24m 0s or Weekly: 16h 48m 0s)
 
             //Arrange
-            SLA metrics = new SLA();
+            SLA metrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, TimeSpan>> SLAList = new List<KeyValuePair<DateTime, TimeSpan>>
+            List<KeyValuePair<DateTime, TimeSpan>> SLAList = new()
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-1), new TimeSpan(23, 00, 0))
             };
@@ -58,9 +58,9 @@ namespace DevOpsMetrics.Tests.Core
             //Goal: We have more than 90.0% uptime (downtime no more than Daily: 2h 24m 0s or Weekly: 16h 48m 0s)
 
             //Arrange
-            SLA metrics = new SLA();
+            SLA metrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, TimeSpan>> SLAList = new List<KeyValuePair<DateTime, TimeSpan>>
+            List<KeyValuePair<DateTime, TimeSpan>> SLAList = new()
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-3), new TimeSpan(16, 48, 0))
             };
@@ -80,9 +80,9 @@ namespace DevOpsMetrics.Tests.Core
             //Goal: We have more than 99.0% uptime (downtime no more than Daily: 14m 24s or Weekly: 1h 40m 48s)
 
             //Arrange
-            SLA metrics = new SLA();
+            SLA metrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, TimeSpan>> SLAList = new List<KeyValuePair<DateTime, TimeSpan>>
+            List<KeyValuePair<DateTime, TimeSpan>> SLAList = new()
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-3), new TimeSpan(1, 40, 0))
             };
@@ -103,9 +103,9 @@ namespace DevOpsMetrics.Tests.Core
             //Goal: We have more than 99.9% uptime (downtime no more than Daily: 1m 26s or Weekly: 10m 4s)
 
             //Arrange
-            SLA metrics = new SLA();
+            SLA metrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, TimeSpan>> SLAList = new List<KeyValuePair<DateTime, TimeSpan>>
+            List<KeyValuePair<DateTime, TimeSpan>> SLAList = new()
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-3), new TimeSpan(0, 10, 0)),
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-3), new TimeSpan(0, 0, 4)),
@@ -126,9 +126,9 @@ namespace DevOpsMetrics.Tests.Core
             //Goal: We have more than 99.99% uptime (downtime no more than Daily: 8s or Weekly: 1m 0s)
 
             //Arrange
-            SLA metrics = new SLA();
+            SLA metrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, TimeSpan>> SLAList = new List<KeyValuePair<DateTime, TimeSpan>>
+            List<KeyValuePair<DateTime, TimeSpan>> SLAList = new()
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-3), new TimeSpan(0, 1, 0))
             };
@@ -148,9 +148,9 @@ namespace DevOpsMetrics.Tests.Core
             //Goal: We have more than 99.999% uptime (downtime no more than Daily: 0s or Weekly: 6s)
 
             //Arrange
-            SLA metrics = new SLA();
+            SLA metrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, TimeSpan>> SLAList = new List<KeyValuePair<DateTime, TimeSpan>>
+            List<KeyValuePair<DateTime, TimeSpan>> SLAList = new()
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-3), new TimeSpan(0, 0, 0)),
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-3), new TimeSpan(0, 0, 6)),
@@ -171,9 +171,9 @@ namespace DevOpsMetrics.Tests.Core
             //Goal: We have more than 99.9999% uptime (downtime no more than Daily: 0s or Weekly: 0s)
 
             //Arrange
-            SLA metrics = new SLA();
+            SLA metrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, TimeSpan>> SLAList = new List<KeyValuePair<DateTime, TimeSpan>>
+            List<KeyValuePair<DateTime, TimeSpan>> SLAList = new()
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-3), new TimeSpan(0, 0, 0)),
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-3), new TimeSpan(0, 0, 0)),

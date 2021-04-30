@@ -23,7 +23,7 @@ namespace DevOpsMetrics.Service.Controllers
             int numberOfDays, int maxNumberOfItems)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            ChangeFailureRateDA da = new ChangeFailureRateDA();
+            ChangeFailureRateDA da = new();
             ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageConfig, targetDevOpsPlatform,
                 organization_owner, project_repo, branch, buildName_workflowName,
                 numberOfDays, maxNumberOfItems);
@@ -35,7 +35,7 @@ namespace DevOpsMetrics.Service.Controllers
             string buildName_workflowName, int percentComplete, int numberOfDays)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            ChangeFailureRateDA da = new ChangeFailureRateDA();
+            ChangeFailureRateDA da = new();
             return await da.UpdateChangeFailureRate(tableStorageConfig,
                 organization_owner, project_repo, buildName_workflowName,
                 percentComplete, numberOfDays);

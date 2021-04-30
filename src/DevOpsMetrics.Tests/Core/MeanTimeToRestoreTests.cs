@@ -16,10 +16,10 @@ namespace DevOpsMetrics.Tests.Core
         public void MTTREliteTest()
         {
             //Arrange
-            MeanTimeToRestore metrics = new MeanTimeToRestore();
-            SLA slaMetrics = new SLA();
+            MeanTimeToRestore metrics = new();
+            SLA slaMetrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = new List<KeyValuePair<DateTime, TimeSpan>>
+            List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = new()
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-3), new TimeSpan(0, 40, 0)),
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-4), new TimeSpan(0, 50, 0)),
@@ -28,7 +28,7 @@ namespace DevOpsMetrics.Tests.Core
             //Act
             float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, numberOfDays);
             float sla = slaMetrics.ProcessSLA(meanTimeToRestoreList, numberOfDays);
-            MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
+            MeanTimeToRestoreModel model = new()
             {
                 MTTRAverageDurationInHours = result,
                 MTTRAverageDurationDescription = metrics.GetMeanTimeToRestoreRating(result),
@@ -53,9 +53,9 @@ namespace DevOpsMetrics.Tests.Core
         public void MTTRHighTest()
         {
             //Arrange
-            MeanTimeToRestore metrics = new MeanTimeToRestore();
+            MeanTimeToRestore metrics = new();
             int numberOfDays = 7;
-            List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = new List<KeyValuePair<DateTime, TimeSpan>>
+            List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = new()
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, new TimeSpan(2, 0, 0)),
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now.AddDays(-1), new TimeSpan(0, 45, 0)),
@@ -78,9 +78,9 @@ namespace DevOpsMetrics.Tests.Core
         public void MTTRMediumTest()
         {
             //Arrange
-            MeanTimeToRestore metrics = new MeanTimeToRestore();
+            MeanTimeToRestore metrics = new();
             int numberOfDays = 1;
-            List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = new List<KeyValuePair<DateTime, TimeSpan>>
+            List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = new()
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, new TimeSpan(25, 0, 0))
             };
@@ -98,9 +98,9 @@ namespace DevOpsMetrics.Tests.Core
         public void MTTRLowTest()
         {
             //Arrange
-            MeanTimeToRestore metrics = new MeanTimeToRestore();
+            MeanTimeToRestore metrics = new();
             int numberOfDays = 1;
-            List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = new List<KeyValuePair<DateTime, TimeSpan>>
+            List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = new()
             {
                 new KeyValuePair<DateTime, TimeSpan>(DateTime.Now, new TimeSpan(170, 0, 0))
             };
@@ -118,7 +118,7 @@ namespace DevOpsMetrics.Tests.Core
         public void MTTRNoneTest()
         {
             //Arrange
-            MeanTimeToRestore metrics = new MeanTimeToRestore();
+            MeanTimeToRestore metrics = new();
             int numberOfDays = 1;
             List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList = null;
 

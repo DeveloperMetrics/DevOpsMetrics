@@ -8,7 +8,7 @@ namespace DevOpsMetrics.Tests
     {
         public static TableStorageConfiguration GenerateTableAuthorization(IConfiguration configuration)
         {
-            TableStorageConfiguration tableStorageConfig = new TableStorageConfiguration
+            TableStorageConfiguration tableStorageConfig = new()
             {
                 StorageAccountConnectionString = configuration["AppSettings:AzureStorageAccountConfigurationString"],
                 TableAzureDevOpsBuilds = configuration["AppSettings:AzureStorageAccountContainerAzureDevOpsBuilds"],
