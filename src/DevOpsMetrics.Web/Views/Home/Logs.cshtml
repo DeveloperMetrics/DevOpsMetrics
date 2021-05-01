@@ -30,16 +30,16 @@
                             PRs Updated
                         </th>
                         <th>
-                            Build URL
-                        </th>
-                        <th>
-                            PR URL
-                        </th>
-                        <th>
                             Exception Message
                         </th>
                         <th>
                             Custom Exception Message
+                        </th>
+                        <th>
+                            Build URL
+                        </th>
+                        <th>
+                            PR URL
                         </th>
                     </tr>
                     @foreach (ProjectLog item in Model.Logs)
@@ -58,16 +58,16 @@
                                 @item.PRsUpdated
                             </td>
                             <td>
-                                @item.BuildUrl
-                            </td>
-                            <td>
-                                @item.PRUrl
-                            </td>
-                            <td>
                                 @item.ExceptionMessage
                             </td>
                             <td>
                                 @item.ExceptionStackTrace
+                            </td>
+                            <td>
+                                @item.BuildUrl
+                            </td>
+                            <td>
+                                @item.PRUrl
                             </td>
                         </tr>
                     }
