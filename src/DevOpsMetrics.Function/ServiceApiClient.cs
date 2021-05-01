@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
@@ -71,13 +72,13 @@ namespace DevOpsMetrics.Function
 
         public async Task<bool> UpdateAzureDevOpsProjectLog(string organization, string project, string repository, int buildsUpdated, int prsUpdated, string buildUrl, string prUrl, string exceptionMessage, string exceptionStackTrace)
         {
-            string url = $"/api/Settings/UpdateAzureDevOpsProjectLog?organization={organization}&project={project}&repository={repository}&buildsUpdated={buildsUpdated}&prsUpdated={prsUpdated}&buildsUpdated={buildsUpdated}&prsUpdated={prsUpdated}&buildUrl={buildUrl}&prUrl={prUrl}&exceptionMessage={exceptionMessage}&exceptionStackTrace={exceptionStackTrace}";
+            string url = $"/api/Settings/UpdateAzureDevOpsProjectLog?organization={organization}&project={project}&repository={repository}&buildsUpdated={buildsUpdated}&prsUpdated={prsUpdated}&buildsUpdated={buildsUpdated}&prsUpdated={prsUpdated}&buildUrl={HttpUtility.UrlEncode(buildUrl)}&prUrl={HttpUtility.UrlEncode(prUrl)}&exceptionMessage={exceptionMessage}&exceptionStackTrace={exceptionStackTrace}";
             return await GetResponse<bool>(Client, url);
         }
 
         public async Task<bool> UpdateGitHubProjectLog(string owner, string repo, int buildsUpdated, int prsUpdated, string buildUrl, string prUrl, string exceptionMessage, string exceptionStackTrace)
         {
-            string url = $"/api/Settings/UpdateGitHubProjectLog?owner={owner}&repo={repo}&buildsUpdated={buildsUpdated}&prsUpdated={prsUpdated}&buildUrl={buildUrl}&prUrl={prUrl}&exceptionMessage={exceptionMessage}&exceptionStackTrace={exceptionStackTrace}";
+            string url = $"/api/Settings/UpdateGitHubProjectLog?owner={owner}&repo={repo}&buildsUpdated={buildsUpdated}&prsUpdated={prsUpdated}&buildUrl={HttpUtility.UrlEncode(buildUrl)}&prUrl={HttpUtility.UrlEncode(prUrl)}&exceptionMessage={exceptionMessage}&exceptionStackTrace={exceptionStackTrace}";
             return await GetResponse<bool>(Client, url);
         }
 
