@@ -24,10 +24,22 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             Dictionary<string, string> inMemorySettings = new()
             {
-                {"AppSettings:KeyVaultURL", "keyvaultURLTest"},
-                {PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken("", "", ""), "patTokenSecret"},
-                {PartitionKeys.CreateGitHubSettingsPartitionKeyClientId("",""), "clientIdTest"},
-                {PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret("",""), "clientSecretTest"}
+                {
+                    "AppSettings:KeyVaultURL",
+                    "keyvaultURLTest"
+                },
+                {
+                    PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken("", "", ""),
+                    "patTokenSecret"
+                },
+                {
+                    PartitionKeys.CreateGitHubSettingsPartitionKeyClientId("", ""),
+                    "clientIdTest"
+                },
+                {
+                    PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret("", ""),
+                    "clientSecretTest"
+                }
             };
 
             _configuration = new ConfigurationBuilder()
@@ -201,7 +213,7 @@ namespace DevOpsMetrics.Tests.Service
         public async Task UpdateAzureDevOpsSettingTest()
         {
             //Arrange
-                        Mock<IAzureTableStorageDA> mockDA = new();
+            Mock<IAzureTableStorageDA> mockDA = new();
             mockDA.Setup(repo => repo.UpdateAzureDevOpsSettingInStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(Task.FromResult(true));
             SettingsController controller = new(_configuration, mockDA.Object);
             string patToken = "";
@@ -295,12 +307,14 @@ namespace DevOpsMetrics.Tests.Service
             string repository = "TestRepo";
             int buildsUpdated = 0;
             int prsUpdated = 0;
+            string buildUrl = "urlBuildTest";
+            string prUrl = "urlPRTest";
             string exceptionMessage = null;
             string exceptionStackTrace = null;
 
             //Act
             bool result = await controller.UpdateAzureDevOpsProjectLog(organization, project, repository,
-                buildsUpdated, prsUpdated, exceptionMessage, exceptionStackTrace);
+                buildsUpdated, prsUpdated, buildUrl, prUrl, exceptionMessage, exceptionStackTrace);
 
             //Assert
             Assert.AreEqual(true, result);
@@ -337,12 +351,14 @@ namespace DevOpsMetrics.Tests.Service
             string repo = "TestRepo";
             int buildsUpdated = 0;
             int prsUpdated = 0;
+            string buildUrl = "urlBuildTest";
+            string prUrl = "urlPRTest";
             string exceptionMessage = null;
             string exceptionStackTrace = null;
 
             //Act
             bool result = await controller.UpdateGitHubProjectLog(owner, repo,
-                buildsUpdated, prsUpdated, exceptionMessage, exceptionStackTrace);
+                buildsUpdated, prsUpdated, buildUrl, prUrl, exceptionMessage, exceptionStackTrace);
 
             //Assert
             Assert.AreEqual(true, result);
