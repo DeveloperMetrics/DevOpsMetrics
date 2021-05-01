@@ -72,7 +72,7 @@ namespace DevOpsMetrics.Tests.Core
             string buildId = "3673";
             string resourceGroupName = "SamLearnsAzureProd";
             int itemOrder = 1;
-            bool showSetting = false;
+            bool showSetting = true;
 
             //Act
             AzureTableStorageDA da = new();
@@ -95,7 +95,7 @@ namespace DevOpsMetrics.Tests.Core
             string workflowId = "1162561";
             string resourceGroupName = "DevOpsMetrics";
             int itemOrder = 2;
-            bool showSetting = false;
+            bool showSetting = true;
 
             //Act
             AzureTableStorageDA da = new();
@@ -118,7 +118,7 @@ namespace DevOpsMetrics.Tests.Core
             string workflowId = "108084";
             string resourceGroupName = "SamLearnsAzureFeatureFlags";
             int itemOrder = 3;
-            bool showSetting = false;
+            bool showSetting = true;
 
             //Act
             AzureTableStorageDA da = new();
