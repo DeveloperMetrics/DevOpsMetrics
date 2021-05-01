@@ -45,7 +45,7 @@ namespace DevOpsMetrics.Service.Controllers
         [HttpGet("UpdateAzureDevOpsSetting")]
         public async Task<bool> UpdateAzureDevOpsSetting(string patToken,
                 string organization, string project, string repository,
-                string branch, string buildName, string buildId, string resourceGroup, 
+                string branch, string buildName, string buildId, string resourceGroup,
                 int itemOrder, bool showSetting)
         {
             //Save the PAT token to the key vault
@@ -64,8 +64,8 @@ namespace DevOpsMetrics.Service.Controllers
 
         [HttpGet("UpdateGitHubSetting")]
         public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret,
-                string owner, string repo, 
-                string branch, string workflowName, string workflowId, string resourceGroup, 
+                string owner, string repo,
+                string branch, string workflowName, string workflowId, string resourceGroup,
                 int itemOrder, bool showSetting)
         {
             //Save the Client Id and Client Secret to the key vault
@@ -106,11 +106,12 @@ namespace DevOpsMetrics.Service.Controllers
 
         [HttpGet("UpdateAzureDevOpsProjectLog")]
         public async Task<bool> UpdateAzureDevOpsProjectLog(string organization, string project, string repository,
-            int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
+            int buildsUpdated, int prsUpdated, string buildUrl, string prUrl,
+            string exceptionMessage, string exceptionStackTrace)
         {
             ProjectLog log = new(
                 PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository),
-                buildsUpdated, prsUpdated, exceptionMessage, exceptionStackTrace);
+                buildsUpdated, prsUpdated, buildUrl, prUrl, exceptionMessage, exceptionStackTrace);
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             return await AzureTableStorageDA.UpdateProjectLogInStorage(tableStorageConfig, log);
@@ -127,11 +128,12 @@ namespace DevOpsMetrics.Service.Controllers
 
         [HttpGet("UpdateGitHubProjectLog")]
         public async Task<bool> UpdateGitHubProjectLog(string owner, string repo,
-            int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
+            int buildsUpdated, int prsUpdated, string buildUrl, string prUrl,
+            string exceptionMessage, string exceptionStackTrace)
         {
             ProjectLog log = new(
                 PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo),
-                buildsUpdated, prsUpdated, exceptionMessage, exceptionStackTrace);
+                buildsUpdated, prsUpdated, buildUrl, prUrl, exceptionMessage, exceptionStackTrace);
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             return await AzureTableStorageDA.UpdateProjectLogInStorage(tableStorageConfig, log);

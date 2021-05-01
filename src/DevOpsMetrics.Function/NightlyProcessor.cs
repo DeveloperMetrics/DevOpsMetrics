@@ -39,28 +39,28 @@ namespace DevOpsMetrics.Function
             int totalResults = 0;
             foreach (AzureDevOpsSettings item in azSettings)
             {
-                int buildsUpdated = 0;
-                int prsUpdated = 0;
+                (int,string) buildsUpdated = (0,null);
+                (int, string) prsUpdated = (0, null);
                 try
                 {
                     log.LogInformation($"Processing Azure DevOps organization {item.Organization}, project {item.Project}");
                     buildsUpdated = await api.UpdateAzureDevOpsBuilds(item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems);
                     prsUpdated = await api.UpdateAzureDevOpsPullRequests(item.Organization, item.Project, item.Repository, numberOfDays, maxNumberOfItems);
                     log.LogInformation($"Processed Azure DevOps organization {item.Organization}, project {item.Project}. {buildsUpdated} builds and {prsUpdated} prs/commits updated");
-                    totalResults += buildsUpdated + prsUpdated;
-                    await api.UpdateAzureDevOpsProjectLog(item.Organization, item.Project, item.Repository, buildsUpdated, prsUpdated, null, null);
+                    totalResults += buildsUpdated.Item1 + prsUpdated.Item1;
+                    await api.UpdateAzureDevOpsProjectLog(item.Organization, item.Project, item.Repository, buildsUpdated.Item1, prsUpdated.Item1, buildsUpdated.Item2, prsUpdated.Item2, null, null);
                 }
                 catch (Exception ex)
                 {
                     string error = $"Exception while processing Azure DevOps organization {item.Organization}, project {item.Project}. {buildsUpdated} builds and {prsUpdated} prs/commits updated";
                     log.LogInformation(error);
-                    await api.UpdateAzureDevOpsProjectLog(item.Organization, item.Project, item.Repository, buildsUpdated, prsUpdated, ex.Message, error);
+                    await api.UpdateAzureDevOpsProjectLog(item.Organization, item.Project, item.Repository, buildsUpdated.Item1, prsUpdated.Item1, buildsUpdated.Item2, prsUpdated.Item2, ex.Message, error);
                 }
             }
             foreach (GitHubSettings item in ghSettings)
             {
-                int buildsUpdated = 0;
-                int prsUpdated = 0;
+                (int, string) buildsUpdated = (0, null);
+                (int, string) prsUpdated = (0, null);
                 try
                 {
                     log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}");
@@ -69,14 +69,14 @@ namespace DevOpsMetrics.Function
                     prsUpdated = await api.UpdateGitHubActionPullRequests( item.Owner, item.Repo, item.Branch, numberOfDays, maxNumberOfItems);
                     //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {prsUpdated} pull requests updated");
                     log.LogInformation($"Processed GitHub owner {item.Owner}, repo {item.Repo}. {buildsUpdated} builds and {prsUpdated} prs/commits updated");
-                    totalResults += buildsUpdated + prsUpdated;
-                    await api.UpdateGitHubProjectLog(item.Owner, item.Repo, buildsUpdated, prsUpdated, null, null);
+                    totalResults += buildsUpdated.Item1 + prsUpdated.Item1;
+                    await api.UpdateGitHubProjectLog(item.Owner, item.Repo, buildsUpdated.Item1, prsUpdated.Item1, buildsUpdated.Item2, prsUpdated.Item2, null, null);
                 }
                 catch (Exception ex)
                 {
                     string error = $"Exception while processing GitHub owner {item.Owner}, repo {item.Repo}. {buildsUpdated} builds and {prsUpdated} prs/commits updated";
                     log.LogInformation(error);
-                    await api.UpdateGitHubProjectLog(item.Owner, item.Repo, buildsUpdated, prsUpdated, ex.Message, error);
+                    await api.UpdateGitHubProjectLog(item.Owner, item.Repo, buildsUpdated.Item1, prsUpdated.Item1, buildsUpdated.Item2, prsUpdated.Item2, ex.Message, error);
                 }
 
             }

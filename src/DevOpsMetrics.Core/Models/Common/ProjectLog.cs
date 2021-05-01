@@ -8,18 +8,18 @@ namespace DevOpsMetrics.Core.Models.Common
     {
         public ProjectLog() { } //Note this parameter-less function is required for JSON serialization
 
-        public ProjectLog(string partitionKey, int buildsUpdated, int prsUpdated, string exceptionMessage, string exceptionStackTrace)
+        public ProjectLog(string partitionKey, 
+            int buildsUpdated, int prsUpdated, 
+            string buildUrl, string prUrl,
+            string exceptionMessage, string exceptionStackTrace)
         {
-            //Do some processing to extract some key properties from the json
-            //JObject json = JObject.Parse(requestBody);
-            //string resourceGroup = json["data"]["context"]["resourceGroupName"].ToString();
-            //string dateString = json["data"]["context"]["timestamp"].ToString();
-
             //Set the properties
             PartitionKey = partitionKey;
             RowKey = DateTime.Now.ToString("yyyy-MMM-dd-HH-mm-ss.fff");
             BuildsUpdated = buildsUpdated;
             PRsUpdated = prsUpdated;
+            BuildUrl = buildUrl;
+            PRUrl = prUrl;
             ExceptionMessage = exceptionMessage;
             ExceptionStackTrace = exceptionStackTrace;
         }
@@ -28,6 +28,8 @@ namespace DevOpsMetrics.Core.Models.Common
         public string RowKey { get; set; }
         public int BuildsUpdated { get; set; }
         public int PRsUpdated { get; set; }
+        public string BuildUrl { get; set; }
+        public string PRUrl { get; set; }
         public string ExceptionMessage { get; set; }
         public string ExceptionStackTrace { get; set; }
         private string data;
