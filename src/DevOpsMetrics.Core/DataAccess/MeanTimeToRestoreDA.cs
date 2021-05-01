@@ -20,6 +20,11 @@ namespace DevOpsMetrics.Core.DataAccess
             ListUtility<MeanTimeToRestoreEvent> utility = new ListUtility<MeanTimeToRestoreEvent>();
             if (getSampleData == false)
             {
+                if (resourceGroup == null)
+                {
+                    resourceGroup = "";
+                }
+
                 //Pull the events from the table storage
                 AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
                 Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableMTTR, resourceGroup);
