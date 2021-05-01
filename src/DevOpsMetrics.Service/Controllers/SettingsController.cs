@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
@@ -111,7 +112,7 @@ namespace DevOpsMetrics.Service.Controllers
         {
             ProjectLog log = new(
                 PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository),
-                buildsUpdated, prsUpdated, buildUrl, prUrl, exceptionMessage, exceptionStackTrace);
+                buildsUpdated, prsUpdated, HttpUtility.UrlDecode(buildUrl), HttpUtility.UrlDecode(prUrl), exceptionMessage, exceptionStackTrace);
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             return await AzureTableStorageDA.UpdateProjectLogInStorage(tableStorageConfig, log);
@@ -133,7 +134,7 @@ namespace DevOpsMetrics.Service.Controllers
         {
             ProjectLog log = new(
                 PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo),
-                buildsUpdated, prsUpdated, buildUrl, prUrl, exceptionMessage, exceptionStackTrace);
+                buildsUpdated, prsUpdated, HttpUtility.UrlDecode(buildUrl), HttpUtility.UrlDecode(prUrl), exceptionMessage, exceptionStackTrace);
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             return await AzureTableStorageDA.UpdateProjectLogInStorage(tableStorageConfig, log);
