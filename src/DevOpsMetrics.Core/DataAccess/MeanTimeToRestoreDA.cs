@@ -20,6 +20,7 @@ namespace DevOpsMetrics.Core.DataAccess
             ListUtility<MeanTimeToRestoreEvent> utility = new ListUtility<MeanTimeToRestoreEvent>();
             if (getSampleData == false)
             {
+                //If the user didn't specify a resource group, it comes in as null and causes havoc. Setting it as "" helps, it 
                 if (resourceGroup == null)
                 {
                     resourceGroup = "";
