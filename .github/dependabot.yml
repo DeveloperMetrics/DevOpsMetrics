@@ -1,7 +1,21 @@
 version: 2
 updates:
 - package-ecosystem: nuget
-  directory: "/DevOpsMetrics/src"
+  directory: "/src/DevOpsMetrics.Tests"
+  schedule:
+    interval: daily
+    time: "06:00"
+    timezone: America/New_York
+  open-pull-requests-limit: 10
+- package-ecosystem: nuget
+  directory: "/src/DevOpsMetrics.Web"
+  schedule:
+    interval: daily
+    time: "06:00"
+    timezone: America/New_York
+  open-pull-requests-limit: 10
+- package-ecosystem: nuget
+  directory: "/src/DevOpsMetrics.FunctionalTests"
   schedule:
     interval: daily
     time: "06:00"
