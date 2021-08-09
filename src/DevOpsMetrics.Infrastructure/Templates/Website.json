@@ -26,23 +26,23 @@
       "properties": {
         "name": "[parameters('webSiteName')]",
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
-        "httpsOnly": true,
-        "siteConfig": {
-          "alwaysOn": true
-        }
+        "httpsOnly": true//,
+        //"siteConfig": {
+        //  "alwaysOn": true
+        //}
       },
       "resources": [
-        {
-          "apiVersion": "2018-11-01",
-          "type": "slots",
-          "name": "Staging",
-          "location": "[resourceGroup().location]",
-          "dependsOn": [
-            "[parameters('webSiteName')]"
-          ],
-          "kind": "app",
-          "properties": {}
-        }
+        //{
+        //  "apiVersion": "2018-11-01",
+        //  "type": "slots",
+        //  "name": "Staging",
+        //  "location": "[resourceGroup().location]",
+        //  "dependsOn": [
+        //    "[parameters('webSiteName')]"
+        //  ],
+        //  "kind": "app",
+        //  "properties": {}
+        //}
       ]
     }
   ]
