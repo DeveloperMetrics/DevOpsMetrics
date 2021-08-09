@@ -11,7 +11,8 @@ $serviceName="devops-prod-eu-service"
 $websiteName="devops-prod-eu-web"
 $functionName="devops-prod-eu-function"
 $administrationEmailAccount="samsmithnz_gmail.com#EXT#@samsmithnzgmail.onmicrosoft.com"
-$templatesLocation="C:\Users\samsm\source\repos\DevOpsMetrics\src\DevOpsMetrics.Infrastructure\Templates"
+$fileRoot = "C:\Users\samsm\source\repos\DevOpsMetrics\src"
+$templatesLocation="$fileRoot\DevOpsMetrics.Infrastructure\Templates"
 $error.clear()
 
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
@@ -111,9 +112,9 @@ Write-Host "7. Application insights created: "$stopwatch.Elapsed.TotalSeconds
 $webserviceOutput = az deployment group create --resource-group $resourceGroupName --name $serviceName --template-file "$templatesLocation\Website.json" --parameters webSiteName=$serviceName hostingPlanName=$hostingName
 
 #Deploy web service 
-$dotnetPublishOutput = dotnet publish "C:\Users\samsm\source\repos\DevOpsMetrics\src\DevOpsMetrics.Service\DevOpsMetrics.Service.csproj" --configuration Debug --output "C:\Users\samsm\source\repos\DevOpsMetrics\src\DevOpsMetrics.Service\bin\webservice" 
-Compress-Archive -Path "C:\Users\samsm\source\repos\DevOpsMetrics\src\DevOpsMetrics.Service\bin\webservice\*.*" -DestinationPath "C:\Users\samsm\source\repos\DevOpsMetrics\src\DevOpsMetrics.Service\bin\webservice.zip" -Force
-$serviceDeploymentOutput = az webapp deployment source config-zip --resource-group $resourceGroupName --name $serviceName --src "C:\Users\samsm\source\repos\DevOpsMetrics\src\DevOpsMetrics.Service\bin\webservice.zip"
+$dotnetPublishOutput = dotnet publish "$fileRoot\DevOpsMetrics.Service\DevOpsMetrics.Service.csproj" --configuration Debug --output "$fileRoot\DevOpsMetrics.Service\bin\webservice" 
+Compress-Archive -Path "$fileRoot\DevOpsMetrics.Service\bin\webservice\*.*" -DestinationPath "$fileRoot\DevOpsMetrics.Service\bin\webservice.zip" -Force
+$serviceDeploymentOutput = az webapp deployment source config-zip --resource-group $resourceGroupName --name $serviceName --src "$fileRoot\DevOpsMetrics.Service\bin\webservice.zip"
 
 #Set secrets into appsettings 
 Write-Host "Setting appsettings $appInsightsName connectionString: $applicationInsightsInstrumentationKey"
