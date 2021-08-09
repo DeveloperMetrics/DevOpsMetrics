@@ -171,21 +171,22 @@ jobs:
       with:
         app-name: devopsmetrics-prod-eu-service
         package: serviceapp
-        slot-name: staging 
+        #slot-name: staging 
     - name: Deploy web service app settings
-      run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --slot "staging" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}" 
+      run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}" #--slot "staging" 
     
     - name: Deploy website to Azure WebApp
       uses: Azure/webapps-deploy@v1
       with:
         app-name: devopsmetrics-prod-eu-web
         package: webapp 
-        slot-name: staging         
+        #slot-name: staging         
     - name: Deploy website app settings
-      run: az webapp config appsettings set --name devopsmetrics-prod-eu-web --slot "staging" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  
+      run: az webapp config appsettings set --name devopsmetrics-prod-eu-web --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" #--slot "staging"  
 
     # Run functional tests on staging slots
     - name: Functional Tests
+      if: 0 == 1
       run: |
         $vsTestConsoleExe = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\Common7\\IDE\\Extensions\\TestPlatform\\vstest.console.exe"
         $targetTestDll = "functionaltests\DevOpsMetrics.FunctionalTests.dll"
@@ -208,28 +209,33 @@ jobs:
 
 
   swapDeploymentSlots:
-    runs-on: ubuntu-latest # Note, Azure CLI requires a Linux runner...
+    runs-on: ubuntu-latest # Note, Azure CLI requires a Linux runner...    
     needs: [build, deployToStagingSlots]
     #Only swap from staging to production slots if running off the main branch - we don't want to deploy off feature branches/PRs
     if: github.ref == 'refs/heads/main'     
     steps:
     # Login with the secret SP details
     - name: Log into Azure
+      if: 0 == 1
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_SP }}     
       #Swap staging slots with prod
     - name: Swap web service staging slot to production
+      if: 0 == 1
       uses: Azure/cli@v1.0.0
       with:
         inlineScript: az webapp deployment slot swap --name "devopsmetrics-prod-eu-service" --resource-group "devopsmetrics" --slot staging --target-slot production
     - name: Deploy web service app settings
+      if: 0 == 1
       run: az webapp config appsettings set --name "devopsmetrics-prod-eu-service" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}"     
     - name: Swap web site staging slot to production
+      if: 0 == 1
       uses: Azure/cli@v1.0.0
       with:
         inlineScript: az webapp deployment slot swap --name "devopsmetrics-prod-eu-web" --resource-group "devopsmetrics" --slot staging --target-slot production
     - name: Deploy website app settings
+      if: 0 == 1
       run: az webapp config appsettings set --name devopsmetrics-prod-eu-web --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  
 
 
