@@ -1,9 +1,9 @@
-﻿using DevOpsMetrics.Core.Models.Common;
-using Microsoft.Azure.Cosmos.Table;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DevOpsMetrics.Core.Models.Azure;
+using DevOpsMetrics.Core.Models.Common;
+using Microsoft.Azure.Cosmos.Table;
 
 namespace DevOpsMetrics.Core.DataAccess.TableStorage
 {
@@ -32,6 +32,9 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
 
             // Get a reference to a table named "items"
             CloudTable table = tableClient.GetTableReference(TableName);
+
+            // Create the table if it doesn't exist
+            table.CreateIfNotExists();
 
             return table;
         }
