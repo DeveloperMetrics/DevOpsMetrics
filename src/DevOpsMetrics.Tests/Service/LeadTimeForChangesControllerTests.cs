@@ -57,7 +57,7 @@ namespace DevOpsMetrics.Tests.Service
         [TestMethod]
         public async Task GHLeadTimeControllerIntegrationTest()
         {
-            //https://devopsmetrics-prod-eu-service.azurewebsites.net/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?
+            //https://devops-prod-eu-service.azurewebsites.net/api/LeadTimeForChanges/GetGitHubLeadTimeForChanges?
             //getSampleData=False&clientId=&clientSecret=&owner=samsmithnz&repo=DevOpsMetrics&
             //branch=master&workflowId=1162561&numberOfDays=30&maxNumberOfItems=20
             //Arrange

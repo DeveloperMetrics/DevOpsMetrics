@@ -92,7 +92,7 @@ namespace DevOpsMetrics.Tests.Service
         [TestMethod]
         public async Task AzDeploymentsCacheControllerIntegrationTest()
         {
-            //https://devopsmetrics-prod-eu-service.azurewebsites.net//api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData=False&organization=samsmithnz&project=SamLearnsAzure&repository=SamLearnsAzure&branch=refs/heads/master&buildName=SamLearnsAzure.CI&buildId=3673&numberOfDays=30&maxNumberOfItems=20&useCache=true
+            //https://devops-prod-eu-service.azurewebsites.net//api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData=False&organization=samsmithnz&project=SamLearnsAzure&repository=SamLearnsAzure&branch=refs/heads/master&buildName=SamLearnsAzure.CI&buildId=3673&numberOfDays=30&maxNumberOfItems=20&useCache=true
 
             //Arrange
             bool getSampleData = false;

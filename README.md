@@ -14,7 +14,7 @@ This project is focused on helping you collect and analyze four key high perform
 
 ![High performing metrics](https://samlearnsazure.files.wordpress.com/2020/04/01highperformers.png)
 (Chart from page 18 of https://services.google.com/fh/files/misc/state-of-devops-2019.pdf)
-A [demo website displaying the metrics can be viewed here](https://devopsmetrics-prod-eu-web.azurewebsites.net/).
+A [demo website displaying the metrics can be viewed here](https://devops-prod-eu-web.azurewebsites.net/).
 More information about high performing DevOps metrics can be found in a blog post here: https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/
 
 ## The current solution:
@@ -65,9 +65,9 @@ Uses .NET 5 (except for the function, which is .NET Core 3.1). A GitHub action r
 Currently the CI/CD process: 
 1. Builds the code
 2. Runs the unit tests
-3. ~~Deploys the Probot code to a Azure web app (http://devopsmetrics-prod-eu-probot.azurewebsites.net/)~~ (Currently disabled)
-3. Deploys the webservice to a Azure web app (https://devopsmetrics-prod-eu-service.azurewebsites.net)
-4. Deploys the demo website to a Azure web app (https://devopsmetrics-prod-eu-web.azurewebsites.net)
+3. ~~Deploys the Probot code to a Azure web app (http://devops-prod-eu-probot.azurewebsites.net/)~~ (Currently disabled)
+3. Deploys the webservice to a Azure web app (https://devops-prod-eu-service.azurewebsites.net)
+4. Deploys the demo website to a Azure web app (https://devops-prod-eu-web.azurewebsites.net)
 4. Deploys the function website to a Azure function 
 
 Dependabot runs daily to check for dependency upgrades, and will automatically create a pull request, and approve/close it if all of the tests pass successfully 

@@ -11,23 +11,23 @@
       "type": "String"
     },
     "hostingName": {
-      "defaultValue": "devopsmetrics-prod-eu-hosting",
+      "defaultValue": "devops-prod-eu-hosting",
       "type": "String"
     },
     "appInsightsName": {
-      "defaultValue": "devopsmetrics-prod-eu-appinsights",
+      "defaultValue": "devops-prod-eu-appinsights",
       "type": "String"
     },
     "websiteName": {
-      "defaultValue": "devopsmetrics-prod-eu-web",
+      "defaultValue": "devops-prod-eu-web",
       "type": "String"
     },
     "serviceName": {
-      "defaultValue": "devopsmetrics-prod-eu-service",
+      "defaultValue": "devops-prod-eu-service",
       "type": "String"
     },
     "functionName": {
-      "defaultValue": "devopsmetrics-prod-eu-function",
+      "defaultValue": "devops-prod-eu-function",
       "type": "String"
     }
   },
@@ -400,7 +400,7 @@
         "httpLoggingEnabled": false,
         "logsDirectorySizeLimit": 35,
         "detailedErrorLoggingEnabled": false,
-        "publishingUsername": "$devopsmetrics-prod-eu-service__staging",
+        "publishingUsername": "$devops-prod-eu-service__staging",
         "azureStorageAccounts": {},
         "scmType": "None",
         "use32BitWorkerProcess": true,
@@ -543,7 +543,7 @@
         "httpLoggingEnabled": false,
         "logsDirectorySizeLimit": 35,
         "detailedErrorLoggingEnabled": false,
-        "publishingUsername": "$devopsmetrics-prod-eu-web__staging",
+        "publishingUsername": "$devops-prod-eu-web__staging",
         "azureStorageAccounts": {},
         "scmType": "None",
         "use32BitWorkerProcess": true,
