@@ -25,7 +25,6 @@
   <ItemGroup>
     <Content Include="azuredeploy.json" />
     <Content Include="azuredeploy.parameters.json" />
-    <None Include="aborted DeployDevOpsMetricsToAzure - Copy.ps1" />
     <None Include="Deploy-AzureResourceGroup.ps1" />
     <None Include="DeployInfrastructureToAzure2.ps1" />
     <None Include="DeployInfrastructureToAzure.ps1" />
