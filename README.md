@@ -76,13 +76,13 @@ Dependabot runs daily to check for dependency upgrades, and will automatically c
 
 
 # What's next?
-- Upgrades to packaging and setup
+- Upgrades to packaging and setup (in progress)
 - Upgrades to store data in CosmosDB (currently in Azure storage)
-- Azure DevOps marketplace integrations, so you can see the changes real time on your project/repo.
 - Reviewing the current GitHub probot approach, to find a better target than issues (perhaps a metrics readme.md file?)
-- Secret management and integration with Azure Key Vault and/or GitHub Secrets
+- Secret management and integration with Azure Key Vault and/or GitHub Secrets (in progress)
 - Support for more scenarios, releases, etc
 - Badges! The API can generate  a URL to these static badges, but more work is needed. Some samples are shown below:
+- Azure DevOps marketplace integrations, so you can see the changes real time on your project/repo. (lower priority to focus on GitHub)
 
   [![Build](https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen)](https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen) [![Build](https://img.shields.io/badge/Lead%20time%20for%20changes-High-green)](https://img.shields.io/badge/Lead%20time%20for%20changes-High-green) [![Build](https://img.shields.io/badge/Time%20to%20restore%20service-Medium-orange)](https://img.shields.io/badge/Time%20to%20restore%20service-Medium-orange) [![Build](https://img.shields.io/badge/Change%20failure%20rate-Low-red)](https://img.shields.io/badge/Change%20failure%20rate-Low-red)
 
