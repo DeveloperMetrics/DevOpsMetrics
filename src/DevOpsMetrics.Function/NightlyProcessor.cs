@@ -39,7 +39,7 @@ namespace DevOpsMetrics.Function
             int totalResults = 0;
             foreach (AzureDevOpsSettings item in azSettings)
             {
-                (int,string) buildsUpdated = (0,null);
+                (int, string) buildsUpdated = (0, null);
                 (int, string) prsUpdated = (0, null);
                 try
                 {
@@ -52,7 +52,7 @@ namespace DevOpsMetrics.Function
                 }
                 catch (Exception ex)
                 {
-                    string error = $"Exception while processing Azure DevOps organization {item.Organization}, project {item.Project}. {buildsUpdated} builds and {prsUpdated} prs/commits updated";
+                    string error = $"Exception while processing Azure DevOps organization {item.Organization}, project {item.Project}. {buildsUpdated.Item1} builds and {prsUpdated.Item1} prs/commits updated";
                     log.LogInformation(error);
                     await api.UpdateAzureDevOpsProjectLog(item.Organization, item.Project, item.Repository, buildsUpdated.Item1, prsUpdated.Item1, buildsUpdated.Item2, prsUpdated.Item2, ex.Message, error);
                 }
@@ -64,9 +64,9 @@ namespace DevOpsMetrics.Function
                 try
                 {
                     log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}");
-                    buildsUpdated = await api.UpdateGitHubActionRuns( item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
+                    buildsUpdated = await api.UpdateGitHubActionRuns(item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
                     //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {buildsUpdated} builds updated");
-                    prsUpdated = await api.UpdateGitHubActionPullRequests( item.Owner, item.Repo, item.Branch, numberOfDays, maxNumberOfItems);
+                    prsUpdated = await api.UpdateGitHubActionPullRequests(item.Owner, item.Repo, item.Branch, numberOfDays, maxNumberOfItems);
                     //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {prsUpdated} pull requests updated");
                     log.LogInformation($"Processed GitHub owner {item.Owner}, repo {item.Repo}. {buildsUpdated} builds and {prsUpdated} prs/commits updated");
                     totalResults += buildsUpdated.Item1 + prsUpdated.Item1;
@@ -74,7 +74,7 @@ namespace DevOpsMetrics.Function
                 }
                 catch (Exception ex)
                 {
-                    string error = $"Exception while processing GitHub owner {item.Owner}, repo {item.Repo}. {buildsUpdated} builds and {prsUpdated} prs/commits updated";
+                    string error = $"Exception while processing GitHub owner {item.Owner}, repo {item.Repo}. {buildsUpdated.Item1} builds and {prsUpdated.Item1} prs/commits updated";
                     log.LogInformation(error);
                     await api.UpdateGitHubProjectLog(item.Owner, item.Repo, buildsUpdated.Item1, prsUpdated.Item1, buildsUpdated.Item2, prsUpdated.Item2, ex.Message, error);
                 }
