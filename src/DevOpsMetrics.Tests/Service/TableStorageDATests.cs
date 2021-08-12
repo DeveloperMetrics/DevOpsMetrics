@@ -225,10 +225,10 @@ namespace DevOpsMetrics.Tests.Service
             string clientSecret = base.Configuration["AppSettings:GitHubClientSecret"];
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             string owner = "samsmithnz";
-            string repo = "ghDevOpsMetricsTest";
+            string repo = "DevOpsMetrics";
             string branch = "main";
-            string workflowName = "CI";
-            string workflowId = "8670653";
+            string workflowName = "CI/CD";
+            string workflowId = "1162561";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
 
