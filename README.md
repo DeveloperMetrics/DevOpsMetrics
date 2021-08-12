@@ -88,5 +88,5 @@ Dependabot runs daily to check for dependency upgrades, and will automatically c
 
 # References
 
-- Azure DevOps API: https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1
 - GitHub API: https://developer.GitHub.com/v3/actions/workflow-runs/
+- Azure DevOps API: https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1
