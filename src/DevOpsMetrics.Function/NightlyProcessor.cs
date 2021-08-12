@@ -46,7 +46,7 @@ namespace DevOpsMetrics.Function
                     log.LogInformation($"Processing Azure DevOps organization {item.Organization}, project {item.Project}");
                     buildsUpdated = await api.UpdateAzureDevOpsBuilds(item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems);
                     prsUpdated = await api.UpdateAzureDevOpsPullRequests(item.Organization, item.Project, item.Repository, numberOfDays, maxNumberOfItems);
-                    log.LogInformation($"Processed Azure DevOps organization {item.Organization}, project {item.Project}. {buildsUpdated} builds and {prsUpdated} prs/commits updated");
+                    log.LogInformation($"Processed Azure DevOps organization {item.Organization}, project {item.Project}. {buildsUpdated.Item1} builds and {prsUpdated.Item1} prs/commits updated");
                     totalResults += buildsUpdated.Item1 + prsUpdated.Item1;
                     await api.UpdateAzureDevOpsProjectLog(item.Organization, item.Project, item.Repository, buildsUpdated.Item1, prsUpdated.Item1, buildsUpdated.Item2, prsUpdated.Item2, null, null);
                 }
@@ -68,7 +68,7 @@ namespace DevOpsMetrics.Function
                     //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {buildsUpdated} builds updated");
                     prsUpdated = await api.UpdateGitHubActionPullRequests(item.Owner, item.Repo, item.Branch, numberOfDays, maxNumberOfItems);
                     //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {prsUpdated} pull requests updated");
-                    log.LogInformation($"Processed GitHub owner {item.Owner}, repo {item.Repo}. {buildsUpdated} builds and {prsUpdated} prs/commits updated");
+                    log.LogInformation($"Processed GitHub owner {item.Owner}, repo {item.Repo}. {buildsUpdated.Item1} builds and {prsUpdated.Item1} prs/commits updated");
                     totalResults += buildsUpdated.Item1 + prsUpdated.Item1;
                     await api.UpdateGitHubProjectLog(item.Owner, item.Repo, buildsUpdated.Item1, prsUpdated.Item1, buildsUpdated.Item2, prsUpdated.Item2, null, null);
                 }
