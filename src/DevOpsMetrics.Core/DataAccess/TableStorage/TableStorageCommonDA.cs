@@ -34,7 +34,11 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             CloudTable table = tableClient.GetTableReference(TableName);
 
             // Create the table if it doesn't exist
-            table.CreateIfNotExists();
+            //table.CreateIfNotExists(); // DON"T use this, it throws an internal 409 in App insights: https://stackoverflow.com/questions/48893519/azure-table-storage-exception-409-conflict-unexpected
+            if (!table.Exists())
+            {
+                table.Create();
+            }
 
             return table;
         }
