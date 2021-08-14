@@ -3,8 +3,8 @@
 
   <!-- Parameters used by tests at runtime -->
   <TestRunParameters>
-    <Parameter name = "ServiceUrl" value="https://devops-prod-eu-service-staging.azurewebsites.net/" />
-    <Parameter name = "WebsiteUrl" value="https://devops-prod-eu-web-staging.azurewebsites.net/" />
+    <Parameter name = "ServiceUrl" value="https://devops-prod-eu-service.azurewebsites.net/" />
+    <Parameter name = "WebsiteUrl" value="https://devops-prod-eu-web.azurewebsites.net/" />
   </TestRunParameters>
 
 </RunSettings>

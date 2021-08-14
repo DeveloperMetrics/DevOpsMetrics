@@ -186,12 +186,11 @@ jobs:
 
     # Run functional tests on staging slots
     - name: Functional Tests
-      if: 0 == 1
       run: |
         $vsTestConsoleExe = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\Common7\\IDE\\Extensions\\TestPlatform\\vstest.console.exe"
         $targetTestDll = "functionaltests\DevOpsMetrics.FunctionalTests.dll"
         $testRunSettings = "/Settings:`"functionaltests\test.runsettings`" "
-        $parameters = " -- ServiceUrl=""https://devops-prod-eu-service-staging.azurewebsites.net/"" WebsiteUrl=""https://devops-prod-eu-web-staging.azurewebsites.net/"" "
+        $parameters = " -- ServiceUrl=""https://devops-prod-eu-service.azurewebsites.net/"" WebsiteUrl=""https://devops-prod-eu-web.azurewebsites.net/"" "
         #Note that the `" is an escape character to quote strings, and the `& is needed to start the command
         $command = "`& `"$vsTestConsoleExe`" `"$targetTestDll`" $testRunSettings $parameters " 
         Write-Host "$command"
