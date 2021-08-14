@@ -90,6 +90,11 @@ namespace DevOpsMetrics.Function
                 Debug.WriteLine("Running url: " + client.BaseAddress.ToString() + url);
                 using (HttpResponseMessage response = await client.GetAsync(url))
                 {
+                    //TODO: Add a flag in the service to turn this on and off.
+                    if (response.IsSuccessStatusCode == false)
+                    {
+                        //Log the URL to help with debugging
+                    }
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     if (string.IsNullOrEmpty(responseBody) == false)
