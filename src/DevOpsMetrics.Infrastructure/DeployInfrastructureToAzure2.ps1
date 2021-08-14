@@ -108,7 +108,7 @@ Write-Host "applicationInsightsInstrumentationKey: "$applicationInsightsInstrume
 $timing = -join($timing, "7. Application created: ", $stopwatch.Elapsed.TotalSeconds, "`n");
 Write-Host "7. Application insights created: "$stopwatch.Elapsed.TotalSeconds
 
-#web service
+#web service app service
 $webserviceOutput = az deployment group create --resource-group $resourceGroupName --name $serviceName --template-file "$templatesLocation\Website.json" --parameters webSiteName=$serviceName hostingPlanName=$hostingName
 
 #Deploy web service 
@@ -116,9 +116,9 @@ $dotnetPublishOutput = dotnet publish "$fileRoot\DevOpsMetrics.Service\DevOpsMet
 Compress-Archive -Path "$fileRoot\DevOpsMetrics.Service\bin\webservice\*.*" -DestinationPath "$fileRoot\DevOpsMetrics.Service\bin\webservice.zip" -Force
 $serviceDeploymentOutput = az webapp deployment source config-zip --resource-group $resourceGroupName --name $serviceName --src "$fileRoot\DevOpsMetrics.Service\bin\webservice.zip"
 
-#Set secrets into appsettings 
+#Set secrets into appsettings for web service
 Write-Host "Setting appsettings $appInsightsName connectionString: $applicationInsightsInstrumentationKey"
-$configServiceSetOutput = az webapp config appsettings set --resource-group $resourceGroupName --name $serviceName --settings "APPINSIGHTS_INSTRUMENTATIONKEY=$applicationInsightsInstrumentationKey" 
+$configServiceSetOutput = az webapp config appsettings set --resource-group $resourceGroupName --name $serviceName --settings "APPINSIGHTS_INSTRUMENTATIONKEY=$applicationInsightsInstrumentationKey" "AppSettings:KeyVaultURL=https://$keyVaultName.vault.azure.net/"
 $timing = -join($timing, "8. Web service created: ", $stopwatch.Elapsed.TotalSeconds, "`n");
 Write-Host "8. Web service created: "$stopwatch.Elapsed.TotalSeconds
 
