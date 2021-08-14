@@ -88,7 +88,7 @@ $storageOutput = az deployment group create --resource-group $resourceGroupName 
 $storageJSON = $storageOutput | ConvertFrom-Json
 $storageAccountConnectionString = $storageJSON.properties.outputs.storageAccountConnectionString.value
 Write-Host "Setting value storageAccountConnectionString to key vault"
-$keyvaultSecretOutput = az keyvault secret set --vault-name $keyVaultName --name "AzureStorageAccountConfigurationString" --value $storageAccountConnectionString 
+$keyvaultSecretOutput = az keyvault secret set --vault-name $keyVaultName --name "AppSettings-AzureStorageAccountConfigurationString" --value $storageAccountConnectionString 
 Write-Host "storageAccountAccessKey: "$storageAccountConnectionString
 $timing = -join($timing, "5. Storage created: ", $stopwatch.Elapsed.TotalSeconds, "`n");
 Write-Host "5. Storage created: "$stopwatch.Elapsed.TotalSeconds
