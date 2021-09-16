@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "app-root-path": "^3.0.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.2",
     "fs": "0.0.1-security",
     "moment": "^2.27.0",
     "probot": "^9.13.0",
