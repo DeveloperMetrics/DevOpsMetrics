@@ -33,7 +33,7 @@ namespace DevOpsMetrics.Tests.Core
             //Assert
             Assert.IsTrue(model != null);
             Assert.AreEqual(1f, model.DeploymentsPerDayMetric);
-            Assert.AreEqual("High", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
             Assert.AreEqual(7, model.DeploymentsToDisplayMetric);
             Assert.AreEqual("times per week", model.DeploymentsToDisplayUnit);
         }
@@ -62,7 +62,7 @@ namespace DevOpsMetrics.Tests.Core
             Assert.AreEqual(0f, model.DeploymentsPerDayMetric);
             Assert.AreEqual("None", model.DeploymentsPerDayMetricDescription);
             Assert.AreEqual(0, model.DeploymentsToDisplayMetric);
-            Assert.AreEqual("times per month", model.DeploymentsToDisplayUnit);
+            Assert.AreEqual("times per year", model.DeploymentsToDisplayUnit);
             Assert.AreEqual(true, model.IsProjectView);
             Assert.AreEqual(1, model.ItemOrder);
             Assert.AreEqual(false, model.RateLimitHit);
@@ -149,7 +149,7 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             DeploymentFrequency metrics = new();
-            float metric = 1f / 30f; //monthly
+            float metric = 1f / (30f * 6); //six monthly
 
             //Act
             DeploymentFrequencyModel model = new()
@@ -160,9 +160,9 @@ namespace DevOpsMetrics.Tests.Core
 
             //Assert
             Assert.IsTrue(model != null);
-            Assert.AreEqual(0.033333335f, model.DeploymentsPerDayMetric);
+            Assert.AreEqual(0.0055555557f, model.DeploymentsPerDayMetric);
             Assert.AreEqual("Medium", model.DeploymentsPerDayMetricDescription);
-            Assert.AreEqual(1, model.DeploymentsToDisplayMetric);
+            Assert.AreEqual(0.16666667f, model.DeploymentsToDisplayMetric);
             Assert.AreEqual("times per month", model.DeploymentsToDisplayUnit);
 
         }
@@ -172,7 +172,7 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             DeploymentFrequency metrics = new();
-            float metric = (1f / 30f) - 0.01f; //monthly
+            float metric = (1f / 365f); //more once than every 6 monthes
 
             //Act
             DeploymentFrequencyModel model = new()
@@ -185,8 +185,8 @@ namespace DevOpsMetrics.Tests.Core
             Assert.IsTrue(model != null);
             Assert.AreEqual(metric, model.DeploymentsPerDayMetric);
             Assert.AreEqual("Low", model.DeploymentsPerDayMetricDescription);
-            Assert.AreEqual(0.70000005f, model.DeploymentsToDisplayMetric);
-            Assert.AreEqual("times per month", model.DeploymentsToDisplayUnit);
+            Assert.AreEqual(1f, model.DeploymentsToDisplayMetric);
+            Assert.AreEqual("times per year", model.DeploymentsToDisplayUnit);
         }
 
         [TestMethod]
@@ -208,7 +208,7 @@ namespace DevOpsMetrics.Tests.Core
             Assert.AreEqual(0f, model.DeploymentsPerDayMetric);
             Assert.AreEqual("None", model.DeploymentsPerDayMetricDescription);
             Assert.AreEqual(0, model.DeploymentsToDisplayMetric);
-            Assert.AreEqual("times per month", model.DeploymentsToDisplayUnit);
+            Assert.AreEqual("times per year", model.DeploymentsToDisplayUnit);
         }
 
     }

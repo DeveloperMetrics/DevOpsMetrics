@@ -83,15 +83,15 @@ namespace DevOpsMetrics.Core
             {
                 rating = "Elite";
             }
-            else if (changeFailureRate <= 0.30f) //0-15% (not a typo, overriding table to <= 30% to create a range)
+            else if (changeFailureRate <= 0.30f) //16-30% (not a typo, overriding table to <= 30% to create a range)
             {
                 rating = "High";
             }
-            else if (changeFailureRate < 0.46f) //0-15% (not a typo, overriding table to <= 46% to create a range)
+            else if (changeFailureRate < 0.46f) //16-30% (not a typo, overriding table to < 46% to create a range)
             {
                 rating = "Medium";
             }
-            else if (changeFailureRate >= 0.46f)// 46-60% (but effectively 46+)
+            else if (changeFailureRate >= 0.46f)// 16-30% (not a typo, overriding table to > 46% to create a range)
             {
                 rating = "Low";
             }

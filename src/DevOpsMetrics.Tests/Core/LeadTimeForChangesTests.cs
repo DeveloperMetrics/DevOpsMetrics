@@ -145,7 +145,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Assert
             Assert.AreEqual((24 * 31), Math.Round((double)result, 4));
-            Assert.AreEqual("Low", rating);
+            Assert.AreEqual("Medium", rating);
         }
 
 

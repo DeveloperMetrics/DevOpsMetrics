@@ -66,7 +66,8 @@ namespace DevOpsMetrics.Core
         {
             float dailyDeployment = 24f;
             float weeklyDeployment = 24f * 7f;
-            float monthlyDeployment = 24f * 30f;
+            //float monthlyDeployment = 24f * 30f;
+            float sixMonthDeployment = 24f * 30f * 6f;
 
             string rating = "";
             if (leadTimeForChangesInHours <= 0f) //no rating
@@ -81,11 +82,11 @@ namespace DevOpsMetrics.Core
             {
                 rating = "High";
             }
-            else if (leadTimeForChangesInHours > weeklyDeployment && leadTimeForChangesInHours <= monthlyDeployment) //between one week and one month
+            else if (leadTimeForChangesInHours > weeklyDeployment && leadTimeForChangesInHours <= sixMonthDeployment) //between one week and six monthes
             {
                 rating = "Medium";
             }
-            else if (leadTimeForChangesInHours > monthlyDeployment) //more than one month
+            else if (leadTimeForChangesInHours > sixMonthDeployment) //more than once every 6 months  month
             {
                 rating = "Low";
             }
