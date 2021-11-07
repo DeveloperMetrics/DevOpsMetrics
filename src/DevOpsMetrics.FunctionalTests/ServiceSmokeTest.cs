@@ -2,6 +2,7 @@ using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.GitHub;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace DevOpsMetrics.FunctionalTests
             Console.WriteLine("serviceUrl:" + serviceUrl);
             _driver.Navigate().GoToUrl(serviceUrl);
             serviceLoaded = (_driver.Url == serviceUrl);
-            OpenQA.Selenium.IWebElement data = _driver.FindElementByXPath(@"/html/body/pre");
+            OpenQA.Selenium.IWebElement data = _driver.FindElement(By.XPath(@"/html/body/pre"));
             Console.WriteLine("data:" + data.Text);
             List<AzureDevOpsSettings> settings = new();
             if (string.IsNullOrEmpty(data?.Text) == false)
@@ -59,7 +60,7 @@ namespace DevOpsMetrics.FunctionalTests
             Console.WriteLine("serviceUrl:" + serviceUrl);
             _driver.Navigate().GoToUrl(serviceUrl);
             serviceLoaded = (_driver.Url == serviceUrl);
-            OpenQA.Selenium.IWebElement data = _driver.FindElementByXPath(@"/html/body/pre");
+            OpenQA.Selenium.IWebElement data = _driver.FindElement(By.XPath(@"/html/body/pre"));
             Console.WriteLine("data:" + data.Text);
             List<GitHubSettings> settings = new();
             if (string.IsNullOrEmpty(data?.Text) == false)
