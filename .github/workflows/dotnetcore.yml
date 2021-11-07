@@ -138,7 +138,7 @@ jobs:
     runs-on: windows-latest
     needs: 
     - build      
-    #- test
+    - test
     - buildFunction
     steps:        
     # Login with the secret SP details
@@ -186,6 +186,7 @@ jobs:
 
     # Run functional tests on staging slots
     - name: Functional Tests
+      if: 0 == 1
       run: |
         $vsTestConsoleExe = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\Common7\\IDE\\Extensions\\TestPlatform\\vstest.console.exe"
         $targetTestDll = "functionaltests\DevOpsMetrics.FunctionalTests.dll"
@@ -211,7 +212,7 @@ jobs:
     runs-on: ubuntu-latest # Note, Azure CLI requires a Linux runner...    
     needs: [build, deployToStagingSlots]
     #Only swap from staging to production slots if running off the main branch - we don't want to deploy off feature branches/PRs
-    if: github.ref == 'refs/heads/main'     
+    if: github.ref == 'refs/heads/main' && 0 == 1    
     steps:
     # Login with the secret SP details
     - name: Log into Azure
