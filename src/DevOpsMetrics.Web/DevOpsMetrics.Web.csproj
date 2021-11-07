@@ -14,4 +14,8 @@
     <ProjectReference Include="..\DevOpsMetrics.Service\DevOpsMetrics.Service.csproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+  </PropertyGroup>
+
 </Project>
