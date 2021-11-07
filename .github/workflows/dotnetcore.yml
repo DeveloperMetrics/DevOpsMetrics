@@ -60,7 +60,7 @@ jobs:
 
   test:
     runs-on: windows-latest
-    if: 0 == 1
+    if: 1 == 1
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
