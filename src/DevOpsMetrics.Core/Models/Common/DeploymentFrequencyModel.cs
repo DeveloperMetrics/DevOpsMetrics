@@ -30,6 +30,7 @@ namespace DevOpsMetrics.Core.Models.Common
                 float dailyDeployment = 1f;
                 float weeklyDeployment = 1f / 7f;
                 float monthlyDeployment = 1f / 30f;
+                float yearlyDeployment = 1f / 365f;
 
                 if (value > dailyDeployment) //NOTE: Does not capture on-demand deployments
                 {
@@ -46,10 +47,15 @@ namespace DevOpsMetrics.Core.Models.Common
                     DeploymentsToDisplayMetric = value * 30;
                     DeploymentsToDisplayUnit = "times per month";
                 }
-                else if (value < monthlyDeployment)
+                else if (value < monthlyDeployment && value > yearlyDeployment)
                 {
                     DeploymentsToDisplayMetric = value * 30;
                     DeploymentsToDisplayUnit = "times per month";
+                }
+                else if (value <= yearlyDeployment)
+                {
+                    DeploymentsToDisplayMetric = value * 365;
+                    DeploymentsToDisplayUnit = "times per year";
                 }
             }
         }

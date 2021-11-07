@@ -89,7 +89,7 @@ namespace DevOpsMetrics.Core
             {
                 rating = "Medium";
             }
-            else if (deploymentsPerDay > everySixMonthsDeployment)
+            else if (deploymentsPerDay < everySixMonthsDeployment)
             {
                 rating = "Low";
             }
