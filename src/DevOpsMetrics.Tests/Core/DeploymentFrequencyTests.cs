@@ -208,7 +208,7 @@ namespace DevOpsMetrics.Tests.Core
             Assert.AreEqual(0f, model.DeploymentsPerDayMetric);
             Assert.AreEqual("None", model.DeploymentsPerDayMetricDescription);
             Assert.AreEqual(0, model.DeploymentsToDisplayMetric);
-            Assert.AreEqual("times per month", model.DeploymentsToDisplayUnit);
+            Assert.AreEqual("times per year", model.DeploymentsToDisplayUnit);
         }
 
     }
