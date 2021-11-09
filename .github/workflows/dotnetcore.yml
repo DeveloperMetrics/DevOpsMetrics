@@ -5,6 +5,7 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
 
@@ -16,7 +17,6 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '6.0.x'
-        include-prerelease: true
     
     #Publish dotnet objects
     - name: .NET Publish Web Service
@@ -67,7 +67,6 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '6.0.x'
-        include-prerelease: true
     #Run automated .NET tests   
     - name: Variable Substitution appsettings file for tests
       uses: microsoft/variable-substitution@v1
