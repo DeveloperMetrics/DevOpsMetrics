@@ -5,6 +5,7 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
 
@@ -15,7 +16,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.201
+        dotnet-version: '6.0.x'
     
     #Publish dotnet objects
     - name: .NET Publish Web Service
@@ -26,12 +27,12 @@ jobs:
     - name: .NET Publish functional tests
       run: dotnet publish src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj --configuration Release --output ${{ github.workspace }}/functionalTests
     - name: Copy chromedriver for functional test
-      run: copy "src/DevOpsMetrics.FunctionalTests/bin/Release/net5.0/chromedriver.exe" "${{ github.workspace }}/functionalTests"
+      run: copy "src/DevOpsMetrics.FunctionalTests/bin/Release/net6.0/chromedriver.exe" "${{ github.workspace }}/functionalTests"
       shell: powershell
     - name: DotNet restore functional tests to get correct NewtonSoft version
       run: dotnet restore src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj 
     - name: Copy new NewtonSoft version for functional test
-      run: copy "src/DevOpsMetrics.FunctionalTests/bin/Release/net5.0/Newtonsoft.Json.dll" "${{ github.workspace }}/functionalTests"
+      run: copy "src/DevOpsMetrics.FunctionalTests/bin/Release/net6.0/Newtonsoft.Json.dll" "${{ github.workspace }}/functionalTests"
       shell: powershell
         
     #Publish build artifacts to GitHub
@@ -60,13 +61,12 @@ jobs:
 
   test:
     runs-on: windows-latest
-    if: 0 == 1
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.201
+        dotnet-version: '6.0.x'
     #Run automated .NET tests   
     - name: Variable Substitution appsettings file for tests
       uses: microsoft/variable-substitution@v1
@@ -81,8 +81,19 @@ jobs:
         AppSettings.KeyVaultClientSecret: "${{ secrets.KeyVaultClientSecret }}" 
     - name: view appsettings file after substitution
       run: Get-Content -Path "src/DevOpsMetrics.Tests/appsettings.json"
+    - name: build test project
+      run: dotnet build src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Debug
+    - name: Create empty file to get around error in .NET 6
+      run: |
+        #Create the secrets.json file
+        New-Item src\DevOpsMetrics.Tests\secrets.json
+        #Insert in empty braces to make it a valid (empty) json file
+        "{}" | Set-Content src\DevOpsMetrics.Tests\secrets.json
+        #Copy the secrets.json file to the bin directory, so that it will be present for the tests 
+        xcopy "${{ github.workspace }}\src\DevOpsMetrics.Tests\secrets.json" "${{ github.workspace }}\src\DevOpsMetrics.Tests\bin\Debug\net6.0\"  /f /y
+      shell: powershell
     - name: Run automated unit and integration tests
-      run: dotnet test src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Debug --logger trx /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov --settings:./src/DevOpsMetrics.Tests/CodeCoverage.runsettings 
+      run: dotnet test src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --no-build --configuration Debug --logger trx /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov --settings:./src/DevOpsMetrics.Tests/CodeCoverage.runsettings 
     - name: Publish coverage report to coveralls.io
       uses: coverallsapp/github-action@master
       with:
@@ -138,7 +149,7 @@ jobs:
     runs-on: windows-latest
     needs: 
     - build      
-    #- test
+    - test
     - buildFunction
     steps:        
     # Login with the secret SP details
@@ -186,6 +197,7 @@ jobs:
 
     # Run functional tests on staging slots
     - name: Functional Tests
+      if: 0 == 1
       run: |
         $vsTestConsoleExe = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\Common7\\IDE\\Extensions\\TestPlatform\\vstest.console.exe"
         $targetTestDll = "functionaltests\DevOpsMetrics.FunctionalTests.dll"
@@ -211,30 +223,25 @@ jobs:
     runs-on: ubuntu-latest # Note, Azure CLI requires a Linux runner...    
     needs: [build, deployToStagingSlots]
     #Only swap from staging to production slots if running off the main branch - we don't want to deploy off feature branches/PRs
-    if: github.ref == 'refs/heads/main'     
+    if: github.ref == 'refs/heads/main' && 0 == 1    
     steps:
     # Login with the secret SP details
     - name: Log into Azure
-      if: 0 == 1
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_SP }}     
       #Swap staging slots with prod
     - name: Swap web service staging slot to production
-      if: 0 == 1
       uses: Azure/cli@v1.0.0
       with:
         inlineScript: az webapp deployment slot swap --name "devops-prod-eu-service" --resource-group "devopsmetrics" --slot staging --target-slot production
     - name: Deploy web service app settings
-      if: 0 == 1
       run: az webapp config appsettings set --name "devops-prod-eu-service" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}"     
     - name: Swap web site staging slot to production
-      if: 0 == 1
       uses: Azure/cli@v1.0.0
       with:
         inlineScript: az webapp deployment slot swap --name "devops-prod-eu-web" --resource-group "devopsmetrics" --slot staging --target-slot production
     - name: Deploy website app settings
-      if: 0 == 1
       run: az webapp config appsettings set --name devops-prod-eu-web --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  
 
 
