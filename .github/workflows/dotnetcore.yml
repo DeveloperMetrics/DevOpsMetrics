@@ -61,6 +61,8 @@ jobs:
 
   test:
     runs-on: windows-latest
+    permissions:
+      actions: read 
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core

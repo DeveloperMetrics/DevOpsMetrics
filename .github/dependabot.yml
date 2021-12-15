@@ -27,3 +27,10 @@ updates:
   open-pull-requests-limit: 10
   assignees:
     - "samsmithnz"
+# Maintain dependencies for GitHub Actions
+- package-ecosystem: "github-actions"
+  directory: "/"
+  schedule:
+    interval: "daily"
+  assignees:
+  - "samsmithnz"
