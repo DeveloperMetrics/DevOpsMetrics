@@ -134,7 +134,7 @@ jobs:
 #      with:
 #        creds: ${{ secrets.AZURE_SP_PROBOT }}  
 #    - name: Download webapp artifact
-#      uses: actions/download-artifact@v1.0.0
+#      uses: actions/download-artifact@v2.1.0
 #      with:
 #        name: probot 
 #    - name: Deploy probot to Azure WebApp
@@ -162,21 +162,25 @@ jobs:
     
     #Download the artifacts from GitHub
     - name: Download serviceapp artifact
-      uses: actions/download-artifact@v1.0.0
+      uses: actions/download-artifact@v2.1.0
       with:
         name: serviceapp 
+        path: serviceapp
     - name: Download webapp artifact
-      uses: actions/download-artifact@v1.0.0
+      uses: actions/download-artifact@v2.1.0
       with:
-        name: webapp 
+        name: webapp  
+        path: webapp
     - name: Download webapp artifact
-      uses: actions/download-artifact@v1.0.0
+      uses: actions/download-artifact@v2.1.0
       with:
-        name: functionapp    
+        name: functionapp  
+        path: functionapp   
     - name: Download functionaltests artifact
-      uses: actions/download-artifact@v1.0.0
+      uses: actions/download-artifact@v2.1.0
       with:
-        name: functionaltests
+        name: functionaltests 
+        path: functionaltests
 
     #Deploy service, website, and function to Azure
     - name: Deploy web service to Azure WebApp
