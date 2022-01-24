@@ -19,7 +19,7 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
       ],
-      "kind": "app",
+      "kind": "functionapp",
       "tags": {
         "displayName": "Function"
       },
