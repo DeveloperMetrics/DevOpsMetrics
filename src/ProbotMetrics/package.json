@@ -25,7 +25,7 @@
     "axios": "^0.26.0",
     "fs": "0.0.1-security",
     "moment": "^2.29.1",
-    "probot": "^9.13.0",
+    "probot": "^12.2.1",
     "probot-config": "^1.1.0",
     "probot-scheduler": "^2.0.0-beta.1"
   },
