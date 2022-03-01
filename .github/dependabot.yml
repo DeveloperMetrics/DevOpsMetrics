@@ -8,7 +8,7 @@ updates:
     timezone: America/New_York
   open-pull-requests-limit: 10
   assignees:
-    - "samsmithnz"
+  - "samsmithnz"
 - package-ecosystem: nuget
   directory: "/src/DevOpsMetrics.Web"
   schedule:
@@ -17,7 +17,7 @@ updates:
     timezone: America/New_York
   open-pull-requests-limit: 10
   assignees:
-    - "samsmithnz"
+  - "samsmithnz"
 - package-ecosystem: nuget
   directory: "/src/DevOpsMetrics.FunctionalTests"
   schedule:
@@ -26,11 +26,16 @@ updates:
     timezone: America/New_York
   open-pull-requests-limit: 10
   assignees:
-    - "samsmithnz"
+  - "samsmithnz"
 - package-ecosystem: npm
   directory: /src/ProbotMetrics
   schedule:
     interval: daily
+    time: "06:00"
+    timezone: America/New_York
+  open-pull-requests-limit: 10
+  assignees:
+  - "samsmithnz"
 # Maintain dependencies for GitHub Actions
 - package-ecosystem: "github-actions"
   directory: "/"
