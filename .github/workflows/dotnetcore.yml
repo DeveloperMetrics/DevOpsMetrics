@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: windows-latest 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v2
       with:
@@ -64,7 +64,7 @@ jobs:
     permissions:
       actions: read 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v2
       with:
@@ -106,7 +106,7 @@ jobs:
   buildFunction:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v2
       with:
@@ -265,7 +265,7 @@ jobs:
 #      extensionVersion: "0.0.0" 
 #    #if: github.ref == 'refs/heads/main'
 #    steps:
-#    - uses: actions/checkout@v2
+#    - uses: actions/checkout@v3
 #    - name: Setup .NET Core
 #      uses: actions/setup-dotnet@v2
 #      with:
