@@ -60,7 +60,7 @@ More information about high performing DevOps metrics can be found in a [blog po
 ![Change failure rate](https://github.com/samsmithnz/DevOpsMetrics/blob/main/ReadmeImages/ChangeFailureRate.png)
 
 # Architecture
-Uses .NET 5 (except for the function, which is .NET Core 3.1). A GitHub action runs the CI/CD process. 
+Uses .NET 6 (except for the function, which is .NET Core 3.1). A GitHub action runs the CI/CD process. 
 
 Currently the CI/CD process: 
 1. Builds the code
