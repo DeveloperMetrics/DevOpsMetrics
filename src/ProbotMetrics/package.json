@@ -34,7 +34,7 @@
     "nock": "^13.2.4",
     "nodemon": "^2.0.15",
     "smee-client": "^1.2.2",
-    "standard": "^16.0.4"
+    "standard": "^17.0.0"
   },
   "engines": {
     "node": ">= 8.3.0"
