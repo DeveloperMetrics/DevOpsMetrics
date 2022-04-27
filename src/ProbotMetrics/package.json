@@ -30,7 +30,7 @@
     "probot-scheduler": "^2.0.0-beta.1"
   },
   "devDependencies": {
-    "jest": "^28.0.1",
+    "jest": "^28.0.2",
     "nock": "^13.2.4",
     "nodemon": "^2.0.15",
     "smee-client": "^1.2.2",
