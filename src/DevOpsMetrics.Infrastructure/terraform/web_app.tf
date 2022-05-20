@@ -1,4 +1,4 @@
-resource "azurerm_app_service_plan" "web" {
+resource "azurerm_app_service_plan" "app" {
   name                = "${local.basename}_web_service_plan"
   location            = azurerm_resource_group.application.location
   resource_group_name = azurerm_resource_group.application.name
