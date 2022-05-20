@@ -111,8 +111,8 @@ jobs:
         app-name: DoraMetrics-wes-dev-web
         package: webapp 
         #slot-name: staging         
-  #  - name: Deploy website app settings
-  #    run: az webapp config appsettings set --name DoraMetrics-wes-dev-web --resource-group "DoraMetrics-wes-dev-rg" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" #--slot "staging"  
+    - name: Deploy website app settings
+      run: az webapp config appsettings set --name DoraMetrics-wes-dev-web --resource-group "DoraMetrics-wes-dev-rg" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" #--slot "staging"  
 
   
     
@@ -122,8 +122,8 @@ jobs:
       with:
         app-name: DoraMetrics-wes-dev-function
         package: functionapp 
-  #  - name: Deploy function app settings
-  #    run: az webapp config appsettings set --name "DoraMetrics-wes-dev-function" --resource-group "DoraMetrics-wes-dev-rg" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:WebServiceURL=https://DoraMetrics-wes-dev-service.azurewebsites.net/" 
+    - name: Deploy function app settings
+      run: az webapp config appsettings set --name "DoraMetrics-wes-dev-function" --resource-group "DoraMetrics-wes-dev-rg" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:WebServiceURL=https://DoraMetrics-wes-dev-service.azurewebsites.net/" 
 
 
   swapDeploymentSlots:
