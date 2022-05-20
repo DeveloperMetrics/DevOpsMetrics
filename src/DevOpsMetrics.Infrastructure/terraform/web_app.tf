@@ -9,8 +9,16 @@ resource "azurerm_app_service_plan" "app" {
   }
 }
 
-resource "azurerm_app_service" "app" {
-  name                = "${local.basename}app"
+resource "azurerm_app_service" "service" {
+  name                = "${local.basename}-service"
+  location            = azurerm_resource_group.application.location
+  resource_group_name = azurerm_resource_group.application.name
+  app_service_plan_id = azurerm_app_service_plan.app.id
+}
+
+
+resource "azurerm_app_service" "web" {
+  name                = "${local.basename}-web"
   location            = azurerm_resource_group.application.location
   resource_group_name = azurerm_resource_group.application.name
   app_service_plan_id = azurerm_app_service_plan.app.id

@@ -10,7 +10,7 @@ resource "azurerm_app_service_plan" "function" {
 }
 
 resource "azurerm_function_app" "function" {
-  name                       = "${local.basename}func"
+  name                       = "${local.basename}-function"
   location                   = azurerm_resource_group.application.location
   resource_group_name        = azurerm_resource_group.application.name
   app_service_plan_id        = azurerm_app_service_plan.function.id
