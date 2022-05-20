@@ -103,7 +103,7 @@ jobs:
         package: serviceapp
         #slot-name: staging 
     - name: Deploy web service app settings
-      run: az webapp config appsettings set --name "DoraMetrics-wes-service" --resource-group "DoraMetrics-wes-dev-rg" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}" #--slot "staging" 
+      run: az webapp config appsettings set --name "DoraMetrics-wes-dev-service" --resource-group "DoraMetrics-wes-dev-rg" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}" #--slot "staging" 
     
     - name: Deploy website to Azure WebApp
       uses: Azure/webapps-deploy@v2.2.3
@@ -112,7 +112,7 @@ jobs:
         package: webapp 
         #slot-name: staging         
   #  - name: Deploy website app settings
-  #    run: az webapp config appsettings set --name DoraMetrics-wes-web --resource-group "DoraMetrics-wes-dev-rg" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" #--slot "staging"  
+  #    run: az webapp config appsettings set --name DoraMetrics-wes-dev-web --resource-group "DoraMetrics-wes-dev-rg" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" #--slot "staging"  
 
   
     
@@ -123,7 +123,7 @@ jobs:
         app-name: DoraMetrics-wes-dev-function
         package: functionapp 
   #  - name: Deploy function app settings
-  #    run: az webapp config appsettings set --name "DoraMetrics-wes-function" --resource-group "DoraMetrics-wes-dev-rg" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:WebServiceURL=https://DoraMetrics-wes-dev-service.azurewebsites.net/" 
+  #    run: az webapp config appsettings set --name "DoraMetrics-wes-dev-function" --resource-group "DoraMetrics-wes-dev-rg" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:WebServiceURL=https://DoraMetrics-wes-dev-service.azurewebsites.net/" 
 
 
   swapDeploymentSlots:
