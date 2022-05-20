@@ -8,3 +8,6 @@ variable "project_name" {
   default = "DoraMetrics"
 }
 
+variable "environment" {
+  type = string
+}
