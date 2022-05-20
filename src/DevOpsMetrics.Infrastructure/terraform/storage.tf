@@ -25,3 +25,16 @@ resource "azurerm_storage_table" "storage" {
   name                 = each.key
   storage_account_name = azurerm_storage_account.storage.name
 }
+
+resource "azurerm_key_vault_secret" "connection_string " {
+  name         = "storageAccountConnectionString"
+  value        = azurerm_storage_account.primary_connection_string
+  key_vault_id = azurerm_key_vault.az_key_vault.id
+}
+
+
+resource "azurerm_key_vault_secret" "access_key " {
+  name         = "storageAccountAccessKey"
+  value        = azurerm_storage_account.primary_access_key
+  key_vault_id = azurerm_key_vault.az_key_vault.id
+}
