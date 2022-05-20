@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <ApplicationInsightsResourceId>/subscriptions/07db7d0b-a6cb-4e58-b07e-e1d541c39f5b/resourcegroups/DevOpsMetrics/providers/microsoft.insights/components/devops-prod-eu-appinsights</ApplicationInsightsResourceId>
-    <UserSecretsId>4d9063eb-b4d7-4507-badc-6b916c1b050b</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DevOpsMetrics.Core\DevOpsMetrics.Core.csproj" />
+    <ProjectReference Include="../DevOpsMetrics.Core/DevOpsMetrics.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
