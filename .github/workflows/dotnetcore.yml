@@ -24,16 +24,6 @@ jobs:
     - name: .NET Publish Website
       run: dotnet publish src/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj --configuration Release --output ${{ github.workspace }}/web
     
-    # - name: .NET Publish functional tests
-    #   run: dotnet publish src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj --configuration Release --output ${{ github.workspace }}/functionalTests
-    # - name: Copy chromedriver for functional test
-    #  run: copy "src/DevOpsMetrics.FunctionalTests/bin/Release/net6.0/chromedriver.exe" "${{ github.workspace }}/functionalTests"
-    #  shell: powershell
-    #- name: DotNet restore functional tests to get correct NewtonSoft version
-    #  run: dotnet restore src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj 
-    #- name: Copy new NewtonSoft version for functional test
-    #  run: copy "src/DevOpsMetrics.FunctionalTests/bin/Release/net6.0/Newtonsoft.Json.dll" "${{ github.workspace }}/functionalTests"
-    #  shell: powershell
         
     #Publish build artifacts to GitHub
     - name: Upload web service build artifacts back to GitHub
@@ -47,11 +37,6 @@ jobs:
         name: webapp
         path: ${{ github.workspace }}/web
 
-  #¡  - name: Upload functional test build artifacts back to GitHub
-   #   uses: actions/upload-artifact@v3
-   #   with:
-   #     name: functionaltests
-   #     path: ${{ github.workspace }}/functionalTests
     - name: Upload probot build artifacts back to GitHub
       uses: actions/upload-artifact@v3
       with:
@@ -108,11 +93,7 @@ jobs:
       with:
         name: functionapp  
         path: functionapp   
-    - name: Download functionaltests artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: functionaltests 
-        path: functionaltests
+
 
     #Deploy service, website, and function to Azure
     - name: Deploy web service to Azure WebApp
@@ -122,7 +103,7 @@ jobs:
         package: serviceapp
         #slot-name: staging 
     - name: Deploy web service app settings
-      run: az webapp config appsettings set --name "devops-prod-eu-service" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}" #--slot "staging" 
+      run: az webapp config appsettings set --name "devops-prod-eu-service" --resource-group "DoraMetrics-wes-dev-rg" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}" #--slot "staging" 
     
     - name: Deploy website to Azure WebApp
       uses: Azure/webapps-deploy@v2.2.3
@@ -131,7 +112,7 @@ jobs:
         package: webapp 
         #slot-name: staging         
     - name: Deploy website app settings
-      run: az webapp config appsettings set --name devops-prod-eu-web --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" #--slot "staging"  
+      run: az webapp config appsettings set --name devops-prod-eu-web --resource-group "DoraMetrics-wes-dev-rg" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" #--slot "staging"  
 
   
     
@@ -142,7 +123,7 @@ jobs:
         app-name: devops-prod-eu-function
         package: functionapp 
     - name: Deploy function app settings
-      run: az webapp config appsettings set --name "devops-prod-eu-function" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:WebServiceURL=https://devops-prod-eu-service.azurewebsites.net/" 
+      run: az webapp config appsettings set --name "devops-prod-eu-function" --resource-group "DoraMetrics-wes-dev-rg" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:WebServiceURL=https://devops-prod-eu-service.azurewebsites.net/" 
 
 
   swapDeploymentSlots:
@@ -160,51 +141,12 @@ jobs:
     - name: Swap web service staging slot to production
       uses: Azure/cli@v1.0.6
       with:
-        inlineScript: az webapp deployment slot swap --name "devops-prod-eu-service" --resource-group "devopsmetrics" --slot staging --target-slot production
+        inlineScript: az webapp deployment slot swap --name "devops-prod-eu-service" --resource-group "DoraMetrics-wes-dev-rg" --slot staging --target-slot production
     - name: Deploy web service app settings
-      run: az webapp config appsettings set --name "devops-prod-eu-service" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}"     
+      run: az webapp config appsettings set --name "devops-prod-eu-service" --resource-group "DoraMetrics-wes-dev-rg" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}"     
     - name: Swap web site staging slot to production
       uses: Azure/cli@v1.0.6
       with:
-        inlineScript: az webapp deployment slot swap --name "devops-prod-eu-web" --resource-group "devopsmetrics" --slot staging --target-slot production
+        inlineScript: az webapp deployment slot swap --name "devops-prod-eu-web" --resource-group "DoraMetrics-wes-dev-rg" --slot staging --target-slot production
     - name: Deploy website app settings
-      run: az webapp config appsettings set --name devops-prod-eu-web --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  
-
-
-
-
-
-
-
-#  #Publish the Azure DevOps extension (Currently disabled)
-#  deployAzureDevOpsExtension:
-#    runs-on: windows-latest
-#    needs: [build, swapDeploymentSlots]
-#    if: 1==0 # Commented out/skipping this job for now   
-#    env:
-#      extensionVersion: "0.0.0" 
-#    #if: github.ref == 'refs/heads/main'
-#    steps:
-#    - uses: actions/checkout@v3
-#    - name: Setup .NET Core
-#      uses: actions/setup-dotnet@v2
-#      with:
-#        dotnet-version: 3.1.101
-#    - name: .NET core Publish Azure DevOps Extension
-#      run: dotnet publish src/DevOpsMetrics.AzureDevOpsExtension/DevOpsMetrics.AzureDevOpsExtension.csproj --configuration Release   
-#    - name: Build extension
-#      run: |
-#        npm install -g tfx-cli
-#        tfx extension create --manifest-globs vss-extension.json --root src\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot --output-path src\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot  #--rev-version
-#        #tfx extension samsmithnz create --token "${{ secrets.AzureDevOpsPATToken }}"
-#        #tfx extension publish --help 
-#    - name: Check files
-#      run: |
-#        cd src\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot
-#        dir
-#        Write-Host "New env variable " ${{ env.extensionVersion }}
-#    - name: Upload Azure DevOps extension build artifacts back to GitHub
-#      uses: actions/upload-artifact@v3
-#      with:
-#        name: azuredevopsextensionpackage
-#        path: src\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\SamSmithNZ.high-performing-devops-metrics-${{ env.extensionVersion }}.vsix
+      run: az webapp config appsettings set --name devops-prod-eu-web --resource-group "DoraMetrics-wes-dev-rg" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  
