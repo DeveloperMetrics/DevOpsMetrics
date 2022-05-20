@@ -8,12 +8,12 @@ resource "azurerm_storage_account" "storage" {
   location                          = azurerm_resource_group.application.location
   account_tier                      = "Standard"
   account_replication_type          = "LRS"
-  infrastructure_encryption_enabled = true
-  enable_https_traffic_only         = true
+  infrastructure_encryption_enabled = false
+  enable_https_traffic_only         = false
   min_tls_version                   = "TLS1_2"
 
   network_rules {
-    default_action = "Deny"
+    default_action = "Allow"
   }
 
 }
