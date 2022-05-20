@@ -20,7 +20,7 @@ resource "azurerm_storage_account" "storage" {
 
 resource "azurerm_storage_table" "storage" {
 
-  for_each = var.tables
+  for_each = local.table_names
 
   name                 = each.key
   storage_account_name = azurerm_storage_account.storage.name
