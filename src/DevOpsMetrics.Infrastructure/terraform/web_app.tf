@@ -14,6 +14,21 @@ resource "azurerm_app_service" "service" {
   location            = azurerm_resource_group.application.location
   resource_group_name = azurerm_resource_group.application.name
   app_service_plan_id = azurerm_app_service_plan.app.id
+
+  site_config {
+    scm_type                 = "LocalGit"
+    dotnet_framework_version = "v5.0"
+    default_documents = ["Default.htm",
+      "Default.html",
+      "Default.asp",
+      "index.htm",
+      "index.html",
+      "iisstart.htm",
+      "default.aspx",
+      "index.php",
+    "hostingstart.html"]
+  }
+
 }
 
 
