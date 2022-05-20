@@ -1,4 +1,4 @@
 resource "azurerm_resource_group" "application" {
-  name     = "${locals.basename}-rg"
+  name     = "${local.basename}-rg"
   location = var.location
 }
