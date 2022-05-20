@@ -9,7 +9,7 @@ resource "azurerm_app_service_plan" "web" {
   }
 }
 
-resource "azurerm_function_app" "function" {
+resource "azurerm_app_service" "app" {
   name                       = "${local.basename}app"
   location                   = azurerm_resource_group.application.location
   resource_group_name        = azurerm_resource_group.application.name
