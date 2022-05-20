@@ -13,6 +13,20 @@ variable "environment" {
 }
 
 variable "tables" {
-  type    = map(string)
-  default = ["AzureDevOpsBuilds", "AzureDevOpsPRCommits", "AzureDevOpsPRs", "AzureDevOpsSettings", "ChangeFailureRate", "GitHubPRCommits", "GitHubPRs", "GitHubRuns", "GitHubSettings", "Log", "MTTR"]
+  type = map(any)
+  default = {
+    AzureDevOpsBuilds    = {}
+    AzureDevOpsPRCommits = {}
+    AzureDevOpsPRs       = {}
+    AzureDevOpsSettings  = {}
+    ChangeFailureRate    = {}
+    GitHubPRCommits      = {}
+    GitHubPRs            = {}
+    GitHubRuns           = {}
+    GitHubSettings       = {}
+    Log                  = {}
+    MTTR                 = {}
+  }
 }
+
+  
