@@ -1,4 +1,4 @@
-resource "azurerm_service_plan" "function" {
+resource "azurerm_app_service_plan" "function" {
   name                = "${local.basename}_func_service_plan"
   location            = azurerm_resource_group.application.location
   resource_group_name = azurerm_resource_group.application.name
