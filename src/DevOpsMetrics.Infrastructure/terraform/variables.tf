@@ -11,3 +11,14 @@ variable "project_name" {
 variable "environment" {
   type = string
 }
+
+variable "tables" {
+  type = list(any)
+  default = ["AzureDevOpsBuilds",
+    "AzureDevOpsPRCommits",
+    "AzureDevOpsPRs",
+    "AzureDevOpsSettings",
+    "ChangeFailureRate",
+    "GitHubPRCommits", "GitHubPRs",
+  "GitHubRuns", "GitHubSettings", "Log", "MTTR"]
+}
