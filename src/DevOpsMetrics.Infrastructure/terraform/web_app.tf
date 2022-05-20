@@ -16,7 +16,6 @@ resource "azurerm_app_service" "service" {
   app_service_plan_id = azurerm_app_service_plan.app.id
 
   site_config {
-    scm_type                 = "LocalGit"
     dotnet_framework_version = "v5.0"
     default_documents = ["Default.htm",
       "Default.html",
