@@ -3,16 +3,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <OutputPath>bin/$(Configuration)/</OutputPath>
     <DebugSymbols>false</DebugSymbols>
     <SkipCopyBuildProduct>true</SkipCopyBuildProduct>
     <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
     <TargetRuntime>None</TargetRuntime>
-    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">obj\</BaseIntermediateOutputPath>
-    <BaseIntermediateOutputPath Condition=" !HasTrailingSlash('$(BaseIntermediateOutputPath)') ">$(BaseIntermediateOutputPath)\</BaseIntermediateOutputPath>
-    <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
+    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">obj/</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath Condition=" !HasTrailingSlash('$(BaseIntermediateOutputPath)') ">$(BaseIntermediateOutputPath)/</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)/</IntermediateOutputPath>
     <ProjectReferencesOutputPath Condition=" '$(ProjectReferencesOutputPath)' == '' ">$(IntermediateOutputPath)ProjectReferences</ProjectReferencesOutputPath>
-    <ProjectReferencesOutputPath Condition=" !HasTrailingSlash('$(ProjectReferencesOutputPath)') ">$(ProjectReferencesOutputPath)\</ProjectReferencesOutputPath>
+    <ProjectReferencesOutputPath Condition=" !HasTrailingSlash('$(ProjectReferencesOutputPath)') ">$(ProjectReferencesOutputPath)/</ProjectReferencesOutputPath>
     <StageArtifacts Condition=" '$(StageArtifacts)' == '' ">true</StageArtifacts>
   </PropertyGroup>
 
@@ -53,8 +53,8 @@
   </PropertyGroup>
 
   <Target Name="_CopyOutputToArtifactStagingDirectory">
-    <Copy SourceFiles="@(DeploymentProjectContentOutput)" DestinationFiles="$(ArtifactStagingDirectory)\$(MSBuildProjectName)%(RelativePath)" />
-    <Copy SourceFiles="@(BuildProjectReferencesOutput)" DestinationFiles="$(ArtifactStagingDirectory)\$(MSBuildProjectName)\%(ProjectName)\%(RecursiveDir)%(FileName)%(Extension)" />
+    <Copy SourceFiles="@(DeploymentProjectContentOutput)" DestinationFiles="$(ArtifactStagingDirectory)/$(MSBuildProjectName)%(RelativePath)" />
+    <Copy SourceFiles="@(BuildProjectReferencesOutput)" DestinationFiles="$(ArtifactStagingDirectory)/$(MSBuildProjectName)/%(ProjectName)/%(RecursiveDir)%(FileName)%(Extension)" />
   </Target>
 
   <Target Name="_GetDeploymentProjectContent">
@@ -84,8 +84,8 @@
     <PropertyGroup>
       <ArtifactStagingDirectory Condition=" '$(OutDir)'!='' ">$(OutDir)</ArtifactStagingDirectory>
       <ArtifactStagingDirectory Condition=" '$(ArtifactStagingDirectory)'=='' ">$(OutputPath)</ArtifactStagingDirectory>
-      <ArtifactStagingDirectory Condition=" !HasTrailingSlash('$(ArtifactStagingDirectory)') ">$(ArtifactStagingDirectory)\</ArtifactStagingDirectory>
-      <ArtifactStagingDirectory>$(ArtifactStagingDirectory)staging\</ArtifactStagingDirectory>
+      <ArtifactStagingDirectory Condition=" !HasTrailingSlash('$(ArtifactStagingDirectory)') ">$(ArtifactStagingDirectory)/</ArtifactStagingDirectory>
+      <ArtifactStagingDirectory>$(ArtifactStagingDirectory)staging/</ArtifactStagingDirectory>
       <ArtifactStagingDirectory Condition=" '$(Build_StagingDirectory)'!='' AND '$(TF_Build)'=='True' ">$(Build_StagingDirectory)</ArtifactStagingDirectory>
     </PropertyGroup>
   </Target>

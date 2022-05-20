@@ -137,7 +137,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
       "apiVersion": "2021-01-01",
-      "name": "[concat(parameters('storageName'), '/default/DevOpsAzureDevOpsBuilds')]",
+      "name": "[concat(parameters('storageName'), '/default/AzureDevOpsBuilds')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
@@ -146,7 +146,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
       "apiVersion": "2021-01-01",
-      "name": "[concat(parameters('storageName'), '/default/DevOpsAzureDevOpsPRCommits')]",
+      "name": "[concat(parameters('storageName'), '/default/AzureDevOpsPRCommits')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
@@ -155,7 +155,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
       "apiVersion": "2021-01-01",
-      "name": "[concat(parameters('storageName'), '/default/DevOpsAzureDevOpsPRs')]",
+      "name": "[concat(parameters('storageName'), '/default/AzureDevOpsPRs')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
@@ -164,7 +164,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
       "apiVersion": "2021-01-01",
-      "name": "[concat(parameters('storageName'), '/default/DevOpsAzureDevOpsSettings')]",
+      "name": "[concat(parameters('storageName'), '/default/AzureDevOpsSettings')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
@@ -173,7 +173,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
       "apiVersion": "2021-01-01",
-      "name": "[concat(parameters('storageName'), '/default/DevOpsChangeFailureRate')]",
+      "name": "[concat(parameters('storageName'), '/default/ChangeFailureRate')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
@@ -182,7 +182,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
       "apiVersion": "2021-01-01",
-      "name": "[concat(parameters('storageName'), '/default/DevOpsGitHubPRCommits')]",
+      "name": "[concat(parameters('storageName'), '/default/GitHubPRCommits')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
@@ -191,7 +191,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
       "apiVersion": "2021-01-01",
-      "name": "[concat(parameters('storageName'), '/default/DevOpsGitHubPRs')]",
+      "name": "[concat(parameters('storageName'), '/default/GitHubPRs')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
@@ -200,7 +200,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
       "apiVersion": "2021-01-01",
-      "name": "[concat(parameters('storageName'), '/default/DevOpsGitHubRuns')]",
+      "name": "[concat(parameters('storageName'), '/default/GitHubRuns')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
@@ -209,7 +209,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
       "apiVersion": "2021-01-01",
-      "name": "[concat(parameters('storageName'), '/default/DevOpsGitHubSettings')]",
+      "name": "[concat(parameters('storageName'), '/default/GitHubSettings')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
@@ -218,7 +218,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
       "apiVersion": "2021-01-01",
-      "name": "[concat(parameters('storageName'), '/default/DevOpsLog')]",
+      "name": "[concat(parameters('storageName'), '/default/Log')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
@@ -227,7 +227,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
       "apiVersion": "2021-01-01",
-      "name": "[concat(parameters('storageName'), '/default/DevOpsMTTR')]",
+      "name": "[concat(parameters('storageName'), '/default/MTTR')]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageName'), 'default')]",
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
@@ -455,8 +455,8 @@
       ],
       "kind": "app",
       "identity": {
-        "principalId": "9c6e4522-7210-4fc7-89d2-d4ac734943aa",
-        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+        "principalId": "f1b00114-3e9b-45c8-bc18-b549fa041143",
+        "tenantId": "538cf6fd-f5d4-4451-8e4a-88c34f2f2619",
         "type": "SystemAssigned"
       },
       "properties": {

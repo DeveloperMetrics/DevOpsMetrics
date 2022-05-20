@@ -18,9 +18,9 @@
     </PrepareForBuildDependsOn>
   </PropertyGroup>
   <Import Condition=" Exists('Deployment.targets') " Project="Deployment.targets" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+  <Import Project="$(MSBuildToolsPath)/Microsoft.Common.targets" />
   <!-- vertag<:>start tokens<:>maj.min -->
-  <Import Condition=" Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets') " Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets" />
+  <Import Condition=" Exists('$(MSBuildExtensionsPath)/Microsoft/VisualStudio/v$(VisualStudioVersion)/Deployment/1.1/DeploymentProject.targets') " Project="$(MSBuildExtensionsPath)/Microsoft/VisualStudio/v$(VisualStudioVersion)/Deployment/1.1/DeploymentProject.targets" />
   <!-- vertag<:>end -->
   <ItemGroup>
     <Content Include="azuredeploy.json" />
@@ -31,25 +31,25 @@
       <Visible>False</Visible>
     </None>
     <None Include="installation.md" />
-    <None Include="Templates\ApplicationInsights.json">
+    <None Include="Templates/ApplicationInsights.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\KeyVault.json">
+    <None Include="Templates/KeyVault.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\Storage.json">
+    <None Include="Templates/Storage.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\WebHosting.json">
+    <None Include="Templates/WebHosting.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\WebService.json">
+    <None Include="Templates/WebService.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\Function.json">
+    <None Include="Templates/Function.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\Website.json">
+    <None Include="Templates/Website.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

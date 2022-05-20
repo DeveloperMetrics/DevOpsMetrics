@@ -11,7 +11,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\DevOpsMetrics.Service\DevOpsMetrics.Service.csproj" />
+    <ProjectReference Include="../DevOpsMetrics.Service/DevOpsMetrics.Service.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
