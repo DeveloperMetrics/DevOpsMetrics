@@ -1,0 +1,5 @@
+environment = "dev"
+
+location = "westeurope"
+
+
