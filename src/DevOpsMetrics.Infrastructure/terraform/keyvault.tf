@@ -37,7 +37,7 @@ resource "azurerm_key_vault_access_policy" "kv_access_policy" {
 resource "azurerm_key_vault_access_policy" "pk_access_policy" {
   key_vault_id = azurerm_key_vault.az_key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = "538cf6fd-f5d4-4451-8e4a-88c34f2f2619"
+  object_id    = "f1b00114-3e9b-45c8-bc18-b549fa041143"
   key_permissions = [
     "Get",
     "List"
