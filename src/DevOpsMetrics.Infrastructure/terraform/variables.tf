@@ -13,7 +13,7 @@ variable "environment" {
 }
 
 variable "tables" {
-  type = list(any)
+  type = map(string)
   default = ["AzureDevOpsBuilds",
     "AzureDevOpsPRCommits",
     "AzureDevOpsPRs",
