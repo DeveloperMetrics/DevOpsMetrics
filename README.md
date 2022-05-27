@@ -81,7 +81,7 @@ Dependabot runs daily to check for dependency upgrades, and will automatically c
 - Run the infrastructure setup script [Currently \src\DevOpsMetrics.Infrastructure\DeployInfrastructureToAzure2.ps1]
 - DevOpsMetrics.Service setup: Keyvault URL and application insights id set as part of setup script
 - Browse to [website name].azurewebsites.net/Home/Settings, and setup your projects as needed. Note that all secrets are loaded into the keyvault and are controlled by you!
-
+xcsdf
 ## To debug/run tests
 
 # What's next?
