@@ -76,7 +76,7 @@ Dependabot runs daily to check for dependency upgrades, and will automatically c
 
 # Setup
 
-## Deploying to Azure
+## Deploying to Azuresds
 
 - Run the infrastructure setup script [Currently \src\DevOpsMetrics.Infrastructure\DeployInfrastructureToAzure2.ps1]
 - DevOpsMetrics.Service setup: Keyvault URL and application insights id set as part of setup script
