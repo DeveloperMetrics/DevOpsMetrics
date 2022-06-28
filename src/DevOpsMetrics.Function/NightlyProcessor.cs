@@ -59,26 +59,8 @@ namespace DevOpsMetrics.Function
             }
             foreach (GitHubSettings item in ghSettings)
             {
-                (int, string) buildsUpdated = (0, null);
-                (int, string) prsUpdated = (0, null);
-                try
-                {
-                    log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}");
-                    buildsUpdated = await api.UpdateGitHubActionRuns(item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId, numberOfDays, maxNumberOfItems);
-                    //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {buildsUpdated} builds updated");
-                    prsUpdated = await api.UpdateGitHubActionPullRequests(item.Owner, item.Repo, item.Branch, numberOfDays, maxNumberOfItems);
-                    //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {prsUpdated} pull requests updated");
-                    log.LogInformation($"Processed GitHub owner {item.Owner}, repo {item.Repo}. {buildsUpdated.Item1} builds and {prsUpdated.Item1} prs/commits updated");
-                    totalResults += buildsUpdated.Item1 + prsUpdated.Item1;
-                    await api.UpdateGitHubProjectLog(item.Owner, item.Repo, buildsUpdated.Item1, prsUpdated.Item1, buildsUpdated.Item2, prsUpdated.Item2, null, null);
-                }
-                catch (Exception ex)
-                {
-                    string error = $"Exception while processing GitHub owner {item.Owner}, repo {item.Repo}. {buildsUpdated.Item1} builds and {prsUpdated.Item1} prs/commits updated";
-                    log.LogInformation(error);
-                    await api.UpdateGitHubProjectLog(item.Owner, item.Repo, buildsUpdated.Item1, prsUpdated.Item1, buildsUpdated.Item2, prsUpdated.Item2, ex.Message, error);
-                }
-
+                ProcessingResult ghResult = await Processing.ProcessGitHubItem(item, numberOfDays, maxNumberOfItems, api, log, totalResults);
+                totalResults = ghResult.TotalResults;
             }
             log.LogInformation($"C# Timer trigger function complete at: {DateTime.Now} after updating {totalResults} records");
         }
