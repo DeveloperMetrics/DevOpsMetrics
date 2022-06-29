@@ -26,7 +26,7 @@ namespace DevOpsMetrics.Function
             IConfiguration configuration = new ConfigurationBuilder()
                 .SetBasePath(context.FunctionAppDirectory)
                 .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-                .AddUserSecrets(Assembly.GetExecutingAssembly(), false)
+                .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
                 .AddEnvironmentVariables()
                 .Build();
 
