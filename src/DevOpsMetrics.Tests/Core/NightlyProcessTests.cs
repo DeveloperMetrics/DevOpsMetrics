@@ -5,6 +5,7 @@ using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
 using DevOpsMetrics.Function;
+using DevOpsMetrics.Service.Controllers;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -21,20 +22,24 @@ namespace DevOpsMetrics.Tests.Core
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
             ProcessingResult result = null;
-            ServiceApiClient api = new(base.Configuration);
+            AzureTableStorageDA da = new();
+            BuildsController buildsController = new(base.Configuration, da);
+            PullRequestsController pullRequestsController = new(base.Configuration, da);
+            SettingsController settingsController = new(base.Configuration, da);
             using var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder
                 .SetMinimumLevel(LogLevel.Trace)
                 .AddConsole());
             ILogger log = loggerFactory.CreateLogger<NightlyProcessTests>();
 
             //Act
-            AzureTableStorageDA da = new();
             List<GitHubSettings> results = da.GetGitHubSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings, null);
             foreach (GitHubSettings item in results)
             {
                 if (item.Repo == "AzurePipelinesToGitHubActionsConverterWeb")
                 {
-                     result = await Processing.ProcessGitHubItem(item, 30, 20, api, log, 0);
+                    result = await Processing.ProcessGitHubItem(item, 30, 20, 
+                        buildsController, pullRequestsController,settingsController,
+                        log, 0);
                 }
             }
 

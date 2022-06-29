@@ -1,6 +1,9 @@
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using DevOpsMetrics.Core.DataAccess.TableStorage;
+using DevOpsMetrics.Core.Models.Common;
+using DevOpsMetrics.Service.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -32,8 +35,10 @@ namespace DevOpsMetrics.Function
             log.LogInformation($"C# HTTP trigger function processed request body {requestBody}.");
 
             //save response to table
-            ServiceApiClient api = new ServiceApiClient(configuration);
-            await api.UpdateDevOpsMonitoringEvent(requestBody);
+            //ServiceApiClient api = new ServiceApiClient(configuration);
+            SettingsController settingsController = new(configuration, new AzureTableStorageDA());
+            MonitoringEvent monitoringEvent = new(requestBody);
+            await settingsController.UpdateDevOpsMonitoringEvent(monitoringEvent);
 
             string responseMessage = "monitoring event processed successfully";
             return new OkObjectResult(responseMessage);
