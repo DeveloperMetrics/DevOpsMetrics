@@ -110,7 +110,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: 3.1.407
+        dotnet-version: '6.0.x'
     - name: .NET Publish Function
       run: dotnet publish src/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj --configuration Debug --output ${{ github.workspace }}/function 
     - name: Upload function build artifacts back to GitHub
