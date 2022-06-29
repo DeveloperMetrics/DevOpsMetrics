@@ -129,5 +129,28 @@ namespace DevOpsMetrics.Tests.Core
             Assert.IsTrue(result == true);
         }
 
+        [TestMethod]
+        public async Task GHUpdateAzurePipelinesToGitHubActionsConverterWebSettingDAIntegrationTest()
+        {
+            //Arrange
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
+            string owner = "samsmithnz";
+            string repo = "AzurePipelinesToGitHubActionsConverterWeb";
+            string branch = "main";
+            string workflowName = "Pipelines to Actions website CI/CD";
+            string workflowId = "43084";
+            string resourceGroupName = "PipelinesToActions";
+            int itemOrder = 3;
+            bool showSetting = true;
+
+            //Act
+            AzureTableStorageDA da = new();
+            bool result = await da.UpdateGitHubSettingInStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings,
+                    owner, repo, branch, workflowName, workflowId, resourceGroupName, itemOrder, showSetting);
+
+            //Assert
+            Assert.IsTrue(result == true);
+        }
+
     }
 }
