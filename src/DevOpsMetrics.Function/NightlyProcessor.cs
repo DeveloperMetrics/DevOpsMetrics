@@ -6,6 +6,8 @@ using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.GitHub;
 using DevOpsMetrics.Service.Controllers;
+using Microsoft.Azure.KeyVault;
+using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -23,12 +25,26 @@ namespace DevOpsMetrics.Function
             log.LogInformation($"C# Timer trigger function UpdateStorageTables started at: {DateTime.Now}");
 
             //Load settings
-            IConfiguration configuration = new ConfigurationBuilder()
+            IConfigurationBuilder builder = new ConfigurationBuilder();
+            IConfiguration configuration = builder
                 .SetBasePath(context.FunctionAppDirectory)
                 .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                 .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
                 .AddEnvironmentVariables()
                 .Build();
+            //IConfiguration configuration = new ConfigurationBuilder()
+            //    .SetBasePath(context.FunctionAppDirectory)
+            //    .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+            //    .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
+            //    .AddEnvironmentVariables()
+            //    .Build();
+
+            string keyVaultURL = configuration["AppSettings:KeyVaultURL"];
+            string clientId = configuration["AppSettings:KeyVaultClientId"];
+            string clientSecret = configuration["AppSettings:KeyVaultClientSecret"];
+            AzureServiceTokenProvider azureServiceTokenProvider = new();
+            KeyVaultClient keyVaultClient = new(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
+            builder.AddAzureKeyVault(keyVaultURL, clientId, clientSecret);
 
             //Get settings
             //ServiceApiClient api = new ServiceApiClient(configuration);

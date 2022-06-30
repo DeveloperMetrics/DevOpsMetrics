@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace DevOpsMetrics.Core.Models.Common
+﻿namespace DevOpsMetrics.Core.Models.Common
 {
     public class TableStorageConfiguration
     {
-        //public string StorageAccountName { get; set; }
-        //public string StorageAccountAccessKey { get; set; }
-        public string StorageAccountConnectionString{ get; set; }
-        public string TableAzureDevOpsSettings { get; set; }
-        public string TableAzureDevOpsBuilds { get; set; }
-        public string TableAzureDevOpsPRs { get; set; }
-        public string TableAzureDevOpsPRCommits { get; set; }
-        public string TableGitHubSettings { get; set; }
-        public string TableGitHubRuns { get; set; }
-        public string TableGitHubPRs { get; set; }
-        public string TableGitHubPRCommits { get; set; }
-        public string TableMTTR { get; set; }
-        public string TableChangeFailureRate { get; set; }
-        public string TableLog { get; set; }
+        public string StorageAccountConnectionString { get; set; }
+        public string TableAzureDevOpsSettings { get; set; } = "DevOpsAzureDevOpsSettings";
+        public string TableAzureDevOpsBuilds { get; set; } = "DevOpsAzureDevOpsBuilds";
+        public string TableAzureDevOpsPRs { get; set; } = "DevOpsAzureDevOpsPRs";
+        public string TableAzureDevOpsPRCommits { get; set; } = "DevOpsAzureDevOpsPRCommits";
+        public string TableGitHubSettings { get; set; } = "DevOpsGitHubSettings";
+        public string TableGitHubRuns { get; set; } = "DevOpsGitHubRuns";
+        public string TableGitHubPRs { get; set; } = "DevOpsGitHubPRs";
+        public string TableGitHubPRCommits { get; set; } = "DevOpsGitHubPRCommits";
+        public string TableMTTR { get; set; } = "DevOpsMTTR";
+        public string TableChangeFailureRate { get; set; } = "DevOpsChangeFailureRate";
+        public string TableLog { get; set; } = "DevOpsLog";
     }
 }
