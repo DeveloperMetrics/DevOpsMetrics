@@ -101,6 +101,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: src/DevOpsMetrics.Tests/TestResults/coverage.info 
+      continue-on-error: true
 
 
   buildFunction:
