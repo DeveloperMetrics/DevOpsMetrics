@@ -45,6 +45,7 @@ namespace DevOpsMetrics.Function
             AzureServiceTokenProvider azureServiceTokenProvider = new();
             KeyVaultClient keyVaultClient = new(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
             builder.AddAzureKeyVault(keyVaultURL, clientId, clientSecret);
+            configuration = builder.Build();
 
             //Get settings
             //ServiceApiClient api = new ServiceApiClient(configuration);
@@ -65,7 +66,7 @@ namespace DevOpsMetrics.Function
                 //    (int, string) prsUpdated = (0, null);
                 //    try
                 //    {
-                        log.LogInformation($"Processing Azure DevOps organization {item.Organization}, project {item.Project}");
+                log.LogInformation($"Processing Azure DevOps organization {item.Organization}, project {item.Project}");
                 //        buildsUpdated = await api.UpdateAzureDevOpsBuilds(item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems);
                 //        prsUpdated = await api.UpdateAzureDevOpsPullRequests(item.Organization, item.Project, item.Repository, numberOfDays, maxNumberOfItems);
                 //        log.LogInformation($"Processed Azure DevOps organization {item.Organization}, project {item.Project}. {buildsUpdated.Item1} builds and {prsUpdated.Item1} prs/commits updated");
