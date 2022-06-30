@@ -37,7 +37,7 @@ namespace DevOpsMetrics.Function
             {
                 string error = $"Exception while processing GitHub owner {item.Owner}, repo {item.Repo}. {result.BuildsUpdated} builds and {result.PRsUpdated} prs/commits updated";
                 log.LogInformation(error);
-                await settingsController.UpdateGitHubProjectLog(item.Owner, item.Repo, result.BuildsUpdated, result.PRsUpdated, "", "", ex.Message, error);
+                await settingsController.UpdateGitHubProjectLog(item.Owner, item.Repo, result.BuildsUpdated, result.PRsUpdated, "", "", ex.ToString(), error);
             }
 
             return result;
