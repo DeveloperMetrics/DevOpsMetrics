@@ -15,7 +15,7 @@ namespace DevOpsMetrics.Function
             BuildsController buildsController,
             PullRequestsController pullRequestsController,
             SettingsController settingsController,
-            ILogger log, 
+            ILogger log,
             int totalResults)
         {
             ProcessingResult result = new()
@@ -37,7 +37,10 @@ namespace DevOpsMetrics.Function
             {
                 string error = $"Exception while processing GitHub owner {item.Owner}, repo {item.Repo}. {result.BuildsUpdated} builds and {result.PRsUpdated} prs/commits updated";
                 log.LogInformation(error);
-                await settingsController.UpdateGitHubProjectLog(item.Owner, item.Repo, result.BuildsUpdated, result.PRsUpdated, "", "", ex.ToString(), error);
+                await settingsController.UpdateGitHubProjectLog(item.Owner, item.Repo, result.BuildsUpdated, result.PRsUpdated,
+                    item.Owner + "_" + item.Repo + "_" + item.Branch + "_" + item.WorkflowName + "_" + item.WorkflowId + "_" + numberOfDays + "_" + maxNumberOfItems,
+                    item.Owner + "_" + item.Repo + "_" + item.Branch + "_" + numberOfDays + "_" + maxNumberOfItems, 
+                    ex.ToString(), error);
             }
 
             return result;
