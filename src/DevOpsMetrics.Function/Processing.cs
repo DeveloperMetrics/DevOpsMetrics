@@ -39,7 +39,7 @@ namespace DevOpsMetrics.Function
                 log.LogInformation(error);
                 await settingsController.UpdateGitHubProjectLog(item.Owner, item.Repo, result.BuildsUpdated, result.PRsUpdated,
                     item.Owner + "_" + item.Repo + "_" + item.Branch + "_" + item.WorkflowName + "_" + item.WorkflowId + "_" + numberOfDays + "_" + maxNumberOfItems,
-                    item.Owner + "_" + item.Repo + "_" + item.Branch + "_" + numberOfDays + "_" + maxNumberOfItems, 
+                    item.Owner + "_" + item.Repo + "_" + item.Branch + "_" + numberOfDays + "_" + maxNumberOfItems,
                     ex.ToString(), error);
             }
 

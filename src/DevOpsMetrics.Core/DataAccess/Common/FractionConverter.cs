@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace DevOpsMetrics.Core.DataAccess.Common
+﻿namespace DevOpsMetrics.Core.DataAccess.Common
 {
     public class FractionConverter
     {
@@ -52,7 +47,13 @@ namespace DevOpsMetrics.Core.DataAccess.Common
 
     public class FractionModel
     {
-        public int Numerator { get; set; }
-        public int Denominator { get; set; }
+        public int Numerator
+        {
+            get; set;
+        }
+        public int Denominator
+        {
+            get; set;
+        }
     }
 }

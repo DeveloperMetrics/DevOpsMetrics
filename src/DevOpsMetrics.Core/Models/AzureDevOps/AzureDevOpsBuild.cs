@@ -1,15 +1,26 @@
-﻿using Newtonsoft.Json;
+﻿using System;
 using Newtonsoft.Json.Linq;
-using System;
 
 namespace DevOpsMetrics.Core.Models.AzureDevOps
 {
     public class AzureDevOpsBuild
     {
-        public string id { get; set; }
-        public string status { get; set; }
-        public string sourceBranch { get; set; }
-        public string parameters { get; set; }
+        public string id
+        {
+            get; set;
+        }
+        public string status
+        {
+            get; set;
+        }
+        public string sourceBranch
+        {
+            get; set;
+        }
+        public string parameters
+        {
+            get; set;
+        }
         public string branch
         {
             get
@@ -34,10 +45,22 @@ namespace DevOpsMetrics.Core.Models.AzureDevOps
                 return prBranch;
             }
         }
-        public string buildNumber { get; set; }
-        public string url { get; set; }
-        public DateTime queueTime { get; set; }
-        public DateTime finishTime { get; set; }
+        public string buildNumber
+        {
+            get; set;
+        }
+        public string url
+        {
+            get; set;
+        }
+        public DateTime queueTime
+        {
+            get; set;
+        }
+        public DateTime finishTime
+        {
+            get; set;
+        }
 
         ////Build duration in minutes
         //public float buildDuration
@@ -96,6 +119,9 @@ namespace DevOpsMetrics.Core.Models.AzureDevOps
         //    }
         //}
 
-        public int buildDurationPercent { get; set; }
+        public int buildDurationPercent
+        {
+            get; set;
+        }
     }
 }

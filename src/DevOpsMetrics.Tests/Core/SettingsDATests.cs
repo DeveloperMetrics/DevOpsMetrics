@@ -152,28 +152,5 @@ namespace DevOpsMetrics.Tests.Core
             Assert.IsTrue(result == true);
         }
 
-        //[TestMethod]
-        //public async Task GHUpdateDevOpsMetricsSettingDAIntegrationTest()
-        //{
-        //    //Arrange
-        //    TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
-        //    string owner = "samsmithnz";
-        //    string repo = "DevOpsMetrics";
-        //    string branch = "main";
-        //    string workflowName = "DevOpsMetrics CI/CD";
-        //    string workflowId = "1162561";
-        //    string resourceGroupName = "DevOpsMetrics";
-        //    int itemOrder = 3;
-        //    bool showSetting = true;
-
-        //    //Act
-        //    AzureTableStorageDA da = new();
-        //    bool result = await da.UpdateGitHubSettingInStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings,
-        //            owner, repo, branch, workflowName, workflowId, resourceGroupName, itemOrder, showSetting);
-
-        //    //Assert
-        //    Assert.IsTrue(result == true);
-        //}
-
     }
 }

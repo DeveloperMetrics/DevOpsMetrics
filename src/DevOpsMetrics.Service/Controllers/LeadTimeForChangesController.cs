@@ -22,8 +22,8 @@ namespace DevOpsMetrics.Service.Controllers
 
         // Get lead time for changes from Azure DevOps API
         [HttpGet("GetAzureDevOpsLeadTimeForChanges")]
-        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData, 
-            string organization, string project, string repository, string branch, string buildName, 
+        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimeForChanges(bool getSampleData,
+            string organization, string project, string repository, string branch, string buildName,
             int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             LeadTimeForChangesModel model = new();
@@ -41,7 +41,7 @@ namespace DevOpsMetrics.Service.Controllers
                 }
 
                 LeadTimeForChangesDA da = new();
-                model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData,  patToken, tableStorageConfig,
+                model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageConfig,
                         organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
@@ -61,7 +61,7 @@ namespace DevOpsMetrics.Service.Controllers
 
         // Get lead time for changes from GitHub API
         [HttpGet("GetGitHubLeadTimeForChanges")]
-        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimeForChanges(bool getSampleData, 
+        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimeForChanges(bool getSampleData,
             string owner, string repo, string branch, string workflowName, string workflowId,
             int numberOfDays, int maxNumberOfItems, bool useCache)
         {

@@ -123,7 +123,7 @@ namespace DevOpsMetrics.Tests.Core
             string rating = metrics.GetLeadTimeForChangesRating(result);
 
             //Assert
-            Assert.AreEqual((24*8), Math.Round((double)result, 4));
+            Assert.AreEqual((24 * 8), Math.Round((double)result, 4));
             Assert.AreEqual("Medium", rating);
         }
 
@@ -155,7 +155,7 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             LeadTimeForChanges metrics = new();
-            
+
             //Act
             float result = 0f;
             string rating = metrics.GetLeadTimeForChangesRating(result);

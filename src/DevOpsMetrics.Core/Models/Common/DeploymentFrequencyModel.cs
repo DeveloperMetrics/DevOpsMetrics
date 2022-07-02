@@ -10,13 +10,34 @@ namespace DevOpsMetrics.Core.Models.Common
             BuildList = new List<Build>();
         }
 
-        public string DeploymentName { get; set; }
-        public DevOpsPlatform TargetDevOpsPlatform { get; set; }
-        public bool IsProjectView { get; set; }
-        public int NumberOfDays { get; set; }
-        public int MaxNumberOfItems { get; set; }
-        public int TotalItems { get; set; }
-        public List<Build> BuildList { get; set; }
+        public string DeploymentName
+        {
+            get; set;
+        }
+        public DevOpsPlatform TargetDevOpsPlatform
+        {
+            get; set;
+        }
+        public bool IsProjectView
+        {
+            get; set;
+        }
+        public int NumberOfDays
+        {
+            get; set;
+        }
+        public int MaxNumberOfItems
+        {
+            get; set;
+        }
+        public int TotalItems
+        {
+            get; set;
+        }
+        public List<Build> BuildList
+        {
+            get; set;
+        }
         private float _deploymentsPerDayMetric;
         public float DeploymentsPerDayMetric
         {
@@ -59,13 +80,29 @@ namespace DevOpsMetrics.Core.Models.Common
                 }
             }
         }
-        public float DeploymentsToDisplayMetric { get; set; }
-        public string DeploymentsToDisplayUnit { get; set; }
-        public string DeploymentsPerDayMetricDescription { get; set; }
-        public bool RateLimitHit { get; set; }
-        public int ItemOrder { get; set; }
+        public float DeploymentsToDisplayMetric
+        {
+            get; set;
+        }
+        public string DeploymentsToDisplayUnit
+        {
+            get; set;
+        }
+        public string DeploymentsPerDayMetricDescription
+        {
+            get; set;
+        }
+        public bool RateLimitHit
+        {
+            get; set;
+        }
+        public int ItemOrder
+        {
+            get; set;
+        }
 
-        public string BadgeURL { 
+        public string BadgeURL
+        {
             get
             {
                 //Example: https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen
@@ -84,8 +121,14 @@ namespace DevOpsMetrics.Core.Models.Common
             }
         }
 
-        public Exception Exception { get; set; }
-        public string ExceptionUrl { get; set; }
+        public Exception Exception
+        {
+            get; set;
+        }
+        public string ExceptionUrl
+        {
+            get; set;
+        }
 
     }
 }

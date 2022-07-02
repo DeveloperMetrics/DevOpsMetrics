@@ -27,7 +27,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             DeploymentFrequencyDA da = new();
-            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData,patToken, tableStorageConfig, organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageConfig, organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);

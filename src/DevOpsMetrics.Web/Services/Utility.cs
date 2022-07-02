@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace DevOpsMetrics.Web.Services
+﻿namespace DevOpsMetrics.Web.Services
 {
     public class Utility
     {

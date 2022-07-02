@@ -1,14 +1,14 @@
-﻿using DevOpsMetrics.Core.DataAccess.APIAccess;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using DevOpsMetrics.Core.DataAccess.APIAccess;
 using DevOpsMetrics.Core.Models.Azure;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DevOpsMetrics.Core.DataAccess.TableStorage
 {
@@ -222,8 +222,17 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 {
                     string partitionKey = PartitionKeys.CreateGitHubPRPartitionKey(owner, repo);
                     string rowKey = pr.number;
-                    //Debug.WriteLine($"PartitionKey: {partitionKey}, RowKey: {rowKey}");
-                    AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, item.ToString());
+                    string json = item.ToString();
+                    Debug.WriteLine($"PartitionKey: {partitionKey}, RowKey: {rowKey}, Length: {json.Length}");
+
+                    if (item.ToString().Length > (1024 * 32)) //1024 x 32 is the column limit
+                    {
+                        //Need to strip out the body for large PR's (particularly some Dependabot PR's have very long bodies)
+                        JObject o = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject(json);
+                        o.Property("body").Remove();
+                        json = o.ToString();
+                    }
+                    AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, json);
                     if (await tableDA.AddItem(newItem) == true)
                     {
                         itemsAdded++;
@@ -305,7 +314,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         }
 
         public async Task<bool> UpdateAzureDevOpsSettingInStorage(TableStorageConfiguration tableStorageConfig, string settingsTable,
-             string organization, string project, string repository, string branch, string buildName, string buildId, string resourceGroupName, 
+             string organization, string project, string repository, string branch, string buildName, string buildId, string resourceGroupName,
              int itemOrder, bool showSetting)
         {
             string partitionKey = "AzureDevOpsSettings";
@@ -332,7 +341,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         }
 
         public async Task<bool> UpdateGitHubSettingInStorage(TableStorageConfiguration tableStorageConfig, string settingsTable,
-             string owner, string repo, string branch, string workflowName, string workflowId, string resourceGroupName, 
+             string owner, string repo, string branch, string workflowName, string workflowId, string resourceGroupName,
              int itemOrder, bool showSetting)
         {
             string partitionKey = "GitHubSettings";

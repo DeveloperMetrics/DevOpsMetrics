@@ -5,7 +5,9 @@ namespace DevOpsMetrics.Core.Models.Common
 {
     public class MonitoringEvent
     {
-        public MonitoringEvent() { } //Note this parameter-less function is required for JSON serialization
+        public MonitoringEvent()
+        {
+        } //Note this parameter-less function is required for JSON serialization
 
         public MonitoringEvent(string requestBody)
         {
@@ -20,9 +22,18 @@ namespace DevOpsMetrics.Core.Models.Common
             RequestBody = requestBody;
         }
 
-        public string PartitionKey { get; set; }
-        public string RowKey { get; set; }
-        public string RequestBody { get; set; }
+        public string PartitionKey
+        {
+            get; set;
+        }
+        public string RowKey
+        {
+            get; set;
+        }
+        public string RequestBody
+        {
+            get; set;
+        }
 
     }
 }

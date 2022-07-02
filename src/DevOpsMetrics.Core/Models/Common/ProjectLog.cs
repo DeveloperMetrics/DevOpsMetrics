@@ -6,10 +6,12 @@ namespace DevOpsMetrics.Core.Models.Common
 {
     public class ProjectLog
     {
-        public ProjectLog() { } //Note this parameter-less function is required for JSON serialization
+        public ProjectLog()
+        {
+        } //Note this parameter-less function is required for JSON serialization
 
-        public ProjectLog(string partitionKey, 
-            int buildsUpdated, int prsUpdated, 
+        public ProjectLog(string partitionKey,
+            int buildsUpdated, int prsUpdated,
             string buildUrl, string prUrl,
             string exceptionMessage, string exceptionStackTrace)
         {
@@ -24,16 +26,42 @@ namespace DevOpsMetrics.Core.Models.Common
             ExceptionStackTrace = exceptionStackTrace;
         }
 
-        public string PartitionKey { get; set; }
-        public string RowKey { get; set; }
-        public int BuildsUpdated { get; set; }
-        public int PRsUpdated { get; set; }
-        public string BuildUrl { get; set; }
-        public string PRUrl { get; set; }
-        public string ExceptionMessage { get; set; }
-        public string ExceptionStackTrace { get; set; }
+        public string PartitionKey
+        {
+            get; set;
+        }
+        public string RowKey
+        {
+            get; set;
+        }
+        public int BuildsUpdated
+        {
+            get; set;
+        }
+        public int PRsUpdated
+        {
+            get; set;
+        }
+        public string BuildUrl
+        {
+            get; set;
+        }
+        public string PRUrl
+        {
+            get; set;
+        }
+        public string ExceptionMessage
+        {
+            get; set;
+        }
+        public string ExceptionStackTrace
+        {
+            get; set;
+        }
         private string data;
-        public string Data { get
+        public string Data
+        {
+            get
             {
                 return data;
             }
@@ -41,7 +69,7 @@ namespace DevOpsMetrics.Core.Models.Common
             {
                 data = value;
                 if (data != null)
-                {              
+                {
                     dynamic json = JsonConvert.DeserializeObject(data);
                     if (json != null)
                     {

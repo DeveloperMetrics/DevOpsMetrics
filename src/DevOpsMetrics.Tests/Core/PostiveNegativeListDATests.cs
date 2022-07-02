@@ -10,7 +10,7 @@ namespace DevOpsMetrics.Tests.Core
     [TestCategory("L0Test")]
     [TestClass]
     public class PostiveNegativeListDATests
-    {      
+    {
 
         [TestMethod]
         public void PositiveNegative000PercentUnitTest()

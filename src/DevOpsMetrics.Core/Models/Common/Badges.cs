@@ -4,11 +4,11 @@
     {
         public static string BadgeURL(string description, string rating)
         {
-            string color ;
+            string color;
             switch (rating)
             {
                 case "Elite":
-                    color= "brightgreen";
+                    color = "brightgreen";
                     break;
                 case "High":
                     color = "green";

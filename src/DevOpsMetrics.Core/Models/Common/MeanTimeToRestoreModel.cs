@@ -9,20 +9,57 @@ namespace DevOpsMetrics.Core.Models.Common
         {
             MeanTimeToRestoreEvents = new List<MeanTimeToRestoreEvent>();
         }
-        public DevOpsPlatform TargetDevOpsPlatform { get; set; }
-        public bool IsProjectView { get; set; }
-        public int NumberOfDays { get; set; }
-        public int MaxNumberOfItems { get; set; }
-        public int TotalItems { get; set; }
-        public string ResourceGroup { get; set; }
-        public List<MeanTimeToRestoreEvent> MeanTimeToRestoreEvents { get; set; }
-        public float MTTRAverageDurationInHours { get; set; }
-        public string MTTRAverageDurationDescription { get; set; }  
-        public int ItemOrder { get; set; }
-        public float SLA { get; set; }
-        public string SLADescription { get; set; }
+        public DevOpsPlatform TargetDevOpsPlatform
+        {
+            get; set;
+        }
+        public bool IsProjectView
+        {
+            get; set;
+        }
+        public int NumberOfDays
+        {
+            get; set;
+        }
+        public int MaxNumberOfItems
+        {
+            get; set;
+        }
+        public int TotalItems
+        {
+            get; set;
+        }
+        public string ResourceGroup
+        {
+            get; set;
+        }
+        public List<MeanTimeToRestoreEvent> MeanTimeToRestoreEvents
+        {
+            get; set;
+        }
+        public float MTTRAverageDurationInHours
+        {
+            get; set;
+        }
+        public string MTTRAverageDurationDescription
+        {
+            get; set;
+        }
+        public int ItemOrder
+        {
+            get; set;
+        }
+        public float SLA
+        {
+            get; set;
+        }
+        public string SLADescription
+        {
+            get; set;
+        }
 
-        public string BadgeURL { 
+        public string BadgeURL
+        {
             get
             {
                 //Example: https://img.shields.io/badge/Time%20to%20restore%20service-Elite-brightgreen
@@ -41,7 +78,13 @@ namespace DevOpsMetrics.Core.Models.Common
             }
         }
 
-        public Exception Exception { get; set; }
-        public string ExceptionUrl { get; set; }
+        public Exception Exception
+        {
+            get; set;
+        }
+        public string ExceptionUrl
+        {
+            get; set;
+        }
     }
 }

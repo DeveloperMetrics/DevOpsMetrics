@@ -2,6 +2,9 @@
 {
     public class CompletionPercentItem
     {
-        public int CompletionPercent { get; set; }
+        public int CompletionPercent
+        {
+            get; set;
+        }
     }
 }

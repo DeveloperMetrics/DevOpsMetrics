@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DevOpsMetrics.Core;
 using DevOpsMetrics.Core.DataAccess.Common;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.Azure;
