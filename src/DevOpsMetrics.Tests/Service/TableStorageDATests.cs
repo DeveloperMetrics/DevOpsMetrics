@@ -41,7 +41,7 @@ namespace DevOpsMetrics.Tests.Service
             string project = "AzDevOpsMetricsTest";
             string branch = "refs/heads/main";
             string buildName = "AzDevOpsMetricsTest";
-            string buildId = "217"; 
+            string buildId = "217";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
 

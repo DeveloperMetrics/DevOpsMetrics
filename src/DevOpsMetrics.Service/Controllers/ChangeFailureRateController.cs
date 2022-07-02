@@ -31,7 +31,7 @@ namespace DevOpsMetrics.Service.Controllers
         }
 
         [HttpGet("UpdateChangeFailureRate")]
-        public async Task<bool> UpdateChangeFailureRate(string organization_owner, string project_repo, 
+        public async Task<bool> UpdateChangeFailureRate(string organization_owner, string project_repo,
             string buildName_workflowName, int percentComplete, int numberOfDays)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);

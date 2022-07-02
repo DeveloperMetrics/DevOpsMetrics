@@ -30,7 +30,7 @@ namespace DevOpsMetrics.Tests.Core
             //Act
             LeadTimeForChangesDA da = new();
             LeadTimeForChangesModel model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageConfig,
-                    organization, project, repository, mainBranch, buildName, 
+                    organization, project, repository, mainBranch, buildName,
                     numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
@@ -58,7 +58,7 @@ namespace DevOpsMetrics.Tests.Core
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-             [TestMethod]
+        [TestMethod]
         public async Task GHLeadTimeForChangesDAIntegrationTest()
         {
             //Arrange

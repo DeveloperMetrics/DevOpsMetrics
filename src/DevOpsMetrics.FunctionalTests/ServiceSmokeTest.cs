@@ -1,14 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.GitHub;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
 
 namespace DevOpsMetrics.FunctionalTests
 {

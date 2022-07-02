@@ -15,8 +15,12 @@ namespace DevOpsMetrics.Core.Models.Azure
 
         //TableEntity requires an empty constructor
         public AzureStorageTableModel()
-        { }
+        {
+        }
 
-        public string Data { get; set; }
+        public string Data
+        {
+            get; set;
+        }
     }
 }

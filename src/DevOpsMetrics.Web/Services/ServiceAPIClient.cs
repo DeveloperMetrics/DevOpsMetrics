@@ -1,13 +1,13 @@
-﻿using DevOpsMetrics.Core.Models.AzureDevOps;
-using DevOpsMetrics.Core.Models.Common;
-using DevOpsMetrics.Core.Models.GitHub;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
+using DevOpsMetrics.Core.Models.AzureDevOps;
+using DevOpsMetrics.Core.Models.Common;
+using DevOpsMetrics.Core.Models.GitHub;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace DevOpsMetrics.Web.Services
 {
@@ -166,7 +166,7 @@ namespace DevOpsMetrics.Web.Services
 
         public async Task<bool> UpdateAzureDevOpsSetting(string patToken,
                 string organization, string project, string repository,
-                string branch, string buildName, string buildId, string resourceGroup, 
+                string branch, string buildName, string buildId, string resourceGroup,
                 int itemOrder, bool showSetting)
         {
             string url = $"/api/Settings/UpdateAzureDevOpsSetting?patToken={patToken}&organization={organization}&project={project}&repository={repository}&branch={branch}&buildName={buildName}&buildId={buildId}&resourceGroup={resourceGroup}&itemOrder={itemOrder}&showSetting={showSetting}";
@@ -176,7 +176,7 @@ namespace DevOpsMetrics.Web.Services
 
         public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret,
             string owner, string repo,
-            string branch, string workflowName, string workflowId, string resourceGroup, 
+            string branch, string workflowName, string workflowId, string resourceGroup,
             int itemOrder, bool showSetting)
         {
             string url = $"/api/Settings/UpdateGitHubSetting?clientId={clientId}&clientSecret={clientSecret}&owner={owner}&repo={repo}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&resourceGroup={resourceGroup}&itemOrder={itemOrder}&showSetting={showSetting}";

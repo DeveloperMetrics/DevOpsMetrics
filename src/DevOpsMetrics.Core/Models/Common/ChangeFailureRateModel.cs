@@ -10,17 +10,45 @@ namespace DevOpsMetrics.Core.Models.Common
             ChangeFailureRateBuildList = new List<ChangeFailureRateBuild>();
         }
 
-        public string DeploymentName { get; set; }
-        public DevOpsPlatform TargetDevOpsPlatform { get; set; }
-        public bool IsProjectView { get; set; }
-        public int MaxNumberOfItems { get; set; }
-        public int NumberOfDays { get; set; }
-        public int TotalItems { get; set; }
-        public List<ChangeFailureRateBuild> ChangeFailureRateBuildList { get; set; }
-        public float ChangeFailureRateMetric { get; set; }
-        public string ChangeFailureRateMetricDescription { get; set; }
+        public string DeploymentName
+        {
+            get; set;
+        }
+        public DevOpsPlatform TargetDevOpsPlatform
+        {
+            get; set;
+        }
+        public bool IsProjectView
+        {
+            get; set;
+        }
+        public int MaxNumberOfItems
+        {
+            get; set;
+        }
+        public int NumberOfDays
+        {
+            get; set;
+        }
+        public int TotalItems
+        {
+            get; set;
+        }
+        public List<ChangeFailureRateBuild> ChangeFailureRateBuildList
+        {
+            get; set;
+        }
+        public float ChangeFailureRateMetric
+        {
+            get; set;
+        }
+        public string ChangeFailureRateMetricDescription
+        {
+            get; set;
+        }
 
-        public string BadgeURL { 
+        public string BadgeURL
+        {
             get
             {
                 //Example: https://img.shields.io/badge/Change%20failure%20rate-Elite-brightgreen
@@ -33,14 +61,20 @@ namespace DevOpsMetrics.Core.Models.Common
         {
             get
             {
-                string changeFailureRate = ChangeFailureRateMetric.ToString("0.00%").Replace("-","");
+                string changeFailureRate = ChangeFailureRateMetric.ToString("0.00%").Replace("-", "");
                 //Example: https://img.shields.io/badge/Change%20failure%20rate%20(83.33%25)-Elite-brightgreen
                 string title = Uri.EscapeUriString("Change failure rate (" + changeFailureRate + ")");
                 return Badges.BadgeURL(title, ChangeFailureRateMetricDescription);
             }
         }
 
-        public Exception Exception { get; set; }
-        public string ExceptionUrl { get; set; }
+        public Exception Exception
+        {
+            get; set;
+        }
+        public string ExceptionUrl
+        {
+            get; set;
+        }
     }
 }

@@ -124,10 +124,10 @@ namespace DevOpsMetrics.Core.DataAccess
             ListUtility<Build> utility = new ListUtility<Build>();
             DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
             if (getSampleData == false)
-            { 
-               //Get a list of builds
+            {
+                //Get a list of builds
                 BuildsDA buildsDA = new BuildsDA();
-                List<GitHubActionsRun> gitHubRuns = await buildsDA.GetGitHubActionRuns(clientId,  clientSecret, tableStorageConfig, owner, repo, workflowName, workflowId, useCache);
+                List<GitHubActionsRun> gitHubRuns = await buildsDA.GetGitHubActionRuns(clientId, clientSecret, tableStorageConfig, owner, repo, workflowName, workflowId, useCache);
                 if (gitHubRuns != null)
                 {
                     //Translate the GitHub build to a generic build object

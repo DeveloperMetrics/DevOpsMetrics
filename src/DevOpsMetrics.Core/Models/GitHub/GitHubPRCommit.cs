@@ -1,10 +1,14 @@
-﻿using DevOpsMetrics.Core.Models.Common;
-
-namespace DevOpsMetrics.Core.Models.GitHub
+﻿namespace DevOpsMetrics.Core.Models.GitHub
 {
     public class GitHubPRCommit
     {
-        public string sha { get; set; }
-        public GitHubCommit commit { get; set; }
+        public string sha
+        {
+            get; set;
+        }
+        public GitHubCommit commit
+        {
+            get; set;
+        }
     }
 }

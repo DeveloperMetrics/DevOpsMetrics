@@ -9,15 +9,42 @@ namespace DevOpsMetrics.Core.Models.Common
         {
             PullRequests = new List<PullRequestModel>();
         }
-        public string ProjectName { get; set; }
-        public DevOpsPlatform TargetDevOpsPlatform { get; set; }
-        public bool IsProjectView { get; set; }
-        public int NumberOfDays { get; set; }
-        public int MaxNumberOfItems { get; set; }
-        public int TotalItems { get; set; }
-        public List<PullRequestModel> PullRequests { get; set; }
-        public float AverageBuildHours { get; set; }
-        public float AveragePullRequestHours { get; set; }
+        public string ProjectName
+        {
+            get; set;
+        }
+        public DevOpsPlatform TargetDevOpsPlatform
+        {
+            get; set;
+        }
+        public bool IsProjectView
+        {
+            get; set;
+        }
+        public int NumberOfDays
+        {
+            get; set;
+        }
+        public int MaxNumberOfItems
+        {
+            get; set;
+        }
+        public int TotalItems
+        {
+            get; set;
+        }
+        public List<PullRequestModel> PullRequests
+        {
+            get; set;
+        }
+        public float AverageBuildHours
+        {
+            get; set;
+        }
+        public float AveragePullRequestHours
+        {
+            get; set;
+        }
         private float _leadTimeForChangesMetric;
         public float LeadTimeForChangesMetric
         {
@@ -33,13 +60,29 @@ namespace DevOpsMetrics.Core.Models.Common
             }
         }
 
-        public float LeadTimeForChangesMetricDisplayMetric { get; set; }
-        public string LeadTimeForChangesMetricDisplayUnit { get; set; }
-        public string LeadTimeForChangesMetricDescription { get; set; }
-        public bool RateLimitHit { get; set; }
-        public int ItemOrder { get; set; }
+        public float LeadTimeForChangesMetricDisplayMetric
+        {
+            get; set;
+        }
+        public string LeadTimeForChangesMetricDisplayUnit
+        {
+            get; set;
+        }
+        public string LeadTimeForChangesMetricDescription
+        {
+            get; set;
+        }
+        public bool RateLimitHit
+        {
+            get; set;
+        }
+        public int ItemOrder
+        {
+            get; set;
+        }
 
-        public string BadgeURL { 
+        public string BadgeURL
+        {
             get
             {
                 //Example: https://img.shields.io/badge/Lead%20time%20for%20changes-Elite-brightgreen
@@ -58,7 +101,13 @@ namespace DevOpsMetrics.Core.Models.Common
             }
         }
 
-        public Exception Exception { get; set; }
-        public string ExceptionUrl { get; set; }
+        public Exception Exception
+        {
+            get; set;
+        }
+        public string ExceptionUrl
+        {
+            get; set;
+        }
     }
 }

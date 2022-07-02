@@ -2,7 +2,10 @@
 {
     public class TableStorageConfiguration
     {
-        public string StorageAccountConnectionString { get; set; }
+        public string StorageAccountConnectionString
+        {
+            get; set;
+        }
         public string TableAzureDevOpsSettings { get; set; } = "DevOpsAzureDevOpsSettings";
         public string TableAzureDevOpsBuilds { get; set; } = "DevOpsAzureDevOpsBuilds";
         public string TableAzureDevOpsPRs { get; set; } = "DevOpsAzureDevOpsPRs";

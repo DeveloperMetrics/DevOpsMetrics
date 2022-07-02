@@ -44,7 +44,7 @@
 //            Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
 //        }
 
-       
+
 //        [TestMethod]
 //        public async Task AzDeploymentsAPIControllerIntegrationTest()
 //        {
@@ -88,7 +88,7 @@
 //            }
 //        }
 
-       
+
 //        [TestMethod]
 //        public async Task AzDeploymentsCacheControllerIntegrationTest()
 //        {
@@ -134,7 +134,7 @@
 //            }
 //        }
 
-       
+
 //        [TestMethod]
 //        public async Task GHDeploymentsSampleControllerIntegrationTest()
 //        {
@@ -171,7 +171,7 @@
 //            Assert.IsTrue(model.TotalItems > 0);
 //        }
 
-       
+
 //        [TestMethod]
 //        public async Task GHDeploymentsAPIControllerIntegrationTest()
 //        {
@@ -215,7 +215,7 @@
 //            }
 //        }
 
-       
+
 //        [TestMethod]
 //        public async Task GHDeploymentsCacheControllerIntegrationTest()
 //        {
@@ -260,7 +260,7 @@
 //        }
 
 
-       
+
 //        [TestMethod]
 //        public async Task AzDeploymentsControllerAPILiveWithCacheIntegrationTest()
 //        {
@@ -305,7 +305,7 @@
 //        }
 
 
-       
+
 //        [TestMethod]
 //        public async Task GHDeploymentsControllerAPILiveWithCacheIntegrationTest()
 //        {
@@ -343,7 +343,7 @@
 //        }
 
 
-       
+
 //        [TestMethod]
 //        public async Task AzDeploymentsControllerAPILiveIntegrationTest()
 //        {
@@ -388,7 +388,7 @@
 //        }
 
 
-       
+
 //        [TestMethod]
 //        public async Task GHDeploymentsControllerAPILiveIntegrationTest()
 //        {
@@ -433,6 +433,6 @@
 //        }
 
 
- 
+
 //    }
 //}

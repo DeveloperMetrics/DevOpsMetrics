@@ -169,6 +169,6 @@ namespace DevOpsMetrics.Service.Controllers
             }
             return numberOfRecordsSaved;
         }
-       
+
     }
 }

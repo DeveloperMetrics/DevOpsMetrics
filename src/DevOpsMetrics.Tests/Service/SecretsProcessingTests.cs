@@ -6,7 +6,7 @@ namespace DevOpsMetrics.Tests.Service
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [TestCategory("L0Test")]
     [TestClass]
-    public class SecretsProcessingTests 
+    public class SecretsProcessingTests
     {
         [TestMethod]
         public void SecretWithDotTest()
@@ -15,7 +15,7 @@ namespace DevOpsMetrics.Tests.Service
             string name = "SamLearnsAzure.CI";
 
             //Act
-            string result = SecretsProcessing.CleanKey(name); 
+            string result = SecretsProcessing.CleanKey(name);
 
             //Assert
             Assert.AreEqual("SamLearnsAzure-CI", result);
@@ -28,7 +28,7 @@ namespace DevOpsMetrics.Tests.Service
             string name = "SamLearnsAzure CI";
 
             //Act
-            string result = SecretsProcessing.CleanKey(name); 
+            string result = SecretsProcessing.CleanKey(name);
 
             //Assert
             Assert.AreEqual("SamLearnsAzure-CI", result);
@@ -41,7 +41,7 @@ namespace DevOpsMetrics.Tests.Service
             string name = "SamLearnsAzure:CI";
 
             //Act
-            string result = SecretsProcessing.CleanKey(name); 
+            string result = SecretsProcessing.CleanKey(name);
 
             //Assert
             Assert.AreEqual("SamLearnsAzure-CI", result);
@@ -54,7 +54,7 @@ namespace DevOpsMetrics.Tests.Service
             string name = "SamLearnsAzure?CI";
 
             //Act
-            string result = SecretsProcessing.CleanKey(name); 
+            string result = SecretsProcessing.CleanKey(name);
 
             //Assert
             Assert.AreEqual("SamLearnsAzure-CI", result);
@@ -67,7 +67,7 @@ namespace DevOpsMetrics.Tests.Service
             string name = "SamLearnsAzure123abcCI";
 
             //Act
-            string result = SecretsProcessing.CleanKey(name); 
+            string result = SecretsProcessing.CleanKey(name);
 
             //Assert
             Assert.AreEqual("SamLearnsAzure123abcCI", result);
