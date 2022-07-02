@@ -47,9 +47,7 @@ namespace DevOpsMetrics.Core.DataAccess
 
         public async Task<List<GitHubActionsRun>> GetGitHubActionRuns(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig,
                 string owner, string repo, string workflowName, string workflowId, bool useCache)
-        {
-
-            
+        {         
             List<GitHubActionsRun> runs = new List<GitHubActionsRun>();
             Newtonsoft.Json.Linq.JArray list = null;
             if (useCache == true)

@@ -37,8 +37,8 @@ namespace DevOpsMetrics.Tests.Core
             {
                 if (item.Repo == "AzurePipelinesToGitHubActionsConverterWeb")
                 {
-                    result = await Processing.ProcessGitHubItem(item, 30, 20, 
-                        buildsController, pullRequestsController,settingsController,
+                    result = await Processing.ProcessGitHubItem(item, 30, 20,
+                        buildsController, pullRequestsController, settingsController,
                         log, 0);
                 }
             }
@@ -71,6 +71,38 @@ namespace DevOpsMetrics.Tests.Core
         //    //Assert
         //    Assert.IsTrue(result == true);
         //}
+
+
+        [TestMethod]
+        public async Task GHUpdateAllDevOpsMetricsIntegrationTest()
+        {
+            //Arrange
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            int numberOfDays = 30;
+            int maxNumberOfItems = 20;
+            int totalResults = 0;
+            using var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder
+            .SetMinimumLevel(LogLevel.Trace)
+            .AddConsole());
+            ILogger log = loggerFactory.CreateLogger<NightlyProcessTests>();
+
+            //Act
+            AzureTableStorageDA azureTableStorageDA = new();
+            BuildsController buildsController = new(Configuration, azureTableStorageDA);
+            PullRequestsController pullRequestsController = new(Configuration, azureTableStorageDA);
+            SettingsController settingsController = new(Configuration, azureTableStorageDA);
+            List<GitHubSettings> ghSettings = settingsController.GetGitHubSettings();
+
+            foreach (GitHubSettings item in ghSettings)
+            {
+                ProcessingResult ghResult = await Processing.ProcessGitHubItem(item, numberOfDays, maxNumberOfItems,
+                               buildsController, pullRequestsController, settingsController, log, totalResults);
+                totalResults = ghResult.TotalResults;
+            }
+
+            //Assert
+            Assert.IsTrue(totalResults >= 0);
+        }
 
     }
 }
