@@ -4,6 +4,7 @@ using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
 using DevOpsMetrics.Function;
+using DevOpsMetrics.Service;
 using DevOpsMetrics.Service.Controllers;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,7 +20,8 @@ namespace DevOpsMetrics.Tests.Core
         public async Task GitHubProcessingTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             ProcessingResult result = null;
             AzureTableStorageDA da = new();
             BuildsController buildsController = new(base.Configuration, da);
@@ -29,6 +31,7 @@ namespace DevOpsMetrics.Tests.Core
                 .SetMinimumLevel(LogLevel.Trace)
                 .AddConsole());
             ILogger log = loggerFactory.CreateLogger<NightlyProcessTests>();
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
 
             //Act
             List<GitHubSettings> results = da.GetGitHubSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings, null);
@@ -36,7 +39,8 @@ namespace DevOpsMetrics.Tests.Core
             {
                 if (item.Repo == "AzurePipelinesToGitHubActionsConverterWeb")
                 {
-                    result = await Processing.ProcessGitHubItem(item, 30, 20,
+                    result = await Processing.ProcessGitHubItem(item, clientId, clientSecret, tableStorageConfig,
+                        30, 20,
                         buildsController, pullRequestsController, settingsController,
                         log, 0);
                 }
@@ -52,7 +56,7 @@ namespace DevOpsMetrics.Tests.Core
         //public async Task GHUpdateAzurePipelinesToGitHubActionsConverterWebSettingDAIntegrationTest()
         //{
         //    //Arrange
-        //    TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
+        //    TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
         //    string owner = "samsmithnz";
         //    string repo = "AzurePipelinesToGitHubActionsConverterWeb";
         //    string branch = "main";
@@ -76,14 +80,16 @@ namespace DevOpsMetrics.Tests.Core
         public async Task GHUpdateAllDevOpsMetricsIntegrationTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             int totalResults = 0;
             using var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder
-            .SetMinimumLevel(LogLevel.Trace)
-            .AddConsole());
+                .SetMinimumLevel(LogLevel.Trace)
+                .AddConsole());
             ILogger log = loggerFactory.CreateLogger<NightlyProcessTests>();
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
 
             //Act
             AzureTableStorageDA azureTableStorageDA = new();
@@ -94,8 +100,10 @@ namespace DevOpsMetrics.Tests.Core
 
             foreach (GitHubSettings item in ghSettings)
             {
-                ProcessingResult ghResult = await Processing.ProcessGitHubItem(item, numberOfDays, maxNumberOfItems,
-                               buildsController, pullRequestsController, settingsController, log, totalResults);
+                ProcessingResult ghResult = await Processing.ProcessGitHubItem(item,
+                    clientId, clientSecret, tableStorageConfig,
+                    numberOfDays, maxNumberOfItems,
+                    buildsController, pullRequestsController, settingsController, log, totalResults);
                 totalResults = ghResult.TotalResults;
             }
 
