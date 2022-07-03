@@ -31,6 +31,10 @@ namespace DevOpsMetrics.Function
                 //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {prsUpdated} pull requests updated");
                 log.LogInformation($"Processed GitHub owner {item.Owner}, repo {item.Repo}. {result.BuildsUpdated} builds and {result.PRsUpdated} prs/commits updated");
                 result.TotalResults += result.BuildsUpdated + result.PRsUpdated;
+
+                //Process summary results for last 90 days, creating badges for the four metrics
+                await UpdateSummaryMetrics(item.Owner, item.Repo, 90);
+
                 await settingsController.UpdateGitHubProjectLog(item.Owner, item.Repo, result.BuildsUpdated, result.PRsUpdated, "", "", null, null);
             }
             catch (Exception ex)
@@ -44,6 +48,11 @@ namespace DevOpsMetrics.Function
             }
 
             return result;
+        }
+
+        private static async Task<bool> UpdateSummaryMetrics(string owner, string repo, int days)
+        {
+            return true;
         }
     }
 }
