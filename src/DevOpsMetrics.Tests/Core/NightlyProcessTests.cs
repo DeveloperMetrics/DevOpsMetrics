@@ -76,40 +76,40 @@ namespace DevOpsMetrics.Tests.Core
         //}
 
 
-        [TestMethod]
-        public async Task GHUpdateAllDevOpsMetricsIntegrationTest()
-        {
-            //Arrange
-            string clientId = Configuration["AppSettings:GitHubClientId"];
-            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            int numberOfDays = 30;
-            int maxNumberOfItems = 20;
-            int totalResults = 0;
-            using var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder
-                .SetMinimumLevel(LogLevel.Trace)
-                .AddConsole());
-            ILogger log = loggerFactory.CreateLogger<NightlyProcessTests>();
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+        //[TestMethod]
+        //public async Task GHUpdateAllDevOpsMetricsIntegrationTest()
+        //{
+        //    //Arrange
+        //    string clientId = Configuration["AppSettings:GitHubClientId"];
+        //    string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
+        //    int numberOfDays = 30;
+        //    int maxNumberOfItems = 20;
+        //    int totalResults = 0;
+        //    using var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder
+        //        .SetMinimumLevel(LogLevel.Trace)
+        //        .AddConsole());
+        //    ILogger log = loggerFactory.CreateLogger<NightlyProcessTests>();
+        //    TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
 
-            //Act
-            AzureTableStorageDA azureTableStorageDA = new();
-            BuildsController buildsController = new(Configuration, azureTableStorageDA);
-            PullRequestsController pullRequestsController = new(Configuration, azureTableStorageDA);
-            SettingsController settingsController = new(Configuration, azureTableStorageDA);
-            List<GitHubSettings> ghSettings = settingsController.GetGitHubSettings();
+        //    //Act
+        //    AzureTableStorageDA azureTableStorageDA = new();
+        //    BuildsController buildsController = new(Configuration, azureTableStorageDA);
+        //    PullRequestsController pullRequestsController = new(Configuration, azureTableStorageDA);
+        //    SettingsController settingsController = new(Configuration, azureTableStorageDA);
+        //    List<GitHubSettings> ghSettings = settingsController.GetGitHubSettings();
 
-            foreach (GitHubSettings item in ghSettings)
-            {
-                ProcessingResult ghResult = await Processing.ProcessGitHubItem(item,
-                    clientId, clientSecret, tableStorageConfig,
-                    numberOfDays, maxNumberOfItems,
-                    buildsController, pullRequestsController, settingsController, log, totalResults);
-                totalResults = ghResult.TotalResults;
-            }
+        //    foreach (GitHubSettings item in ghSettings)
+        //    {
+        //        ProcessingResult ghResult = await Processing.ProcessGitHubItem(item,
+        //            clientId, clientSecret, tableStorageConfig,
+        //            numberOfDays, maxNumberOfItems,
+        //            buildsController, pullRequestsController, settingsController, log, totalResults);
+        //        totalResults = ghResult.TotalResults;
+        //    }
 
-            //Assert
-            Assert.IsTrue(totalResults >= 0);
-        }
+        //    //Assert
+        //    Assert.IsTrue(totalResults >= 0);
+        //}
 
     }
 }
