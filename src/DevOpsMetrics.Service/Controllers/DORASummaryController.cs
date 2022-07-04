@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DevOpsMetrics.Core.DataAccess;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Service.Utility;
@@ -22,32 +23,19 @@ namespace DevOpsMetrics.Service.Controllers
         }
 
         // Get DORA Summary Items
-        //[HttpGet("GetDORASummaryItems")]
-        //public async Task<DORASummaryItem> GetDORASummaryItems(bool getSampleData,
-        //    string organization, string project, string repository, string branch, string buildName,
-        //    int numberOfDays, int maxNumberOfItems, bool useCache)
-        //{
-        //    DORASummaryItem model = new();
+        [HttpGet("GetDORASummaryItems")]
+        public async Task<DORASummaryItem> GetDORASummaryItems(string owner, string repository)
+        {
+            DORASummaryItem model = new();
 
-        //    AzureTableStorageDA.GetAzureDevOpsSettingsFromStorage(, "DevOpsDORASummaryItem")
-        //        TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+            DORASummaryDA da = new();
 
-        //        //Get the PAT token from the key vault
-        //        string patTokenName = PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken(organization, project, repository);
-        //        patTokenName = SecretsProcessing.CleanKey(patTokenName);
-        //        string patToken = Configuration[patTokenName];
-        //        if (string.IsNullOrEmpty(patToken) == true)
-        //        {
-        //            throw new Exception($"patToken '{patTokenName}' not found in key vault");
-        //        }
 
-        //        DeploymentFrequencyDA da = new();
-        //        model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageConfig, organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+            return model;
+        }
 
-        //    return model;
-        //}
 
-       
 
     }
 }
