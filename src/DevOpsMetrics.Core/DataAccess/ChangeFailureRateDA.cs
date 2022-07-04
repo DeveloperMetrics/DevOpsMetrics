@@ -123,7 +123,7 @@ namespace DevOpsMetrics.Core.DataAccess
             List<ChangeFailureRateBuild> negativeBuilds = positiveAndNegativeBuilds.Item2;
 
             //Make the updates
-            TableStorageCommonDA tableChangeFailureRateDA = new TableStorageCommonDA(tableStorageConfig, tableStorageConfig.TableChangeFailureRate);
+            TableStorageCommonDA tableChangeFailureRateDA = new TableStorageCommonDA(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableChangeFailureRate);
             foreach (ChangeFailureRateBuild item in positiveBuilds)
             {
                 item.DeploymentWasSuccessful = true;
