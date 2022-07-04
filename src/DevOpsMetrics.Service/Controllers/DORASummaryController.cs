@@ -1,9 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
-using DevOpsMetrics.Core.DataAccess;
-using DevOpsMetrics.Core.DataAccess.TableStorage;
+﻿using DevOpsMetrics.Core.DataAccess;
 using DevOpsMetrics.Core.Models.Common;
-using DevOpsMetrics.Service.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -24,13 +20,11 @@ namespace DevOpsMetrics.Service.Controllers
         [HttpGet("GetDORASummaryItems")]
         public DORASummaryItem GetDORASummaryItems(string owner, string repository)
         {
-            TableStorageConfiguration tableStorageConfiguration = new();
-            DORASummaryItem model = DORASummaryDA.GetDORASummaryItem(tableStorageConfiguration, owner, repository);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+            DORASummaryItem model = DORASummaryDA.GetDORASummaryItem(tableStorageConfig, owner, repository);
 
             return model;
         }
-
-
 
     }
 }
