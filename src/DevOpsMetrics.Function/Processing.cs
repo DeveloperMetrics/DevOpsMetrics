@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using DevOpsMetrics.Core.DataAccess;
+using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
 using DevOpsMetrics.Service.Controllers;
@@ -83,6 +84,8 @@ namespace DevOpsMetrics.Function
             //Summarize the results into a new object
             SummaryDORAItem summaryDORA = new()
             {
+                Owner = owner,
+                Repo = repo,
                 DeploymentFrequencyBadgeURL = deploymentFrequencyModel.BadgeURL,
                 DeploymentFrequencyBadgeWithMetricURL = deploymentFrequencyModel.BadgeWithMetricURL,
                 LeadTimeForChangesBadgeURL = leadTimeForChangesModel.BadgeURL,
@@ -94,7 +97,8 @@ namespace DevOpsMetrics.Function
             };
 
             //Serialize the summary into an Azure storage table
-
+            AzureTableStorageDA azureTableStorageDA = new();
+            await azureTableStorageDA.UpdateDORASummaryItem(tableStorageConfig, owner, repo, summaryDORA);
 
             return true;
         }

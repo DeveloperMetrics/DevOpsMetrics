@@ -54,7 +54,7 @@ namespace DevOpsMetrics.Service
             }
             if (Configuration["AppSettings:AzureStorageAccountSummaryDORAItem"] != null)
             {
-                tableStorageConfig.SummaryDORAItem = Configuration["AppSettings:AzureStorageAccountSummaryDORAItem"];
+                tableStorageConfig.TableSummaryDORAItem = Configuration["AppSettings:AzureStorageAccountSummaryDORAItem"];
             }
             if (Configuration["AppSettings:AzureStorageAccountContainerTableLog"] != null)
             {

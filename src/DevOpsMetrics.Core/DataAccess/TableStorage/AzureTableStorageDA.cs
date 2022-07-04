@@ -402,5 +402,16 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return await tableDA.SaveItem(newItem);
         }
 
+        public async Task<bool> UpdateDORASummaryItem(TableStorageConfiguration tableStorageConfig,
+            string owner, string repo, SummaryDORAItem summaryDORAItem)
+        {
+            string partitionKey = owner;
+            string rowKey = repo;
+            string json = JsonConvert.SerializeObject(summaryDORAItem); 
+            AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, json);
+            TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableSummaryDORAItem);
+            return await tableDA.SaveItem(newItem);
+        }
+
     }
 }
