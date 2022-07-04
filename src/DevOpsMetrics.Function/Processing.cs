@@ -42,6 +42,7 @@ namespace DevOpsMetrics.Function
                 await UpdateSummaryMetrics(clientId, clientSecret, tableStorageConfig,
                     ghSetting.Owner, ghSetting.Repo, ghSetting.Branch,
                     ghSetting.WorkflowName, ghSetting.WorkflowId,
+                    ghSetting.ProductionResourceGroup,
                     numberOfDays, maxNumberOfItems);
 
                 await settingsController.UpdateGitHubProjectLog(ghSetting.Owner, ghSetting.Repo, result.BuildsUpdated, result.PRsUpdated, "", "", null, null);
@@ -63,23 +64,36 @@ namespace DevOpsMetrics.Function
             TableStorageConfiguration tableStorageConfig,
             string owner, string repo,
             string branch, string workflowName, string workflowId,
+            string resourceGroup,
             int numberOfDays, int maxNumberOfItems,
             bool useCache = true)
         {
             //Get the DORA metrics for the last 90 days
             DeploymentFrequencyDA deploymentFrequencyDA = new();
             DeploymentFrequencyModel deploymentFrequencyModel = await deploymentFrequencyDA.GetGitHubDeploymentFrequency(false, clientId, clientSecret, tableStorageConfig,
-                        owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+                owner, repo, branch, workflowName, workflowId,
+                numberOfDays, maxNumberOfItems, useCache);
 
             LeadTimeForChangesDA leadTimeForChangesDA = new();
             LeadTimeForChangesModel leadTimeForChangesModel = await leadTimeForChangesDA.GetGitHubLeadTimesForChanges(false, clientId, clientSecret, tableStorageConfig,
-                        owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+                owner, repo, branch, workflowName, workflowId,
+                numberOfDays, maxNumberOfItems, useCache);
 
-            //MeanTimeToRestoreDA meanTimeToRestoreDA = new();
-            MeanTimeToRestoreModel meanTimeToRestoreModel = new(); // await meanTimeToRestoreDA.GetAzureMeanTimeToRestore();
+            MeanTimeToRestoreDA meanTimeToRestoreDA = new();
+            MeanTimeToRestoreModel meanTimeToRestoreModel = null;
+            if (resourceGroup != null)
+            {
+                meanTimeToRestoreModel = meanTimeToRestoreDA.GetAzureMeanTimeToRestore(false, tableStorageConfig,
+                DevOpsPlatform.GitHub,
+                resourceGroup,
+                numberOfDays, maxNumberOfItems);
+            }
 
-            //ChangeFailureRateDA changeFailureRateDA = new();
-            ChangeFailureRateModel changeFailureRateModel = new(); // await changeFailureRateDA.GetChangeFailureRate();
+            ChangeFailureRateDA changeFailureRateDA = new();
+            ChangeFailureRateModel changeFailureRateModel = changeFailureRateDA.GetChangeFailureRate(false, tableStorageConfig,
+                DevOpsPlatform.GitHub,
+                owner, repo, branch, workflowName,
+                numberOfDays, maxNumberOfItems);
 
             //Summarize the results into a new object
             SummaryDORAItem summaryDORA = new()
