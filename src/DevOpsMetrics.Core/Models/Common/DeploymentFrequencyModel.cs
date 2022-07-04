@@ -7,7 +7,7 @@ namespace DevOpsMetrics.Core.Models.Common
     {
         public DeploymentFrequencyModel()
         {
-            BuildList = new List<Build>();
+            BuildList = new();
         }
 
         public string DeploymentName
