@@ -407,7 +407,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         {
             string partitionKey = owner;
             string rowKey = repo;
-            string json = JsonConvert.SerializeObject(summaryDORAItem); 
+            string json = JsonConvert.SerializeObject(summaryDORAItem);
             AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, json);
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableSummaryDORAItem);
             return await tableDA.SaveItem(newItem);

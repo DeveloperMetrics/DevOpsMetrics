@@ -2,8 +2,14 @@
 {
     public class SummaryDORAItem
     {
-        public string Owner { get; set; }
-        public string Repo { get; set; }
+        public string Owner
+        {
+            get; set;
+        }
+        public string Repo
+        {
+            get; set;
+        }
         public string DeploymentFrequencyBadgeURL
         {
             get; set;
