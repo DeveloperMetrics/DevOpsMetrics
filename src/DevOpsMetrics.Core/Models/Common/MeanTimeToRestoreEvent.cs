@@ -38,7 +38,7 @@ namespace DevOpsMetrics.Core.Models.Common
             get
             {
                 float duration = 0f;
-                if (EndTime != null && StartTime != null && EndTime > DateTime.MinValue && StartTime > DateTime.MinValue)
+                if (EndTime > DateTime.MinValue && StartTime > DateTime.MinValue)
                 {
                     TimeSpan ts = EndTime - StartTime;
                     duration = (float)ts.TotalHours;
