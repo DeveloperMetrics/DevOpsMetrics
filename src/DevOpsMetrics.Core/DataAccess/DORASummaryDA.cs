@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.Common;
-using DevOpsMetrics.Core.Models.GitHub;
 using Newtonsoft.Json;
 
 namespace DevOpsMetrics.Core.DataAccess
 {
     public class DORASummaryDA
     {
-        public async Task<DORASummaryItem> GetDORASummaryItem(TableStorageConfiguration tableStorageConfig,
+        public static DORASummaryItem GetDORASummaryItem(TableStorageConfiguration tableStorageConfig,
                 string owner, string repo)
         {
             DORASummaryItem model = null;
             AzureTableStorageDA da = new();
-            Newtonsoft.Json.Linq.JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableDORASummaryItem, repo);
-
+            Newtonsoft.Json.Linq.JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableDORASummaryItem, owner);
             List<DORASummaryItem> doraItems = JsonConvert.DeserializeObject<List<DORASummaryItem>>(list.ToString());
             foreach (DORASummaryItem item in doraItems)
             {
@@ -26,7 +22,6 @@ namespace DevOpsMetrics.Core.DataAccess
                     break;
                 }
             }
-
             return model;
         }
 

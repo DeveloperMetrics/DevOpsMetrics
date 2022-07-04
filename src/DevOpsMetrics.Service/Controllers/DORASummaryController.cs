@@ -14,23 +14,18 @@ namespace DevOpsMetrics.Service.Controllers
     public class DORASummaryController : ControllerBase
     {
         private readonly IConfiguration Configuration;
-        private readonly IAzureTableStorageDA AzureTableStorageDA;
 
-        public DORASummaryController(IConfiguration configuration, IAzureTableStorageDA azureTableStorageDA)
+        public DORASummaryController(IConfiguration configuration)
         {
             Configuration = configuration;
-            AzureTableStorageDA = azureTableStorageDA;
         }
 
         // Get DORA Summary Items
         [HttpGet("GetDORASummaryItems")]
-        public async Task<DORASummaryItem> GetDORASummaryItems(string owner, string repository)
+        public DORASummaryItem GetDORASummaryItems(string owner, string repository)
         {
-            DORASummaryItem model = new();
-
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            DORASummaryDA da = new();
-
+            TableStorageConfiguration tableStorageConfiguration = new();
+            DORASummaryItem model = DORASummaryDA.GetDORASummaryItem(tableStorageConfiguration, owner, repository);
 
             return model;
         }
