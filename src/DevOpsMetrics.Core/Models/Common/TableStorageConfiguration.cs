@@ -16,7 +16,7 @@
         public string TableGitHubPRCommits { get; set; } = "DevOpsGitHubPRCommits";
         public string TableMTTR { get; set; } = "DevOpsMTTR";
         public string TableChangeFailureRate { get; set; } = "DevOpsChangeFailureRate";
-        public string TableSummaryDORAItem { get; set; } = "DevOpsSummaryDORAItem";
+        public string TableDORASummaryItem { get; set; } = "DevOpsDORASummaryItem";
         public string TableLog { get; set; } = "DevOpsLog";
     }
 }

@@ -96,7 +96,7 @@ namespace DevOpsMetrics.Function
                 numberOfDays, maxNumberOfItems);
 
             //Summarize the results into a new object
-            SummaryDORAItem summaryDORA = new()
+            DORASummaryItem DORASummary = new()
             {
                 Owner = owner,
                 Repo = repo,
@@ -112,7 +112,7 @@ namespace DevOpsMetrics.Function
 
             //Serialize the summary into an Azure storage table
             AzureTableStorageDA azureTableStorageDA = new();
-            await azureTableStorageDA.UpdateDORASummaryItem(tableStorageConfig, owner, repo, summaryDORA);
+            await azureTableStorageDA.UpdateDORASummaryItem(tableStorageConfig, owner, repo, DORASummary);
 
             return true;
         }

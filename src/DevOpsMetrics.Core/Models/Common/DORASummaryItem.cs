@@ -1,6 +1,6 @@
 ﻿namespace DevOpsMetrics.Core.Models.Common
 {
-    public class SummaryDORAItem
+    public class DORASummaryItem
     {
         public string Owner
         {
