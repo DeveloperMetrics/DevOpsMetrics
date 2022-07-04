@@ -48,6 +48,62 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return list;
         }
 
+        public List<AzureDevOpsSettings> GetAzureDevOpsSettingsFromStorage(TableStorageConfiguration tableStorageConfig, string settingsTable, string rowKey)
+        {
+            List<AzureDevOpsSettings> settings = null;
+            string partitionKey = "AzureDevOpsSettings";
+            JArray list = GetTableStorageItemsFromStorage(tableStorageConfig, settingsTable, partitionKey);
+            if (list != null)
+            {
+                settings = JsonConvert.DeserializeObject<List<AzureDevOpsSettings>>(list.ToString());
+            }
+            if (rowKey != null)
+            {
+                return new List<AzureDevOpsSettings>
+                {
+                    settings.Where(x => x.RowKey.ToLower() == rowKey.ToLower()).FirstOrDefault()
+                };
+            }
+            else
+            {
+                return settings;
+            }
+        }
+
+        public List<GitHubSettings> GetGitHubSettingsFromStorage(TableStorageConfiguration tableStorageConfig, string settingsTable, string rowKey)
+        {
+            List<GitHubSettings> settings = null;
+            string partitionKey = "GitHubSettings";
+            JArray list = GetTableStorageItemsFromStorage(tableStorageConfig, settingsTable, partitionKey);
+            if (list != null)
+            {
+                settings = JsonConvert.DeserializeObject<List<GitHubSettings>>(list.ToString());
+            }
+            if (rowKey != null)
+            {
+                return new List<GitHubSettings>
+                {
+                    settings.Where(x => x.RowKey.ToLower() == rowKey.ToLower()).FirstOrDefault()
+                };
+            }
+            else
+            {
+                return settings;
+            }
+        }
+
+        public List<ProjectLog> GetProjectLogsFromStorage(TableStorageConfiguration tableStorageConfig, string partitionKey)
+        {
+            List<ProjectLog> logs = null;
+            JArray list = GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableLog, partitionKey, true);
+            if (list != null)
+            {
+                logs = JsonConvert.DeserializeObject<List<ProjectLog>>(list.ToString());
+            }
+
+            return logs;
+        }
+
         public async Task<int> UpdateAzureDevOpsBuildsInStorage(string patToken, TableStorageConfiguration tableStorageConfig,
                 string organization, string project, string branch, string buildName, string buildId,
                 int numberOfDays, int maxNumberOfItems)
@@ -277,50 +333,6 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return itemsAdded;
         }
 
-        public List<AzureDevOpsSettings> GetAzureDevOpsSettingsFromStorage(TableStorageConfiguration tableStorageConfig, string settingsTable, string rowKey)
-        {
-            List<AzureDevOpsSettings> settings = null;
-            string partitionKey = "AzureDevOpsSettings";
-            JArray list = GetTableStorageItemsFromStorage(tableStorageConfig, settingsTable, partitionKey);
-            if (list != null)
-            {
-                settings = JsonConvert.DeserializeObject<List<AzureDevOpsSettings>>(list.ToString());
-            }
-            if (rowKey != null)
-            {
-                return new List<AzureDevOpsSettings>
-                {
-                    settings.Where(x => x.RowKey.ToLower() == rowKey.ToLower()).FirstOrDefault()
-                };
-            }
-            else
-            {
-                return settings;
-            }
-        }
-
-        public List<GitHubSettings> GetGitHubSettingsFromStorage(TableStorageConfiguration tableStorageConfig, string settingsTable, string rowKey)
-        {
-            List<GitHubSettings> settings = null;
-            string partitionKey = "GitHubSettings";
-            JArray list = GetTableStorageItemsFromStorage(tableStorageConfig, settingsTable, partitionKey);
-            if (list != null)
-            {
-                settings = JsonConvert.DeserializeObject<List<GitHubSettings>>(list.ToString());
-            }
-            if (rowKey != null)
-            {
-                return new List<GitHubSettings>
-                {
-                    settings.Where(x => x.RowKey.ToLower() == rowKey.ToLower()).FirstOrDefault()
-                };
-            }
-            else
-            {
-                return settings;
-            }
-        }
-
         public async Task<bool> UpdateAzureDevOpsSettingInStorage(TableStorageConfiguration tableStorageConfig, string settingsTable,
              string organization, string project, string repository, string branch, string buildName, string buildId, string resourceGroupName,
              int itemOrder, bool showSetting)
@@ -381,18 +393,6 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             AzureStorageTableModel newItem = new AzureStorageTableModel(partitionKey, rowKey, json);
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableMTTR);
             return await tableDA.SaveItem(newItem);
-        }
-
-        public List<ProjectLog> GetProjectLogsFromStorage(TableStorageConfiguration tableStorageConfig, string partitionKey)
-        {
-            List<ProjectLog> logs = null;
-            JArray list = GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableLog, partitionKey, true);
-            if (list != null)
-            {
-                logs = JsonConvert.DeserializeObject<List<ProjectLog>>(list.ToString());
-            }
-
-            return logs;
         }
 
         public async Task<bool> UpdateProjectLogInStorage(TableStorageConfiguration tableStorageConfig, ProjectLog log)
