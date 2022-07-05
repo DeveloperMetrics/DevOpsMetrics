@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using DevOpsMetrics.Core.DataAccess;
 using DevOpsMetrics.Core.Models.Common;
+using DevOpsMetrics.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DevOpsMetrics.Tests.Core
@@ -16,7 +17,7 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             bool getSampleData = true;
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
@@ -48,7 +49,7 @@ namespace DevOpsMetrics.Tests.Core
         //{
         //    //Arrange
         //    bool getSampleData = false;
-        //    tableStorageConfig tableStorageConfig = Common.GenerateTableAuthorization(_configuration);
+        //    tableStorageConfig tableStorageConfig = Common.GenerateTableStorageConfiguration(_configuration);
         //    string organization = "samsmithnz";
         //    string project = "PartsUnlimited";
         //    string branch = "refs/heads/master";
@@ -79,7 +80,7 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             bool getSampleData = true;
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "main";
@@ -110,7 +111,7 @@ namespace DevOpsMetrics.Tests.Core
         public async Task UpdateChangeFailureRateDAIntegrationTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string buildName = "SamLearnsAzure.CI";

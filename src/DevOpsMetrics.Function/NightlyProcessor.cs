@@ -4,7 +4,9 @@ using System.Reflection;
 using System.Threading.Tasks;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
+using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
+using DevOpsMetrics.Service;
 using DevOpsMetrics.Service.Controllers;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
@@ -26,35 +28,31 @@ namespace DevOpsMetrics.Function
 
             //Load settings
             IConfigurationBuilder builder = new ConfigurationBuilder();
-            IConfiguration configuration = builder
+            IConfiguration Configuration = builder
                 .SetBasePath(context.FunctionAppDirectory)
                 .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                 .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
                 .AddEnvironmentVariables()
                 .Build();
-            //IConfiguration configuration = new ConfigurationBuilder()
-            //    .SetBasePath(context.FunctionAppDirectory)
-            //    .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-            //    .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
-            //    .AddEnvironmentVariables()
-            //    .Build();
 
-            string keyVaultURL = configuration["AppSettings:KeyVaultURL"];
-            string clientId = configuration["AppSettings:KeyVaultClientId"];
-            string clientSecret = configuration["AppSettings:KeyVaultClientSecret"];
+            string keyVaultURL = Configuration["AppSettings:KeyVaultURL"];
+            string keyVaultId = Configuration["AppSettings:KeyVaultClientId"];
+            string keyVaultSecret = Configuration["AppSettings:KeyVaultClientSecret"];
             AzureServiceTokenProvider azureServiceTokenProvider = new();
             KeyVaultClient keyVaultClient = new(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
-            builder.AddAzureKeyVault(keyVaultURL, clientId, clientSecret);
-            configuration = builder.Build();
+            builder.AddAzureKeyVault(keyVaultURL, keyVaultId, keyVaultSecret);
+            Configuration = builder.Build();
 
             //Get settings
-            //ServiceApiClient api = new ServiceApiClient(configuration);
+            string clientId = Configuration["AppSettings:GitHubClientId"];
+            string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             AzureTableStorageDA azureTableStorageDA = new();
-            BuildsController buildsController = new(configuration, azureTableStorageDA);
-            PullRequestsController pullRequestsController = new(configuration, azureTableStorageDA);
-            SettingsController settingsController = new(configuration, azureTableStorageDA);
+            BuildsController buildsController = new(Configuration, azureTableStorageDA);
+            PullRequestsController pullRequestsController = new(Configuration, azureTableStorageDA);
+            SettingsController settingsController = new(Configuration, azureTableStorageDA);
             List<AzureDevOpsSettings> azSettings = settingsController.GetAzureDevOpsSettings();
             List<GitHubSettings> ghSettings = settingsController.GetGitHubSettings();
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
 
             //Loop through each setting to update the runs, pull requests and pull request commits
             int numberOfDays = 30;
@@ -80,10 +78,14 @@ namespace DevOpsMetrics.Function
                 //        await api.UpdateAzureDevOpsProjectLog(item.Organization, item.Project, item.Repository, buildsUpdated.Item1, prsUpdated.Item1, buildsUpdated.Item2, prsUpdated.Item2, ex.Message, error);
                 //    }
             }
-            foreach (GitHubSettings item in ghSettings)
+
+            foreach (GitHubSettings ghSetting in ghSettings)
             {
-                ProcessingResult ghResult = await Processing.ProcessGitHubItem(item, numberOfDays, maxNumberOfItems,
-                    buildsController, pullRequestsController, settingsController, log, totalResults);
+                ProcessingResult ghResult = await Processing.ProcessGitHubItem(ghSetting,
+                    clientId, clientSecret, tableStorageConfig,
+                    numberOfDays, maxNumberOfItems,
+                    buildsController, pullRequestsController, settingsController,
+                    log, totalResults);
                 totalResults = ghResult.TotalResults;
             }
             log.LogInformation($"C# Timer trigger function complete at: {DateTime.Now} after updating {totalResults} records");

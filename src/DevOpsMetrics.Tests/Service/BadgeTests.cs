@@ -25,7 +25,7 @@ namespace DevOpsMetrics.Tests.Service
             //Assert
             Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
             Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen", model.BadgeURL);
-            Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency%20(12.00%20per%20day)-Elite-brightgreen", model.BadgeWithMetricURL);
+            Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency%20%2812.00%20per%20day%29-Elite-brightgreen", model.BadgeWithMetricURL);
         }
 
 
@@ -116,7 +116,7 @@ namespace DevOpsMetrics.Tests.Service
             //Assert
             Assert.AreEqual("Elite", model.ChangeFailureRateMetricDescription);
             Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-Elite-brightgreen", model.BadgeURL);
-            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate%20(0.00%25)-Elite-brightgreen", model.BadgeWithMetricURL);
+            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate%20%280.00%25%29-Elite-brightgreen", model.BadgeWithMetricURL);
         }
 
         [TestCategory("L0Test")]
@@ -206,7 +206,7 @@ namespace DevOpsMetrics.Tests.Service
             //Assert
             Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
             Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-Elite-brightgreen", model.BadgeURL);
-            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes%20(5.3%20hours)-Elite-brightgreen", model.BadgeWithMetricURL);
+            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes%20%285.3%20hours%29-Elite-brightgreen", model.BadgeWithMetricURL);
         }
 
 
@@ -298,7 +298,7 @@ namespace DevOpsMetrics.Tests.Service
             //Assert
             Assert.AreEqual("Elite", model.MTTRAverageDurationDescription);
             Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service-Elite-brightgreen", model.BadgeURL);
-            Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service%20(0.12%20hours)-Elite-brightgreen", model.BadgeWithMetricURL);
+            Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service%20%280.12%20hours%29-Elite-brightgreen", model.BadgeWithMetricURL);
         }
 
 

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.Common;
+using DevOpsMetrics.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DevOpsMetrics.Tests.Core
@@ -14,7 +15,7 @@ namespace DevOpsMetrics.Tests.Core
         public async Task AzureMonitorProcessingTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
             MonitoringEvent monitoringEvent = new(@"
 {
   ""schemaId"": ""AzureMonitorMetricAlert"",

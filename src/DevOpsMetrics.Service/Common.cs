@@ -52,6 +52,10 @@ namespace DevOpsMetrics.Service
             {
                 tableStorageConfig.TableChangeFailureRate = Configuration["AppSettings:AzureStorageAccountContainerChangeFailureRate"];
             }
+            if (Configuration["AppSettings:AzureStorageAccountDORASummaryItem"] != null)
+            {
+                tableStorageConfig.TableDORASummaryItem = Configuration["AppSettings:AzureStorageAccountDORASummaryItem"];
+            }
             if (Configuration["AppSettings:AzureStorageAccountContainerTableLog"] != null)
             {
                 tableStorageConfig.TableLog = Configuration["AppSettings:AzureStorageAccountContainerTableLog"];

@@ -63,7 +63,7 @@ namespace DevOpsMetrics.Core.Models.Common
             get
             {
                 //Example: https://img.shields.io/badge/Time%20to%20restore%20service-Elite-brightgreen
-                string title = Uri.EscapeUriString("Time to restore service");
+                string title = Uri.EscapeDataString("Time to restore service");
                 return Badges.BadgeURL(title, MTTRAverageDurationDescription);
             }
         }
@@ -73,7 +73,7 @@ namespace DevOpsMetrics.Core.Models.Common
             get
             {
                 //Example: https://img.shields.io/badge/Change%20failure%20rate%20(83.33%25)-Elite-brightgreen
-                string title = Uri.EscapeUriString("Time to restore service (" + MTTRAverageDurationInHours.ToString("0.00") + " hours)");
+                string title = Uri.EscapeDataString("Time to restore service (" + MTTRAverageDurationInHours.ToString("0.00") + " hours)");
                 return Badges.BadgeURL(title, MTTRAverageDurationDescription);
             }
         }

@@ -18,7 +18,7 @@ A [demo website displaying the metrics can be viewed here](https://devops-prod-e
 More information about high performing DevOps metrics can be found in a [blog post here](https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/)
 
 ## The current solution:
-**We currently have all four of the metrics implemented and undergoing a pilot. There is a Probot for GitHub. The Azure DevOps widget is still TBD.**
+**We currently have all four of the metrics implemented and undergoing a pilot. There is a Probot for GitHub. (The Azure DevOps widget is on hold to focus on GitHub).**
 
 - **Deployment Frequency**, in both Azure DevOps and GitHub:
   - How does it work? We look at the number of successful pipeline runs. 
@@ -60,7 +60,7 @@ More information about high performing DevOps metrics can be found in a [blog po
 ![Change failure rate](https://github.com/samsmithnz/DevOpsMetrics/blob/main/ReadmeImages/ChangeFailureRate.png)
 
 # Architecture
-Uses .NET 6 (except for the function, which is .NET Core 3.1). A GitHub action runs the CI/CD process. 
+Uses .NET 6. A GitHub action runs the CI/CD process. 
 
 Currently the CI/CD process: 
 1. Builds the code
@@ -73,6 +73,10 @@ Currently the CI/CD process:
 Dependabot runs daily to check for dependency upgrades, and will automatically create a pull request, and approve/close it if all of the tests pass successfully 
 
 ![Architecture diagram](https://github.com/samsmithnz/DevOpsMetrics/blob/main/ReadmeImages/Architecture.png)
+
+## Badges
+The API can generate a URL for static badges, but more work is needed. Some current samples are shown below:
+[![Build](https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen)](https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen) [![Build](https://img.shields.io/badge/Lead%20time%20for%20changes-High-green)](https://img.shields.io/badge/Lead%20time%20for%20changes-High-green) [![Build](https://img.shields.io/badge/Time%20to%20restore%20service-Medium-orange)](https://img.shields.io/badge/Time%20to%20restore%20service-Medium-orange) [![Build](https://img.shields.io/badge/Change%20failure%20rate-Low-red)](https://img.shields.io/badge/Change%20failure%20rate-Low-red)
 
 # Setup
 
@@ -88,12 +92,8 @@ Dependabot runs daily to check for dependency upgrades, and will automatically c
 - Upgrades to packaging and setup (in progress)
 - Upgrades to store data in CosmosDB (currently in Azure storage)
 - Reviewing the current GitHub probot approach, to find a better target than issues (perhaps a metrics readme.md file?)
-- Secret management and integration with Azure Key Vault and/or GitHub Secrets (in progress)
 - Support for more scenarios, releases, etc
-- Badges! The API can generate  a URL to these static badges, but more work is needed. Some samples are shown below:
 - Azure DevOps marketplace integrations, so you can see the changes real time on your project/repo. (lower priority to focus on GitHub)
-
-  [![Build](https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen)](https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen) [![Build](https://img.shields.io/badge/Lead%20time%20for%20changes-High-green)](https://img.shields.io/badge/Lead%20time%20for%20changes-High-green) [![Build](https://img.shields.io/badge/Time%20to%20restore%20service-Medium-orange)](https://img.shields.io/badge/Time%20to%20restore%20service-Medium-orange) [![Build](https://img.shields.io/badge/Change%20failure%20rate-Low-red)](https://img.shields.io/badge/Change%20failure%20rate-Low-red)
 
 # References
 

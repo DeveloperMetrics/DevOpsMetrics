@@ -4,6 +4,7 @@ using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
+using DevOpsMetrics.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DevOpsMetrics.Tests.Core
@@ -35,7 +36,7 @@ namespace DevOpsMetrics.Tests.Core
         public void AzGetSamLearnsAzureSettingDAIntegrationTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
 
             //Act
             AzureTableStorageDA da = new();
@@ -49,7 +50,7 @@ namespace DevOpsMetrics.Tests.Core
         public void GHGetSamLearnsAzureSettingDAIntegrationTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
 
             //Act
             AzureTableStorageDA da = new();
@@ -63,7 +64,7 @@ namespace DevOpsMetrics.Tests.Core
         public async Task AzUpdateSamLearnsAzureSettingDAIntegrationTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string repository = "SamLearnsAzure";
@@ -87,7 +88,7 @@ namespace DevOpsMetrics.Tests.Core
         public async Task GHUpdateDevOpsMetricsSettingDAIntegrationTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "main";
@@ -110,7 +111,7 @@ namespace DevOpsMetrics.Tests.Core
         public async Task GHUpdateSamsFeatureFlagsSettingDAIntegrationTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
             string owner = "samsmithnz";
             string repo = "SamsFeatureFlags";
             string branch = "main";
@@ -133,7 +134,7 @@ namespace DevOpsMetrics.Tests.Core
         public async Task GHUpdateAzurePipelinesToGitHubActionsConverterWebSettingDAIntegrationTest()
         {
             //Arrange
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
             string owner = "samsmithnz";
             string repo = "AzurePipelinesToGitHubActionsConverterWeb";
             string branch = "main";

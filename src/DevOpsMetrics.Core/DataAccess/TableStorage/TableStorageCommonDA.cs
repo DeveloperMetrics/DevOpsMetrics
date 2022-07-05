@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using DevOpsMetrics.Core.Models.Azure;
-using DevOpsMetrics.Core.Models.Common;
 using Microsoft.Azure.Cosmos.Table;
 
 namespace DevOpsMetrics.Core.DataAccess.TableStorage
@@ -12,9 +11,9 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         private readonly string ConfigurationString;
         private readonly string TableName;
 
-        public TableStorageCommonDA(TableStorageConfiguration tableStorageConfig, string tableName)
+        public TableStorageCommonDA(string tableConnectionString, string tableName)
         {
-            ConfigurationString = tableStorageConfig.StorageAccountConnectionString;
+            ConfigurationString = tableConnectionString;
             TableName = tableName;
         }
 

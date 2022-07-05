@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using DevOpsMetrics.Core.DataAccess;
 using DevOpsMetrics.Core.Models.Common;
+using DevOpsMetrics.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DevOpsMetrics.Tests.Core
@@ -16,7 +17,7 @@ namespace DevOpsMetrics.Tests.Core
             //Arrange
             bool getSampleData = true;
             string patToken = base.Configuration["AppSettings:AzureDevOpsPatToken"];
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
             string organization = "samsmithnz";
             string project = "SamLearnsAzure";
             string branch = "refs/heads/master";
@@ -49,7 +50,7 @@ namespace DevOpsMetrics.Tests.Core
             bool getSampleData = true;
             string clientId = base.Configuration["AppSettings:GitHubClientId"];
             string clientSecret = base.Configuration["AppSettings:GitHubClientSecret"];
-            TableStorageConfiguration tableStorageConfig = Common.GenerateTableAuthorization(base.Configuration);
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
             string owner = "samsmithnz";
             string repo = "DevOpsMetrics";
             string branch = "main";

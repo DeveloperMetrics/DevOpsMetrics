@@ -39,7 +39,7 @@ namespace DevOpsMetrics.Core.Models.Common
             get
             {
                 float duration = 0f;
-                if (EndTime != null && StartTime != null && EndTime > DateTime.MinValue && StartTime > DateTime.MinValue)
+                if (EndTime > DateTime.MinValue && StartTime > DateTime.MinValue)
                 {
                     TimeSpan ts = EndTime - StartTime;
                     duration = (float)ts.TotalMinutes;
@@ -53,7 +53,7 @@ namespace DevOpsMetrics.Core.Models.Common
             get
             {
                 string duration = "0:00";
-                if (EndTime != null && StartTime != null && EndTime > DateTime.MinValue && StartTime > DateTime.MinValue)
+                if (EndTime > DateTime.MinValue && StartTime > DateTime.MinValue)
                 {
                     TimeSpan timespan = EndTime - StartTime;
                     duration = $"{(int)timespan.TotalMinutes}:{timespan.Seconds:00}";
@@ -67,7 +67,7 @@ namespace DevOpsMetrics.Core.Models.Common
             get
             {
                 string duration = "0:00";
-                if (EndTime != null && EndTime > DateTime.MinValue)
+                if (EndTime > DateTime.MinValue)
                 {
                     TimeSpan timespan = DateTime.UtcNow - EndTime;
                     if (timespan.TotalMinutes < 60)
