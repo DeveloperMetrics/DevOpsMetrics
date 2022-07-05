@@ -16,7 +16,7 @@ namespace DevOpsMetrics.Core.DataAccess
             List<DORASummaryItem> doraItems = JsonConvert.DeserializeObject<List<DORASummaryItem>>(list.ToString());
             foreach (DORASummaryItem item in doraItems)
             {
-                if (item.Repo == repo)
+                if (item.Repo.ToLower() == repo.ToLower())
                 {
                     model = item;
                     break;
