@@ -37,7 +37,7 @@ namespace DevOpsMetrics.Tests.Core
             List<GitHubSettings> results = da.GetGitHubSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings, null);
             foreach (GitHubSettings item in results)
             {
-                if (item.Repo == "AzurePipelinesToGitHubActionsConverterWeb")
+                if (item.Repo == "AzurePipelinesToGitHubActionsConverter")
                 {
                     result = await Processing.ProcessGitHubItem(item, clientId, clientSecret, tableStorageConfig,
                         30, 20,
