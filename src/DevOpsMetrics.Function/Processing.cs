@@ -80,7 +80,7 @@ namespace DevOpsMetrics.Function
                 numberOfDays, maxNumberOfItems, useCache);
 
             MeanTimeToRestoreDA meanTimeToRestoreDA = new();
-            MeanTimeToRestoreModel meanTimeToRestoreModel = null;
+            MeanTimeToRestoreModel meanTimeToRestoreModel = new();
             if (resourceGroup != null)
             {
                 meanTimeToRestoreModel = meanTimeToRestoreDA.GetAzureMeanTimeToRestore(false, tableStorageConfig,
