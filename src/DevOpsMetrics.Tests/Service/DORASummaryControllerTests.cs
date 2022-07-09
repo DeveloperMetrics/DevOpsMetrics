@@ -1,4 +1,5 @@
-﻿using DevOpsMetrics.Core.Models.Common;
+﻿using DevOpsMetrics.Core.DataAccess;
+using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Service.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,11 +11,11 @@ namespace DevOpsMetrics.Tests.Service
     public class DORASummaryControllerTests : BaseConfiguration
     {
         [TestMethod]
-        public void DORASummaryControllerIntegrationTest()
+        public void DORASummaryControllerGetIntegrationTest()
         {
             //Arrange
             string organization = "samsmithnz";
-            string repository = "AzurePipelinesToGitHubActionsConverterWeb";
+            string repository = "AzurePipelinesToGitHubActionsConverter";
             DORASummaryController controller = new(base.Configuration);
 
             //Act
@@ -34,7 +35,7 @@ namespace DevOpsMetrics.Tests.Service
             //Assert.AreEqual("https://dev.azure.com/samsmithnz/samlearnsazure/1", model.BuildList[0].Url);
             //Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
             //Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
-        }
+        }     
 
     }
 }
