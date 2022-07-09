@@ -70,7 +70,11 @@ namespace DevOpsMetrics.Core
             float weeklyDeployment = 24f * 7f;
 
             string rating;
-            if (meanTimeToRestoreInHours < hourlyRestoration) //less than one hour
+            if (meanTimeToRestoreInHours <= 0)
+            {
+                rating = "None";
+            }
+            else if (meanTimeToRestoreInHours < hourlyRestoration) //less than one hour
             {
                 rating = "Elite";
             }
