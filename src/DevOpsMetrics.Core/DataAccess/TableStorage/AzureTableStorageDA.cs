@@ -27,7 +27,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         {
             TableStorageCommonDA tableDA = new(tableStorageConfig.StorageAccountConnectionString, tableName);
             List<AzureStorageTableModel> items = tableDA.GetItems(partitionKey);
-            JArray list = new JArray();
+            JArray list = new();
             foreach (AzureStorageTableModel item in items)
             {
                 if (includePartitionAndRowKeys == true)
@@ -360,7 +360,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         {
             string partitionKey = "GitHubSettings";
             string rowKey = PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo);
-            GitHubSettings settings = new GitHubSettings
+            GitHubSettings settings = new()
             {
                 RowKey = rowKey,
                 Owner = owner,

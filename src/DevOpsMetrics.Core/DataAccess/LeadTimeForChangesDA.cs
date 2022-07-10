@@ -139,7 +139,7 @@ namespace DevOpsMetrics.Core.DataAccess
                     averageBuildHours = (float)totalHours / (float)mainBranchBuilds.Count;
                 }
 
-                LeadTimeForChangesModel model = new LeadTimeForChangesModel
+                LeadTimeForChangesModel model = new()
                 {
                     ProjectName = project,
                     TargetDevOpsPlatform = DevOpsPlatform.AzureDevOps,
@@ -159,7 +159,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get sample data
                 List<PullRequestModel> samplePullRequests = utility.GetLastNItems(CreatePullRequestsSample(DevOpsPlatform.AzureDevOps), maxNumberOfItems);
-                LeadTimeForChangesModel model = new LeadTimeForChangesModel
+                LeadTimeForChangesModel model = new()
                 {
                     ProjectName = project,
                     TargetDevOpsPlatform = DevOpsPlatform.AzureDevOps,
@@ -187,7 +187,7 @@ namespace DevOpsMetrics.Core.DataAccess
             if (getSampleData == false)
             {
                 List<GitHubActionsRun> initialRuns = new();
-                BuildsDA buildsDA = new BuildsDA();
+                BuildsDA buildsDA = new();
                 initialRuns = await BuildsDA.GetGitHubActionRuns(clientId, clientSecret, tableStorageConfig, owner, repo, workflowName, workflowId, useCache);
 
                 //Process all builds, filtering by main and feature branchs
@@ -262,7 +262,7 @@ namespace DevOpsMetrics.Core.DataAccess
                             }
                         }
 
-                        PullRequestModel pullRequest = new PullRequestModel
+                        PullRequestModel pullRequest = new()
                         {
                             PullRequestId = pr.number,
                             Branch = branch,
@@ -376,7 +376,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 url = "";
             }
 
-            PullRequestModel pr1 = new PullRequestModel
+            PullRequestModel pr1 = new()
             {
                 PullRequestId = "123",
                 Branch = "branch1",

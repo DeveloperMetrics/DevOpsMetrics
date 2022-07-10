@@ -16,7 +16,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 DevOpsPlatform targetDevOpsPlatform, string resourceGroup,
                 int numberOfDays, int maxNumberOfItems)
         {
-            ListUtility<MeanTimeToRestoreEvent> utility = new ListUtility<MeanTimeToRestoreEvent>();
+            ListUtility<MeanTimeToRestoreEvent> utility = new();
             if (getSampleData == false)
             {
                 //If the user didn't specify a resource group, it comes in as null and causes havoc. Setting it as "" helps, it 
@@ -105,7 +105,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 float averageMTTR = mttr.ProcessMeanTimeToRestore(dateList, numberOfDays);
 
                 //Calculate the SLA metric
-                SLA slaMetric = new SLA();
+                SLA slaMetric = new();
                 float sla = slaMetric.ProcessSLA(dateList, numberOfDays);
 
                 //Filter the list for the UI, and sort the final list (May not be needed due to the initial sort on the starting alerts)
@@ -138,13 +138,13 @@ namespace DevOpsMetrics.Core.DataAccess
             else
             {
                 //Get sample data
-                MeanTimeToRestore mttr = new MeanTimeToRestore();
+                MeanTimeToRestore mttr = new();
                 List<MeanTimeToRestoreEvent> sampleEvents = GetSampleMTTREvents(resourceGroup);
                 List<KeyValuePair<DateTime, TimeSpan>> dateList = ConvertEventsToDateList(sampleEvents);
                 float averageMTTR = mttr.ProcessMeanTimeToRestore(dateList, numberOfDays);
-                SLA slaMetric = new SLA();
+                SLA slaMetric = new();
                 float sla = slaMetric.ProcessSLA(dateList, numberOfDays);
-                MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
+                MeanTimeToRestoreModel model = new()
                 {
                     TargetDevOpsPlatform = targetDevOpsPlatform,
                     ResourceGroup = resourceGroup,
@@ -198,7 +198,7 @@ namespace DevOpsMetrics.Core.DataAccess
         private static List<MeanTimeToRestoreEvent> GetSampleMTTREvents(string resourceGroup)
         {
             List<MeanTimeToRestoreEvent> results = new();
-            MeanTimeToRestoreEvent item1 = new MeanTimeToRestoreEvent
+            MeanTimeToRestoreEvent item1 = new()
             {
                 ResourceGroup = resourceGroup,
                 Name = "Name1",
@@ -236,7 +236,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 ItemOrder = 4
             };
             results.Add(item4);
-            MeanTimeToRestoreEvent item5 = new MeanTimeToRestoreEvent
+            MeanTimeToRestoreEvent item5 = new()
             {
                 StartTime = DateTime.Now.AddDays(-2).AddMinutes(-7),
                 EndTime = DateTime.Now.AddDays(-2).AddMinutes(0),
