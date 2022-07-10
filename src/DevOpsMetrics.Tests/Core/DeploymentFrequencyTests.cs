@@ -27,7 +27,7 @@ namespace DevOpsMetrics.Tests.Core
             DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetric = metric,
-                DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
+                DeploymentsPerDayMetricDescription = DeploymentFrequency.GetDeploymentFrequencyRating(metric)
             };
 
             //Assert
@@ -51,7 +51,7 @@ namespace DevOpsMetrics.Tests.Core
             DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetric = metric,
-                DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric),
+                DeploymentsPerDayMetricDescription = DeploymentFrequency.GetDeploymentFrequencyRating(metric),
                 IsProjectView = true,
                 ItemOrder = 1,
                 RateLimitHit = false
@@ -89,7 +89,7 @@ namespace DevOpsMetrics.Tests.Core
             DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetric = metric,
-                DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
+                DeploymentsPerDayMetricDescription = DeploymentFrequency.GetDeploymentFrequencyRating(metric)
             };
 
             //Assert
@@ -111,7 +111,7 @@ namespace DevOpsMetrics.Tests.Core
             DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetric = metric,
-                DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
+                DeploymentsPerDayMetricDescription = DeploymentFrequency.GetDeploymentFrequencyRating(metric)
             };
 
             //Assert
@@ -133,7 +133,7 @@ namespace DevOpsMetrics.Tests.Core
             DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetric = metric,
-                DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
+                DeploymentsPerDayMetricDescription = DeploymentFrequency.GetDeploymentFrequencyRating(metric)
             };
 
             //Assert
@@ -155,7 +155,7 @@ namespace DevOpsMetrics.Tests.Core
             DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetric = metric,
-                DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
+                DeploymentsPerDayMetricDescription = DeploymentFrequency.GetDeploymentFrequencyRating(metric)
             };
 
             //Assert
@@ -178,7 +178,7 @@ namespace DevOpsMetrics.Tests.Core
             DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetric = metric,
-                DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
+                DeploymentsPerDayMetricDescription = DeploymentFrequency.GetDeploymentFrequencyRating(metric)
             };
 
             //Assert
@@ -200,7 +200,7 @@ namespace DevOpsMetrics.Tests.Core
             DeploymentFrequencyModel model = new()
             {
                 DeploymentsPerDayMetric = metric,
-                DeploymentsPerDayMetricDescription = metrics.GetDeploymentFrequencyRating(metric)
+                DeploymentsPerDayMetricDescription = DeploymentFrequency.GetDeploymentFrequencyRating(metric)
             };
 
             //Assert

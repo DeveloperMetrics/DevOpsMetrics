@@ -85,7 +85,7 @@ namespace DevOpsMetrics.Core.DataAccess
                         DeploymentName = buildName,
                         BuildList = builds,
                         DeploymentsPerDayMetric = deploymentsPerDay,
-                        DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
+                        DeploymentsPerDayMetricDescription = DeploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
                         NumberOfDays = numberOfDays,
                         MaxNumberOfItems = builds.Count,
                         TotalItems = buildTotal
@@ -191,7 +191,7 @@ namespace DevOpsMetrics.Core.DataAccess
                         DeploymentName = workflowName,
                         BuildList = builds,
                         DeploymentsPerDayMetric = deploymentsPerDay,
-                        DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
+                        DeploymentsPerDayMetricDescription = DeploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
                         NumberOfDays = numberOfDays,
                         MaxNumberOfItems = builds.Count,
                         TotalItems = buildTotal

@@ -85,7 +85,7 @@ namespace DevOpsMetrics.Core.Models.Common
         {
             get
             {
-                JObject jsonObject = new JObject(
+                JObject jsonObject = new(
                     new JProperty("BuildsUpdated", BuildsUpdated),
                     new JProperty("PRsUpdated", PRsUpdated),
                     new JProperty("ExceptionMessage", ExceptionMessage),

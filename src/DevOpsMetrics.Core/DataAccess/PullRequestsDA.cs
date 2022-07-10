@@ -26,7 +26,6 @@ namespace DevOpsMetrics.Core.DataAccess
             else
             {
                 //Get the pull requests from the Azure DevOps API
-                AzureDevOpsAPIAccess api = new();
                 list = await AzureDevOpsAPIAccess.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repository);
             }
             if (list != null)
@@ -59,7 +58,6 @@ namespace DevOpsMetrics.Core.DataAccess
             else
             {
                 //Get the commits from the Azure DevOps API
-                AzureDevOpsAPIAccess api = new();
                 list = await AzureDevOpsAPIAccess.GetAzureDevOpsPullRequestCommitsJArray(patToken, organization, project, repository, pullRequestId);
             }
 

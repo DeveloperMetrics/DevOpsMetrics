@@ -122,7 +122,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         ////    return true;
         ////}
 
-        public string EncodePartitionKey(string text)
+        public static string EncodePartitionKey(string text)
         {
             //The forward slash(/) character
             //The backslash(\) character
