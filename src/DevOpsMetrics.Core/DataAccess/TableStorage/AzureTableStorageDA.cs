@@ -155,7 +155,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 int numberOfDays, int maxNumberOfItems)
         {
             AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
-            JArray items = await api.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repository);
+            JArray items = await AzureDevOpsAPIAccess.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repository);
 
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableAzureDevOpsPRs);
@@ -185,7 +185,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 int numberOfDays, int maxNumberOfItems)
         {
             AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
-            JArray items = await api.GetAzureDevOpsPullRequestCommitsJArray(patToken, organization, project, repository, pullRequestId);
+            JArray items = await AzureDevOpsAPIAccess.GetAzureDevOpsPullRequestCommitsJArray(patToken, organization, project, repository, pullRequestId);
 
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableAzureDevOpsPRCommits);
@@ -211,7 +211,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 int numberOfDays, int maxNumberOfItems)
         {
             GitHubAPIAccess api = new GitHubAPIAccess();
-            JArray items = await api.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, workflowId);
+            JArray items = await GitHubAPIAccess.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, workflowId);
             Debug.WriteLine($"{items.Count} builds found for {owner}/{repo}/{workflowName}");
 
             int itemsAdded = 0;

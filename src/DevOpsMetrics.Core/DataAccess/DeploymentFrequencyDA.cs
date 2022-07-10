@@ -20,7 +20,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get a list of builds
                 BuildsDA buildsDA = new();
-                List<AzureDevOpsBuild> azureDevOpsBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageConfig, organization, project, buildName, useCache);
+                List<AzureDevOpsBuild> azureDevOpsBuilds = await BuildsDA.GetAzureDevOpsBuilds(patToken, tableStorageConfig, organization, project, buildName, useCache);
                 if (azureDevOpsBuilds != null)
                 {
                     //Translate the Azure DevOps build to a generic build object
@@ -127,7 +127,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get a list of builds
                 BuildsDA buildsDA = new();
-                List<GitHubActionsRun> gitHubRuns = await buildsDA.GetGitHubActionRuns(clientId, clientSecret, tableStorageConfig, owner, repo, workflowName, workflowId, useCache);
+                List<GitHubActionsRun> gitHubRuns = await BuildsDA.GetGitHubActionRuns(clientId, clientSecret, tableStorageConfig, owner, repo, workflowName, workflowId, useCache);
                 if (gitHubRuns != null)
                 {
                     //Translate the GitHub build to a generic build object

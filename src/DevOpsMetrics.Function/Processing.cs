@@ -94,7 +94,6 @@ namespace DevOpsMetrics.Function
                 meanTimeToRestoreModel.MTTRAverageDurationDescription = MeanTimeToRestore.GetMeanTimeToRestoreRating(0);
             }
 
-            ChangeFailureRateDA changeFailureRateDA = new();
             ChangeFailureRateModel changeFailureRateModel = ChangeFailureRateDA.GetChangeFailureRate(false, tableStorageConfig,
                 DevOpsPlatform.GitHub,
                 owner, repo, branch, workflowName,
@@ -116,7 +115,6 @@ namespace DevOpsMetrics.Function
             };
 
             //Serialize the summary into an Azure storage table
-            AzureTableStorageDA azureTableStorageDA = new();
             await AzureTableStorageDA.UpdateDORASummaryItem(tableStorageConfig, owner, repo, DORASummary);
 
             return true;

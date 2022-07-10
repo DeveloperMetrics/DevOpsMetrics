@@ -27,7 +27,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get the pull requests from the Azure DevOps API
                 AzureDevOpsAPIAccess api = new();
-                list = await api.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repository);
+                list = await AzureDevOpsAPIAccess.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repository);
             }
             if (list != null)
             {
@@ -60,7 +60,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get the commits from the Azure DevOps API
                 AzureDevOpsAPIAccess api = new();
-                list = await api.GetAzureDevOpsPullRequestCommitsJArray(patToken, organization, project, repository, pullRequestId);
+                list = await AzureDevOpsAPIAccess.GetAzureDevOpsPullRequestCommitsJArray(patToken, organization, project, repository, pullRequestId);
             }
 
             List<AzureDevOpsPRCommit> commits = JsonConvert.DeserializeObject<List<AzureDevOpsPRCommit>>(list.ToString());

@@ -21,7 +21,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 List<AzureDevOpsBuild> initialBuilds = new List<AzureDevOpsBuild>();
                 BuildsDA buildsDA = new BuildsDA();
-                initialBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageConfig, organization, project, buildName, useCache);
+                initialBuilds = await BuildsDA.GetAzureDevOpsBuilds(patToken, tableStorageConfig, organization, project, buildName, useCache);
 
                 //Process all builds, filtering by main and feature branchs
                 List<AzureDevOpsBuild> mainBranchBuilds = new List<AzureDevOpsBuild>();
@@ -188,7 +188,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 List<GitHubActionsRun> initialRuns = new List<GitHubActionsRun>();
                 BuildsDA buildsDA = new BuildsDA();
-                initialRuns = await buildsDA.GetGitHubActionRuns(clientId, clientSecret, tableStorageConfig, owner, repo, workflowName, workflowId, useCache);
+                initialRuns = await BuildsDA.GetGitHubActionRuns(clientId, clientSecret, tableStorageConfig, owner, repo, workflowName, workflowId, useCache);
 
                 //Process all builds, filtering by main and feature branchs
                 List<GitHubActionsRun> mainBranchRuns = new List<GitHubActionsRun>();

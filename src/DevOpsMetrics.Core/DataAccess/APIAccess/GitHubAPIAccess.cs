@@ -11,7 +11,7 @@ namespace DevOpsMetrics.Core.DataAccess.APIAccess
     {
 
         //Call the GitHub Rest API to get a JSON array of runs
-        public async Task<JArray> GetGitHubActionRunsJArray(string clientId, string clientSecret, string owner, string repo, string workflowId)
+        public static async Task<JArray> GetGitHubActionRunsJArray(string clientId, string clientSecret, string owner, string repo, string workflowId)
         {
             JArray list = null;
             string url = $"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflowId}/runs?per_page=100";

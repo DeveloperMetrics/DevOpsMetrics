@@ -24,7 +24,7 @@ namespace DevOpsMetrics.Core.DataAccess.APIAccess
         }
 
         //Call the Azure DevOps Rest API to get a JSON array of pull requests
-        public async Task<JArray> GetAzureDevOpsPullRequestsJArray(string patToken, string organization, string project, string repository)
+        public static async Task<JArray> GetAzureDevOpsPullRequestsJArray(string patToken, string organization, string project, string repository)
         {
             JArray list = null;
             //https://docs.microsoft.com/en-us/rest/api/azure/devops/git/pull%20requests/get%20pull%20requests?view=azure-devops-rest-5.1
@@ -39,7 +39,7 @@ namespace DevOpsMetrics.Core.DataAccess.APIAccess
         }
 
         //Call the Azure DevOps Rest API to get a JSON array of pull request commits
-        public async Task<JArray> GetAzureDevOpsPullRequestCommitsJArray(string patToken, string organization, string project, string repository, string pullRequestId)
+        public static async Task<JArray> GetAzureDevOpsPullRequestCommitsJArray(string patToken, string organization, string project, string repository, string pullRequestId)
         {
             JArray list = null;
             //https://docs.microsoft.com/en-us/rest/api/azure/devops/git/pull%20request%20commits/get%20pull%20request%20commits?view=azure-devops-rest-5.1
