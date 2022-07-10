@@ -1,5 +1,4 @@
-﻿using DevOpsMetrics.Core.DataAccess;
-using DevOpsMetrics.Core.Models.Common;
+﻿using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Service.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -35,7 +34,7 @@ namespace DevOpsMetrics.Tests.Service
             //Assert.AreEqual("https://dev.azure.com/samsmithnz/samlearnsazure/1", model.BuildList[0].Url);
             //Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
             //Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
-        }     
+        }
 
     }
 }
