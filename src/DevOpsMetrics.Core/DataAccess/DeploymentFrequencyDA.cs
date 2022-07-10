@@ -10,7 +10,7 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class DeploymentFrequencyDA
     {
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, TableStorageConfiguration tableStorageConfig,
+        public static async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, TableStorageConfiguration tableStorageConfig,
                 string organization, string project, string branch, string buildName,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
@@ -117,7 +117,7 @@ namespace DevOpsMetrics.Core.DataAccess
             }
         }
 
-        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig,
+        public static async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig,
                 string owner, string repo, string branch, string workflowName, string workflowId,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
@@ -224,7 +224,7 @@ namespace DevOpsMetrics.Core.DataAccess
         }
 
         //Return a sample dataset to help with testing
-        private List<Build> GetSampleAzureDevOpsBuilds()
+        private static List<Build> GetSampleAzureDevOpsBuilds()
         {
             List<Build> results = new();
             Build item1 = new()
@@ -301,7 +301,7 @@ namespace DevOpsMetrics.Core.DataAccess
             return results;
         }
 
-        private List<Build> GetSampleGitHubBuilds()
+        private static List<Build> GetSampleGitHubBuilds()
         {
             List<Build> results = new();
             Build item1 = new()

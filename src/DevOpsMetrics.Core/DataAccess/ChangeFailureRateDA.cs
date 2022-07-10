@@ -161,11 +161,11 @@ namespace DevOpsMetrics.Core.DataAccess
             return new Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>>(positiveBuilds, negativeBuilds);
         }
 
-        public IEnumerable<IEnumerable<ChangeFailureRateBuild>> Partition(IEnumerable<ChangeFailureRateBuild> items, int partitionSize)
+        public static IEnumerable<IEnumerable<ChangeFailureRateBuild>> Partition(IEnumerable<ChangeFailureRateBuild> items, int partitionSize)
         {
             if (partitionSize <= 0)
             {
-                throw new ArgumentOutOfRangeException("partitionSize");
+                throw new ArgumentOutOfRangeException(nameof(partitionSize));
             }
 
             int innerListCounter = 0;

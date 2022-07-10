@@ -67,7 +67,7 @@ namespace DevOpsMetrics.Core
             return SLAList.Where(x => x.Key > DateTime.Now.AddDays(-numberOfDays)).ToList();
         }
 
-        public string GetSLARating(float SLAPercent)
+        public static string GetSLARating(float SLAPercent)
         {
             //Adding the most commonly used SLA's
             float oneNine = 0.9f; //90.0%

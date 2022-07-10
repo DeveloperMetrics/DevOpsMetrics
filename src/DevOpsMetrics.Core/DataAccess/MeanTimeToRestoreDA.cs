@@ -26,9 +26,9 @@ namespace DevOpsMetrics.Core.DataAccess
                 }
 
                 //Pull the events from the table storage
-                AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
-                Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableMTTR, resourceGroup);
-                List<AzureAlert> alerts = new List<AzureAlert>();
+                AzureTableStorageDA daTableStorage = new();
+                JArray list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableMTTR, resourceGroup);
+                List<AzureAlert> alerts = new();
                 foreach (JToken item in list)
                 {
                     alerts.Add(
@@ -126,12 +126,12 @@ namespace DevOpsMetrics.Core.DataAccess
                     ResourceGroup = resourceGroup,
                     MeanTimeToRestoreEvents = uiEvents,
                     MTTRAverageDurationInHours = averageMTTR,
-                    MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(averageMTTR),
+                    MTTRAverageDurationDescription = MeanTimeToRestore.GetMeanTimeToRestoreRating(averageMTTR),
                     NumberOfDays = numberOfDays,
                     MaxNumberOfItems = uiEvents.Count,
                     TotalItems = events.Count,
                     SLA = sla,
-                    SLADescription = slaMetric.GetSLARating(sla)
+                    SLADescription = SLA.GetSLARating(sla)
                 };
                 return model;
             }
@@ -150,12 +150,12 @@ namespace DevOpsMetrics.Core.DataAccess
                     ResourceGroup = resourceGroup,
                     MeanTimeToRestoreEvents = sampleEvents,
                     MTTRAverageDurationInHours = averageMTTR,
-                    MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(averageMTTR),
+                    MTTRAverageDurationDescription = MeanTimeToRestore.GetMeanTimeToRestoreRating(averageMTTR),
                     NumberOfDays = numberOfDays,
                     MaxNumberOfItems = sampleEvents.Count,
                     TotalItems = sampleEvents.Count,
                     SLA = sla,
-                    SLADescription = slaMetric.GetSLARating(sla)
+                    SLADescription = SLA.GetSLARating(sla)
                 };
                 return model;
             }
@@ -195,7 +195,7 @@ namespace DevOpsMetrics.Core.DataAccess
         //}
 
         //Return a sample dataset to help with testing
-        private List<MeanTimeToRestoreEvent> GetSampleMTTREvents(string resourceGroup)
+        private static List<MeanTimeToRestoreEvent> GetSampleMTTREvents(string resourceGroup)
         {
             List<MeanTimeToRestoreEvent> results = new List<MeanTimeToRestoreEvent>();
             MeanTimeToRestoreEvent item1 = new MeanTimeToRestoreEvent

@@ -55,7 +55,7 @@ namespace DevOpsMetrics.Core.DataAccess.APIAccess
         private async static Task<string> GetAzureDevOpsMessage(string url, string patToken)
         {
             string responseBody = "";
-            if (url.IndexOf("dev.azure.com") == -1)
+            if (url.Contains("dev.azure.com") == false)
             {
                 throw new Exception("dev.azure.com missing from URL");
             }

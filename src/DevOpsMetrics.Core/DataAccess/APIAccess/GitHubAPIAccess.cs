@@ -59,7 +59,7 @@ namespace DevOpsMetrics.Core.DataAccess.APIAccess
         {
             Console.WriteLine($"Running GitHub url: {url}");
             string responseBody = "";
-            if (url.IndexOf("api.github.com") == -1)
+            if (url.Contains("api.github.com") == false)
             {
                 throw new Exception("api.github.com missing from URL");
             }

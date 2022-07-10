@@ -71,7 +71,7 @@ namespace DevOpsMetrics.Function
         {
             //Get the DORA metrics for the last 90 days
             DeploymentFrequencyDA deploymentFrequencyDA = new();
-            DeploymentFrequencyModel deploymentFrequencyModel = await deploymentFrequencyDA.GetGitHubDeploymentFrequency(false, clientId, clientSecret, tableStorageConfig,
+            DeploymentFrequencyModel deploymentFrequencyModel = await DeploymentFrequencyDA.GetGitHubDeploymentFrequency(false, clientId, clientSecret, tableStorageConfig,
                 owner, repo, branch, workflowName, workflowId,
                 numberOfDays, maxNumberOfItems, useCache);
 
@@ -93,7 +93,7 @@ namespace DevOpsMetrics.Function
             {
                 MeanTimeToRestore mttr = new();
                 meanTimeToRestoreModel.MTTRAverageDurationInHours = 0;
-                meanTimeToRestoreModel.MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(0);
+                meanTimeToRestoreModel.MTTRAverageDurationDescription = MeanTimeToRestore.GetMeanTimeToRestoreRating(0);
             }
 
             ChangeFailureRateDA changeFailureRateDA = new();
