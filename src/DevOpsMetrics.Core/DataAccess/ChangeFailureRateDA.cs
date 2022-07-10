@@ -45,7 +45,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 //then build the calcuation
                 foreach (ChangeFailureRateBuild item in builds)
                 {
-                    KeyValuePair<DateTime, bool> newItem = new KeyValuePair<DateTime, bool>(item.StartTime, item.DeploymentWasSuccessful);
+                    KeyValuePair<DateTime, bool> newItem = new(item.StartTime, item.DeploymentWasSuccessful);
                     dateList.Add(newItem);
                 }
                 //calculate the metric on all of the results
@@ -192,7 +192,7 @@ namespace DevOpsMetrics.Core.DataAccess
         private static List<ChangeFailureRateBuild> GetSampleBuilds()
         {
             List<ChangeFailureRateBuild> results = new();
-            ChangeFailureRateBuild item1 = new ChangeFailureRateBuild
+            ChangeFailureRateBuild item1 = new()
             {
                 StartTime = DateTime.Now.AddDays(-7).AddMinutes(-4),
                 EndTime = DateTime.Now.AddDays(-7).AddMinutes(0),
@@ -207,7 +207,7 @@ namespace DevOpsMetrics.Core.DataAccess
             results.Add(item1);
             results.Add(item1);
             results.Add(item1);
-            ChangeFailureRateBuild item2 = new ChangeFailureRateBuild
+            ChangeFailureRateBuild item2 = new()
             {
                 StartTime = DateTime.Now.AddDays(-5).AddMinutes(-5),
                 EndTime = DateTime.Now.AddDays(-5).AddMinutes(0),
@@ -222,7 +222,7 @@ namespace DevOpsMetrics.Core.DataAccess
             results.Add(item2);
             results.Add(item2);
             results.Add(item2);
-            ChangeFailureRateBuild item3 = new ChangeFailureRateBuild
+            ChangeFailureRateBuild item3 = new()
             {
                 StartTime = DateTime.Now.AddDays(-4).AddMinutes(-1),
                 EndTime = DateTime.Now.AddDays(-4).AddMinutes(0),
@@ -235,7 +235,7 @@ namespace DevOpsMetrics.Core.DataAccess
             };
             results.Add(item3);
             results.Add(item3);
-            ChangeFailureRateBuild item4 = new ChangeFailureRateBuild
+            ChangeFailureRateBuild item4 = new()
             {
                 StartTime = DateTime.Now.AddDays(-3).AddMinutes(-4),
                 EndTime = DateTime.Now.AddDays(-3).AddMinutes(0),
@@ -250,7 +250,7 @@ namespace DevOpsMetrics.Core.DataAccess
             results.Add(item4);
             results.Add(item4);
             results.Add(item4);
-            ChangeFailureRateBuild item5 = new ChangeFailureRateBuild
+            ChangeFailureRateBuild item5 = new()
             {
                 StartTime = DateTime.Now.AddDays(-2).AddMinutes(-7),
                 EndTime = DateTime.Now.AddDays(-2).AddMinutes(0),
@@ -265,7 +265,7 @@ namespace DevOpsMetrics.Core.DataAccess
             results.Add(item5);
             results.Add(item5);
             results.Add(item5);
-            ChangeFailureRateBuild item6 = new ChangeFailureRateBuild
+            ChangeFailureRateBuild item6 = new()
             {
                 StartTime = DateTime.Now.AddDays(-1).AddMinutes(-5),
                 EndTime = DateTime.Now.AddDays(-1).AddMinutes(0),

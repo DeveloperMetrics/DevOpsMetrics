@@ -2,9 +2,9 @@
 {
     public class FractionConverter
     {
-        public FractionModel ConvertToFraction(int percent)
+        public static FractionModel ConvertToFraction(int percent)
         {
-            FractionModel model = new FractionModel();
+            FractionModel model = new();
 
             //Using the percent, convert it to a fraction
             switch (percent)

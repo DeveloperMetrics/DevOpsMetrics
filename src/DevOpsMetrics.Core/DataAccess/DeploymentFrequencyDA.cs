@@ -19,7 +19,6 @@ namespace DevOpsMetrics.Core.DataAccess
             if (getSampleData == false)
             {
                 //Get a list of builds
-                BuildsDA buildsDA = new();
                 List<AzureDevOpsBuild> azureDevOpsBuilds = await BuildsDA.GetAzureDevOpsBuilds(patToken, tableStorageConfig, organization, project, buildName, useCache);
                 if (azureDevOpsBuilds != null)
                 {
@@ -126,7 +125,6 @@ namespace DevOpsMetrics.Core.DataAccess
             if (getSampleData == false)
             {
                 //Get a list of builds
-                BuildsDA buildsDA = new();
                 List<GitHubActionsRun> gitHubRuns = await BuildsDA.GetGitHubActionRuns(clientId, clientSecret, tableStorageConfig, owner, repo, workflowName, workflowId, useCache);
                 if (gitHubRuns != null)
                 {

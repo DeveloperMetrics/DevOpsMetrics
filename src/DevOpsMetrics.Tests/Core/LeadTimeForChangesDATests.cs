@@ -30,7 +30,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             LeadTimeForChangesDA da = new();
-            LeadTimeForChangesModel model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageConfig,
+            LeadTimeForChangesModel model = await LeadTimeForChangesDA.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageConfig,
                     organization, project, repository, mainBranch, buildName,
                     numberOfDays, maxNumberOfItems, useCache);
 
@@ -78,7 +78,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             LeadTimeForChangesDA da = new();
-            LeadTimeForChangesModel model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageConfig,
+            LeadTimeForChangesModel model = await LeadTimeForChangesDA.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageConfig,
                     owner, repo, mainBranch, workflowName, workflowId,
                     numberOfDays, maxNumberOfItems, useCache);
 

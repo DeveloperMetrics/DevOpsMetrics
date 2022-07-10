@@ -108,7 +108,6 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 string organization, string project, string branch, string buildName, string buildId,
                 int numberOfDays, int maxNumberOfItems)
         {
-            AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
             JArray items = await AzureDevOpsAPIAccess.GetAzureDevOpsBuildsJArray(patToken, organization, project);
 
             int itemsAdded = 0;
@@ -131,7 +130,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                     }
 
                     //Save the build information for change failure rate
-                    ChangeFailureRateBuild newBuild = new ChangeFailureRateBuild
+                    ChangeFailureRateBuild newBuild = new()
                     {
                         Id = build.id,
                         Branch = build.sourceBranch,
@@ -154,7 +153,6 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 string organization, string project, string repository,
                 int numberOfDays, int maxNumberOfItems)
         {
-            AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
             JArray items = await AzureDevOpsAPIAccess.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repository);
 
             int itemsAdded = 0;
@@ -210,7 +208,6 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 string owner, string repo, string branch, string workflowName, string workflowId,
                 int numberOfDays, int maxNumberOfItems)
         {
-            GitHubAPIAccess api = new GitHubAPIAccess();
             JArray items = await GitHubAPIAccess.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, workflowId);
             Debug.WriteLine($"{items.Count} builds found for {owner}/{repo}/{workflowName}");
 
@@ -235,7 +232,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                     //Debug.WriteLine($"Processing build {build.run_number} with items adding={itemsAdded}");
 
                     //Save the build information for change failure rate
-                    ChangeFailureRateBuild newBuild = new ChangeFailureRateBuild
+                    ChangeFailureRateBuild newBuild = new()
                     {
                         Id = build.run_number,
                         Branch = build.head_branch,

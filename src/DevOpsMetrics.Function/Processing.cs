@@ -75,7 +75,7 @@ namespace DevOpsMetrics.Function
                 numberOfDays, maxNumberOfItems, useCache);
 
             LeadTimeForChangesDA leadTimeForChangesDA = new();
-            LeadTimeForChangesModel leadTimeForChangesModel = await leadTimeForChangesDA.GetGitHubLeadTimesForChanges(false, clientId, clientSecret, tableStorageConfig,
+            LeadTimeForChangesModel leadTimeForChangesModel = await LeadTimeForChangesDA.GetGitHubLeadTimesForChanges(false, clientId, clientSecret, tableStorageConfig,
                 owner, repo, branch, workflowName, workflowId,
                 numberOfDays, maxNumberOfItems, useCache);
 

@@ -7,7 +7,7 @@ namespace DevOpsMetrics.Core.Models.Common
     {
         public LeadTimeForChangesModel()
         {
-            PullRequests = new List<PullRequestModel>();
+            PullRequests = new();
         }
         public string ProjectName
         {
