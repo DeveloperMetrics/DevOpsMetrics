@@ -29,7 +29,6 @@ namespace DevOpsMetrics.Tests.Core
             bool useCache = true;
 
             //Act
-            LeadTimeForChangesDA da = new();
             LeadTimeForChangesModel model = await LeadTimeForChangesDA.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageConfig,
                     organization, project, repository, mainBranch, buildName,
                     numberOfDays, maxNumberOfItems, useCache);
@@ -77,7 +76,6 @@ namespace DevOpsMetrics.Tests.Core
             bool useCache = false;
 
             //Act
-            LeadTimeForChangesDA da = new();
             LeadTimeForChangesModel model = await LeadTimeForChangesDA.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageConfig,
                     owner, repo, mainBranch, workflowName, workflowId,
                     numberOfDays, maxNumberOfItems, useCache);

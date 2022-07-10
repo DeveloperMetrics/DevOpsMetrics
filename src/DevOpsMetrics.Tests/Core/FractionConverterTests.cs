@@ -12,7 +12,6 @@ namespace DevOpsMetrics.Tests.Core
         public void Fraction0PercentTest()
         {
             //Arrange
-            FractionConverter fraction = new();
             int percent = 0;
 
             //Act
@@ -28,7 +27,6 @@ namespace DevOpsMetrics.Tests.Core
         public void Fraction10PercentTest()
         {
             //Arrange
-            FractionConverter fraction = new();
             int percent = 10;
 
             //Act
@@ -44,7 +42,6 @@ namespace DevOpsMetrics.Tests.Core
         public void Fraction25PercentTest()
         {
             //Arrange
-            FractionConverter fraction = new();
             int percent = 25;
 
             //Act
@@ -60,7 +57,6 @@ namespace DevOpsMetrics.Tests.Core
         public void Fraction50PercentTest()
         {
             //Arrange
-            FractionConverter fraction = new();
             int percent = 50;
 
             //Act
@@ -76,7 +72,6 @@ namespace DevOpsMetrics.Tests.Core
         public void Fraction75PercentTest()
         {
             //Arrange
-            FractionConverter fraction = new();
             int percent = 75;
 
             //Act
@@ -92,7 +87,6 @@ namespace DevOpsMetrics.Tests.Core
         public void Fraction98PercentTest()
         {
             //Arrange
-            FractionConverter fraction = new();
             int percent = 98;
 
             //Act
@@ -108,7 +102,6 @@ namespace DevOpsMetrics.Tests.Core
         public void Fraction100PercentTest()
         {
             //Arrange
-            FractionConverter fraction = new();
             int percent = 100;
 
             //Act
@@ -124,7 +117,6 @@ namespace DevOpsMetrics.Tests.Core
         public void FractionOtherPercentTest()
         {
             //Arrange
-            FractionConverter fraction = new();
             int percent = 1000;
 
             //Act

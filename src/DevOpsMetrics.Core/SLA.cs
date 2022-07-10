@@ -13,7 +13,7 @@ namespace DevOpsMetrics.Core
 
         public SLA()
         {
-            SLAList = new List<KeyValuePair<DateTime, TimeSpan>>();
+            SLAList = new();
         }
 
         public float ProcessSLA(List<KeyValuePair<DateTime, TimeSpan>> SLAList, int numberOfDays)

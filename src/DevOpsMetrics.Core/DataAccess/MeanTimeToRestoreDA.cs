@@ -161,9 +161,9 @@ namespace DevOpsMetrics.Core.DataAccess
             }
         }
 
-        private List<KeyValuePair<DateTime, TimeSpan>> ConvertEventsToDateList(List<MeanTimeToRestoreEvent> events)
+        private static List<KeyValuePair<DateTime, TimeSpan>> ConvertEventsToDateList(List<MeanTimeToRestoreEvent> events)
         {
-            List<KeyValuePair<DateTime, TimeSpan>> dateList = new List<KeyValuePair<DateTime, TimeSpan>>();
+            List<KeyValuePair<DateTime, TimeSpan>> dateList = new();
             foreach (MeanTimeToRestoreEvent item in events)
             {
                 if (item.Status == "completed" || item.Status == "Completed")

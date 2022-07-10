@@ -217,7 +217,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 }
 
                 //Process the lead time for changes
-                List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>();
+                List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new();
                 foreach (string branch in branches)
                 {
                     List<GitHubActionsRun> branchBuilds = featureBranchRuns.Where(a => a.head_branch == branch).ToList();

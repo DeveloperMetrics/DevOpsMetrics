@@ -13,7 +13,7 @@ namespace DevOpsMetrics.Core
 
         public LeadTimeForChanges()
         {
-            LeadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>();
+            LeadTimeForChangesList = new();
         }
 
         public float ProcessLeadTimeForChanges(List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList, int numberOfDays)

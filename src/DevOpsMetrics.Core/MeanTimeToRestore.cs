@@ -13,7 +13,7 @@ namespace DevOpsMetrics.Core
 
         public MeanTimeToRestore()
         {
-            MeanTimeToRestoreList = new List<KeyValuePair<DateTime, TimeSpan>>();
+            MeanTimeToRestoreList = new();
         }
 
         public float ProcessMeanTimeToRestore(List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList, int numberOfDays)
