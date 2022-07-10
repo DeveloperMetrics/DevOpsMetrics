@@ -64,7 +64,7 @@ namespace DevOpsMetrics.Core.DataAccess.APIAccess
             {
                 throw new Exception("api.github.com missing from URL");
             }
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = new())
             {
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

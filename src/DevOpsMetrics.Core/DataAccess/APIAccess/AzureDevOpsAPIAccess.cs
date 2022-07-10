@@ -60,7 +60,7 @@ namespace DevOpsMetrics.Core.DataAccess.APIAccess
             {
                 throw new Exception("dev.azure.com missing from URL");
             }
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = new())
             {
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 //If we use a pat token, we can access private repos
