@@ -67,7 +67,7 @@ namespace DevOpsMetrics.Core.DataAccess
                     item.BuildDurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
 
-                ChangeFailureRateModel model = new ChangeFailureRateModel
+                ChangeFailureRateModel model = new()
                 {
                     TargetDevOpsPlatform = targetDevOpsPlatform,
                     DeploymentName = buildName_workflowName,
@@ -84,7 +84,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get sample data
                 List<ChangeFailureRateBuild> sampleBuilds = utility.GetLastNItems(GetSampleBuilds(), maxNumberOfItems);
-                ChangeFailureRateModel model = new ChangeFailureRateModel
+                ChangeFailureRateModel model = new()
                 {
                     TargetDevOpsPlatform = targetDevOpsPlatform,
                     DeploymentName = buildName_workflowName,
@@ -104,7 +104,7 @@ namespace DevOpsMetrics.Core.DataAccess
                int percentComplete, int numberOfDays)
         {
             //Gets a list of change failure rate builds
-            AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
+            AzureTableStorageDA daTableStorage = new();
             string partitionKey = PartitionKeys.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName);
             JArray list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableChangeFailureRate, partitionKey);
             List<ChangeFailureRateBuild> initialBuilds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
@@ -124,7 +124,7 @@ namespace DevOpsMetrics.Core.DataAccess
             List<ChangeFailureRateBuild> negativeBuilds = positiveAndNegativeBuilds.Item2;
 
             //Make the updates
-            TableStorageCommonDA tableChangeFailureRateDA = new TableStorageCommonDA(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableChangeFailureRate);
+            TableStorageCommonDA tableChangeFailureRateDA = new(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableChangeFailureRate);
             foreach (ChangeFailureRateBuild item in positiveBuilds)
             {
                 item.DeploymentWasSuccessful = true;

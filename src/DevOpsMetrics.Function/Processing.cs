@@ -74,12 +74,10 @@ namespace DevOpsMetrics.Function
                 owner, repo, branch, workflowName, workflowId,
                 numberOfDays, maxNumberOfItems, useCache);
 
-            LeadTimeForChangesDA leadTimeForChangesDA = new();
             LeadTimeForChangesModel leadTimeForChangesModel = await LeadTimeForChangesDA.GetGitHubLeadTimesForChanges(false, clientId, clientSecret, tableStorageConfig,
                 owner, repo, branch, workflowName, workflowId,
                 numberOfDays, maxNumberOfItems, useCache);
 
-            MeanTimeToRestoreDA meanTimeToRestoreDA = new();
             MeanTimeToRestoreModel meanTimeToRestoreModel = new();
             if (resourceGroup != null)
             {
