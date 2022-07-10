@@ -138,7 +138,7 @@ namespace DevOpsMetrics.Core.DataAccess
             return true;
         }
 
-        public Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> GetPositiveAndNegativeLists(int percent, List<ChangeFailureRateBuild> builds)
+        public static Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> GetPositiveAndNegativeLists(int percent, List<ChangeFailureRateBuild> builds)
         {
             //Prepare two lists, one with positive items we will eventually set to true
             List<ChangeFailureRateBuild> positiveBuilds = new List<ChangeFailureRateBuild>();
@@ -188,7 +188,7 @@ namespace DevOpsMetrics.Core.DataAccess
         }
 
         //Return a sample dataset to help with testing
-        private List<ChangeFailureRateBuild> GetSampleBuilds()
+        private static List<ChangeFailureRateBuild> GetSampleBuilds()
         {
             List<ChangeFailureRateBuild> results = new List<ChangeFailureRateBuild>();
             ChangeFailureRateBuild item1 = new ChangeFailureRateBuild

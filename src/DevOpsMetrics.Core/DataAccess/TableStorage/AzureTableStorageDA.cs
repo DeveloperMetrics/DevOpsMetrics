@@ -273,7 +273,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 int numberOfDays, int maxNumberOfItems)
         {
             GitHubAPIAccess api = new GitHubAPIAccess();
-            JArray items = await api.GetGitHubPullRequestsJArray(clientId, clientSecret, owner, repo, branch);
+            JArray items = await GitHubAPIAccess.GetGitHubPullRequestsJArray(clientId, clientSecret, owner, repo, branch);
 
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableGitHubPRs);
@@ -312,7 +312,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 string owner, string repo, string pull_number)
         {
             GitHubAPIAccess api = new GitHubAPIAccess();
-            JArray items = await api.GetGitHubPullRequestCommitsJArray(clientId, clientSecret, owner, repo, pull_number);
+            JArray items = await GitHubAPIAccess.GetGitHubPullRequestCommitsJArray(clientId, clientSecret, owner, repo, pull_number);
 
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new TableStorageCommonDA(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableGitHubPRCommits);
@@ -402,7 +402,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return await tableDA.SaveItem(newItem);
         }
 
-        public async Task<bool> UpdateDORASummaryItem(TableStorageConfiguration tableStorageConfig,
+        public static async Task<bool> UpdateDORASummaryItem(TableStorageConfiguration tableStorageConfig,
             string owner, string repo, DORASummaryItem DORASummaryItem)
         {
             string partitionKey = owner;

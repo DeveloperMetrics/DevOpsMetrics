@@ -24,7 +24,7 @@ namespace DevOpsMetrics.Core.DataAccess.APIAccess
         }
 
         //Call the GitHub Rest API to get a JSON array of pull requests
-        public async Task<Newtonsoft.Json.Linq.JArray> GetGitHubPullRequestsJArray(string clientId, string clientSecret, string owner, string repo, string branch)
+        public static async Task<Newtonsoft.Json.Linq.JArray> GetGitHubPullRequestsJArray(string clientId, string clientSecret, string owner, string repo, string branch)
         {
             Newtonsoft.Json.Linq.JArray list = null;
             //https://developer.GitHub.com/v3/pulls/#list-pull-requests
@@ -40,7 +40,7 @@ namespace DevOpsMetrics.Core.DataAccess.APIAccess
         }
 
         //Call the GitHub Rest API to get a JSON array of pull request commits
-        public async Task<Newtonsoft.Json.Linq.JArray> GetGitHubPullRequestCommitsJArray(string clientId, string clientSecret, string owner, string repo, string pull_number)
+        public static async Task<Newtonsoft.Json.Linq.JArray> GetGitHubPullRequestCommitsJArray(string clientId, string clientSecret, string owner, string repo, string pull_number)
         {
             Newtonsoft.Json.Linq.JArray list = null;
             //https://developer.GitHub.com/v3/pulls/#list-commits-on-a-pull-request

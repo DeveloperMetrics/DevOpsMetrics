@@ -22,7 +22,7 @@ namespace DevOpsMetrics.Tests.Core
             List<ChangeFailureRateBuild> builds = GenerateSamples(samples);
 
             //Act
-            Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> positiveAndNegativeBuilds = da.GetPositiveAndNegativeLists(percent, builds);
+            Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> positiveAndNegativeBuilds = ChangeFailureRateDA.GetPositiveAndNegativeLists(percent, builds);
             List<ChangeFailureRateBuild> positiveBuilds = positiveAndNegativeBuilds.Item1;
             List<ChangeFailureRateBuild> negativeBuilds = positiveAndNegativeBuilds.Item2;
 
@@ -42,7 +42,7 @@ namespace DevOpsMetrics.Tests.Core
             List<ChangeFailureRateBuild> builds = GenerateSamples(samples);
 
             //Act
-            Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> positiveAndNegativeBuilds = da.GetPositiveAndNegativeLists(percent, builds);
+            Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> positiveAndNegativeBuilds = ChangeFailureRateDA.GetPositiveAndNegativeLists(percent, builds);
             List<ChangeFailureRateBuild> positiveBuilds = positiveAndNegativeBuilds.Item1;
             List<ChangeFailureRateBuild> negativeBuilds = positiveAndNegativeBuilds.Item2;
 
@@ -62,7 +62,7 @@ namespace DevOpsMetrics.Tests.Core
             List<ChangeFailureRateBuild> builds = GenerateSamples(samples);
 
             //Act
-            Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> positiveAndNegativeBuilds = da.GetPositiveAndNegativeLists(percent, builds);
+            Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> positiveAndNegativeBuilds = ChangeFailureRateDA.GetPositiveAndNegativeLists(percent, builds);
             List<ChangeFailureRateBuild> positiveBuilds = positiveAndNegativeBuilds.Item1;
             List<ChangeFailureRateBuild> negativeBuilds = positiveAndNegativeBuilds.Item2;
 
@@ -81,7 +81,7 @@ namespace DevOpsMetrics.Tests.Core
             List<ChangeFailureRateBuild> builds = GenerateSamples(samples);
 
             //Act
-            Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> positiveAndNegativeBuilds = da.GetPositiveAndNegativeLists(percent, builds);
+            Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> positiveAndNegativeBuilds = ChangeFailureRateDA.GetPositiveAndNegativeLists(percent, builds);
             List<ChangeFailureRateBuild> positiveBuilds = positiveAndNegativeBuilds.Item1;
             List<ChangeFailureRateBuild> negativeBuilds = positiveAndNegativeBuilds.Item2;
 
@@ -100,7 +100,7 @@ namespace DevOpsMetrics.Tests.Core
             List<ChangeFailureRateBuild> builds = GenerateSamples(samples);
 
             //Act
-            Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> positiveAndNegativeBuilds = da.GetPositiveAndNegativeLists(percent, builds);
+            Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> positiveAndNegativeBuilds = ChangeFailureRateDA.GetPositiveAndNegativeLists(percent, builds);
             List<ChangeFailureRateBuild> positiveBuilds = positiveAndNegativeBuilds.Item1;
             List<ChangeFailureRateBuild> negativeBuilds = positiveAndNegativeBuilds.Item2;
 
@@ -119,7 +119,7 @@ namespace DevOpsMetrics.Tests.Core
             List<ChangeFailureRateBuild> builds = GenerateSamples(samples);
 
             //Act
-            Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> positiveAndNegativeBuilds = da.GetPositiveAndNegativeLists(percent, builds);
+            Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> positiveAndNegativeBuilds = ChangeFailureRateDA.GetPositiveAndNegativeLists(percent, builds);
             List<ChangeFailureRateBuild> positiveBuilds = positiveAndNegativeBuilds.Item1;
             List<ChangeFailureRateBuild> negativeBuilds = positiveAndNegativeBuilds.Item2;
 
@@ -138,7 +138,7 @@ namespace DevOpsMetrics.Tests.Core
             List<ChangeFailureRateBuild> builds = GenerateSamples(samples);
 
             //Act
-            Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> positiveAndNegativeBuilds = da.GetPositiveAndNegativeLists(percent, builds);
+            Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> positiveAndNegativeBuilds = ChangeFailureRateDA.GetPositiveAndNegativeLists(percent, builds);
             List<ChangeFailureRateBuild> positiveBuilds = positiveAndNegativeBuilds.Item1;
             List<ChangeFailureRateBuild> negativeBuilds = positiveAndNegativeBuilds.Item2;
 

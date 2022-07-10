@@ -70,7 +70,6 @@ namespace DevOpsMetrics.Function
             bool useCache = true)
         {
             //Get the DORA metrics for the last 90 days
-            DeploymentFrequencyDA deploymentFrequencyDA = new();
             DeploymentFrequencyModel deploymentFrequencyModel = await DeploymentFrequencyDA.GetGitHubDeploymentFrequency(false, clientId, clientSecret, tableStorageConfig,
                 owner, repo, branch, workflowName, workflowId,
                 numberOfDays, maxNumberOfItems, useCache);
@@ -91,7 +90,6 @@ namespace DevOpsMetrics.Function
             }
             else
             {
-                MeanTimeToRestore mttr = new();
                 meanTimeToRestoreModel.MTTRAverageDurationInHours = 0;
                 meanTimeToRestoreModel.MTTRAverageDurationDescription = MeanTimeToRestore.GetMeanTimeToRestoreRating(0);
             }
@@ -119,7 +117,7 @@ namespace DevOpsMetrics.Function
 
             //Serialize the summary into an Azure storage table
             AzureTableStorageDA azureTableStorageDA = new();
-            await azureTableStorageDA.UpdateDORASummaryItem(tableStorageConfig, owner, repo, DORASummary);
+            await AzureTableStorageDA.UpdateDORASummaryItem(tableStorageConfig, owner, repo, DORASummary);
 
             return true;
         }

@@ -28,7 +28,7 @@ namespace DevOpsMetrics.Tests.Core
             LeadTimeForChangesModel model = new()
             {
                 LeadTimeForChangesMetric = result,
-                LeadTimeForChangesMetricDescription = metrics.GetLeadTimeForChangesRating(result),
+                LeadTimeForChangesMetricDescription = LeadTimeForChanges.GetLeadTimeForChangesRating(result),
                 IsProjectView = true,
                 ItemOrder = 1,
                 RateLimitHit = true
@@ -78,7 +78,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessLeadTimeForChanges(leadTimeForChangesList, numberOfDays);
-            string rating = metrics.GetLeadTimeForChangesRating(result);
+            string rating = LeadTimeForChanges.GetLeadTimeForChangesRating(result);
 
             //Assert
             Assert.AreEqual(1.05, Math.Round((double)result, 4));
@@ -99,7 +99,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessLeadTimeForChanges(leadTimeForChangesList, numberOfDays);
-            string rating = metrics.GetLeadTimeForChangesRating(result);
+            string rating = LeadTimeForChanges.GetLeadTimeForChangesRating(result);
 
             //Assert
             Assert.AreEqual(48.00, Math.Round((double)result, 4));
@@ -120,7 +120,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessLeadTimeForChanges(leadTimeForChangesList, numberOfDays);
-            string rating = metrics.GetLeadTimeForChangesRating(result);
+            string rating = LeadTimeForChanges.GetLeadTimeForChangesRating(result);
 
             //Assert
             Assert.AreEqual((24 * 8), Math.Round((double)result, 4));
@@ -141,7 +141,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessLeadTimeForChanges(leadTimeForChangesList, numberOfDays);
-            string rating = metrics.GetLeadTimeForChangesRating(result);
+            string rating = LeadTimeForChanges.GetLeadTimeForChangesRating(result);
 
             //Assert
             Assert.AreEqual((24 * 31), Math.Round((double)result, 4));
@@ -158,7 +158,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = 0f;
-            string rating = metrics.GetLeadTimeForChangesRating(result);
+            string rating = LeadTimeForChanges.GetLeadTimeForChangesRating(result);
 
             //Assert
             Assert.AreEqual(0f, result);

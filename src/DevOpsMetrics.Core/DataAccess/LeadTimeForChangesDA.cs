@@ -55,10 +55,10 @@ namespace DevOpsMetrics.Core.DataAccess
                 {
                     List<AzureDevOpsBuild> branchBuilds = featureBranchBuilds.Where(a => a.sourceBranch == branch).ToList();
                     PullRequestsDA pullRequestDA = new PullRequestsDA();
-                    AzureDevOpsPR pr = await pullRequestDA.GetAzureDevOpsPullRequest(patToken, tableStorageConfig, organization, project, repository, branch, useCache);
+                    AzureDevOpsPR pr = await PullRequestsDA.GetAzureDevOpsPullRequest(patToken, tableStorageConfig, organization, project, repository, branch, useCache);
                     if (pr != null)
                     {
-                        List<AzureDevOpsPRCommit> pullRequestCommits = await pullRequestDA.GetAzureDevOpsPullRequestCommits(patToken, tableStorageConfig, organization, project, repository, pr.PullRequestId, useCache);
+                        List<AzureDevOpsPRCommit> pullRequestCommits = await PullRequestsDA.GetAzureDevOpsPullRequestCommits(patToken, tableStorageConfig, organization, project, repository, pr.PullRequestId, useCache);
                         List<Commit> commits = new List<Commit>();
                         foreach (AzureDevOpsPRCommit item in pullRequestCommits)
                         {
@@ -146,7 +146,7 @@ namespace DevOpsMetrics.Core.DataAccess
                     AverageBuildHours = averageBuildHours,
                     AveragePullRequestHours = leadTime,
                     LeadTimeForChangesMetric = leadTime + averageBuildHours,
-                    LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
+                    LeadTimeForChangesMetricDescription = LeadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
                     PullRequests = uiPullRequests,
                     NumberOfDays = numberOfDays,
                     MaxNumberOfItems = uiPullRequests.Count,
@@ -222,10 +222,10 @@ namespace DevOpsMetrics.Core.DataAccess
                 {
                     List<GitHubActionsRun> branchBuilds = featureBranchRuns.Where(a => a.head_branch == branch).ToList();
                     PullRequestsDA pullRequestDA = new PullRequestsDA();
-                    GitHubPR pr = await pullRequestDA.GetGitHubPullRequest(clientId, clientSecret, tableStorageConfig, owner, repo, branch, useCache);
+                    GitHubPR pr = await PullRequestsDA.GetGitHubPullRequest(clientId, clientSecret, tableStorageConfig, owner, repo, branch, useCache);
                     if (pr != null)
                     {
-                        List<GitHubPRCommit> pullRequestCommits = await pullRequestDA.GetGitHubPullRequestCommits(clientId, clientSecret, tableStorageConfig, owner, repo, pr.number, useCache);
+                        List<GitHubPRCommit> pullRequestCommits = await PullRequestsDA.GetGitHubPullRequestCommits(clientId, clientSecret, tableStorageConfig, owner, repo, pr.number, useCache);
                         List<Commit> commits = new List<Commit>();
                         foreach (GitHubPRCommit item in pullRequestCommits)
                         {
@@ -327,7 +327,7 @@ namespace DevOpsMetrics.Core.DataAccess
                     AverageBuildHours = averageBuildHours,
                     AveragePullRequestHours = leadTime,
                     LeadTimeForChangesMetric = leadTime + averageBuildHours,
-                    LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
+                    LeadTimeForChangesMetricDescription = LeadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
                     PullRequests = utility.GetLastNItems(pullRequests, maxNumberOfItems),
                     NumberOfDays = numberOfDays,
                     MaxNumberOfItems = uiPullRequests.Count,
