@@ -41,7 +41,7 @@ namespace DevOpsMetrics.Service.Controllers
                 }
 
                 LeadTimeForChangesDA da = new();
-                model = await da.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageConfig,
+                model = await LeadTimeForChangesDA.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageConfig,
                         organization, project, repository, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
@@ -83,7 +83,7 @@ namespace DevOpsMetrics.Service.Controllers
                 }
 
                 LeadTimeForChangesDA da = new();
-                model = await da.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageConfig,
+                model = await LeadTimeForChangesDA.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageConfig,
                         owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)

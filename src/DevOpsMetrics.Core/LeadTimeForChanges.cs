@@ -13,7 +13,7 @@ namespace DevOpsMetrics.Core
 
         public LeadTimeForChanges()
         {
-            LeadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>();
+            LeadTimeForChangesList = new();
         }
 
         public float ProcessLeadTimeForChanges(List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList, int numberOfDays)
@@ -62,7 +62,7 @@ namespace DevOpsMetrics.Core
             return LeadTimeForChangesList.Where(x => x.Key > DateTime.Now.AddDays(-numberOfDays)).ToList();
         }
 
-        public string GetLeadTimeForChangesRating(float leadTimeForChangesInHours)
+        public static string GetLeadTimeForChangesRating(float leadTimeForChangesInHours)
         {
             float dailyDeployment = 24f;
             float weeklyDeployment = 24f * 7f;

@@ -31,11 +31,11 @@ namespace DevOpsMetrics.Tests.Core
             MeanTimeToRestoreModel model = new()
             {
                 MTTRAverageDurationInHours = result,
-                MTTRAverageDurationDescription = metrics.GetMeanTimeToRestoreRating(result),
+                MTTRAverageDurationDescription = MeanTimeToRestore.GetMeanTimeToRestoreRating(result),
                 IsProjectView = false,
                 ItemOrder = 1,
                 SLA = sla,
-                SLADescription = slaMetrics.GetSLARating(sla)
+                SLADescription = SLA.GetSLARating(sla)
             };
 
             //Assert
@@ -67,7 +67,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, numberOfDays);
-            string rating = metrics.GetMeanTimeToRestoreRating(result);
+            string rating = MeanTimeToRestore.GetMeanTimeToRestoreRating(result);
 
             //Assert
             Assert.AreEqual(1.05f, result);
@@ -87,7 +87,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, numberOfDays);
-            string rating = metrics.GetMeanTimeToRestoreRating(result);
+            string rating = MeanTimeToRestore.GetMeanTimeToRestoreRating(result);
 
             //Assert
             Assert.AreEqual(25f, result);
@@ -107,7 +107,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, numberOfDays);
-            string rating = metrics.GetMeanTimeToRestoreRating(result);
+            string rating = MeanTimeToRestore.GetMeanTimeToRestoreRating(result);
 
             //Assert
             Assert.AreEqual(170f, result);
@@ -124,7 +124,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessMeanTimeToRestore(meanTimeToRestoreList, numberOfDays);
-            string rating = metrics.GetMeanTimeToRestoreRating(result);
+            string rating = MeanTimeToRestore.GetMeanTimeToRestoreRating(result);
 
             //Assert
             Assert.AreEqual(0f, result);

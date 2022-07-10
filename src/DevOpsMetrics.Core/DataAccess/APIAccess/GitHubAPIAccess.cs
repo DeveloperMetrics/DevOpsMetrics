@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace DevOpsMetrics.Core.DataAccess.APIAccess
 {
@@ -10,9 +11,9 @@ namespace DevOpsMetrics.Core.DataAccess.APIAccess
     {
 
         //Call the GitHub Rest API to get a JSON array of runs
-        public async Task<Newtonsoft.Json.Linq.JArray> GetGitHubActionRunsJArray(string clientId, string clientSecret, string owner, string repo, string workflowId)
+        public static async Task<JArray> GetGitHubActionRunsJArray(string clientId, string clientSecret, string owner, string repo, string workflowId)
         {
-            Newtonsoft.Json.Linq.JArray list = null;
+            JArray list = null;
             string url = $"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflowId}/runs?per_page=100";
             string response = await GetGitHubMessage(url, clientId, clientSecret);
             if (string.IsNullOrEmpty(response) == false)
@@ -24,9 +25,9 @@ namespace DevOpsMetrics.Core.DataAccess.APIAccess
         }
 
         //Call the GitHub Rest API to get a JSON array of pull requests
-        public async Task<Newtonsoft.Json.Linq.JArray> GetGitHubPullRequestsJArray(string clientId, string clientSecret, string owner, string repo, string branch)
+        public static async Task<JArray> GetGitHubPullRequestsJArray(string clientId, string clientSecret, string owner, string repo, string branch)
         {
-            Newtonsoft.Json.Linq.JArray list = null;
+            JArray list = null;
             //https://developer.GitHub.com/v3/pulls/#list-pull-requests
             //GET /repos/:owner/:repo/pulls
             string url = $"https://api.github.com/repos/{owner}/{repo}/pulls?state=all&head={branch}&per_page=100";
@@ -40,9 +41,9 @@ namespace DevOpsMetrics.Core.DataAccess.APIAccess
         }
 
         //Call the GitHub Rest API to get a JSON array of pull request commits
-        public async Task<Newtonsoft.Json.Linq.JArray> GetGitHubPullRequestCommitsJArray(string clientId, string clientSecret, string owner, string repo, string pull_number)
+        public static async Task<JArray> GetGitHubPullRequestCommitsJArray(string clientId, string clientSecret, string owner, string repo, string pull_number)
         {
-            Newtonsoft.Json.Linq.JArray list = null;
+            JArray list = null;
             //https://developer.GitHub.com/v3/pulls/#list-commits-on-a-pull-request
             //GET /repos/:owner/:repo/pulls/:pull_number/commits
             string url = $"https://api.github.com/repos/{owner}/{repo}/pulls/{pull_number}/commits?per_page=100";
@@ -59,11 +60,11 @@ namespace DevOpsMetrics.Core.DataAccess.APIAccess
         {
             Console.WriteLine($"Running GitHub url: {url}");
             string responseBody = "";
-            if (url.IndexOf("api.github.com") == -1)
+            if (url.Contains("api.github.com") == false)
             {
                 throw new Exception("api.github.com missing from URL");
             }
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = new())
             {
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

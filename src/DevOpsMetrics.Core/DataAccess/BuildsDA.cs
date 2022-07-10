@@ -7,27 +7,28 @@ using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace DevOpsMetrics.Core.DataAccess
 {
     public class BuildsDA
     {
-        public async Task<List<AzureDevOpsBuild>> GetAzureDevOpsBuilds(string patToken, TableStorageConfiguration tableStorageConfig,
+        public static async Task<List<AzureDevOpsBuild>> GetAzureDevOpsBuilds(string patToken, TableStorageConfiguration tableStorageConfig,
                 string organization, string project, string buildName, bool useCache)
         {
-            List<AzureDevOpsBuild> builds = new List<AzureDevOpsBuild>();
-            Newtonsoft.Json.Linq.JArray list = null;
+            List<AzureDevOpsBuild> builds = new();
+            JArray list = null;
             if (useCache == true)
             {
                 //Get the builds from Azure storage
-                AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
+                AzureTableStorageDA daTableStorage = new();
                 list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsBuilds, PartitionKeys.CreateBuildWorkflowPartitionKey(organization, project, buildName));
             }
             else
             {
                 //Get the builds from the Azure DevOps API
-                AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
-                list = await api.GetAzureDevOpsBuildsJArray(patToken, organization, project);
+                AzureDevOpsAPIAccess api = new();
+                list = await AzureDevOpsAPIAccess.GetAzureDevOpsBuildsJArray(patToken, organization, project);
             }
             if (list != null)
             {
@@ -45,22 +46,22 @@ namespace DevOpsMetrics.Core.DataAccess
             return builds;
         }
 
-        public async Task<List<GitHubActionsRun>> GetGitHubActionRuns(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig,
+        public static async Task<List<GitHubActionsRun>> GetGitHubActionRuns(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig,
                 string owner, string repo, string workflowName, string workflowId, bool useCache)
         {
-            List<GitHubActionsRun> runs = new List<GitHubActionsRun>();
-            Newtonsoft.Json.Linq.JArray list = null;
+            List<GitHubActionsRun> runs = new();
+            JArray list = null;
             if (useCache == true)
             {
                 //Get the builds from Azure storage
-                AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
+                AzureTableStorageDA daTableStorage = new();
                 list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubRuns, PartitionKeys.CreateBuildWorkflowPartitionKey(owner, repo, workflowName));
             }
             else
             {
                 //Get the builds from the GitHub API
-                GitHubAPIAccess api = new GitHubAPIAccess();
-                list = await api.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, workflowId);
+                GitHubAPIAccess api = new();
+                list = await GitHubAPIAccess.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, workflowId);
             }
             if (list != null)
             {

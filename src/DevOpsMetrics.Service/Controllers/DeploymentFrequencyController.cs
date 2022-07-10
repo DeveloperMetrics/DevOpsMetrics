@@ -41,7 +41,7 @@ namespace DevOpsMetrics.Service.Controllers
                 }
 
                 DeploymentFrequencyDA da = new();
-                model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageConfig, organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+                model = await DeploymentFrequencyDA.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageConfig, organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
             {
@@ -82,7 +82,7 @@ namespace DevOpsMetrics.Service.Controllers
                 }
 
                 DeploymentFrequencyDA da = new();
-                model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, tableStorageConfig, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+                model = await DeploymentFrequencyDA.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, tableStorageConfig, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
             }
             catch (Exception ex)
             {

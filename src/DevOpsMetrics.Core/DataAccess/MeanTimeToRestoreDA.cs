@@ -11,12 +11,12 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class MeanTimeToRestoreDA
     {
-        public MeanTimeToRestoreModel GetAzureMeanTimeToRestore(bool getSampleData,
+        public static MeanTimeToRestoreModel GetAzureMeanTimeToRestore(bool getSampleData,
                 TableStorageConfiguration tableStorageConfig,
                 DevOpsPlatform targetDevOpsPlatform, string resourceGroup,
                 int numberOfDays, int maxNumberOfItems)
         {
-            ListUtility<MeanTimeToRestoreEvent> utility = new ListUtility<MeanTimeToRestoreEvent>();
+            ListUtility<MeanTimeToRestoreEvent> utility = new();
             if (getSampleData == false)
             {
                 //If the user didn't specify a resource group, it comes in as null and causes havoc. Setting it as "" helps, it 
@@ -26,9 +26,9 @@ namespace DevOpsMetrics.Core.DataAccess
                 }
 
                 //Pull the events from the table storage
-                AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
-                Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableMTTR, resourceGroup);
-                List<AzureAlert> alerts = new List<AzureAlert>();
+                AzureTableStorageDA daTableStorage = new();
+                JArray list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableMTTR, resourceGroup);
+                List<AzureAlert> alerts = new();
                 foreach (JToken item in list)
                 {
                     alerts.Add(
@@ -45,7 +45,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 alerts = alerts.OrderBy(o => o.timestamp).ToList();
 
                 //Compile the events,  looking for pairs, using the ordered data, and name, resource group name and resource name
-                List<MeanTimeToRestoreEvent> events = new List<MeanTimeToRestoreEvent>();
+                List<MeanTimeToRestoreEvent> events = new();
 
                 //Loop through first finding the activated alerts
                 int i = 0;
@@ -55,7 +55,7 @@ namespace DevOpsMetrics.Core.DataAccess
                     if (item.timestamp > DateTime.Now.AddDays(-numberOfDays))
                     {
                         i++;
-                        MeanTimeToRestoreEvent newEvent = new MeanTimeToRestoreEvent
+                        MeanTimeToRestoreEvent newEvent = new()
                         {
                             Name = item.name,
                             Resource = item.resourceName,
@@ -100,12 +100,12 @@ namespace DevOpsMetrics.Core.DataAccess
                 }
 
                 //Calculate the MTTR metric
-                MeanTimeToRestore mttr = new MeanTimeToRestore();
+                MeanTimeToRestore mttr = new();
                 List<KeyValuePair<DateTime, TimeSpan>> dateList = ConvertEventsToDateList(events);
                 float averageMTTR = mttr.ProcessMeanTimeToRestore(dateList, numberOfDays);
 
                 //Calculate the SLA metric
-                SLA slaMetric = new SLA();
+                SLA slaMetric = new();
                 float sla = slaMetric.ProcessSLA(dateList, numberOfDays);
 
                 //Filter the list for the UI, and sort the final list (May not be needed due to the initial sort on the starting alerts)
@@ -120,50 +120,50 @@ namespace DevOpsMetrics.Core.DataAccess
                 }
 
                 //Pull together the results into a single model
-                MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
+                MeanTimeToRestoreModel model = new()
                 {
                     TargetDevOpsPlatform = targetDevOpsPlatform,
                     ResourceGroup = resourceGroup,
                     MeanTimeToRestoreEvents = uiEvents,
                     MTTRAverageDurationInHours = averageMTTR,
-                    MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(averageMTTR),
+                    MTTRAverageDurationDescription = MeanTimeToRestore.GetMeanTimeToRestoreRating(averageMTTR),
                     NumberOfDays = numberOfDays,
                     MaxNumberOfItems = uiEvents.Count,
                     TotalItems = events.Count,
                     SLA = sla,
-                    SLADescription = slaMetric.GetSLARating(sla)
+                    SLADescription = SLA.GetSLARating(sla)
                 };
                 return model;
             }
             else
             {
                 //Get sample data
-                MeanTimeToRestore mttr = new MeanTimeToRestore();
+                MeanTimeToRestore mttr = new();
                 List<MeanTimeToRestoreEvent> sampleEvents = GetSampleMTTREvents(resourceGroup);
                 List<KeyValuePair<DateTime, TimeSpan>> dateList = ConvertEventsToDateList(sampleEvents);
                 float averageMTTR = mttr.ProcessMeanTimeToRestore(dateList, numberOfDays);
-                SLA slaMetric = new SLA();
+                SLA slaMetric = new();
                 float sla = slaMetric.ProcessSLA(dateList, numberOfDays);
-                MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
+                MeanTimeToRestoreModel model = new()
                 {
                     TargetDevOpsPlatform = targetDevOpsPlatform,
                     ResourceGroup = resourceGroup,
                     MeanTimeToRestoreEvents = sampleEvents,
                     MTTRAverageDurationInHours = averageMTTR,
-                    MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(averageMTTR),
+                    MTTRAverageDurationDescription = MeanTimeToRestore.GetMeanTimeToRestoreRating(averageMTTR),
                     NumberOfDays = numberOfDays,
                     MaxNumberOfItems = sampleEvents.Count,
                     TotalItems = sampleEvents.Count,
                     SLA = sla,
-                    SLADescription = slaMetric.GetSLARating(sla)
+                    SLADescription = SLA.GetSLARating(sla)
                 };
                 return model;
             }
         }
 
-        private List<KeyValuePair<DateTime, TimeSpan>> ConvertEventsToDateList(List<MeanTimeToRestoreEvent> events)
+        private static List<KeyValuePair<DateTime, TimeSpan>> ConvertEventsToDateList(List<MeanTimeToRestoreEvent> events)
         {
-            List<KeyValuePair<DateTime, TimeSpan>> dateList = new List<KeyValuePair<DateTime, TimeSpan>>();
+            List<KeyValuePair<DateTime, TimeSpan>> dateList = new();
             foreach (MeanTimeToRestoreEvent item in events)
             {
                 if (item.Status == "completed" || item.Status == "Completed")
@@ -195,10 +195,10 @@ namespace DevOpsMetrics.Core.DataAccess
         //}
 
         //Return a sample dataset to help with testing
-        private List<MeanTimeToRestoreEvent> GetSampleMTTREvents(string resourceGroup)
+        private static List<MeanTimeToRestoreEvent> GetSampleMTTREvents(string resourceGroup)
         {
-            List<MeanTimeToRestoreEvent> results = new List<MeanTimeToRestoreEvent>();
-            MeanTimeToRestoreEvent item1 = new MeanTimeToRestoreEvent
+            List<MeanTimeToRestoreEvent> results = new();
+            MeanTimeToRestoreEvent item1 = new()
             {
                 ResourceGroup = resourceGroup,
                 Name = "Name1",
@@ -211,7 +211,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 ItemOrder = 1
             };
             results.Add(item1);
-            MeanTimeToRestoreEvent item2 = new MeanTimeToRestoreEvent
+            MeanTimeToRestoreEvent item2 = new()
             {
                 ResourceGroup = resourceGroup,
                 StartTime = DateTime.Now.AddDays(-5).AddMinutes(-5),
@@ -220,7 +220,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 ItemOrder = 2
             };
             results.Add(item2);
-            MeanTimeToRestoreEvent item3 = new MeanTimeToRestoreEvent
+            MeanTimeToRestoreEvent item3 = new()
             {
                 StartTime = DateTime.Now.AddDays(-4).AddMinutes(-1),
                 EndTime = DateTime.Now.AddDays(-4).AddMinutes(0),
@@ -228,7 +228,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 ItemOrder = 3
             };
             results.Add(item3);
-            MeanTimeToRestoreEvent item4 = new MeanTimeToRestoreEvent
+            MeanTimeToRestoreEvent item4 = new()
             {
                 StartTime = DateTime.Now.AddDays(-3).AddMinutes(-4),
                 EndTime = DateTime.Now.AddDays(-3).AddMinutes(0),
@@ -236,7 +236,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 ItemOrder = 4
             };
             results.Add(item4);
-            MeanTimeToRestoreEvent item5 = new MeanTimeToRestoreEvent
+            MeanTimeToRestoreEvent item5 = new()
             {
                 StartTime = DateTime.Now.AddDays(-2).AddMinutes(-7),
                 EndTime = DateTime.Now.AddDays(-2).AddMinutes(0),
@@ -244,7 +244,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 ItemOrder = 5
             };
             results.Add(item5);
-            MeanTimeToRestoreEvent item6 = new MeanTimeToRestoreEvent
+            MeanTimeToRestoreEvent item6 = new()
             {
                 StartTime = DateTime.Now.AddDays(-1).AddMinutes(-5),
                 EndTime = DateTime.Now.AddDays(-1).AddMinutes(0),

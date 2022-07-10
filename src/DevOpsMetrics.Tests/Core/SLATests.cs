@@ -23,7 +23,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessSLA(SLAList, numberOfDays);
-            string slaDescription = metrics.GetSLARating(result);
+            string slaDescription = SLA.GetSLARating(result);
 
             //Assert
             Assert.AreEqual(-1, result);
@@ -45,7 +45,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessSLA(SLAList, numberOfDays);
-            string slaDescription = metrics.GetSLARating(result);
+            string slaDescription = SLA.GetSLARating(result);
 
             //Assert
             Assert.AreEqual(0.8630952f, result);
@@ -67,7 +67,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessSLA(SLAList, numberOfDays);
-            string slaDescription = metrics.GetSLARating(result);
+            string slaDescription = SLA.GetSLARating(result);
 
             //Assert
             Assert.AreEqual(0.9f, result);
@@ -89,7 +89,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessSLA(SLAList, numberOfDays);
-            string slaDescription = metrics.GetSLARating(result);
+            string slaDescription = SLA.GetSLARating(result);
 
             //Assert
             Assert.AreEqual(0.990079343f, result);
@@ -113,7 +113,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessSLA(SLAList, numberOfDays);
-            string slaDescription = metrics.GetSLARating(result);
+            string slaDescription = SLA.GetSLARating(result);
 
             //Assert
             Assert.AreEqual(0.9990014f, result);
@@ -135,7 +135,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessSLA(SLAList, numberOfDays);
-            string slaDescription = metrics.GetSLARating(result);
+            string slaDescription = SLA.GetSLARating(result);
 
             //Assert
             Assert.AreEqual(0.9999008f, result);
@@ -158,7 +158,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessSLA(SLAList, numberOfDays);
-            string slaDescription = metrics.GetSLARating(result);
+            string slaDescription = SLA.GetSLARating(result);
 
             //Assert
             Assert.AreEqual(0.9999901f, result);
@@ -181,7 +181,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessSLA(SLAList, numberOfDays);
-            string slaDescription = metrics.GetSLARating(result);
+            string slaDescription = SLA.GetSLARating(result);
 
             //Assert
             Assert.AreEqual(1f, result);

@@ -13,7 +13,7 @@ namespace DevOpsMetrics.Core.DataAccess.Common
             }
             else
             {
-                List<T> newItems = new List<T>();
+                List<T> newItems = new();
                 for (int i = items.Count - numberOfItems; i < items.Count; i++)
                 {
                     newItems.Add(items[i]);

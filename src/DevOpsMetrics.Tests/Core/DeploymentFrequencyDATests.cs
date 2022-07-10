@@ -27,8 +27,7 @@ namespace DevOpsMetrics.Tests.Core
             bool useCache = true;
 
             //Act
-            DeploymentFrequencyDA da = new();
-            DeploymentFrequencyModel model = await da.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageConfig, organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await DeploymentFrequencyDA.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageConfig, organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);
@@ -61,8 +60,7 @@ namespace DevOpsMetrics.Tests.Core
             bool useCache = true;
 
             //Act
-            DeploymentFrequencyDA da = new();
-            DeploymentFrequencyModel model = await da.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, tableStorageConfig, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
+            DeploymentFrequencyModel model = await DeploymentFrequencyDA.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret, tableStorageConfig, owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
             Assert.IsTrue(model.DeploymentsPerDayMetric > 0f);

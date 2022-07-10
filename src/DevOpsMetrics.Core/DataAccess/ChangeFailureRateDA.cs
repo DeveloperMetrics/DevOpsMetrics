@@ -6,27 +6,28 @@ using DevOpsMetrics.Core.DataAccess.Common;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.Common;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace DevOpsMetrics.Core.DataAccess
 {
     public class ChangeFailureRateDA
     {
-        public ChangeFailureRateModel GetChangeFailureRate(bool getSampleData, TableStorageConfiguration tableStorageConfig,
+        public static ChangeFailureRateModel GetChangeFailureRate(bool getSampleData, TableStorageConfiguration tableStorageConfig,
                 DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName,
                 int numberOfDays, int maxNumberOfItems)
         {
-            ListUtility<ChangeFailureRateBuild> utility = new ListUtility<ChangeFailureRateBuild>();
-            ChangeFailureRate changeFailureRate = new ChangeFailureRate();
+            ListUtility<ChangeFailureRateBuild> utility = new();
+            ChangeFailureRate changeFailureRate = new();
             if (getSampleData == false)
             {
                 //Gets a list of change failure rate builds from Azure storage
-                AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
-                Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableChangeFailureRate, PartitionKeys.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName));
+                AzureTableStorageDA daTableStorage = new();
+                JArray list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableChangeFailureRate, PartitionKeys.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName));
                 List<ChangeFailureRateBuild> initialBuilds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
 
                 //Build the date list and then generate the change failure rate metric
-                List<ChangeFailureRateBuild> builds = new List<ChangeFailureRateBuild>();
-                List<KeyValuePair<DateTime, bool>> dateList = new List<KeyValuePair<DateTime, bool>>();
+                List<ChangeFailureRateBuild> builds = new();
+                List<KeyValuePair<DateTime, bool>> dateList = new();
                 float maxBuildDuration = 0f;
                 foreach (ChangeFailureRateBuild item in initialBuilds)
                 {
@@ -44,7 +45,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 //then build the calcuation
                 foreach (ChangeFailureRateBuild item in builds)
                 {
-                    KeyValuePair<DateTime, bool> newItem = new KeyValuePair<DateTime, bool>(item.StartTime, item.DeploymentWasSuccessful);
+                    KeyValuePair<DateTime, bool> newItem = new(item.StartTime, item.DeploymentWasSuccessful);
                     dateList.Add(newItem);
                 }
                 //calculate the metric on all of the results
@@ -66,13 +67,13 @@ namespace DevOpsMetrics.Core.DataAccess
                     item.BuildDurationPercent = Scaling.ScaleNumberToRange(interiumResult, 0, 100, 20, 100);
                 }
 
-                ChangeFailureRateModel model = new ChangeFailureRateModel
+                ChangeFailureRateModel model = new()
                 {
                     TargetDevOpsPlatform = targetDevOpsPlatform,
                     DeploymentName = buildName_workflowName,
                     ChangeFailureRateBuildList = uiBuilds,
                     ChangeFailureRateMetric = changeFailureRateMetric,
-                    ChangeFailureRateMetricDescription = changeFailureRate.GetChangeFailureRateRating(changeFailureRateMetric),
+                    ChangeFailureRateMetricDescription = ChangeFailureRate.GetChangeFailureRateRating(changeFailureRateMetric),
                     NumberOfDays = numberOfDays,
                     MaxNumberOfItems = uiBuilds.Count,
                     TotalItems = builds.Count
@@ -83,13 +84,13 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get sample data
                 List<ChangeFailureRateBuild> sampleBuilds = utility.GetLastNItems(GetSampleBuilds(), maxNumberOfItems);
-                ChangeFailureRateModel model = new ChangeFailureRateModel
+                ChangeFailureRateModel model = new()
                 {
                     TargetDevOpsPlatform = targetDevOpsPlatform,
                     DeploymentName = buildName_workflowName,
                     ChangeFailureRateBuildList = sampleBuilds,
                     ChangeFailureRateMetric = 2f / 10f,
-                    ChangeFailureRateMetricDescription = changeFailureRate.GetChangeFailureRateRating(2f / 10f),
+                    ChangeFailureRateMetricDescription = ChangeFailureRate.GetChangeFailureRateRating(2f / 10f),
                     NumberOfDays = numberOfDays,
                     MaxNumberOfItems = sampleBuilds.Count,
                     TotalItems = sampleBuilds.Count
@@ -98,18 +99,18 @@ namespace DevOpsMetrics.Core.DataAccess
             }
         }
 
-        public async Task<bool> UpdateChangeFailureRate(TableStorageConfiguration tableStorageConfig,
+        public static async Task<bool> UpdateChangeFailureRate(TableStorageConfiguration tableStorageConfig,
                string organization_owner, string project_repo, string buildName_workflowName,
                int percentComplete, int numberOfDays)
         {
             //Gets a list of change failure rate builds
-            AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
+            AzureTableStorageDA daTableStorage = new();
             string partitionKey = PartitionKeys.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName);
-            Newtonsoft.Json.Linq.JArray list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableChangeFailureRate, partitionKey);
+            JArray list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableChangeFailureRate, partitionKey);
             List<ChangeFailureRateBuild> initialBuilds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
 
             //Get the list of items we are going to process, within the date/day range
-            List<ChangeFailureRateBuild> builds = new List<ChangeFailureRateBuild>();
+            List<ChangeFailureRateBuild> builds = new();
             foreach (ChangeFailureRateBuild item in initialBuilds)
             {
                 if (item.StartTime > DateTime.Now.AddDays(-numberOfDays))
@@ -123,7 +124,7 @@ namespace DevOpsMetrics.Core.DataAccess
             List<ChangeFailureRateBuild> negativeBuilds = positiveAndNegativeBuilds.Item2;
 
             //Make the updates
-            TableStorageCommonDA tableChangeFailureRateDA = new TableStorageCommonDA(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableChangeFailureRate);
+            TableStorageCommonDA tableChangeFailureRateDA = new(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableChangeFailureRate);
             foreach (ChangeFailureRateBuild item in positiveBuilds)
             {
                 item.DeploymentWasSuccessful = true;
@@ -138,12 +139,12 @@ namespace DevOpsMetrics.Core.DataAccess
             return true;
         }
 
-        public Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> GetPositiveAndNegativeLists(int percent, List<ChangeFailureRateBuild> builds)
+        public static Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>> GetPositiveAndNegativeLists(int percent, List<ChangeFailureRateBuild> builds)
         {
             //Prepare two lists, one with positive items we will eventually set to true
-            List<ChangeFailureRateBuild> positiveBuilds = new List<ChangeFailureRateBuild>();
+            List<ChangeFailureRateBuild> positiveBuilds = new();
             //The other negative items we will eventually set to false
-            List<ChangeFailureRateBuild> negativeBuilds = new List<ChangeFailureRateBuild>();
+            List<ChangeFailureRateBuild> negativeBuilds = new();
 
             //Find the midpoint in the list based on the percent
             int midPoint = (int)(((double)percent / 100) * builds.Count);
@@ -161,11 +162,11 @@ namespace DevOpsMetrics.Core.DataAccess
             return new Tuple<List<ChangeFailureRateBuild>, List<ChangeFailureRateBuild>>(positiveBuilds, negativeBuilds);
         }
 
-        public IEnumerable<IEnumerable<ChangeFailureRateBuild>> Partition(IEnumerable<ChangeFailureRateBuild> items, int partitionSize)
+        public static IEnumerable<IEnumerable<ChangeFailureRateBuild>> Partition(IEnumerable<ChangeFailureRateBuild> items, int partitionSize)
         {
             if (partitionSize <= 0)
             {
-                throw new ArgumentOutOfRangeException("partitionSize");
+                throw new ArgumentOutOfRangeException(nameof(partitionSize));
             }
 
             int innerListCounter = 0;
@@ -188,10 +189,10 @@ namespace DevOpsMetrics.Core.DataAccess
         }
 
         //Return a sample dataset to help with testing
-        private List<ChangeFailureRateBuild> GetSampleBuilds()
+        private static List<ChangeFailureRateBuild> GetSampleBuilds()
         {
-            List<ChangeFailureRateBuild> results = new List<ChangeFailureRateBuild>();
-            ChangeFailureRateBuild item1 = new ChangeFailureRateBuild
+            List<ChangeFailureRateBuild> results = new();
+            ChangeFailureRateBuild item1 = new()
             {
                 StartTime = DateTime.Now.AddDays(-7).AddMinutes(-4),
                 EndTime = DateTime.Now.AddDays(-7).AddMinutes(0),
@@ -206,7 +207,7 @@ namespace DevOpsMetrics.Core.DataAccess
             results.Add(item1);
             results.Add(item1);
             results.Add(item1);
-            ChangeFailureRateBuild item2 = new ChangeFailureRateBuild
+            ChangeFailureRateBuild item2 = new()
             {
                 StartTime = DateTime.Now.AddDays(-5).AddMinutes(-5),
                 EndTime = DateTime.Now.AddDays(-5).AddMinutes(0),
@@ -221,7 +222,7 @@ namespace DevOpsMetrics.Core.DataAccess
             results.Add(item2);
             results.Add(item2);
             results.Add(item2);
-            ChangeFailureRateBuild item3 = new ChangeFailureRateBuild
+            ChangeFailureRateBuild item3 = new()
             {
                 StartTime = DateTime.Now.AddDays(-4).AddMinutes(-1),
                 EndTime = DateTime.Now.AddDays(-4).AddMinutes(0),
@@ -234,7 +235,7 @@ namespace DevOpsMetrics.Core.DataAccess
             };
             results.Add(item3);
             results.Add(item3);
-            ChangeFailureRateBuild item4 = new ChangeFailureRateBuild
+            ChangeFailureRateBuild item4 = new()
             {
                 StartTime = DateTime.Now.AddDays(-3).AddMinutes(-4),
                 EndTime = DateTime.Now.AddDays(-3).AddMinutes(0),
@@ -249,7 +250,7 @@ namespace DevOpsMetrics.Core.DataAccess
             results.Add(item4);
             results.Add(item4);
             results.Add(item4);
-            ChangeFailureRateBuild item5 = new ChangeFailureRateBuild
+            ChangeFailureRateBuild item5 = new()
             {
                 StartTime = DateTime.Now.AddDays(-2).AddMinutes(-7),
                 EndTime = DateTime.Now.AddDays(-2).AddMinutes(0),
@@ -264,7 +265,7 @@ namespace DevOpsMetrics.Core.DataAccess
             results.Add(item5);
             results.Add(item5);
             results.Add(item5);
-            ChangeFailureRateBuild item6 = new ChangeFailureRateBuild
+            ChangeFailureRateBuild item6 = new()
             {
                 StartTime = DateTime.Now.AddDays(-1).AddMinutes(-5),
                 EndTime = DateTime.Now.AddDays(-1).AddMinutes(0),

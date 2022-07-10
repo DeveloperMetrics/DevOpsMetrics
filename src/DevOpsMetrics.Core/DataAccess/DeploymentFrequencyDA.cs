@@ -10,17 +10,16 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class DeploymentFrequencyDA
     {
-        public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, TableStorageConfiguration tableStorageConfig,
+        public static async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string patToken, TableStorageConfiguration tableStorageConfig,
                 string organization, string project, string branch, string buildName,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
             ListUtility<Build> utility = new();
-            DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
+            DeploymentFrequency deploymentFrequency = new();
             if (getSampleData == false)
             {
                 //Get a list of builds
-                BuildsDA buildsDA = new BuildsDA();
-                List<AzureDevOpsBuild> azureDevOpsBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageConfig, organization, project, buildName, useCache);
+                List<AzureDevOpsBuild> azureDevOpsBuilds = await BuildsDA.GetAzureDevOpsBuilds(patToken, tableStorageConfig, organization, project, buildName, useCache);
                 if (azureDevOpsBuilds != null)
                 {
                     //Translate the Azure DevOps build to a generic build object
@@ -50,10 +49,10 @@ namespace DevOpsMetrics.Core.DataAccess
                     int buildTotal = builds.Count;
 
                     //then build the calcuation, loading the dates into a date array
-                    List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
+                    List<KeyValuePair<DateTime, DateTime>> dateList = new();
                     foreach (Build item in builds)
                     {
-                        KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.StartTime, item.EndTime);
+                        KeyValuePair<DateTime, DateTime> newItem = new(item.StartTime, item.EndTime);
                         dateList.Add(newItem);
                     }
 
@@ -80,13 +79,13 @@ namespace DevOpsMetrics.Core.DataAccess
                     }
 
                     //Return the completed model
-                    DeploymentFrequencyModel model = new DeploymentFrequencyModel
+                    DeploymentFrequencyModel model = new()
                     {
                         TargetDevOpsPlatform = DevOpsPlatform.AzureDevOps,
                         DeploymentName = buildName,
                         BuildList = builds,
                         DeploymentsPerDayMetric = deploymentsPerDay,
-                        DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
+                        DeploymentsPerDayMetricDescription = DeploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
                         NumberOfDays = numberOfDays,
                         MaxNumberOfItems = builds.Count,
                         TotalItems = buildTotal
@@ -102,7 +101,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get sample data
                 List<Build> builds = utility.GetLastNItems(GetSampleAzureDevOpsBuilds(), maxNumberOfItems);
-                DeploymentFrequencyModel model = new DeploymentFrequencyModel
+                DeploymentFrequencyModel model = new()
                 {
                     TargetDevOpsPlatform = DevOpsPlatform.AzureDevOps,
                     DeploymentName = buildName,
@@ -117,17 +116,16 @@ namespace DevOpsMetrics.Core.DataAccess
             }
         }
 
-        public async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig,
+        public static async Task<DeploymentFrequencyModel> GetGitHubDeploymentFrequency(bool getSampleData, string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig,
                 string owner, string repo, string branch, string workflowName, string workflowId,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
-            ListUtility<Build> utility = new ListUtility<Build>();
-            DeploymentFrequency deploymentFrequency = new DeploymentFrequency();
+            ListUtility<Build> utility = new();
+            DeploymentFrequency deploymentFrequency = new();
             if (getSampleData == false)
             {
                 //Get a list of builds
-                BuildsDA buildsDA = new();
-                List<GitHubActionsRun> gitHubRuns = await buildsDA.GetGitHubActionRuns(clientId, clientSecret, tableStorageConfig, owner, repo, workflowName, workflowId, useCache);
+                List<GitHubActionsRun> gitHubRuns = await BuildsDA.GetGitHubActionRuns(clientId, clientSecret, tableStorageConfig, owner, repo, workflowName, workflowId, useCache);
                 if (gitHubRuns != null)
                 {
                     //Translate the GitHub build to a generic build object
@@ -157,10 +155,10 @@ namespace DevOpsMetrics.Core.DataAccess
                     int buildTotal = builds.Count;
 
                     //then build the calcuation, loading the dates into a date array
-                    List<KeyValuePair<DateTime, DateTime>> dateList = new List<KeyValuePair<DateTime, DateTime>>();
+                    List<KeyValuePair<DateTime, DateTime>> dateList = new();
                     foreach (Build item in builds)
                     {
-                        KeyValuePair<DateTime, DateTime> newItem = new KeyValuePair<DateTime, DateTime>(item.StartTime, item.EndTime);
+                        KeyValuePair<DateTime, DateTime> newItem = new(item.StartTime, item.EndTime);
                         dateList.Add(newItem);
                     }
 
@@ -187,13 +185,13 @@ namespace DevOpsMetrics.Core.DataAccess
                     }
 
                     //Return the completed model
-                    DeploymentFrequencyModel model = new DeploymentFrequencyModel
+                    DeploymentFrequencyModel model = new()
                     {
                         TargetDevOpsPlatform = DevOpsPlatform.GitHub,
                         DeploymentName = workflowName,
                         BuildList = builds,
                         DeploymentsPerDayMetric = deploymentsPerDay,
-                        DeploymentsPerDayMetricDescription = deploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
+                        DeploymentsPerDayMetricDescription = DeploymentFrequency.GetDeploymentFrequencyRating(deploymentsPerDay),
                         NumberOfDays = numberOfDays,
                         MaxNumberOfItems = builds.Count,
                         TotalItems = buildTotal
@@ -208,7 +206,7 @@ namespace DevOpsMetrics.Core.DataAccess
             else
             {
                 List<Build> builds = utility.GetLastNItems(GetSampleGitHubBuilds(), maxNumberOfItems);
-                DeploymentFrequencyModel model = new DeploymentFrequencyModel
+                DeploymentFrequencyModel model = new()
                 {
                     TargetDevOpsPlatform = DevOpsPlatform.GitHub,
                     DeploymentName = workflowName,
@@ -224,7 +222,7 @@ namespace DevOpsMetrics.Core.DataAccess
         }
 
         //Return a sample dataset to help with testing
-        private List<Build> GetSampleAzureDevOpsBuilds()
+        private static List<Build> GetSampleAzureDevOpsBuilds()
         {
             List<Build> results = new();
             Build item1 = new()
@@ -301,7 +299,7 @@ namespace DevOpsMetrics.Core.DataAccess
             return results;
         }
 
-        private List<Build> GetSampleGitHubBuilds()
+        private static List<Build> GetSampleGitHubBuilds()
         {
             List<Build> results = new();
             Build item1 = new()
@@ -362,7 +360,7 @@ namespace DevOpsMetrics.Core.DataAccess
             };
             results.Add(item5);
             results.Add(item5);
-            Build item6 = new Build
+            Build item6 = new()
             {
                 StartTime = DateTime.Now.AddDays(-1).AddMinutes(-8),
                 EndTime = DateTime.Now.AddDays(-1).AddMinutes(0),

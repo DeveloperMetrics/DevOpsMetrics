@@ -22,8 +22,7 @@ namespace DevOpsMetrics.Tests.Core
             int maxNumberOfItems = 20;
 
             //Act
-            MeanTimeToRestoreDA da = new();
-            MeanTimeToRestoreModel model = da.GetAzureMeanTimeToRestore(getSampleData, tableStorageConfig, targetDevOpsPlatform, resourceGroup, numberOfDays, maxNumberOfItems);
+            MeanTimeToRestoreModel model = MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(getSampleData, tableStorageConfig, targetDevOpsPlatform, resourceGroup, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -48,8 +47,7 @@ namespace DevOpsMetrics.Tests.Core
             int maxNumberOfItems = 20;
 
             //Act
-            MeanTimeToRestoreDA da = new();
-            MeanTimeToRestoreModel model = da.GetAzureMeanTimeToRestore(getSampleData, tableStorageConfig, targetDevOpsPlatform, resourceGroup, numberOfDays, maxNumberOfItems);
+            MeanTimeToRestoreModel model = MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(getSampleData, tableStorageConfig, targetDevOpsPlatform, resourceGroup, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -75,8 +73,7 @@ namespace DevOpsMetrics.Tests.Core
             int maxNumberOfItems = 20;
 
             //Act
-            MeanTimeToRestoreDA da = new();
-            MeanTimeToRestoreModel model = da.GetAzureMeanTimeToRestore(getSampleData, tableStorageConfig, targetDevOpsPlatform, resourceGroup, numberOfDays, maxNumberOfItems);
+            MeanTimeToRestoreModel model = MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(getSampleData, tableStorageConfig, targetDevOpsPlatform, resourceGroup, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -102,8 +99,7 @@ namespace DevOpsMetrics.Tests.Core
             int maxNumberOfItems = 20;
 
             //Act
-            MeanTimeToRestoreDA da = new();
-            MeanTimeToRestoreModel model = da.GetAzureMeanTimeToRestore(getSampleData, tableStorageConfig, targetDevOpsPlatform, resourceGroup, numberOfDays, maxNumberOfItems);
+            MeanTimeToRestoreModel model = MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(getSampleData, tableStorageConfig, targetDevOpsPlatform, resourceGroup, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model != null);

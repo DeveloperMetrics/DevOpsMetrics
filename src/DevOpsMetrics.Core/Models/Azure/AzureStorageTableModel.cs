@@ -7,9 +7,8 @@ namespace DevOpsMetrics.Core.Models.Azure
     {
         public AzureStorageTableModel(string partitionKey, string rowKey, string data)
         {
-            TableStorageCommonDA common = new TableStorageCommonDA();
-            PartitionKey = common.EncodePartitionKey(partitionKey);
-            RowKey = common.EncodePartitionKey(rowKey);
+            PartitionKey = TableStorageCommonDA.EncodePartitionKey(partitionKey);
+            RowKey = TableStorageCommonDA.EncodePartitionKey(rowKey);
             Data = data;
         }
 

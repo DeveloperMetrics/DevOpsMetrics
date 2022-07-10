@@ -6,27 +6,27 @@ using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace DevOpsMetrics.Core.DataAccess
 {
     public class PullRequestsDA
     {
-        public async Task<AzureDevOpsPR> GetAzureDevOpsPullRequest(string patToken, TableStorageConfiguration tableStorageConfig,
+        public static async Task<AzureDevOpsPR> GetAzureDevOpsPullRequest(string patToken, TableStorageConfiguration tableStorageConfig,
             string organization, string project, string repository, string branch, bool useCache)
         {
-            List<AzureDevOpsPR> prs = new List<AzureDevOpsPR>();
-            Newtonsoft.Json.Linq.JArray list;
+            List<AzureDevOpsPR> prs = new();
+            JArray list;
             if (useCache == true)
             {
                 //Get the pull requests from Azure storage
-                AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
+                AzureTableStorageDA daTableStorage = new();
                 list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsPRs, PartitionKeys.CreateGitHubPRPartitionKey(organization, project));
             }
             else
             {
                 //Get the pull requests from the Azure DevOps API
-                AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
-                list = await api.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repository);
+                list = await AzureDevOpsAPIAccess.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repository);
             }
             if (list != null)
             {
@@ -46,41 +46,39 @@ namespace DevOpsMetrics.Core.DataAccess
             return pr;
         }
 
-        public async Task<List<AzureDevOpsPRCommit>> GetAzureDevOpsPullRequestCommits(string patToken, TableStorageConfiguration tableStorageConfig, string organization, string project, string repository, string pullRequestId, bool useCache)
+        public static async Task<List<AzureDevOpsPRCommit>> GetAzureDevOpsPullRequestCommits(string patToken, TableStorageConfiguration tableStorageConfig, string organization, string project, string repository, string pullRequestId, bool useCache)
         {
-            Newtonsoft.Json.Linq.JArray list;
+            JArray list;
             if (useCache == true)
             {
                 //Get the commits from Azure storage
-                AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
+                AzureTableStorageDA daTableStorage = new();
                 list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsPRCommits, PartitionKeys.CreateAzureDevOpsPRCommitPartitionKey(organization, project, pullRequestId));
             }
             else
             {
                 //Get the commits from the Azure DevOps API
-                AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
-                list = await api.GetAzureDevOpsPullRequestCommitsJArray(patToken, organization, project, repository, pullRequestId);
+                list = await AzureDevOpsAPIAccess.GetAzureDevOpsPullRequestCommitsJArray(patToken, organization, project, repository, pullRequestId);
             }
 
             List<AzureDevOpsPRCommit> commits = JsonConvert.DeserializeObject<List<AzureDevOpsPRCommit>>(list.ToString());
             return commits;
         }
 
-        public async Task<GitHubPR> GetGitHubPullRequest(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string owner, string repo, string branch, bool useCache)
+        public static async Task<GitHubPR> GetGitHubPullRequest(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string owner, string repo, string branch, bool useCache)
         {
-            List<GitHubPR> prs = new List<GitHubPR>();
-            Newtonsoft.Json.Linq.JArray list;
+            List<GitHubPR> prs = new();
+            JArray list;
             if (useCache == true)
             {
                 //Get the pull requests from Azure storage
-                AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
+                AzureTableStorageDA daTableStorage = new();
                 list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubPRs, PartitionKeys.CreateGitHubPRPartitionKey(owner, repo));
             }
             else
             {
                 //Get the pull requests from the GitHub API
-                GitHubAPIAccess api = new GitHubAPIAccess();
-                list = await api.GetGitHubPullRequestsJArray(clientId, clientSecret, owner, repo, branch);
+                list = await GitHubAPIAccess.GetGitHubPullRequestsJArray(clientId, clientSecret, owner, repo, branch);
             }
             if (list != null)
             {
@@ -100,20 +98,19 @@ namespace DevOpsMetrics.Core.DataAccess
             return pr;
         }
 
-        public async Task<List<GitHubPRCommit>> GetGitHubPullRequestCommits(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string owner, string repo, string pull_number, bool useCache)
+        public static async Task<List<GitHubPRCommit>> GetGitHubPullRequestCommits(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string owner, string repo, string pull_number, bool useCache)
         {
-            Newtonsoft.Json.Linq.JArray list;
+            JArray list;
             if (useCache == true)
             {
                 //Get the commits from Azure storage
-                AzureTableStorageDA daTableStorage = new AzureTableStorageDA();
+                AzureTableStorageDA daTableStorage = new();
                 list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubPRCommits, PartitionKeys.CreateGitHubPRCommitPartitionKey(owner, repo, pull_number));
             }
             else
             {
                 //Get the commits from the GitHub API
-                GitHubAPIAccess api = new GitHubAPIAccess();
-                list = await api.GetGitHubPullRequestCommitsJArray(clientId, clientSecret, owner, repo, pull_number);
+                list = await GitHubAPIAccess.GetGitHubPullRequestCommitsJArray(clientId, clientSecret, owner, repo, pull_number);
             }
             List<GitHubPRCommit> commits = JsonConvert.DeserializeObject<List<GitHubPRCommit>>(list.ToString());
             return commits;

@@ -11,22 +11,22 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class LeadTimeForChangesDA
     {
-        public async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, TableStorageConfiguration tableStorageConfig,
+        public static async Task<LeadTimeForChangesModel> GetAzureDevOpsLeadTimesForChanges(bool getSampleData, string patToken, TableStorageConfiguration tableStorageConfig,
                 string organization, string project, string repository, string mainBranch, string buildName, int numberOfDays, int maxNumberOfItems, bool useCache)
         {
-            ListUtility<PullRequestModel> utility = new ListUtility<PullRequestModel>();
-            LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
-            List<PullRequestModel> pullRequests = new List<PullRequestModel>();
+            ListUtility<PullRequestModel> utility = new();
+            LeadTimeForChanges leadTimeForChanges = new();
+            List<PullRequestModel> pullRequests = new();
             if (getSampleData == false)
             {
-                List<AzureDevOpsBuild> initialBuilds = new List<AzureDevOpsBuild>();
-                BuildsDA buildsDA = new BuildsDA();
-                initialBuilds = await buildsDA.GetAzureDevOpsBuilds(patToken, tableStorageConfig, organization, project, buildName, useCache);
+                List<AzureDevOpsBuild> initialBuilds = new();
+                BuildsDA buildsDA = new();
+                initialBuilds = await BuildsDA.GetAzureDevOpsBuilds(patToken, tableStorageConfig, organization, project, buildName, useCache);
 
                 //Process all builds, filtering by main and feature branchs
-                List<AzureDevOpsBuild> mainBranchBuilds = new List<AzureDevOpsBuild>();
-                List<AzureDevOpsBuild> featureBranchBuilds = new List<AzureDevOpsBuild>();
-                List<string> branches = new List<string>();
+                List<AzureDevOpsBuild> mainBranchBuilds = new();
+                List<AzureDevOpsBuild> featureBranchBuilds = new();
+                List<string> branches = new();
                 foreach (AzureDevOpsBuild item in initialBuilds)
                 {
                     if (item.status == "completed" && item.queueTime > DateTime.Now.AddDays(-numberOfDays))
@@ -50,16 +50,16 @@ namespace DevOpsMetrics.Core.DataAccess
                 }
 
                 //Process the lead time for changes
-                List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>();
+                List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new();
                 foreach (string branch in branches)
                 {
                     List<AzureDevOpsBuild> branchBuilds = featureBranchBuilds.Where(a => a.sourceBranch == branch).ToList();
-                    PullRequestsDA pullRequestDA = new PullRequestsDA();
-                    AzureDevOpsPR pr = await pullRequestDA.GetAzureDevOpsPullRequest(patToken, tableStorageConfig, organization, project, repository, branch, useCache);
+                    PullRequestsDA pullRequestDA = new();
+                    AzureDevOpsPR pr = await PullRequestsDA.GetAzureDevOpsPullRequest(patToken, tableStorageConfig, organization, project, repository, branch, useCache);
                     if (pr != null)
                     {
-                        List<AzureDevOpsPRCommit> pullRequestCommits = await pullRequestDA.GetAzureDevOpsPullRequestCommits(patToken, tableStorageConfig, organization, project, repository, pr.PullRequestId, useCache);
-                        List<Commit> commits = new List<Commit>();
+                        List<AzureDevOpsPRCommit> pullRequestCommits = await PullRequestsDA.GetAzureDevOpsPullRequestCommits(patToken, tableStorageConfig, organization, project, repository, pr.PullRequestId, useCache);
+                        List<Commit> commits = new();
                         foreach (AzureDevOpsPRCommit item in pullRequestCommits)
                         {
                             commits.Add(new Commit
@@ -94,7 +94,7 @@ namespace DevOpsMetrics.Core.DataAccess
                                 maxTime = branchBuild.finishTime;
                             }
                         }
-                        PullRequestModel pullRequest = new PullRequestModel
+                        PullRequestModel pullRequest = new()
                         {
                             PullRequestId = pr.PullRequestId,
                             Branch = branch,
@@ -139,14 +139,14 @@ namespace DevOpsMetrics.Core.DataAccess
                     averageBuildHours = (float)totalHours / (float)mainBranchBuilds.Count;
                 }
 
-                LeadTimeForChangesModel model = new LeadTimeForChangesModel
+                LeadTimeForChangesModel model = new()
                 {
                     ProjectName = project,
                     TargetDevOpsPlatform = DevOpsPlatform.AzureDevOps,
                     AverageBuildHours = averageBuildHours,
                     AveragePullRequestHours = leadTime,
                     LeadTimeForChangesMetric = leadTime + averageBuildHours,
-                    LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
+                    LeadTimeForChangesMetricDescription = LeadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
                     PullRequests = uiPullRequests,
                     NumberOfDays = numberOfDays,
                     MaxNumberOfItems = uiPullRequests.Count,
@@ -159,7 +159,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get sample data
                 List<PullRequestModel> samplePullRequests = utility.GetLastNItems(CreatePullRequestsSample(DevOpsPlatform.AzureDevOps), maxNumberOfItems);
-                LeadTimeForChangesModel model = new LeadTimeForChangesModel
+                LeadTimeForChangesModel model = new()
                 {
                     ProjectName = project,
                     TargetDevOpsPlatform = DevOpsPlatform.AzureDevOps,
@@ -177,23 +177,23 @@ namespace DevOpsMetrics.Core.DataAccess
             }
         }
 
-        public async Task<LeadTimeForChangesModel> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig,
+        public static async Task<LeadTimeForChangesModel> GetGitHubLeadTimesForChanges(bool getSampleData, string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig,
                 string owner, string repo, string mainBranch, string workflowName, string workflowId,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
-            ListUtility<PullRequestModel> utility = new ListUtility<PullRequestModel>();
-            LeadTimeForChanges leadTimeForChanges = new LeadTimeForChanges();
-            List<PullRequestModel> pullRequests = new List<PullRequestModel>();
+            ListUtility<PullRequestModel> utility = new();
+            LeadTimeForChanges leadTimeForChanges = new();
+            List<PullRequestModel> pullRequests = new();
             if (getSampleData == false)
             {
-                List<GitHubActionsRun> initialRuns = new List<GitHubActionsRun>();
-                BuildsDA buildsDA = new BuildsDA();
-                initialRuns = await buildsDA.GetGitHubActionRuns(clientId, clientSecret, tableStorageConfig, owner, repo, workflowName, workflowId, useCache);
+                List<GitHubActionsRun> initialRuns = new();
+                BuildsDA buildsDA = new();
+                initialRuns = await BuildsDA.GetGitHubActionRuns(clientId, clientSecret, tableStorageConfig, owner, repo, workflowName, workflowId, useCache);
 
                 //Process all builds, filtering by main and feature branchs
-                List<GitHubActionsRun> mainBranchRuns = new List<GitHubActionsRun>();
-                List<GitHubActionsRun> featureBranchRuns = new List<GitHubActionsRun>();
-                List<string> branches = new List<string>();
+                List<GitHubActionsRun> mainBranchRuns = new();
+                List<GitHubActionsRun> featureBranchRuns = new();
+                List<string> branches = new();
                 foreach (GitHubActionsRun item in initialRuns)
                 {
                     if (item.status == "completed" && item.created_at > DateTime.Now.AddDays(-numberOfDays))
@@ -217,16 +217,16 @@ namespace DevOpsMetrics.Core.DataAccess
                 }
 
                 //Process the lead time for changes
-                List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new List<KeyValuePair<DateTime, TimeSpan>>();
+                List<KeyValuePair<DateTime, TimeSpan>> leadTimeForChangesList = new();
                 foreach (string branch in branches)
                 {
                     List<GitHubActionsRun> branchBuilds = featureBranchRuns.Where(a => a.head_branch == branch).ToList();
-                    PullRequestsDA pullRequestDA = new PullRequestsDA();
-                    GitHubPR pr = await pullRequestDA.GetGitHubPullRequest(clientId, clientSecret, tableStorageConfig, owner, repo, branch, useCache);
+                    PullRequestsDA pullRequestDA = new();
+                    GitHubPR pr = await PullRequestsDA.GetGitHubPullRequest(clientId, clientSecret, tableStorageConfig, owner, repo, branch, useCache);
                     if (pr != null)
                     {
-                        List<GitHubPRCommit> pullRequestCommits = await pullRequestDA.GetGitHubPullRequestCommits(clientId, clientSecret, tableStorageConfig, owner, repo, pr.number, useCache);
-                        List<Commit> commits = new List<Commit>();
+                        List<GitHubPRCommit> pullRequestCommits = await PullRequestsDA.GetGitHubPullRequestCommits(clientId, clientSecret, tableStorageConfig, owner, repo, pr.number, useCache);
+                        List<Commit> commits = new();
                         foreach (GitHubPRCommit item in pullRequestCommits)
                         {
                             commits.Add(new Commit
@@ -262,7 +262,7 @@ namespace DevOpsMetrics.Core.DataAccess
                             }
                         }
 
-                        PullRequestModel pullRequest = new PullRequestModel
+                        PullRequestModel pullRequest = new()
                         {
                             PullRequestId = pr.number,
                             Branch = branch,
@@ -320,14 +320,14 @@ namespace DevOpsMetrics.Core.DataAccess
                     averageBuildHours = (float)totalHours / (float)mainBranchRuns.Count;
                 }
 
-                LeadTimeForChangesModel model = new LeadTimeForChangesModel
+                LeadTimeForChangesModel model = new()
                 {
                     ProjectName = repo,
                     TargetDevOpsPlatform = DevOpsPlatform.GitHub,
                     AverageBuildHours = averageBuildHours,
                     AveragePullRequestHours = leadTime,
                     LeadTimeForChangesMetric = leadTime + averageBuildHours,
-                    LeadTimeForChangesMetricDescription = leadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
+                    LeadTimeForChangesMetricDescription = LeadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
                     PullRequests = utility.GetLastNItems(pullRequests, maxNumberOfItems),
                     NumberOfDays = numberOfDays,
                     MaxNumberOfItems = uiPullRequests.Count,
@@ -339,7 +339,7 @@ namespace DevOpsMetrics.Core.DataAccess
             else
             {
                 List<PullRequestModel> samplePullRequests = utility.GetLastNItems(CreatePullRequestsSample(DevOpsPlatform.GitHub), maxNumberOfItems);
-                LeadTimeForChangesModel model = new LeadTimeForChangesModel
+                LeadTimeForChangesModel model = new()
                 {
                     ProjectName = repo,
                     TargetDevOpsPlatform = DevOpsPlatform.GitHub,
@@ -358,9 +358,9 @@ namespace DevOpsMetrics.Core.DataAccess
         }
 
         //Return a sample dataset to help with testing
-        private List<PullRequestModel> CreatePullRequestsSample(DevOpsPlatform targetDevOpsPlatform)
+        private static List<PullRequestModel> CreatePullRequestsSample(DevOpsPlatform targetDevOpsPlatform)
         {
-            List<PullRequestModel> prs = new List<PullRequestModel>();
+            List<PullRequestModel> prs = new();
 
             string url;
             if (targetDevOpsPlatform == DevOpsPlatform.AzureDevOps)
@@ -376,7 +376,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 url = "";
             }
 
-            PullRequestModel pr1 = new PullRequestModel
+            PullRequestModel pr1 = new()
             {
                 PullRequestId = "123",
                 Branch = "branch1",
@@ -392,7 +392,7 @@ namespace DevOpsMetrics.Core.DataAccess
             prs.Add(pr1);
             prs.Add(pr1);
             prs.Add(pr1);
-            PullRequestModel pr2 = new PullRequestModel
+            PullRequestModel pr2 = new()
             {
                 PullRequestId = "124",
                 Branch = "branch2",
@@ -414,7 +414,7 @@ namespace DevOpsMetrics.Core.DataAccess
             prs.Add(pr2);
             prs.Add(pr2);
 
-            PullRequestModel pr3 = new PullRequestModel
+            PullRequestModel pr3 = new()
             {
                 PullRequestId = "126",
                 Branch = "branch3",
@@ -435,9 +435,9 @@ namespace DevOpsMetrics.Core.DataAccess
             return prs;
         }
 
-        private List<Commit> CreateCommitsSample(int numberOfCommits)
+        private static List<Commit> CreateCommitsSample(int numberOfCommits)
         {
-            List<Commit> commits = new List<Commit>();
+            List<Commit> commits = new();
 
             if (numberOfCommits > 0)
             {

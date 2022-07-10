@@ -7,7 +7,7 @@ namespace DevOpsMetrics.Core.Models.Common
     {
         public MeanTimeToRestoreModel()
         {
-            MeanTimeToRestoreEvents = new List<MeanTimeToRestoreEvent>();
+            MeanTimeToRestoreEvents = new();
         }
         public DevOpsPlatform TargetDevOpsPlatform
         {

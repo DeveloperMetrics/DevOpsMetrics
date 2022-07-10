@@ -12,11 +12,10 @@ namespace DevOpsMetrics.Tests.Core
         public void Fraction0PercentTest()
         {
             //Arrange
-            FractionConverter fraction = new();
             int percent = 0;
 
             //Act
-            FractionModel model = fraction.ConvertToFraction(percent);
+            FractionModel model = FractionConverter.ConvertToFraction(percent);
 
             //Assert
             Assert.AreNotEqual(null, model);
@@ -28,11 +27,10 @@ namespace DevOpsMetrics.Tests.Core
         public void Fraction10PercentTest()
         {
             //Arrange
-            FractionConverter fraction = new();
             int percent = 10;
 
             //Act
-            FractionModel model = fraction.ConvertToFraction(percent);
+            FractionModel model = FractionConverter.ConvertToFraction(percent);
 
             //Assert
             Assert.AreNotEqual(null, model);
@@ -44,11 +42,10 @@ namespace DevOpsMetrics.Tests.Core
         public void Fraction25PercentTest()
         {
             //Arrange
-            FractionConverter fraction = new();
             int percent = 25;
 
             //Act
-            FractionModel model = fraction.ConvertToFraction(percent);
+            FractionModel model = FractionConverter.ConvertToFraction(percent);
 
             //Assert
             Assert.AreNotEqual(null, model);
@@ -60,11 +57,10 @@ namespace DevOpsMetrics.Tests.Core
         public void Fraction50PercentTest()
         {
             //Arrange
-            FractionConverter fraction = new();
             int percent = 50;
 
             //Act
-            FractionModel model = fraction.ConvertToFraction(percent);
+            FractionModel model = FractionConverter.ConvertToFraction(percent);
 
             //Assert
             Assert.AreNotEqual(null, model);
@@ -76,11 +72,10 @@ namespace DevOpsMetrics.Tests.Core
         public void Fraction75PercentTest()
         {
             //Arrange
-            FractionConverter fraction = new();
             int percent = 75;
 
             //Act
-            FractionModel model = fraction.ConvertToFraction(percent);
+            FractionModel model = FractionConverter.ConvertToFraction(percent);
 
             //Assert
             Assert.AreNotEqual(null, model);
@@ -92,11 +87,10 @@ namespace DevOpsMetrics.Tests.Core
         public void Fraction98PercentTest()
         {
             //Arrange
-            FractionConverter fraction = new();
             int percent = 98;
 
             //Act
-            FractionModel model = fraction.ConvertToFraction(percent);
+            FractionModel model = FractionConverter.ConvertToFraction(percent);
 
             //Assert
             Assert.AreNotEqual(null, model);
@@ -108,11 +102,10 @@ namespace DevOpsMetrics.Tests.Core
         public void Fraction100PercentTest()
         {
             //Arrange
-            FractionConverter fraction = new();
             int percent = 100;
 
             //Act
-            FractionModel model = fraction.ConvertToFraction(percent);
+            FractionModel model = FractionConverter.ConvertToFraction(percent);
 
             //Assert
             Assert.AreNotEqual(null, model);
@@ -124,11 +117,10 @@ namespace DevOpsMetrics.Tests.Core
         public void FractionOtherPercentTest()
         {
             //Arrange
-            FractionConverter fraction = new();
             int percent = 1000;
 
             //Act
-            FractionModel model = fraction.ConvertToFraction(percent);
+            FractionModel model = FractionConverter.ConvertToFraction(percent);
 
             //Assert
             Assert.AreNotEqual(null, model);

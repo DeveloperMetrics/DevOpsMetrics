@@ -13,7 +13,7 @@ namespace DevOpsMetrics.Core
 
         public MeanTimeToRestore()
         {
-            MeanTimeToRestoreList = new List<KeyValuePair<DateTime, TimeSpan>>();
+            MeanTimeToRestoreList = new();
         }
 
         public float ProcessMeanTimeToRestore(List<KeyValuePair<DateTime, TimeSpan>> meanTimeToRestoreList, int numberOfDays)
@@ -63,7 +63,7 @@ namespace DevOpsMetrics.Core
             return MeanTimeToRestoreList.Where(x => x.Key > DateTime.Now.AddDays(-numberOfDays)).ToList();
         }
 
-        public string GetMeanTimeToRestoreRating(float meanTimeToRestoreInHours)
+        public static string GetMeanTimeToRestoreRating(float meanTimeToRestoreInHours)
         {
             float hourlyRestoration = 1f;
             float dailyDeployment = 24f;

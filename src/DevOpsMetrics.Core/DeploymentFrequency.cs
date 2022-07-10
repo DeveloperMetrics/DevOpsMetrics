@@ -65,7 +65,7 @@ namespace DevOpsMetrics.Core
             return DeploymentFrequencyList.Where(x => x.Key > DateTime.Now.AddDays(-numberOfDays)).ToList();
         }
 
-        public string GetDeploymentFrequencyRating(float deploymentsPerDay)
+        public static string GetDeploymentFrequencyRating(float deploymentsPerDay)
         {
             float dailyDeployment = 1f;
             //float weeklyDeployment = 1f / 7f;
