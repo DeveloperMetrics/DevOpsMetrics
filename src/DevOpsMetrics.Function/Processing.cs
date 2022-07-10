@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DevOpsMetrics.Core;
 using DevOpsMetrics.Core.DataAccess;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.Common;
@@ -87,6 +88,12 @@ namespace DevOpsMetrics.Function
                 DevOpsPlatform.GitHub,
                 resourceGroup,
                 numberOfDays, maxNumberOfItems);
+            }
+            else
+            {
+                MeanTimeToRestore mttr = new();
+                meanTimeToRestoreModel.MTTRAverageDurationInHours = 0;
+                meanTimeToRestoreModel.MTTRAverageDurationDescription = mttr.GetMeanTimeToRestoreRating(0);
             }
 
             ChangeFailureRateDA changeFailureRateDA = new();
