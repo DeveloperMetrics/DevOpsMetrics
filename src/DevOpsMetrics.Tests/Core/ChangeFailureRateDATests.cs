@@ -28,7 +28,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             ChangeFailureRateDA da = new();
-            ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageConfig,
+            ChangeFailureRateModel model = ChangeFailureRateDA.GetChangeFailureRate(getSampleData, tableStorageConfig,
                targetDevOpsPlatform, organization, project, branch, buildName, numberOfDays, maxNumberOfItems);
 
             //Assert
@@ -91,7 +91,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             ChangeFailureRateDA da = new();
-            ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageConfig,
+            ChangeFailureRateModel model = ChangeFailureRateDA.GetChangeFailureRate(getSampleData, tableStorageConfig,
                targetDevOpsPlatform, owner, repo, branch, workflowName, numberOfDays, maxNumberOfItems);
 
             //Assert
@@ -120,7 +120,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             ChangeFailureRateDA da = new();
-            bool result = await da.UpdateChangeFailureRate(tableStorageConfig,
+            bool result = await ChangeFailureRateDA.UpdateChangeFailureRate(tableStorageConfig,
                organization, project, buildName, percent, numberOfDays);
 
             //Assert

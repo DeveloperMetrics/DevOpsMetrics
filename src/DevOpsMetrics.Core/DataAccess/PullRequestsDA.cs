@@ -6,6 +6,7 @@ using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace DevOpsMetrics.Core.DataAccess
 {
@@ -15,7 +16,7 @@ namespace DevOpsMetrics.Core.DataAccess
             string organization, string project, string repository, string branch, bool useCache)
         {
             List<AzureDevOpsPR> prs = new();
-            Newtonsoft.Json.Linq.JArray list;
+            JArray list;
             if (useCache == true)
             {
                 //Get the pull requests from Azure storage
@@ -48,7 +49,7 @@ namespace DevOpsMetrics.Core.DataAccess
 
         public static async Task<List<AzureDevOpsPRCommit>> GetAzureDevOpsPullRequestCommits(string patToken, TableStorageConfiguration tableStorageConfig, string organization, string project, string repository, string pullRequestId, bool useCache)
         {
-            Newtonsoft.Json.Linq.JArray list;
+            JArray list;
             if (useCache == true)
             {
                 //Get the commits from Azure storage
@@ -69,7 +70,7 @@ namespace DevOpsMetrics.Core.DataAccess
         public static async Task<GitHubPR> GetGitHubPullRequest(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string owner, string repo, string branch, bool useCache)
         {
             List<GitHubPR> prs = new();
-            Newtonsoft.Json.Linq.JArray list;
+            JArray list;
             if (useCache == true)
             {
                 //Get the pull requests from Azure storage
@@ -101,7 +102,7 @@ namespace DevOpsMetrics.Core.DataAccess
 
         public static async Task<List<GitHubPRCommit>> GetGitHubPullRequestCommits(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string owner, string repo, string pull_number, bool useCache)
         {
-            Newtonsoft.Json.Linq.JArray list;
+            JArray list;
             if (useCache == true)
             {
                 //Get the commits from Azure storage

@@ -16,7 +16,6 @@ namespace DevOpsMetrics.Tests.Core
         public void PositiveNegative000PercentUnitTest()
         {
             //Arrange
-            ChangeFailureRateDA da = new();
             int percent = 0;
             int samples = 100;
             List<ChangeFailureRateBuild> builds = GenerateSamples(samples);
@@ -36,7 +35,6 @@ namespace DevOpsMetrics.Tests.Core
         public void PositiveNegative010PercentUnitTest()
         {
             //Arrange
-            ChangeFailureRateDA da = new();
             int percent = 10;
             int samples = 100;
             List<ChangeFailureRateBuild> builds = GenerateSamples(samples);
@@ -56,7 +54,6 @@ namespace DevOpsMetrics.Tests.Core
         public void PositiveNegative025PercentUnitTest()
         {
             //Arrange
-            ChangeFailureRateDA da = new();
             int percent = 25;
             int samples = 100;
             List<ChangeFailureRateBuild> builds = GenerateSamples(samples);
@@ -75,7 +72,6 @@ namespace DevOpsMetrics.Tests.Core
         public void PositiveNegative050PercentUnitTest()
         {
             //Arrange
-            ChangeFailureRateDA da = new();
             int percent = 50;
             int samples = 100;
             List<ChangeFailureRateBuild> builds = GenerateSamples(samples);
@@ -94,7 +90,6 @@ namespace DevOpsMetrics.Tests.Core
         public void PositiveNegative075PercentUnitTest()
         {
             //Arrange
-            ChangeFailureRateDA da = new();
             int percent = 75;
             int samples = 100;
             List<ChangeFailureRateBuild> builds = GenerateSamples(samples);
@@ -113,7 +108,6 @@ namespace DevOpsMetrics.Tests.Core
         public void PositiveNegative098PercentUnitTest()
         {
             //Arrange
-            ChangeFailureRateDA da = new();
             int percent = 98;
             int samples = 100;
             List<ChangeFailureRateBuild> builds = GenerateSamples(samples);
@@ -132,7 +126,6 @@ namespace DevOpsMetrics.Tests.Core
         public void PositiveNegative100PercentUnitTest()
         {
             //Arrange
-            ChangeFailureRateDA da = new();
             int percent = 100;
             int samples = 100;
             List<ChangeFailureRateBuild> builds = GenerateSamples(samples);

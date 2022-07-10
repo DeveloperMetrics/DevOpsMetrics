@@ -7,6 +7,7 @@ using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace DevOpsMetrics.Core.DataAccess
 {
@@ -16,7 +17,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 string organization, string project, string buildName, bool useCache)
         {
             List<AzureDevOpsBuild> builds = new List<AzureDevOpsBuild>();
-            Newtonsoft.Json.Linq.JArray list = null;
+            JArray list = null;
             if (useCache == true)
             {
                 //Get the builds from Azure storage
@@ -27,7 +28,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get the builds from the Azure DevOps API
                 AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
-                list = await api.GetAzureDevOpsBuildsJArray(patToken, organization, project);
+                list = await AzureDevOpsAPIAccess.GetAzureDevOpsBuildsJArray(patToken, organization, project);
             }
             if (list != null)
             {
@@ -49,7 +50,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 string owner, string repo, string workflowName, string workflowId, bool useCache)
         {
             List<GitHubActionsRun> runs = new List<GitHubActionsRun>();
-            Newtonsoft.Json.Linq.JArray list = null;
+            JArray list = null;
             if (useCache == true)
             {
                 //Get the builds from Azure storage

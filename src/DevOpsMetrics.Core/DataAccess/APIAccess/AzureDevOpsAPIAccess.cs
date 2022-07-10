@@ -3,15 +3,16 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace DevOpsMetrics.Core.DataAccess.APIAccess
 {
     public class AzureDevOpsAPIAccess
     {
         //Call the Azure DevOps Rest API to get a JSON array of builds
-        public async Task<Newtonsoft.Json.Linq.JArray> GetAzureDevOpsBuildsJArray(string patToken, string organization, string project)
+        public static async Task<JArray> GetAzureDevOpsBuildsJArray(string patToken, string organization, string project)
         {
-            Newtonsoft.Json.Linq.JArray list = null;
+            JArray list = null;
             string url = $"https://dev.azure.com/{organization}/{project}/_apis/build/builds?api-version=5.1&queryOrder=BuildQueryOrder,finishTimeDescending";
             string response = await GetAzureDevOpsMessage(url, patToken);
             if (string.IsNullOrEmpty(response) == false)
@@ -23,9 +24,9 @@ namespace DevOpsMetrics.Core.DataAccess.APIAccess
         }
 
         //Call the Azure DevOps Rest API to get a JSON array of pull requests
-        public async Task<Newtonsoft.Json.Linq.JArray> GetAzureDevOpsPullRequestsJArray(string patToken, string organization, string project, string repository)
+        public async Task<JArray> GetAzureDevOpsPullRequestsJArray(string patToken, string organization, string project, string repository)
         {
-            Newtonsoft.Json.Linq.JArray list = null;
+            JArray list = null;
             //https://docs.microsoft.com/en-us/rest/api/azure/devops/git/pull%20requests/get%20pull%20requests?view=azure-devops-rest-5.1
             string url = $"https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repository}/pullrequests?searchCriteria.status=completed&api-version=5.1";
             string response = await GetAzureDevOpsMessage(url, patToken);
@@ -38,9 +39,9 @@ namespace DevOpsMetrics.Core.DataAccess.APIAccess
         }
 
         //Call the Azure DevOps Rest API to get a JSON array of pull request commits
-        public async Task<Newtonsoft.Json.Linq.JArray> GetAzureDevOpsPullRequestCommitsJArray(string patToken, string organization, string project, string repository, string pullRequestId)
+        public async Task<JArray> GetAzureDevOpsPullRequestCommitsJArray(string patToken, string organization, string project, string repository, string pullRequestId)
         {
-            Newtonsoft.Json.Linq.JArray list = null;
+            JArray list = null;
             //https://docs.microsoft.com/en-us/rest/api/azure/devops/git/pull%20request%20commits/get%20pull%20request%20commits?view=azure-devops-rest-5.1
             string url = $"https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repository}/pullRequests/{pullRequestId}/commits?api-version=5.1";
             string response = await GetAzureDevOpsMessage(url, patToken);

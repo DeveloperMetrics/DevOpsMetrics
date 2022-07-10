@@ -154,7 +154,6 @@ namespace DevOpsMetrics.Tests.Core
         public void LeadTimeForChangesFiveSevenDaysNoneTest()
         {
             //Arrange
-            LeadTimeForChanges metrics = new();
 
             //Act
             float result = 0f;

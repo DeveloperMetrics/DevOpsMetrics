@@ -95,7 +95,7 @@ namespace DevOpsMetrics.Function
             }
 
             ChangeFailureRateDA changeFailureRateDA = new();
-            ChangeFailureRateModel changeFailureRateModel = changeFailureRateDA.GetChangeFailureRate(false, tableStorageConfig,
+            ChangeFailureRateModel changeFailureRateModel = ChangeFailureRateDA.GetChangeFailureRate(false, tableStorageConfig,
                 DevOpsPlatform.GitHub,
                 owner, repo, branch, workflowName,
                 numberOfDays, maxNumberOfItems);

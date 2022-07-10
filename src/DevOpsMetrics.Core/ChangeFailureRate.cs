@@ -72,7 +72,7 @@ namespace DevOpsMetrics.Core
             return ChangeFailureRateList.Where(x => x.Key > DateTime.Now.AddDays(-numberOfDays)).ToList();
         }
 
-        public string GetChangeFailureRateRating(float changeFailureRate)
+        public static string GetChangeFailureRateRating(float changeFailureRate)
         {
             string rating = "";
             if (changeFailureRate < 0)

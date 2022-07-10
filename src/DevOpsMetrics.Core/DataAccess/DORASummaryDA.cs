@@ -2,6 +2,7 @@
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.Common;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace DevOpsMetrics.Core.DataAccess
 {
@@ -12,7 +13,7 @@ namespace DevOpsMetrics.Core.DataAccess
         {
             DORASummaryItem model = null;
             AzureTableStorageDA da = new();
-            Newtonsoft.Json.Linq.JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableDORASummaryItem, owner);
+            JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableDORASummaryItem, owner);
             List<DORASummaryItem> doraItems = JsonConvert.DeserializeObject<List<DORASummaryItem>>(list.ToString());
             foreach (DORASummaryItem item in doraItems)
             {

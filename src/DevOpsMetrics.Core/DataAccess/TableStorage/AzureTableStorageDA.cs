@@ -109,7 +109,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 int numberOfDays, int maxNumberOfItems)
         {
             AzureDevOpsAPIAccess api = new AzureDevOpsAPIAccess();
-            JArray items = await api.GetAzureDevOpsBuildsJArray(patToken, organization, project);
+            JArray items = await AzureDevOpsAPIAccess.GetAzureDevOpsBuildsJArray(patToken, organization, project);
 
             int itemsAdded = 0;
             TableStorageCommonDA tableBuildsDA = new TableStorageCommonDA(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableAzureDevOpsBuilds);

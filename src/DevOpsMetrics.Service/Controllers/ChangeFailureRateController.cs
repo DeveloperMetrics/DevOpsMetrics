@@ -24,7 +24,7 @@ namespace DevOpsMetrics.Service.Controllers
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             ChangeFailureRateDA da = new();
-            ChangeFailureRateModel model = da.GetChangeFailureRate(getSampleData, tableStorageConfig, targetDevOpsPlatform,
+            ChangeFailureRateModel model = ChangeFailureRateDA.GetChangeFailureRate(getSampleData, tableStorageConfig, targetDevOpsPlatform,
                 organization_owner, project_repo, branch, buildName_workflowName,
                 numberOfDays, maxNumberOfItems);
             return model;
@@ -36,7 +36,7 @@ namespace DevOpsMetrics.Service.Controllers
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             ChangeFailureRateDA da = new();
-            return await da.UpdateChangeFailureRate(tableStorageConfig,
+            return await ChangeFailureRateDA.UpdateChangeFailureRate(tableStorageConfig,
                 organization_owner, project_repo, buildName_workflowName,
                 percentComplete, numberOfDays);
 

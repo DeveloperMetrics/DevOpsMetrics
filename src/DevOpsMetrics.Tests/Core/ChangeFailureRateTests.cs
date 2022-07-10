@@ -32,7 +32,7 @@ namespace DevOpsMetrics.Tests.Core
             ChangeFailureRateModel model = new()
             {
                 ChangeFailureRateMetric = result,
-                ChangeFailureRateMetricDescription = metrics.GetChangeFailureRateRating(result),
+                ChangeFailureRateMetricDescription = ChangeFailureRate.GetChangeFailureRateRating(result),
                 IsProjectView = false
             };
 
@@ -60,7 +60,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessChangeFailureRate(changeFailureRateList, numberOfDays);
-            string rating = metrics.GetChangeFailureRateRating(result);
+            string rating = ChangeFailureRate.GetChangeFailureRateRating(result);
 
             //Assert
             Assert.AreEqual(0.2f, result);
@@ -84,7 +84,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessChangeFailureRate(changeFailureRateList, numberOfDays);
-            string rating = metrics.GetChangeFailureRateRating(result);
+            string rating = ChangeFailureRate.GetChangeFailureRateRating(result);
 
             //Assert
             Assert.AreEqual(0.4f, result);
@@ -108,7 +108,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessChangeFailureRate(changeFailureRateList, numberOfDays);
-            string rating = metrics.GetChangeFailureRateRating(result);
+            string rating = ChangeFailureRate.GetChangeFailureRateRating(result);
 
             //Assert
             Assert.AreEqual(0.6f, result);
@@ -125,7 +125,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             float result = metrics.ProcessChangeFailureRate(changeFailureRateList, numberOfDays);
-            string rating = metrics.GetChangeFailureRateRating(result);
+            string rating = ChangeFailureRate.GetChangeFailureRateRating(result);
 
             //Assert
             Assert.AreEqual(-1, result);

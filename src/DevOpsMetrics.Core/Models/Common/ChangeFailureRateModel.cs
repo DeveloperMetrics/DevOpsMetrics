@@ -7,7 +7,7 @@ namespace DevOpsMetrics.Core.Models.Common
     {
         public ChangeFailureRateModel()
         {
-            ChangeFailureRateBuildList = new List<ChangeFailureRateBuild>();
+            ChangeFailureRateBuildList = new();
         }
 
         public string DeploymentName
