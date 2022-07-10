@@ -11,7 +11,7 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class MeanTimeToRestoreDA
     {
-        public MeanTimeToRestoreModel GetAzureMeanTimeToRestore(bool getSampleData,
+        public static MeanTimeToRestoreModel GetAzureMeanTimeToRestore(bool getSampleData,
                 TableStorageConfiguration tableStorageConfig,
                 DevOpsPlatform targetDevOpsPlatform, string resourceGroup,
                 int numberOfDays, int maxNumberOfItems)
@@ -45,7 +45,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 alerts = alerts.OrderBy(o => o.timestamp).ToList();
 
                 //Compile the events,  looking for pairs, using the ordered data, and name, resource group name and resource name
-                List<MeanTimeToRestoreEvent> events = new List<MeanTimeToRestoreEvent>();
+                List<MeanTimeToRestoreEvent> events = new();
 
                 //Loop through first finding the activated alerts
                 int i = 0;
@@ -55,7 +55,7 @@ namespace DevOpsMetrics.Core.DataAccess
                     if (item.timestamp > DateTime.Now.AddDays(-numberOfDays))
                     {
                         i++;
-                        MeanTimeToRestoreEvent newEvent = new MeanTimeToRestoreEvent
+                        MeanTimeToRestoreEvent newEvent = new()
                         {
                             Name = item.name,
                             Resource = item.resourceName,
@@ -100,7 +100,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 }
 
                 //Calculate the MTTR metric
-                MeanTimeToRestore mttr = new MeanTimeToRestore();
+                MeanTimeToRestore mttr = new();
                 List<KeyValuePair<DateTime, TimeSpan>> dateList = ConvertEventsToDateList(events);
                 float averageMTTR = mttr.ProcessMeanTimeToRestore(dateList, numberOfDays);
 
@@ -120,7 +120,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 }
 
                 //Pull together the results into a single model
-                MeanTimeToRestoreModel model = new MeanTimeToRestoreModel
+                MeanTimeToRestoreModel model = new()
                 {
                     TargetDevOpsPlatform = targetDevOpsPlatform,
                     ResourceGroup = resourceGroup,
@@ -197,7 +197,7 @@ namespace DevOpsMetrics.Core.DataAccess
         //Return a sample dataset to help with testing
         private static List<MeanTimeToRestoreEvent> GetSampleMTTREvents(string resourceGroup)
         {
-            List<MeanTimeToRestoreEvent> results = new List<MeanTimeToRestoreEvent>();
+            List<MeanTimeToRestoreEvent> results = new();
             MeanTimeToRestoreEvent item1 = new MeanTimeToRestoreEvent
             {
                 ResourceGroup = resourceGroup,
@@ -211,7 +211,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 ItemOrder = 1
             };
             results.Add(item1);
-            MeanTimeToRestoreEvent item2 = new MeanTimeToRestoreEvent
+            MeanTimeToRestoreEvent item2 = new()
             {
                 ResourceGroup = resourceGroup,
                 StartTime = DateTime.Now.AddDays(-5).AddMinutes(-5),
@@ -220,7 +220,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 ItemOrder = 2
             };
             results.Add(item2);
-            MeanTimeToRestoreEvent item3 = new MeanTimeToRestoreEvent
+            MeanTimeToRestoreEvent item3 = new()
             {
                 StartTime = DateTime.Now.AddDays(-4).AddMinutes(-1),
                 EndTime = DateTime.Now.AddDays(-4).AddMinutes(0),
@@ -228,7 +228,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 ItemOrder = 3
             };
             results.Add(item3);
-            MeanTimeToRestoreEvent item4 = new MeanTimeToRestoreEvent
+            MeanTimeToRestoreEvent item4 = new()
             {
                 StartTime = DateTime.Now.AddDays(-3).AddMinutes(-4),
                 EndTime = DateTime.Now.AddDays(-3).AddMinutes(0),
@@ -244,7 +244,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 ItemOrder = 5
             };
             results.Add(item5);
-            MeanTimeToRestoreEvent item6 = new MeanTimeToRestoreEvent
+            MeanTimeToRestoreEvent item6 = new()
             {
                 StartTime = DateTime.Now.AddDays(-1).AddMinutes(-5),
                 EndTime = DateTime.Now.AddDays(-1).AddMinutes(0),

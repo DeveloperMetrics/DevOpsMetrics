@@ -94,7 +94,7 @@ namespace DevOpsMetrics.Core.DataAccess
                                 maxTime = branchBuild.finishTime;
                             }
                         }
-                        PullRequestModel pullRequest = new PullRequestModel
+                        PullRequestModel pullRequest = new()
                         {
                             PullRequestId = pr.PullRequestId,
                             Branch = branch,
@@ -181,7 +181,7 @@ namespace DevOpsMetrics.Core.DataAccess
                 string owner, string repo, string mainBranch, string workflowName, string workflowId,
                 int numberOfDays, int maxNumberOfItems, bool useCache)
         {
-            ListUtility<PullRequestModel> utility = new ListUtility<PullRequestModel>();
+            ListUtility<PullRequestModel> utility = new();
             LeadTimeForChanges leadTimeForChanges = new();
             List<PullRequestModel> pullRequests = new();
             if (getSampleData == false)
@@ -226,7 +226,7 @@ namespace DevOpsMetrics.Core.DataAccess
                     if (pr != null)
                     {
                         List<GitHubPRCommit> pullRequestCommits = await PullRequestsDA.GetGitHubPullRequestCommits(clientId, clientSecret, tableStorageConfig, owner, repo, pr.number, useCache);
-                        List<Commit> commits = new List<Commit>();
+                        List<Commit> commits = new();
                         foreach (GitHubPRCommit item in pullRequestCommits)
                         {
                             commits.Add(new Commit
@@ -320,7 +320,7 @@ namespace DevOpsMetrics.Core.DataAccess
                     averageBuildHours = (float)totalHours / (float)mainBranchRuns.Count;
                 }
 
-                LeadTimeForChangesModel model = new LeadTimeForChangesModel
+                LeadTimeForChangesModel model = new()
                 {
                     ProjectName = repo,
                     TargetDevOpsPlatform = DevOpsPlatform.GitHub,
@@ -339,7 +339,7 @@ namespace DevOpsMetrics.Core.DataAccess
             else
             {
                 List<PullRequestModel> samplePullRequests = utility.GetLastNItems(CreatePullRequestsSample(DevOpsPlatform.GitHub), maxNumberOfItems);
-                LeadTimeForChangesModel model = new LeadTimeForChangesModel
+                LeadTimeForChangesModel model = new()
                 {
                     ProjectName = repo,
                     TargetDevOpsPlatform = DevOpsPlatform.GitHub,
@@ -392,7 +392,7 @@ namespace DevOpsMetrics.Core.DataAccess
             prs.Add(pr1);
             prs.Add(pr1);
             prs.Add(pr1);
-            PullRequestModel pr2 = new PullRequestModel
+            PullRequestModel pr2 = new()
             {
                 PullRequestId = "124",
                 Branch = "branch2",
@@ -414,7 +414,7 @@ namespace DevOpsMetrics.Core.DataAccess
             prs.Add(pr2);
             prs.Add(pr2);
 
-            PullRequestModel pr3 = new PullRequestModel
+            PullRequestModel pr3 = new()
             {
                 PullRequestId = "126",
                 Branch = "branch3",

@@ -83,7 +83,7 @@ namespace DevOpsMetrics.Function
             MeanTimeToRestoreModel meanTimeToRestoreModel = new();
             if (resourceGroup != null)
             {
-                meanTimeToRestoreModel = meanTimeToRestoreDA.GetAzureMeanTimeToRestore(false, tableStorageConfig,
+                meanTimeToRestoreModel = MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(false, tableStorageConfig,
                 DevOpsPlatform.GitHub,
                 resourceGroup,
                 numberOfDays, maxNumberOfItems);
