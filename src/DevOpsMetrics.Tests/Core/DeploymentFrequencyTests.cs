@@ -104,7 +104,6 @@ namespace DevOpsMetrics.Tests.Core
         public void DeploymentFrequencyRatingEliteTest()
         {
             //Arrange
-            DeploymentFrequency metrics = new();
             float metric = 1.01f; //daily
 
             //Act
@@ -126,7 +125,6 @@ namespace DevOpsMetrics.Tests.Core
         public void DeploymentFrequencyRatingHighTest()
         {
             //Arrange
-            DeploymentFrequency metrics = new();
             float metric = 1f / 7f; //weekly
 
             //Act
@@ -148,7 +146,6 @@ namespace DevOpsMetrics.Tests.Core
         public void DeploymentFrequencyRatingMediumTest()
         {
             //Arrange
-            DeploymentFrequency metrics = new();
             float metric = 1f / (30f * 6); //six monthly
 
             //Act
@@ -171,7 +168,6 @@ namespace DevOpsMetrics.Tests.Core
         public void DeploymentFrequencyRatingLowTest()
         {
             //Arrange
-            DeploymentFrequency metrics = new();
             float metric = (1f / 365f); //more once than every 6 monthes
 
             //Act
@@ -193,7 +189,6 @@ namespace DevOpsMetrics.Tests.Core
         public void DeploymentFrequencyRatingZeroNoneTest()
         {
             //Arrange
-            DeploymentFrequency metrics = new();
             float metric = 0f; //None
 
             //Act
