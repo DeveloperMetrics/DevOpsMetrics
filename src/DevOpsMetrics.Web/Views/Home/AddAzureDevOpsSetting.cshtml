@@ -5,7 +5,8 @@
 <div class="row">
     <div class="col-md-12">
         <h2>Add new Azure DevOps setting</h2>
-
+        <br />
+        <span style="color: red">Note: This is a POC. Please don't put your secrets/PAT tokens in here. While they are safely stored in an Azure Key Vault - I can still see them, and I don't want to have access to your secrets. Besides - you don't know me. Be smart. Only upload secrets to a website with a verified publisher or one you control.</span>
         <br />
         <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="UpdateAzureDevOpsSetting">
             <h3><img src="~/images/AzureDevops-icon.png" style="width:32px;" />&nbsp; Azure DevOps</h3>
