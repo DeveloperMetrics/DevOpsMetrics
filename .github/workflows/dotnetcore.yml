@@ -82,12 +82,15 @@ jobs:
         AppSettings.KeyVaultClientId: "${{ secrets.KeyVaultClientId }}" 
         AppSettings.KeyVaultClientSecret: "${{ secrets.KeyVaultClientSecret }}" 
     - name: view appsettings file after substitution
+      if: 0==1
       run: Get-Content -Path "src/DevOpsMetrics.Tests/appsettings.json"
     - name: "check secrets"
+      if: 0==1
       run: echo $("${{ secrets.GitHubClientId }}" -eq "samsmithnz")
     - name: build test project
       run: dotnet build src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Debug
     - name: Create empty file to get around error in .NET 6
+      if: 0==1
       run: |
         #Create the secrets.json file
         New-Item src\DevOpsMetrics.Tests\secrets.json
