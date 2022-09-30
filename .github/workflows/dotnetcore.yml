@@ -84,7 +84,7 @@ jobs:
     - name: view appsettings file after substitution
       run: Get-Content -Path "src/DevOpsMetrics.Tests/appsettings.json"
     - name: "check secrets"
-      run: echo $("${{ secrets.GitHubClientId }}" == "samsmithnz")
+      run: echo $("${{ secrets.GitHubClientId }}" -eq "samsmithnz")
     - name: build test project
       run: dotnet build src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Debug
     - name: Create empty file to get around error in .NET 6
