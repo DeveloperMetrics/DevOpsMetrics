@@ -81,24 +81,8 @@ jobs:
         AppSettings.AzureStorageAccountConfigurationString: "${{ secrets.AzureStorageConnectionString }}" 
         AppSettings.KeyVaultClientId: "${{ secrets.KeyVaultClientId }}" 
         AppSettings.KeyVaultClientSecret: "${{ secrets.KeyVaultClientSecret }}" 
-    - name: view appsettings file after substitution
-      if: 0==1
-      run: Get-Content -Path "src/DevOpsMetrics.Tests/appsettings.json"
-    - name: "check secrets"
-      if: 0==1
-      run: echo $("${{ secrets.GitHubClientId }}" -eq "samsmithnz")
     - name: build test project
       run: dotnet build src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Debug
-    - name: Create empty file to get around error in .NET 6
-      if: 0==1
-      run: |
-        #Create the secrets.json file
-        New-Item src\DevOpsMetrics.Tests\secrets.json
-        #Insert in empty braces to make it a valid (empty) json file
-        "{}" | Set-Content src\DevOpsMetrics.Tests\secrets.json
-        #Copy the secrets.json file to the bin directory, so that it will be present for the tests 
-        xcopy "${{ github.workspace }}\src\DevOpsMetrics.Tests\secrets.json" "${{ github.workspace }}\src\DevOpsMetrics.Tests\bin\Debug\net6.0\"  /f /y
-      shell: powershell
     - name: Run automated unit and integration tests
       run: dotnet test src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --no-build --configuration Debug --logger trx /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov --settings:./src/DevOpsMetrics.Tests/CodeCoverage.runsettings 
     - name: Publish coverage report to coveralls.io
