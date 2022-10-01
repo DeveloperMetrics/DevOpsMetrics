@@ -32,7 +32,7 @@ More information about high performing DevOps metrics can be found in a [blog po
   - How does it work? We look at the number of successful pipeline runs and match it with Pull Requests 
   - Assumptions/things we can't currently measure:
       - We currently count the pull request and deployment durations, averaging them for the time period to create the lead time for changes metric.
-      - We start measuring at the first commit for a branch. Development is variable that depends on the task, and doesn't help with this measurement.
+      - We start measuring at the last commit for a branch to the PR close/merge time. Development is variable that depends on the task, and doesn't help with this measurement.
       - We assume we are following a git flow process, creating feature branches and merging back to the main branch, which is deployed to production on the completion of pull requests
       - We assume that the user requires pull requests to merge work into the main branch - we are looking at all work that is not on this main branch - hence we currently only support one main branch.
   - Current limitations: Only one repo and main branch can be specified
