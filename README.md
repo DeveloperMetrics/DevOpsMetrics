@@ -70,7 +70,7 @@ Currently the CI/CD process:
 4. Deploys the demo website to a Azure web app (https://devops-prod-eu-web.azurewebsites.net)
 4. Deploys the function website to a Azure function 
 
-Dependabot runs daily to check for dependency upgrades, and will automatically create a pull request, and approve/close it if all of the tests pass successfully 
+Dependabot runs daily to check for dependency upgrades. 
 
 ![Architecture diagram](https://github.com/samsmithnz/DevOpsMetrics/blob/main/ReadmeImages/Architecture.png)
 
