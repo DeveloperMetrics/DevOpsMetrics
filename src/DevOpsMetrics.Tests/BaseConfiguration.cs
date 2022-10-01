@@ -14,7 +14,7 @@ namespace DevOpsMetrics.Tests
             IConfigurationBuilder configBuilder = new ConfigurationBuilder()
                .SetBasePath(AppContext.BaseDirectory)
                .AddJsonFile("appsettings.json");
-            configBuilder.AddUserSecrets<BaseConfiguration>();
+            configBuilder.AddUserSecrets<BaseConfiguration>(true);
             Configuration = configBuilder.Build();
 
             string keyVaultURL = Configuration["AppSettings:KeyVaultURL"];
