@@ -21,7 +21,7 @@
     "test:watch": "jest --watch --notify --notifyMode=change --coverage"
   },
   "dependencies": {
-    "app-root-path": "^3.0.0",
+    "app-root-path": "^3.1.0",
     "axios": "^0.27.2",
     "fs": "0.0.1-security",
     "moment": "^2.29.4",

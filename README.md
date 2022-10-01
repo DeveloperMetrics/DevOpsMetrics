@@ -93,7 +93,7 @@ The API can generate a URL for static badges, but more work is needed. Some curr
 - Upgrades to store data in CosmosDB (currently in Azure storage)
 - Reviewing the current GitHub probot approach, to find a better target than issues (perhaps a metrics readme.md file?)
 - Support for more scenarios, releases, etc
-- Azure DevOps marketplace integrations, so you can see the changes real time on your project/repo. (lower priority to focus on GitHub)
+- ~~Azure DevOps marketplace integrations, so you can see the changes real time on your project/repo.~~ (lower priority to focus on GitHub)
 
 # References
 
