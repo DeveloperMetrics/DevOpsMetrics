@@ -24,7 +24,7 @@ More information about high performing DevOps metrics can be found in a [blog po
   - How does it work? We look at the number of successful pipeline runs. 
   - Assumptions/things we can't currently measure: 
       - The build is multi-stage, and leads to a deployment in a production environment.
-      - We only look at a single branch (usually the main branch), hence we ignore feature branches (as these probably aren't deploying to production')
+      - We only look at a single branch (usually the main branch), hence we ignore feature branches (as these probably aren't deploying to production)
   - Current limitations: Only one build/run/branch can be specified
 ![Deployment Frequency](https://github.com/samsmithnz/DevOpsMetrics/blob/main/ReadmeImages/DeploymentFrequencyDemo.png)
 
