@@ -81,7 +81,6 @@ jobs:
         AppSettings.AzureStorageAccountConfigurationString: "${{ secrets.AzureStorageConnectionString }}" 
         AppSettings.KeyVaultClientId: "${{ secrets.KeyVaultClientId }}" 
         AppSettings.KeyVaultClientSecret: "${{ secrets.KeyVaultClientSecret }}" 
-    - run: echo ${{secrets.KeyVaultClientId}} | sed 's/./& /g'
     - name: build test project
       run: dotnet build src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Debug
     - name: Run automated unit and integration tests
