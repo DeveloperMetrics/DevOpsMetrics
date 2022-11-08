@@ -16,7 +16,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: '7.0.x'
     
     #Publish dotnet objects
     - name: .NET Publish Web Service
@@ -68,7 +68,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: '7.0.x'
     #Run automated .NET tests   
     - name: Variable Substitution appsettings file for tests
       uses: microsoft/variable-substitution@v1
