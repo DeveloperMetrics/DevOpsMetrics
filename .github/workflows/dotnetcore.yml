@@ -11,8 +11,25 @@ jobs:
 
   build:
     runs-on: windows-latest 
+    outputs: # https://stackoverflow.com/questions/59175332/using-output-from-a-previous-job-in-a-new-one-in-a-github-action
+      Version: ${{ steps.gitversion.outputs.SemVer }}
+      CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}  
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 #fetch-depth is needed for GitVersion  
+    #Install and calculate the new version with GitVersion  
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.15
+      with:
+        versionSpec: 5.x
+    - name: Determine Version
+      uses: gittools/actions/gitversion/execute@v0.9.15
+      id: gitversion # step id used as reference for output values
+    - name: Display GitVersion outputs
+      run: |
+        echo "Version: ${{ steps.gitversion.outputs.SemVer }}"
+        echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}"
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
@@ -264,6 +281,19 @@ jobs:
     - name: Deploy function app settings
       run: az webapp config appsettings set --name "devops-prod-eu-function" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:WebServiceURL=https://devops-prod-eu-service.azurewebsites.net/" "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}"  "AppSettings:KeyVaultURL=https://devops-prod-eu-vault.vault.azure.net/" "AzureStorageAccountContainerAzureDevOpsBuilds=DevOpsAzureDevOpsBuilds" "AppSettings:AzureStorageAccountContainerAzureDevOpsPRs=DevOpsAzureDevOpsPRs" "AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits=DevOpsAzureDevOpsPRCommits" "AppSettings:AzureStorageAccountContainerAzureDevOpsSettings=DevOpsAzureDevOpsSettings" "AppSettings:AzureStorageAccountContainerGitHubRuns=DevOpsGitHubRuns" "AppSettings:AzureStorageAccountContainerGitHubPRs=DevOpsGitHubPRs" "AppSettings:AzureStorageAccountContainerGitHubPRCommits=DevOpsGitHubPRCommits" "AppSettings:AzureStorageAccountContainerGitHubSettings=DevOpsGitHubSettings" "AppSettings:AzureStorageAccountContainerMTTR=DevOpsMTTR" "AppSettings:AzureStorageAccountContainerChangeFailureRate=DevOpsChangeFailureRate" "AppSettings:AzureStorageAccountContainerTableLog=DevOpsLog"
 
+    - name: Display GitVersion outputs
+      run: |
+        echo "Version: ${{ needs.buildWebsite.outputs.Version }}" 
+        echo "CommitsSinceVersionSource: ${{ needs.buildWebsite.outputs.CommitsSinceVersionSource }}" 
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      if: github.ref == 'refs/heads/main' && needs.buildWebsite.outputs.CommitsSinceVersionSource > 0 #Only create a release if there has been a commit/version change
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{ needs.buildWebsite.outputs.Version }}
+        release_name: Release ${{ needs.buildWebsite.outputs.Version }}
 
   swapDeploymentSlots:
     runs-on: ubuntu-latest # Note, Azure CLI requires a Linux runner...    
