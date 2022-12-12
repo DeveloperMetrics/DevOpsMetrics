@@ -3,7 +3,7 @@
 [![Build](https://GitHub.com/samsmithnz/DevOpsMetrics/workflows/CI/CD/badge.svg)](https://GitHub.com/samsmithnz/DevOpsMetrics/actions?query=workflow%3ACI%2FCD)
 [![Coverage Status](https://coveralls.io/repos/github/samsmithnz/DevOpsMetrics/badge.svg?branch=main)](https://coveralls.io/github/samsmithnz/DevOpsMetrics?branch=main)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=samsmithnz_DevOpsMetrics&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=samsmithnz_DevOpsMetrics)
-[![Current Release](https://img.shields.io/github/release/samsmithnz/samsmithnz_DevOpsMetrics/all.svg)](https://github.com/samsmithnz/samsmithnz_DevOpsMetrics/releases)
+[![Current Release](https://img.shields.io/github/release/samsmithnz/DevOpsMetrics/all.svg)](https://github.com/samsmithnz/DevOpsMetrics/releases)
 
 
 **Why should we care about DevOps Metrics and what are they?** All engineering, including software, needs metrics to track performance, but many metrics when measured individually, can be 'gamed', or don't encourage the right behaviors or incentives. This has been an issue with metrics for many years. The [DORA metrics](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf) are a step in the right direction, combining several metrics that encourage the behaviors and incentives - and hence that encourage DevOps teams to perform at a high level of performance.
