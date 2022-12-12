@@ -84,13 +84,12 @@ jobs:
     - name: build test project
       run: dotnet build src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Debug
     - name: Run automated unit and integration tests
-      run: dotnet test src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --no-build --configuration Debug --logger trx /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov --settings:./src/DevOpsMetrics.Tests/CodeCoverage.runsettings 
+      run: dotnet test src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --no-build --configuration Debug --logger trx -e:CollectCoverage=true -e:CoverletOutput=TestResults/ -e:CoverletOutputFormat=lcov --settings:./src/DevOpsMetrics.Tests/CodeCoverage.runsettings 
     - name: Publish coverage report to coveralls.io
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: src/DevOpsMetrics.Tests/TestResults/coverage.info 
-      continue-on-error: true
 
 
   buildFunction:
