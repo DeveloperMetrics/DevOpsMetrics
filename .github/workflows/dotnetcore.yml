@@ -284,17 +284,17 @@ jobs:
 
     - name: Display GitVersion outputs
       run: |
-        echo "Version: ${{ needs.buildWebsite.outputs.Version }}" 
-        echo "CommitsSinceVersionSource: ${{ needs.buildWebsite.outputs.CommitsSinceVersionSource }}" 
+        echo "Version: ${{ needs.build.outputs.Version }}" 
+        echo "CommitsSinceVersionSource: ${{ needs.build.outputs.CommitsSinceVersionSource }}" 
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
-      if: github.ref == 'refs/heads/main' && needs.buildWebsite.outputs.CommitsSinceVersionSource > 0 #Only create a release if there has been a commit/version change
+      if: github.ref == 'refs/heads/main' && needs.build.outputs.CommitsSinceVersionSource > 0 #Only create a release if there has been a commit/version change
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: ${{ needs.buildWebsite.outputs.Version }}
-        release_name: Release ${{ needs.buildWebsite.outputs.Version }}
+        tag_name: ${{ needs.build.outputs.Version }}
+        release_name: Release ${{ needs.build.outputs.Version }}
 
   swapDeploymentSlots:
     runs-on: ubuntu-latest # Note, Azure CLI requires a Linux runner...    
