@@ -105,7 +105,7 @@ namespace DevOpsMetrics.Function
                 DeploymentFrequencyBadgeURL = deploymentFrequencyModel.BadgeURL,
                 DeploymentFrequencyBadgeWithMetricURL = deploymentFrequencyModel.BadgeWithMetricURL,
                 LeadTimeForChangesBadgeURL = leadTimeForChangesModel.BadgeURL,
-                LeadTimeForChangesWithMetricURL = leadTimeForChangesModel.BadgeWithMetricURL,
+                LeadTimeForChangesBadgeWithMetricURL = leadTimeForChangesModel.BadgeWithMetricURL,
                 MeanTimeToRestoreBadgeURL = meanTimeToRestoreModel.BadgeURL,
                 MeanTimeToRestoreBadgeWithMetricURL = meanTimeToRestoreModel.BadgeWithMetricURL,
                 ChangeFailureRateBadgeURL = changeFailureRateModel.BadgeURL,
