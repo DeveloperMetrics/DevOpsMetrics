@@ -85,7 +85,7 @@ The API can generate a URL for static badges, but more work is needed. Some curr
 
 ## Deploying to Azure
 
-- Run the infrastructure setup script [Currently \src\DevOpsMetrics.Infrastructure\DeployInfrastructureToAzure2.ps1]
+- Run the infrastructure setup script [Currently \src\DevOpsMetrics.Infrastructure\DeployInfrastructureToAzure.ps1]
 - DevOpsMetrics.Service setup: Keyvault URL and application insights id set as part of setup script
 - Browse to [website name].azurewebsites.net/Home/Settings, and setup your projects as needed. Note that all secrets are loaded into the keyvault and are controlled by you!
 
