@@ -50,19 +50,6 @@
         "description": "Object Id of the AAD user that will have admin access to the SQL server and the Key Vault. Available from the Get-AzureRMADUser or the Get-AzureRMADServicePrincipal cmdlets"
       }
     }
-    //,
-    //"azureDevOpsPrincipalId": {
-    //  "type": "string",
-    //  "metadata": {
-    //    "description": "Object Id of the service principal that will have Azure DevOps access to the vault. Available from the Get-AzureRMADUser or the Get-AzureRMADServicePrincipal cmdlets"
-    //  }
-    //}
-    //"integrationTestsPrincipalId": {
-    //  "type": "string",
-    //  "metadata": {
-    //    "description": "Object Id of the service principal that is used to run integration tests. Available from the Get-AzureRMADUser or the Get-AzureRMADServicePrincipal cmdlets"
-    //  }
-    //}
   },
   "variables": {
   },
@@ -91,41 +78,7 @@
             "permissions": {
               "secrets": "[parameters('vaultAdminSecretsPermissions')]"
             }
-          }//,
-          //{
-          //  "tenantId": "[subscription().tenantid]",
-          //  "objectId": "[parameters('azureDevOpsPrincipalId')]",
-          //  "permissions": {
-          //    "secrets": "[parameters('vaultAdminSecretsPermissions')]"
-          //  }
-          //}
-          ////{
-          ////  "tenantId": "[subscription().tenantid]",
-          ////  "objectId": "[reference(concat(resourceId('Microsoft.Web/sites', variables('serviceAPIName')), '/providers/Microsoft.ManagedIdentity/Identities/default'), '2015-08-31-PREVIEW').principalId]",
-          ////  "permissions": {
-          ////    "keys": [],
-          ////    "secrets": "[parameters('vaultUserSecretsPermissions')]",
-          ////    "certificates": []
-          ////  }
-          ////},
-          ////{
-          ////  "tenantId": "[subscription().tenantid]",
-          ////  "objectId": "[reference(concat(resourceId('Microsoft.Web/sites', variables('webSiteName')), '/providers/Microsoft.ManagedIdentity/Identities/default'), '2015-08-31-PREVIEW').principalId]",
-          ////  "permissions": {
-          ////    "keys": [],
-          ////    "secrets": "[parameters('vaultUserSecretsPermissions')]",
-          ////    "certificates": []
-          ////  }
-          ////},
-          //{
-          //  "tenantId": "[subscription().tenantid]",
-          //  "objectId": "[parameters('integrationTestsPrincipalId')]",
-          //  "permissions": {
-          //    "keys": [],
-          //    "secrets": "[parameters('vaultUserSecretsPermissions')]",
-          //    "certificates": []
-          //  }
-          //}
+          }
         ]
       },
       "resources": []
