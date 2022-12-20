@@ -1,17 +1,23 @@
-﻿# az login
-# az account set --subscription 65b8d298-e5bd-4735-912e-8b9c510c4e00
+﻿# Run the following commands before running the deploy script, and adjust your subscription ID
+## az login
+## az account set --subscription afb8f550-216d-4848-b6f1-73b1bbf58f1e
 CLS
-$resourceGroupName="devopsmetrics"
+# Adjust these settings!
+## This is a suffix to uniquely identify your resources
+$suffix="rm2"
+## Retrieve this from Azure AD
+$administrationEmailAccount="rodrigo.moreirao_microsoft.com#EXT#@fdpo.onmicrosoft.com"
+$fileRoot = "C:\LocalDev\github\DevOpsMetrics\src"
+
+$resourceGroupName="devopsmetrics$suffix"
 $resourceLocation="eastus"
-$keyVaultName="devops-prod-eu-vault"
-$storageName="devopsprodeustorage"
-$hostingName="devops-prod-eu-hosting"
-$appInsightsName="devops-prod-eu-appinsights"
-$serviceName="devops-prod-eu-service"
-$websiteName="devops-prod-eu-web"
-$functionName="devops-prod-eu-function"
-$administrationEmailAccount="samsmithnz_gmail.com#EXT#@samsmithnzgmail.onmicrosoft.com"
-$fileRoot = "C:\Users\samsm\source\repos\DevOpsMetrics\src"
+$keyVaultName="devops-prod-eu-vault$suffix"
+$storageName="devopsprodeustorage$suffix"
+$hostingName="devops-prod-eu-hosting$suffix"
+$appInsightsName="devops-prod-eu-appinsights$suffix"
+$serviceName="devops-prod-eu-service$suffix"
+$websiteName="devops-prod-eu-web$suffix"
+$functionName="devops-prod-eu-function$suffix"
 $templatesLocation="$fileRoot\DevOpsMetrics.Infrastructure\Templates"
 $error.clear()
 
@@ -55,7 +61,7 @@ Write-Host "3. Resource group created: "$stopwatch.Elapsed.TotalSeconds
 #Get user object id: https://docs.microsoft.com/en-us/cli/azure/ad/user?view=azure-cli-latest#az_ad_user_show
 $userJson = az ad user show --id $administrationEmailAccount
 $user = $userJson | ConvertFrom-Json
-$administratorUserPrincipalId = $user.objectid
+$administratorUserPrincipalId = $user.id
 #Get all deleted key vault names. If it matches, purge it
 #$results = az keyvault list-deleted --subscription 07db7d0b-a6cb-4e58-b07e-e1d541c39f5b
 #$results = $results | ConvertFrom-Json
