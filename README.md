@@ -83,12 +83,24 @@ The API can generate a URL for static badges, but more work is needed. Some curr
 
 # Setup
 
-## Deploying to Azure
+## Deploying Azure Infra
 
 - Run the infrastructure setup script [Currently \src\DevOpsMetrics.Infrastructure\DeployInfrastructureToAzure.ps1]
 - DevOpsMetrics.Service setup: Keyvault URL and application insights id set as part of setup script
 - Browse to [website name].azurewebsites.net/Home/Settings, and setup your projects as needed. Note that all secrets are loaded into the keyvault and are controlled by you!
 
+## Deploy code using Github Actions
+### Set the following Github Secrets:
+  - AzureDevOpsPATToken: Azure DevOps PAT Toekn
+  - GitHubClientId: Client Id of OAuth Application in Github
+  - GitHubClientSecret: Secret of OAuth Application in Github
+  - AzureStorageConnectionString:  Azure Storage Account Connection String
+  - KeyVaultClientId: Azure AD Application Client ID
+  - KeyVaultClientSecret: Azure AD Application Secret
+  - AZ_CLIENT_ID: 
+  - AZ_CLIENT_SECRET: 
+  - AZ_SUBSCRIPTION_ID: 
+  - AZ_TENANT_ID: 
 ## To debug/run tests
 
 # What's next?
