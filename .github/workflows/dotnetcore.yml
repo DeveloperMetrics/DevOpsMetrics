@@ -76,37 +76,37 @@ jobs:
         path: src/ProbotMetrics
 
 
-  test:
-    runs-on: windows-latest
-    permissions:
-      actions: read 
-    steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0.x
-    #Run automated .NET tests   
-    - name: Variable Substitution appsettings file for tests
-      uses: microsoft/variable-substitution@v1
-      with:
-        files: 'src/DevOpsMetrics.Tests/appsettings.json'
-      env:
-        AppSettings.AzureDevOpsPatToken: "${{ secrets.AzureDevOpsPATToken }}"
-        AppSettings.GitHubClientId: "${{ secrets.GitHubClientId }}" 
-        AppSettings.GitHubClientSecret: "${{ secrets.GitHubClientSecret }}" 
-        AppSettings.AzureStorageAccountConfigurationString: "${{ secrets.AzureStorageConnectionString }}" 
-        AppSettings.KeyVaultClientId: "${{ secrets.KeyVaultClientId }}" 
-        AppSettings.KeyVaultClientSecret: "${{ secrets.KeyVaultClientSecret }}" 
-    - name: build test project
-      run: dotnet build src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Debug
-    - name: Run automated unit and integration tests
-      run: dotnet test src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --no-build --configuration Debug --logger trx -e:CollectCoverage=true -e:CoverletOutput=TestResults/ -e:CoverletOutputFormat=lcov --settings:./src/DevOpsMetrics.Tests/CodeCoverage.runsettings 
-    - name: Publish coverage report to coveralls.io
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: src/DevOpsMetrics.Tests/TestResults/coverage.info 
+  # test:
+  #   runs-on: windows-latest
+  #   permissions:
+  #     actions: read 
+  #   steps:
+  #   - uses: actions/checkout@v3
+  #   - name: Setup .NET Core
+  #     uses: actions/setup-dotnet@v3
+  #     with:
+  #       dotnet-version: 7.0.x
+  #   #Run automated .NET tests   
+  #   - name: Variable Substitution appsettings file for tests
+  #     uses: microsoft/variable-substitution@v1
+  #     with:
+  #       files: 'src/DevOpsMetrics.Tests/appsettings.json'
+  #     env:
+  #       AppSettings.AzureDevOpsPatToken: "${{ secrets.AzureDevOpsPATToken }}"
+  #       AppSettings.GitHubClientId: "${{ secrets.GitHubClientId }}" 
+  #       AppSettings.GitHubClientSecret: "${{ secrets.GitHubClientSecret }}" 
+  #       AppSettings.AzureStorageAccountConfigurationString: "${{ secrets.AzureStorageConnectionString }}" 
+  #       AppSettings.KeyVaultClientId: "${{ secrets.KeyVaultClientId }}" 
+  #       AppSettings.KeyVaultClientSecret: "${{ secrets.KeyVaultClientSecret }}" 
+  #   - name: build test project
+  #     run: dotnet build src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Debug
+  #   - name: Run automated unit and integration tests
+  #     run: dotnet test src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --no-build --configuration Debug --logger trx -e:CollectCoverage=true -e:CoverletOutput=TestResults/ -e:CoverletOutputFormat=lcov --settings:./src/DevOpsMetrics.Tests/CodeCoverage.runsettings 
+  #   - name: Publish coverage report to coveralls.io
+  #     uses: coverallsapp/github-action@master
+  #     with:
+  #       github-token: ${{ secrets.GITHUB_TOKEN }}
+  #       path-to-lcov: src/DevOpsMetrics.Tests/TestResults/coverage.info 
 
 
   buildFunction:
@@ -172,7 +172,7 @@ jobs:
     runs-on: windows-latest
     needs: 
     - build      
-    - test
+    # - test
     - buildFunction
     # - sonarCloud
     if: github.ref == 'refs/heads/main'
