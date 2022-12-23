@@ -143,7 +143,9 @@ namespace DevOpsMetrics.Service.Controllers
         private async Task<KeyVaultSecret> CreateKeyVaultSecret(string secretName, string secretValue)
         {
             string keyVaultURI = Configuration["AppSettings:KeyVaultURL"];
-            SecretClient secretClient = new(new Uri(keyVaultURI), new DefaultAzureCredential());
+            string keyClientId = Configuration["AppSettings:KeyVaultClientId"];
+            string keyVaultSecret = Configuration["AppSettings:KeyVaultClientSecret"];
+            SecretClient secretClient = new(new Uri(keyVaultURI), new ClientSecretCredential(tenantId:"16b3c013-d300-468d-ac64-7eda0820b6d3", clientId:keyClientId, clientSecret:keyVaultSecret));
             if (String.IsNullOrEmpty(secretValue)){
                 throw new Exception("Secret value is empty for Secret " + secretName);
             }
