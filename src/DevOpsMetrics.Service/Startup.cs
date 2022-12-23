@@ -36,6 +36,7 @@ namespace DevOpsMetrics.Service
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                
             }
 
             app.UseHttpsRedirection();

@@ -35,6 +35,12 @@ jobs:
     #     name: serviceapp
     #     path: ${{ github.workspace }}/webservice
 
+    # Login with the secret SP details
+    - name: Log into Azure
+      uses: azure/login@v1
+      with:
+        creds: '{"clientId":"${{ secrets.AZ_CLIENT_ID }}","clientSecret":"${{ secrets.AZ_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZ_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZ_TENANT_ID }}"}'
+
     - name: Deploy web service to Azure WebApp
       uses: Azure/webapps-deploy@v2.2.5
       id: deploywebservice
