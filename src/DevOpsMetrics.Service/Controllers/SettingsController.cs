@@ -63,7 +63,7 @@ namespace DevOpsMetrics.Service.Controllers
                      organization, project, repository, branch, buildName, buildId, resourceGroup, itemOrder, showSetting);
         }
 
-        [HttpPost("UpdateGitHubSetting")]
+        [HttpGet("UpdateGitHubSetting")]
         public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret,
                 string owner, string repo,
                 string branch, string workflowName, string workflowId, string resourceGroup,
@@ -89,7 +89,7 @@ namespace DevOpsMetrics.Service.Controllers
                     owner, repo, branch, workflowName, workflowId, resourceGroup, itemOrder, showSetting);
         }
 
-        [HttpPost("UpdateDevOpsMonitoringEvent")]
+        [HttpGet("UpdateDevOpsMonitoringEvent")]
         public async Task<bool> UpdateDevOpsMonitoringEvent([FromBody] MonitoringEvent monitoringEvent)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
@@ -105,7 +105,7 @@ namespace DevOpsMetrics.Service.Controllers
             return AzureTableStorageDA.GetProjectLogsFromStorage(tableStorageConfig, partitionKey);
         }
 
-        [HttpPut("UpdateAzureDevOpsProjectLog")]
+        [HttpGet("UpdateAzureDevOpsProjectLog")]
         public async Task<bool> UpdateAzureDevOpsProjectLog(string organization, string project, string repository,
             int buildsUpdated, int prsUpdated, string buildUrl, string prUrl,
             string exceptionMessage, string exceptionStackTrace)
@@ -127,7 +127,7 @@ namespace DevOpsMetrics.Service.Controllers
             return AzureTableStorageDA.GetProjectLogsFromStorage(tableStorageConfig, partitionKey);
         }
 
-        [HttpPut("UpdateGitHubProjectLog")]
+        [HttpGet("UpdateGitHubProjectLog")]
         public async Task<bool> UpdateGitHubProjectLog(string owner, string repo,
             int buildsUpdated, int prsUpdated, string buildUrl, string prUrl,
             string exceptionMessage, string exceptionStackTrace)
@@ -147,7 +147,7 @@ namespace DevOpsMetrics.Service.Controllers
             if (String.IsNullOrEmpty(secretValue)){
                 throw new Exception("Secret value is empty for Secret " + secretName);
             }
-            
+
             return await secretClient.SetSecretAsync(secretName, secretValue);
         }
 
