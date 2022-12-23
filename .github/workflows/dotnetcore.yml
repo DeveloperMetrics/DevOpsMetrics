@@ -3,8 +3,8 @@ name: CI/CD
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    paths-ignore:
+      - "src/DevOpsMetrics.Service/**"
   workflow_dispatch:
 
 jobs:
@@ -152,8 +152,6 @@ jobs:
 #    - name: Deploy probot app settings
 #      run: az webapp config appsettings set --name devops-prod-eu-probot --resource-group "DevOpsMetricsProbot" --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true
 
-
-  #Deploy the artifacts to Azure staging slots
   deploy:
     runs-on: windows-latest
     needs: 
@@ -199,7 +197,7 @@ jobs:
         app-name: devops-prod-eu-servicerm2
         package: serviceapp
     - name: Deploy web service app settings
-      run: az webapp config appsettings set --name "devops-prod-eu-servicerm2" --resource-group "devopsmetricsrm2" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}" #--slot "staging" 
+      run: az webapp config appsettings set --name "devops-prod-eu-servicerm2" --resource-group "devopsmetricsrm2" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}"
     
     - name: Deploy website to Azure WebApp
       uses: Azure/webapps-deploy@v2.2.5
@@ -245,29 +243,3 @@ jobs:
       with:
         tag_name: ${{ needs.build.outputs.Version }}
         release_name: Release ${{ needs.build.outputs.Version }}
-
-  # swapDeploymentSlots:
-  #   runs-on: ubuntu-latest # Note, Azure CLI requires a Linux runner...    
-  #   needs: [build, deployToStagingSlots]
-  #   #Only swap from staging to production slots if running off the main branch - we don't want to deploy off feature branches/PRs
-  #   if: github.ref == 'refs/heads/main' && 0 == 1    
-  #   steps:
-  #   # Login with the secret SP details
-  #   - name: Log into Azure
-  #     uses: azure/login@v1
-  #     with:
-  #       creds: ${{ secrets.AZURE_SP }}     
-  #     #Swap staging slots with prod
-  #   - name: Swap web service staging slot to production
-  #     uses: Azure/cli@v1.0.7
-  #     with:
-  #       inlineScript: az webapp deployment slot swap --name "devops-prod-eu-servicerm2" --resource-group "devopsmetricsrm2" --slot staging --target-slot production
-  #   - name: Deploy web service app settings
-  #     run: az webapp config appsettings set --name "devops-prod-eu-servicerm2" --resource-group "devopsmetricsrm2" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}"     
-  #   - name: Swap web site staging slot to production
-  #     uses: Azure/cli@v1.0.7
-  #     with:
-  #       inlineScript: az webapp deployment slot swap --name "devops-prod-eu-webrm2" --resource-group "devopsmetricsrm2" --slot staging --target-slot production
-  #   - name: Deploy website app settings
-  #     run: az webapp config appsettings set --name devops-prod-eu-webrm2 --resource-group "devopsmetricsrm2" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  
-

@@ -63,7 +63,7 @@ namespace DevOpsMetrics.Service.Controllers
                      organization, project, repository, branch, buildName, buildId, resourceGroup, itemOrder, showSetting);
         }
 
-        [HttpGet("UpdateGitHubSetting")]
+        [HttpPost("UpdateGitHubSetting")]
         public async Task<bool> UpdateGitHubSetting(string clientId, string clientSecret,
                 string owner, string repo,
                 string branch, string workflowName, string workflowId, string resourceGroup,
@@ -105,7 +105,7 @@ namespace DevOpsMetrics.Service.Controllers
             return AzureTableStorageDA.GetProjectLogsFromStorage(tableStorageConfig, partitionKey);
         }
 
-        [HttpGet("UpdateAzureDevOpsProjectLog")]
+        [HttpPut("UpdateAzureDevOpsProjectLog")]
         public async Task<bool> UpdateAzureDevOpsProjectLog(string organization, string project, string repository,
             int buildsUpdated, int prsUpdated, string buildUrl, string prUrl,
             string exceptionMessage, string exceptionStackTrace)
@@ -127,7 +127,7 @@ namespace DevOpsMetrics.Service.Controllers
             return AzureTableStorageDA.GetProjectLogsFromStorage(tableStorageConfig, partitionKey);
         }
 
-        [HttpGet("UpdateGitHubProjectLog")]
+        [HttpPut("UpdateGitHubProjectLog")]
         public async Task<bool> UpdateGitHubProjectLog(string owner, string repo,
             int buildsUpdated, int prsUpdated, string buildUrl, string prUrl,
             string exceptionMessage, string exceptionStackTrace)
@@ -144,6 +144,10 @@ namespace DevOpsMetrics.Service.Controllers
         {
             string keyVaultURI = Configuration["AppSettings:KeyVaultURL"];
             SecretClient secretClient = new(new Uri(keyVaultURI), new DefaultAzureCredential());
+            if (String.IsNullOrEmpty(secretValue)){
+                throw new Exception("Secret value is empty for Secret " + secretName);
+            }
+            
             return await secretClient.SetSecretAsync(secretName, secretValue);
         }
 
