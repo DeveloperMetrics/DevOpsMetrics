@@ -9,7 +9,7 @@ on:
 
 jobs:
 
-  build_deploy:
+  build:
     runs-on: windows-latest 
     outputs: # https://stackoverflow.com/questions/59175332/using-output-from-a-previous-job-in-a-new-one-in-a-github-action
       Version: ${{ steps.gitversion.outputs.SemVer }}
@@ -29,51 +29,42 @@ jobs:
       run: dotnet publish src/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj --configuration Debug --output ${{ github.workspace }}/webservice
      
     #Publish build artifacts to GitHub
-    # - name: Upload web service build artifacts back to GitHub
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: serviceapp
-    #     path: ${{ github.workspace }}/webservice
+    - name: Upload web service build artifacts back to GitHub
+      uses: actions/upload-artifact@v3
+      with:
+        name: serviceapp
+        path: ${{ github.workspace }}/webservice
 
+  deploy:
+    runs-on: windows-latest
+    needs: 
+    - build      
+    # - test
+    # - buildFunction
+    # - sonarCloud
+
+    steps:        
     # Login with the secret SP details
     - name: Log into Azure
       uses: azure/login@v1
       with:
         creds: '{"clientId":"${{ secrets.AZ_CLIENT_ID }}","clientSecret":"${{ secrets.AZ_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZ_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZ_TENANT_ID }}"}'
+    
+    #Download the artifacts from GitHub
+    - name: Download serviceapp artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: serviceapp 
+        path: serviceapp
 
+   
     - name: Deploy web service to Azure WebApp
       uses: Azure/webapps-deploy@v2.2.5
       id: deploywebservice
       with:
         app-name: devops-prod-eu-servicerm2
         package: serviceapp
-
     - name: Deploy web service app settings
       run: az webapp config appsettings set --name "devops-prod-eu-servicerm2" --resource-group "devopsmetricsrm2" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}"
-
-  # deploy:
-  #   runs-on: windows-latest
-  #   needs: 
-  #   - build      
-  #   # - test
-  #   # - buildFunction
-  #   # - sonarCloud
-
-  #   steps:        
-  #   # Login with the secret SP details
-  #   - name: Log into Azure
-  #     uses: azure/login@v1
-  #     with:
-  #       creds: '{"clientId":"${{ secrets.AZ_CLIENT_ID }}","clientSecret":"${{ secrets.AZ_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZ_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZ_TENANT_ID }}"}'
-    
-  #   #Download the artifacts from GitHub
-  #   - name: Download serviceapp artifact
-  #     uses: actions/download-artifact@v3
-  #     with:
-  #       name: serviceapp 
-  #       path: serviceapp
-
-   
-    
     
 
