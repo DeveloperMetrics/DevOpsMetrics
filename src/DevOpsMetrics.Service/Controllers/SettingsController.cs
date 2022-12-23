@@ -145,7 +145,11 @@ namespace DevOpsMetrics.Service.Controllers
             string keyVaultURI = Configuration["AppSettings:KeyVaultURL"];
             string keyClientId = Configuration["AppSettings:KeyVaultClientId"];
             string keyVaultSecret = Configuration["AppSettings:KeyVaultClientSecret"];
-            SecretClient secretClient = new(new Uri(keyVaultURI), new ClientSecretCredential(tenantId:"16b3c013-d300-468d-ac64-7eda0820b6d3", clientId:keyClientId, clientSecret:keyVaultSecret));
+            string tenantId = Configuration["AppSettings:TenantId"];
+            
+            // Somehow the Default Credentials was not working for me, probably because there's no Managed Identify
+            // This is a work around, to be reviewed later
+            SecretClient secretClient = new(new Uri(keyVaultURI), new ClientSecretCredential(tenantId:tenantId, clientId:keyClientId, clientSecret:keyVaultSecret));
             if (String.IsNullOrEmpty(secretValue)){
                 throw new Exception("Secret value is empty for Secret " + secretName);
             }

@@ -41,7 +41,7 @@ jobs:
         package: ${{ github.workspace }}/webservice
         
     - name: Deploy web service app settings
-      run: az webapp config appsettings set --name "devops-prod-eu-servicerm2" --resource-group "devopsmetricsrm2" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}"
+      run: az webapp config appsettings set --name "devops-prod-eu-servicerm2" --resource-group "devopsmetricsrm2" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}" "AppSettings:TenantId=${{ secrets.AZ_TENANT_ID }}"
 
     
    
