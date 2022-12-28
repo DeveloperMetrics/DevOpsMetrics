@@ -4,7 +4,7 @@
 CLS
 # Adjust these settings!
 ## This is a suffix to uniquely identify your resources
-$suffix="rm2"
+$suffix="rm3"
 ## Retrieve this from Azure AD
 $administrationEmailAccount="rodrigo.moreirao_microsoft.com#EXT#@fdpo.onmicrosoft.com"
 $fileRoot = "C:\LocalDev\github\DevOpsMetrics\src"
@@ -76,21 +76,13 @@ $administratorUserPrincipalId = $user.id
 #        }
 #    }
 #}
-$keyvaultDeployment = az deployment group create --resource-group $resourceGroupName --name $keyVaultName --template-file "$templatesLocation\KeyVault.json" --parameters keyVaultName=$keyVaultName administratorUserPrincipalId=$administratorUserPrincipalId
-#if($error)
-#{
-#    #purge any existing key vault because of soft delete
-#    Write-Host "Purging existing keyvault"
-#    az keyvault purge --name $keyVaultName 
-#    Write-Host "Creating keyvault, round 2"
-#    az deployment group create --resource-group $resourceGroupName --name $keyVaultName --template-file "$templatesLocation\KeyVault.json" --parameters keyVaultName=$keyVaultName administratorUserPrincipalId=$administratorUserSid azureDevOpsPrincipalId=$azureDevOpsPrincipalId
-#    $error.clear()
-#}
+az deployment group create --resource-group $resourceGroupName --name $keyVaultName --template-file "$templatesLocation\KeyVault.bicep" --parameters keyVaultName=$keyVaultName administratorUserPrincipalId=$administratorUserPrincipalId
+
 $timing = -join($timing, "4. Key vault created:: ", $stopwatch.Elapsed.TotalSeconds, "`n");
 Write-Host "4. Key vault created: "$stopwatch.Elapsed.TotalSeconds
 
 #storage
-$storageOutput = az deployment group create --resource-group $resourceGroupName --name $storageName --template-file "$templatesLocation\Storage.json" --parameters storageAccountName=$storageName resourceGroupName=$resourceGroupName
+$storageOutput = az deployment group create --resource-group $resourceGroupName --name $storageName --template-file "$templatesLocation\Storage.bicep" --parameters storageAccountName=$storageName resourceGroupName=$resourceGroupName
 $storageJSON = $storageOutput | ConvertFrom-Json
 $storageAccountConnectionString = $storageJSON.properties.outputs.storageAccountConnectionString.value
 Write-Host "Setting value storageAccountConnectionString to key vault"
@@ -100,12 +92,12 @@ $timing = -join($timing, "5. Storage created: ", $stopwatch.Elapsed.TotalSeconds
 Write-Host "5. Storage created: "$stopwatch.Elapsed.TotalSeconds
 
 #hosting
-az deployment group create --resource-group $resourceGroupName --name $hostingName --template-file "$templatesLocation\WebHosting.json" --parameters hostingPlanName=$hostingName actionGroupName=$actionGroupName 
+az deployment group create --resource-group $resourceGroupName --name $hostingName --template-file "$templatesLocation\WebHosting.bicep" --parameters hostingPlanName=$hostingName actionGroupName=$actionGroupName 
 $timing = -join($timing, "6. Web hosting created: ", $stopwatch.Elapsed.TotalSeconds, "`n");
 Write-Host "6. Web hosting created: "$stopwatch.Elapsed.TotalSeconds
 
 #app insights
-$applicationInsightsOutput = az deployment group create --resource-group $resourceGroupName --name $appInsightsName --template-file "$templatesLocation\ApplicationInsights.json" --parameters applicationInsightsName=$appInsightsName 
+$applicationInsightsOutput = az deployment group create --resource-group $resourceGroupName --name $appInsightsName --template-file "$templatesLocation\ApplicationInsights.bicep" --parameters applicationInsightsName=$appInsightsName 
 $applicationInsightsJSON = $applicationInsightsOutput | ConvertFrom-Json
 $applicationInsightsInstrumentationKey = $applicationInsightsJSON.properties.outputs.applicationInsightsInstrumentationKeyOutput.value
 #Write-Host "Setting value $ApplicationInsightsInstrumentationKey for $applicationInsightsInstrumentationKeyName to key vault"
@@ -115,7 +107,7 @@ $timing = -join($timing, "7. Application created: ", $stopwatch.Elapsed.TotalSec
 Write-Host "7. Application insights created: "$stopwatch.Elapsed.TotalSeconds
 
 #web service app service
-$webserviceOutput = az deployment group create --resource-group $resourceGroupName --name $serviceName --template-file "$templatesLocation\Website.json" --parameters webSiteName=$serviceName hostingPlanName=$hostingName
+$webserviceOutput = az deployment group create --resource-group $resourceGroupName --name $serviceName --template-file "$templatesLocation\Website.bicep" --parameters webSiteName=$serviceName hostingPlanName=$hostingName
 
 #Deploy web service 
 $dotnetPublishOutput = dotnet publish "$fileRoot\DevOpsMetrics.Service\DevOpsMetrics.Service.csproj" --configuration Debug --output "$fileRoot\DevOpsMetrics.Service\bin\webservice" 
@@ -129,7 +121,7 @@ $timing = -join($timing, "8. Web service created: ", $stopwatch.Elapsed.TotalSec
 Write-Host "8. Web service created: "$stopwatch.Elapsed.TotalSeconds
 
 #Web site
-$websiteOutput = az deployment group create --resource-group $resourceGroupName --name $webSiteName --template-file "$templatesLocation\Website.json" --parameters webSiteName=$webSiteName hostingPlanName=$hostingName
+$websiteOutput = az deployment group create --resource-group $resourceGroupName --name $webSiteName --template-file "$templatesLocation\Website.bicep" --parameters webSiteName=$webSiteName hostingPlanName=$hostingName
 #Set secrets into appsettings 
 Write-Host "Setting appsettings $appInsightsName connectionString: $applicationInsightsInstrumentationKey"
 $configWebSetOutput = az webapp config appsettings set --resource-group $resourceGroupName --name $webSiteName --settings "APPINSIGHTS_INSTRUMENTATIONKEY=$applicationInsightsInstrumentationKey" #--slot production
@@ -137,7 +129,7 @@ $timing = -join($timing, "9. Website created: ", $stopwatch.Elapsed.TotalSeconds
 Write-Host "9. Website created: "$stopwatch.Elapsed.TotalSeconds
 
 #function
-$functionOutput = az deployment group create --resource-group $resourceGroupName --name $functionName --template-file "$templatesLocation\function.json" --parameters webSiteName=$functionName hostingPlanName=$hostingName 
+$functionOutput = az deployment group create --resource-group $resourceGroupName --name $functionName --template-file "$templatesLocation\function.bicep" --parameters webSiteName=$functionName hostingPlanName=$hostingName 
 #Set secrets into appsettings 
 Write-Host "Setting appsettings $appInsightsName connectionString: $applicationInsightsInstrumentationKey"
 $configFunctionOutput = az webapp config appsettings set --resource-group $resourceGroupName --name $webSiteName --settings "APPINSIGHTS_INSTRUMENTATIONKEY=$applicationInsightsInstrumentationKey" #--slot production

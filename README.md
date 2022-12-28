@@ -101,6 +101,7 @@ The API can generate a URL for static badges, but more work is needed. Some curr
   - AZ_CLIENT_SECRET: 
   - AZ_SUBSCRIPTION_ID: 
   - AZ_TENANT_ID: 
+  - AZ_RESOURCES_SUFFIX: Suffix for the Azure Resources - as many resources must have unique names
 ## To debug/run tests
 
 # What's next?

@@ -1,0 +1,42 @@
+name: IaC CI/CD
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "src/DevOpsMetrics.Infrastructure/**"
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: "check is AZ_RESOURCES_SUFFIX exists"
+      env: 
+        super_secret: ${{ secrets.AZ_RESOURCES_SUFFIX }}
+      if: ${{ env.super_secret == '' }}
+      run: throw "Must set secret AZ_RESOURCES_SUFFIX"
+        
+      # Checkout code
+    - uses: actions/checkout@main
+
+      # Log into Azure
+    - name: Log into Azure
+      uses: azure/login@v1
+      with:
+        creds: '{"clientId":"${{ secrets.AZ_CLIENT_ID }}","clientSecret":"${{ secrets.AZ_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZ_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZ_TENANT_ID }}"}'
+
+    - name: Run bicep lint
+      working-directory: src/DevOpsMetrics.Infrastructure/Templates/
+      run: az bicep build --file main.bicep
+  
+    - name: Run bicep validation
+      working-directory: src/DevOpsMetrics.Infrastructure/Templates/
+      run: az deployment sub validate --template-file main.bicep --location "${{ secrets.LOCATION }}" --parameters resourcesSuffix="${{ secrets.AZ_RESOURCES_SUFFIX }}"
+
+    - name: Run bicep preview
+      working-directory: src/DevOpsMetrics.Infrastructure/Templates/
+      run: az deployment sub what-if --template-file main.bicep --location "${{ secrets.LOCATION }}" --parameters resourcesSuffix="${{ secrets.AZ_RESOURCES_SUFFIX }}" 
+
+    - name: Run bicep preview
+      working-directory: src/DevOpsMetrics.Infrastructure/Templates/
+      run: az deployment sub create --template-file main.bicep --location "${{ secrets.LOCATION }}" --parameters resourcesSuffix="${{ secrets.AZ_RESOURCES_SUFFIX }}" 
