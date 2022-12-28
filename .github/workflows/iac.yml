@@ -15,9 +15,10 @@ jobs:
 
     - name: "check is AZ_RESOURCES_SUFFIX exists"
       env: 
-        super_secret: ${{ secrets.AZ_RESOURCES_SUFFIX }}
-      if: ${{ env.super_secret == '' }}
-      run: throw "Must set secret AZ_RESOURCES_SUFFIX"
+        resource_suffix_secret: ${{ secrets.AZ_RESOURCES_SUFFIX }}
+        location_secret: ${{ secrets.LOCATION }}
+      if: ${{ (env.resource_suffix_secret == '') || (env.location_secret == '') }}
+      run: throw "Must set secrets AZ_RESOURCES_SUFFIX and LOCATION"
         
       # Checkout code
     - uses: actions/checkout@main
