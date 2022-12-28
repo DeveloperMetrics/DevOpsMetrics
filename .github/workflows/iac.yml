@@ -5,6 +5,7 @@ on:
     branches: [ main ]
     paths:
       - "src/DevOpsMetrics.Infrastructure/**"
+      - ".github/workflows/iac.yml"
   workflow_dispatch:
 
 jobs:
@@ -21,6 +22,14 @@ jobs:
       # Checkout code
     - uses: actions/checkout@main
 
+    - name: Curr Folder
+      working-directory: src/DevOpsMetrics.Infrastructure/Templates/
+      run: pwd
+
+    - name: Check files
+      working-directory: src/DevOpsMetrics.Infrastructure/Templates/
+      run: ls -ltr
+
       # Log into Azure
     - name: Log into Azure
       uses: azure/login@v1
@@ -29,16 +38,16 @@ jobs:
 
     - name: Run bicep lint
       working-directory: src/DevOpsMetrics.Infrastructure/Templates/
-      run: az bicep build --file main.bicep
+      run: az bicep build --file Main.bicep
   
     - name: Run bicep validation
       working-directory: src/DevOpsMetrics.Infrastructure/Templates/
-      run: az deployment sub validate --template-file main.bicep --location "${{ secrets.LOCATION }}" --parameters resourcesSuffix="${{ secrets.AZ_RESOURCES_SUFFIX }}"
+      run: az deployment sub validate --template-file Main.bicep --location "${{ secrets.LOCATION }}" --parameters resourcesSuffix="${{ secrets.AZ_RESOURCES_SUFFIX }}"
 
     - name: Run bicep preview
       working-directory: src/DevOpsMetrics.Infrastructure/Templates/
-      run: az deployment sub what-if --template-file main.bicep --location "${{ secrets.LOCATION }}" --parameters resourcesSuffix="${{ secrets.AZ_RESOURCES_SUFFIX }}" 
+      run: az deployment sub what-if --template-file Main.bicep --location "${{ secrets.LOCATION }}" --parameters resourcesSuffix="${{ secrets.AZ_RESOURCES_SUFFIX }}" 
 
     - name: Run bicep preview
       working-directory: src/DevOpsMetrics.Infrastructure/Templates/
-      run: az deployment sub create --template-file main.bicep --location "${{ secrets.LOCATION }}" --parameters resourcesSuffix="${{ secrets.AZ_RESOURCES_SUFFIX }}" 
+      run: az deployment sub create --template-file Main.bicep --location "${{ secrets.LOCATION }}" --parameters resourcesSuffix="${{ secrets.AZ_RESOURCES_SUFFIX }}" 
