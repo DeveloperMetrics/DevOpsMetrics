@@ -6,6 +6,7 @@ on:
     paths-ignore:
       - "src/DevOpsMetrics.Service/**"
       - ".github/workflows/ci_cd_service.yml"
+      - ".github/workflows/iac.yml"
       - "src/DevOpsMetrics.Infrastructure/**"
   workflow_dispatch:
 

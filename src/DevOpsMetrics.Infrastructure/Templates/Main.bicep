@@ -19,7 +19,7 @@ var serviceName='service-devops-prd-eu-${resourcesSuffix}'
 var websiteName='web-devops-prd-eu-${resourcesSuffix}'
 var functionName='function-devops-prd-eu-${resourcesSuffix}'
 
-module devopsResourceGroup './resourceGroup.bicep' = {
+module devopsResourceGroup './ResourceGroup.bicep' = {
   name: '${resourceGroupName}-resourceGroupDeployment'
   params: {
     resourceGroupName: resourceGroupName
@@ -27,7 +27,7 @@ module devopsResourceGroup './resourceGroup.bicep' = {
   }
 }
 
-module managedIdentity './managedIdentity.bicep' = {
+module managedIdentity './ManagedIdentity.bicep' = {
   name: '${managedIdentityName}-Deployment'
   params: {
     name: managedIdentityName
@@ -99,7 +99,7 @@ module webSite './Website.bicep' = {
   ]
 }
 
-module function './function.bicep' = {
+module function './Function.bicep' = {
   name: '${functionName}-Deployment'
   params: {
     webSiteName: functionName 
