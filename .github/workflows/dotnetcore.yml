@@ -1,4 +1,4 @@
-name: CI/CD Full
+name: CI/CD Web App and Service
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
     paths-ignore:
       - "src/DevOpsMetrics.Service/**"
       - ".github/workflows/ci_cd_service.yml"
+      - "src/DevOpsMetrics.Infrastructure/**"
   workflow_dispatch:
 
 jobs:

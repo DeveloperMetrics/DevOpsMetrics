@@ -1,10 +1,12 @@
-name: IaC CI/CD
+name: CI/CD IaC
 
 on:
   push:
     branches: [ main ]
     paths:
       - "src/DevOpsMetrics.Infrastructure/**"
+  workflow_dispatch:
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
