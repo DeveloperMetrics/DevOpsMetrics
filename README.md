@@ -90,7 +90,8 @@ The API can generate a URL for static badges, but more work is needed. Some curr
 - Browse to [website name].azurewebsites.net/Home/Settings, and setup your projects as needed. Note that all secrets are loaded into the keyvault and are controlled by you!
 
 ## Deploy code using Github Actions
-### Set the following Github Secrets:
+### 1) Create a Service Principal with Owner Role to the Subscription in Azure
+### 2) Set the following Github Secrets:
   - AzureDevOpsPATToken: Azure DevOps PAT Toekn
   - GitHubClientId: Client Id of OAuth Application in Github
   - GitHubClientSecret: Secret of OAuth Application in Github

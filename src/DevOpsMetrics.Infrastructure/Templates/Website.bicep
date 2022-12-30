@@ -54,6 +54,11 @@ resource webSite 'Microsoft.Web/sites@2018-11-01' = {
           name: 'AppSettings:TenantId'
           value: tenantId
         }
+        //This is set for debugging purposes - this will enable Swagger for the Web Service and more logging
+        {
+          name: 'ASPNETCORE_ENVIRONMENT'
+          value: 'Development'
+        }
       ]
     }
   }
