@@ -18,12 +18,8 @@ jobs:
       env: 
         resource_suffix_secret: ${{ secrets.AZ_RESOURCES_SUFFIX }}
         location_secret: ${{ secrets.LOCATION }}
-        azdo_pat_token: ${{ secrets.AzureDevOpsPATToken }}
-        gh_client_id_secret: ${{ secrets.GitHubClientId }}
-        gh_client_secret : ${{ secrets.GitHubClientSecret }}
-        az_storage_connstring_secret: ${{ secrets.AzureStorageConnectionString }}
 
-      if: ${{ (env.resource_suffix_secret == '') || (env.location_secret == '') || (env.azdo_pat_token == '')|| (env.gh_client_id_secret == '')|| (env.gh_client_secret == '') }}
+      if: ${{ (env.resource_suffix_secret == '') || (env.location_secret == '') }}
       run: throw "All Secrects must be set"
         
       # Checkout code
