@@ -26,10 +26,18 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
+
+    - name: Build with dotnet
+      working-directory: src/DevOpsMetrics.Service
+      run: dotnet build --configuration Release
     
-    #Publish dotnet objects
-    - name: .NET Publish Web Service
-      run: dotnet publish src/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj --configuration Debug --output ${{ github.workspace }}/webservice
+    - name: dotnet publish
+      working-directory: src/DevOpsMetrics.Service
+      run: dotnet publish -c Release -o ${{ github.workspace }}/webservice
+
+    # #Publish dotnet objects
+    # - name: .NET Publish Web Service
+    #   run: dotnet publish src/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj --configuration Debug --output ${{ github.workspace }}/webservice
      
     - name: Log into Azure
       uses: azure/login@v1
