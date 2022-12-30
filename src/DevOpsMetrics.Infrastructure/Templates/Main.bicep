@@ -130,6 +130,8 @@ module function './Function.bicep' = {
   scope: resourceGroup(resourceGroupName)
   dependsOn: [
     appInsights
+    storage
+    webService
   ]
 }
 
