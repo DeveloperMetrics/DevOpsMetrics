@@ -25,14 +25,6 @@ jobs:
       # Checkout code
     - uses: actions/checkout@main
 
-    - name: Curr Folder
-      working-directory: src/DevOpsMetrics.Infrastructure/Templates/
-      run: pwd
-
-    - name: Check files
-      working-directory: src/DevOpsMetrics.Infrastructure/Templates/
-      run: ls -ltr
-
       # Log into Azure
     - name: Log into Azure
       uses: azure/login@v1
