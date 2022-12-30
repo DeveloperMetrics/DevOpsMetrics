@@ -77,12 +77,14 @@ module webService './Website.bicep' = {
   params: {
     webSiteName: serviceName 
     hostingPlanName: hostingName
+    managedIdentityId: managedIdentity.outputs.userAssignedManagedIdentityId
     applicationInsightsInstrumentationKey:appInsights.outputs.applicationInsightsInstrumentationKeyOutput
     keyVaultName:keyVaultName
   }
   scope: resourceGroup(resourceGroupName)
   dependsOn: [
     appInsights
+    storage
   ]
 }
 
@@ -91,11 +93,13 @@ module webSite './Website.bicep' = {
   params: {
     webSiteName: websiteName 
     hostingPlanName: hostingName
+    managedIdentityId: managedIdentity.outputs.userAssignedManagedIdentityId
     applicationInsightsInstrumentationKey:appInsights.outputs.applicationInsightsInstrumentationKeyOutput
   }
   scope: resourceGroup(resourceGroupName)
   dependsOn: [
     appInsights
+    storage
   ]
 }
 

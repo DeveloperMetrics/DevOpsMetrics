@@ -30,12 +30,12 @@ namespace DevOpsMetrics.Service
 
                     //Load a connection to our Azure key vault instance
                     string keyVaultURL = configuration["AppSettings:KeyVaultURL"];
-                    string clientId = configuration["AppSettings:KeyVaultClientId"];
-                    string clientSecret = configuration["AppSettings:KeyVaultClientSecret"];
+                    // string clientId = configuration["AppSettings:KeyVaultClientId"];
+                    // string clientSecret = configuration["AppSettings:KeyVaultClientSecret"];
                     AzureServiceTokenProvider azureServiceTokenProvider = new();
                     KeyVaultClient keyVaultClient = new(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
-                    //builder.AddAzureKeyVault(keyVaultURL, keyVaultClient, new DefaultKeyVaultSecretManager());
-                    builder.AddAzureKeyVault(keyVaultURL, clientId, clientSecret);
+                    builder.AddAzureKeyVault(keyVaultURL, keyVaultClient, new DefaultKeyVaultSecretManager());
+                    // builder.AddAzureKeyVault(keyVaultURL, clientId, clientSecret);
                     //configuration = builder.Build();
 
                 })

@@ -11,6 +11,7 @@ on:
 jobs:
   validate_deploy:
     runs-on: ubuntu-latest
+    
     steps:
 
     - name: "Check mandatory Secrets"

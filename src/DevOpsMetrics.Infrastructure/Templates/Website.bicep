@@ -1,7 +1,15 @@
 param webSiteName string
 param hostingPlanName string
+param managedIdentityId string
 param applicationInsightsInstrumentationKey string
+param storageConnectionString string = ''
 param keyVaultName string = ''
+// These to access Key Vault should not be here ideally - to be checked later
+param keyVaultClientId string = ''
+@secure()
+param keyVaultSecret string = ''
+param tenantId string = ''
+
 
 resource webSite 'Microsoft.Web/sites@2018-11-01' = {
   name: webSiteName
@@ -9,6 +17,12 @@ resource webSite 'Microsoft.Web/sites@2018-11-01' = {
   kind: 'app'
   tags: {
     displayName: 'Web Service Webapp'
+  }
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentityId}': {}
+    }
   }
   properties: {
     name: webSiteName
@@ -23,6 +37,22 @@ resource webSite 'Microsoft.Web/sites@2018-11-01' = {
         {
           name: 'AppSettings:KeyVaultURL'
           value: 'https://${keyVaultName}.vault.azure.net/'
+        }
+        {
+          name: 'AppSettings:AzureStorageAccountConfigurationString'
+          value: storageConnectionString
+        }
+        {
+          name: 'AppSettings:KeyVaultClientId'
+          value: keyVaultClientId
+        }
+        {
+          name: 'AppSettings:KeyVaultClientSecret'
+          value: keyVaultSecret
+        }
+        {
+          name: 'AppSettings:TenantId'
+          value: tenantId
         }
       ]
     }
