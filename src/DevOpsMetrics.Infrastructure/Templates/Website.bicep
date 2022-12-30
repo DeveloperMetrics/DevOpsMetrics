@@ -9,6 +9,7 @@ param azureDevOpsPatToken string = ''
 param gitHubClientId string = ''
 @secure()
 param gitHubClientSecret string = ''
+param webServiceURL string = ''
 
 resource webSite 'Microsoft.Web/sites@2018-11-01' = {
   name: webSiteName
@@ -58,8 +59,14 @@ resource webSite 'Microsoft.Web/sites@2018-11-01' = {
           name: 'ASPNETCORE_ENVIRONMENT'
           value: 'Development'
         }
+        {
+          name: 'AppSettings:WebServiceURL'
+          value: webServiceURL
+        }
       ]
     }
   }
   dependsOn: []
 }
+
+output url string = 'https://${webSite.properties.defaultHostName}'

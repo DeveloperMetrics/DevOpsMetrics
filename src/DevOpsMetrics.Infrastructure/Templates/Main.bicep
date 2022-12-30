@@ -10,6 +10,7 @@ param location string = deployment().location
 param resourcesSuffix string = ''
 param azureDevOpsPatToken string = ''
 param gitHubClientId string = ''
+@secure()
 param gitHubClientSecret string = ''
 
 
@@ -103,11 +104,13 @@ module webSite './Website.bicep' = {
     hostingPlanName: hostingName
     managedIdentityId: managedIdentity.outputs.userAssignedManagedIdentityId
     applicationInsightsInstrumentationKey:appInsights.outputs.applicationInsightsInstrumentationKeyOutput
+    webServiceURL: webService.outputs.url
   }
   scope: resourceGroup(resourceGroupName)
   dependsOn: [
     appInsights
     storage
+    webService
   ]
 }
 
@@ -117,6 +120,12 @@ module function './Function.bicep' = {
     webSiteName: functionName 
     hostingPlanName: hostingName
     applicationInsightsInstrumentationKey:appInsights.outputs.applicationInsightsInstrumentationKeyOutput
+    storageConnectionString: storage.outputs.storageAccountConnectionString
+    keyVaultName:keyVaultName
+    azureDevOpsPatToken: azureDevOpsPatToken
+    gitHubClientId: gitHubClientId
+    gitHubClientSecret: gitHubClientSecret
+    webServiceURL: webService.outputs.url
   }
   scope: resourceGroup(resourceGroupName)
   dependsOn: [
