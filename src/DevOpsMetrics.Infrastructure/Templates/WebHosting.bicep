@@ -1,4 +1,5 @@
 param hostingPlanName string
+param location string = resourceGroup().location
 
 @description('Describes plan\'s pricing tier and instance size. Check details at https://azure.microsoft.com/en-us/pricing/details/app-service/')
 @allowed([
@@ -20,7 +21,7 @@ param hostingPlanSKUCapacity int = 1
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2015-08-01' = {
   name: hostingPlanName
-  location: resourceGroup().location
+  location: location
   tags: {
     displayName: 'Hosting Plan'
   }

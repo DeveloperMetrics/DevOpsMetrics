@@ -10,10 +10,11 @@ param gitHubClientId string = ''
 @secure()
 param gitHubClientSecret string = ''
 param webServiceURL string = ''
+param location string = resourceGroup().location
 
 resource webSite 'Microsoft.Web/sites@2018-11-01' = {
   name: webSiteName
-  location: resourceGroup().location
+  location: location
   kind: 'app'
   tags: {
     displayName: 'Web Service Webapp'

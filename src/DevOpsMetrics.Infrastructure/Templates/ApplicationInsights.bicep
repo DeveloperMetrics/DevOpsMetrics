@@ -1,8 +1,9 @@
 param applicationInsightsName string
+param location string = resourceGroup().location
 
 resource applicationInsights 'Microsoft.Insights/components@2015-05-01' = {
   name: applicationInsightsName
-  location: resourceGroup().location
+  location: location
   tags: {
     displayName: 'Application Insights'
   }

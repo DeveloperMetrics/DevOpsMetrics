@@ -6,11 +6,7 @@ param vaultAdminSecretsPermissions array = [
   'all'
 ]
 
-@description('Permissions to grant user access to get and list secrets in the vault.')
-param vaultUserSecretsPermissions array = [
-  'get'
-  'list'
-]
+param location string = resourceGroup().location
 
 @description('SKU for the vault')
 @allowed([
@@ -30,7 +26,7 @@ param administratorUserPrincipalId string
 
 resource keyVault 'Microsoft.KeyVault/vaults@2016-10-01' = {
   name: keyVaultName
-  location: resourceGroup().location
+  location: location
   tags: {
     displayName: 'KeyVault'
   }

@@ -1,6 +1,5 @@
 param name string
-
-var location = resourceGroup().location
+param location string = resourceGroup().location
 
 // https://docs.microsoft.com/en-us/azure/templates/microsoft.managedidentity/userassignedidentities?tabs=bicep
 resource userAssignedManagedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {

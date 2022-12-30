@@ -16,7 +16,7 @@ param gitHubClientSecret string = ''
 
 var resourceGroupName = 'rg-devopsmetrics-${resourcesSuffix}'
 var managedIdentityName='app-id-devops-${resourcesSuffix}'
-var keyVaultName='vault-devops-prd-eu-${resourcesSuffix}'
+// var keyVaultName='vault-devops-prd-eu-${resourcesSuffix}'
 var storageName='stgdevopsprdeu${resourcesSuffix}'
 var hostingName='hosting-devops-prd-eu-${resourcesSuffix}'
 var appInsightsName='appinsights-devops-prd-eu-${resourcesSuffix}'

@@ -8,16 +8,16 @@ param azureDevOpsPatToken string
 param gitHubClientId string
 @secure()
 param gitHubClientSecret string
+param location string = resourceGroup().location
 
 resource webSite 'Microsoft.Web/sites@2018-11-01' = {
   name: webSiteName
-  location: resourceGroup().location
+  location: location
   kind: 'functionapp'
   tags: {
     displayName: 'Function'
   }
   properties: {
-    name: webSiteName
     serverFarmId: resourceId('Microsoft.Web/serverfarms', hostingPlanName)
     httpsOnly: true
     siteConfig:{
@@ -69,10 +69,6 @@ resource webSite 'Microsoft.Web/sites@2018-11-01' = {
         {
           name: 'AppSettings:AzureStorageAccountContainerGitHubRuns'
           value: 'DevOpsGitHubRuns'
-        }
-        {
-          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: 'applicationInsightsInstrumentationKey'
         }
         {
           name: 'AppSettings:AzureStorageAccountContainerTableLog'
