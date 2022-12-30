@@ -1,0 +1,49 @@
+name: CI/CD Service
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "src/DevOpsMetrics.Web/**"
+      - ".github/workflows/ci_cd_website.yml"
+  workflow_dispatch:
+
+jobs:
+
+  build_deploy:
+    runs-on: ubuntu-latest
+    env:
+      WEB_SITE_NAME: 'web-devops-prd-eu-${{ secrets.AZ_RESOURCES_SUFFIX }}'
+ 
+    outputs: # https://stackoverflow.com/questions/59175332/using-output-from-a-previous-job-in-a-new-one-in-a-github-action
+      Version: ${{ steps.gitversion.outputs.SemVer }}
+      CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}  
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 #fetch-depth is needed for GitVersion  
+   
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+
+    - name: Build with dotnet
+      working-directory: src/DevOpsMetrics.Web
+      run: dotnet build --configuration Release
+    
+    - name: dotnet publish
+      working-directory: src/DevOpsMetrics.Web
+      run: dotnet publish -c Release -o ${{ github.workspace }}/website
+
+    - name: Log into Azure
+      uses: azure/login@v1
+      with:
+        creds: '{"clientId":"${{ secrets.AZ_CLIENT_ID }}","clientSecret":"${{ secrets.AZ_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZ_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZ_TENANT_ID }}"}'
+
+    - name: Deploy web service to Azure WebApp
+      uses: Azure/webapps-deploy@v2.2.5
+      id: deploywebsite
+      with:
+        app-name: ${{env.WEB_SITE_NAME}}
+        package: ${{ github.workspace }}/website
