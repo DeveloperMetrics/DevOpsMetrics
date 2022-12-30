@@ -10,10 +10,10 @@ on:
 jobs:
 
   build_deploy:
+    runs-on: ubuntu-latest
     env:
       WEB_SERVICE_NAME: 'service-devops-prd-eu-${{ secrets.AZ_RESOURCES_SUFFIX }}'
-
-    runs-on: windows-latest 
+ 
     outputs: # https://stackoverflow.com/questions/59175332/using-output-from-a-previous-job-in-a-new-one-in-a-github-action
       Version: ${{ steps.gitversion.outputs.SemVer }}
       CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}  
