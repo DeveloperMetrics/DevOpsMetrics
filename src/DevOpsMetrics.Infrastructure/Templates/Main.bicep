@@ -85,7 +85,7 @@ module webService './Website.bicep' = {
     managedIdentityId: managedIdentity.outputs.userAssignedManagedIdentityId
     applicationInsightsInstrumentationKey:appInsights.outputs.applicationInsightsInstrumentationKeyOutput
     storageConnectionString: storage.outputs.storageAccountConnectionString
-    keyVaultName:keyVaultName
+    // keyVaultName:keyVaultName
     azureDevOpsPatToken: azureDevOpsPatToken
     gitHubClientId: gitHubClientId
     gitHubClientSecret: gitHubClientSecret
@@ -121,7 +121,7 @@ module function './Function.bicep' = {
     hostingPlanName: hostingName
     applicationInsightsInstrumentationKey:appInsights.outputs.applicationInsightsInstrumentationKeyOutput
     storageConnectionString: storage.outputs.storageAccountConnectionString
-    keyVaultName:keyVaultName
+    // keyVaultName:keyVaultName
     azureDevOpsPatToken: azureDevOpsPatToken
     gitHubClientId: gitHubClientId
     gitHubClientSecret: gitHubClientSecret
