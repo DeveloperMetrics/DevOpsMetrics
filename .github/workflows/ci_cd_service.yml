@@ -12,7 +12,6 @@ jobs:
   build_deploy:
     env:
       WEB_SERVICE_NAME: 'service-devops-prd-eu-${{ secrets.AZ_RESOURCES_SUFFIX }}'
-      RESOURCE_GROUP_NAME: 'rg-devopsmetrics-${{ secrets.AZ_RESOURCES_SUFFIX }}'
 
     runs-on: windows-latest 
     outputs: # https://stackoverflow.com/questions/59175332/using-output-from-a-previous-job-in-a-new-one-in-a-github-action
@@ -43,14 +42,3 @@ jobs:
       with:
         app-name: ${{env.WEB_SERVICE_NAME}}
         package: ${{ github.workspace }}/webservice
-        
-    - name: Deploy web service app settings
-      run: az webapp config appsettings set --name "${{env.WEB_SERVICE_NAME}}" --resource-group "devopsmetricsrm2" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}" "AppSettings:TenantId=${{ secrets.AZ_TENANT_ID }}"
-
-    
-   
-
-   
-    
-    
-

@@ -8,6 +8,10 @@ targetScope = 'subscription'
 
 param location string = deployment().location
 param resourcesSuffix string = ''
+param azureDevOpsPatToken string = ''
+param gitHubClientId string = ''
+param gitHubClientSecret string = ''
+
 
 var resourceGroupName = 'rg-devopsmetrics-${resourcesSuffix}'
 var managedIdentityName='app-id-devops-${resourcesSuffix}'
@@ -79,7 +83,11 @@ module webService './Website.bicep' = {
     hostingPlanName: hostingName
     managedIdentityId: managedIdentity.outputs.userAssignedManagedIdentityId
     applicationInsightsInstrumentationKey:appInsights.outputs.applicationInsightsInstrumentationKeyOutput
+    storageConnectionString: storage.outputs.storageAccountConnectionString
     keyVaultName:keyVaultName
+    azureDevOpsPatToken: azureDevOpsPatToken
+    gitHubClientId: gitHubClientId
+    gitHubClientSecret: gitHubClientSecret
   }
   scope: resourceGroup(resourceGroupName)
   dependsOn: [

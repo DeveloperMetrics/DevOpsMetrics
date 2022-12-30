@@ -4,12 +4,11 @@ param managedIdentityId string
 param applicationInsightsInstrumentationKey string
 param storageConnectionString string = ''
 param keyVaultName string = ''
-// These to access Key Vault should not be here ideally - to be checked later
-param keyVaultClientId string = ''
 @secure()
-param keyVaultSecret string = ''
-param tenantId string = ''
-
+param azureDevOpsPatToken string = ''
+param gitHubClientId string = ''
+@secure()
+param gitHubClientSecret string = ''
 
 resource webSite 'Microsoft.Web/sites@2018-11-01' = {
   name: webSiteName
@@ -43,16 +42,16 @@ resource webSite 'Microsoft.Web/sites@2018-11-01' = {
           value: storageConnectionString
         }
         {
-          name: 'AppSettings:KeyVaultClientId'
-          value: keyVaultClientId
+          name: 'AppSettings:AzureDevOpsPatToken'
+          value: azureDevOpsPatToken
         }
         {
-          name: 'AppSettings:KeyVaultClientSecret'
-          value: keyVaultSecret
+          name: 'AppSettings:GitHubClientId'
+          value: gitHubClientId
         }
         {
-          name: 'AppSettings:TenantId'
-          value: tenantId
+          name: 'AppSettings:GitHubClientSecret'
+          value: gitHubClientSecret
         }
         //This is set for debugging purposes - this will enable Swagger for the Web Service and more logging
         {
