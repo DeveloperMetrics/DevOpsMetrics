@@ -45,5 +45,5 @@ jobs:
       uses: Azure/webapps-deploy@v2.2.5
       id: deployfunction
       with:
-        app-name: ${{env.WEB_SITE_NAME}}
+        app-name: ${{env.FUNCTION_NAME}}
         package: ${{ github.workspace }}/function
