@@ -133,15 +133,16 @@ module function './Function.bicep' = {
   ]
 }
 
-module keyVault './KeyVault.bicep' = {
-    name: '${keyVaultName}-Deployment'
-    params: {
-      keyVaultName: keyVaultName
-      administratorUserPrincipalId: managedIdentity.outputs.userAssignedManagedIdentityPrincipalId
-      storageAccountConnectionString: storage.outputs.storageAccountConnectionString
-    }
-    scope: resourceGroup(resourceGroupName)
-    dependsOn: [
-      managedIdentity
-    ]
-}
+// **** Removing this because it is not being used
+// module keyVault './KeyVault.bicep' = {
+//     name: '${keyVaultName}-Deployment'
+//     params: {
+//       keyVaultName: keyVaultName
+//       administratorUserPrincipalId: managedIdentity.outputs.userAssignedManagedIdentityPrincipalId
+//       storageAccountConnectionString: storage.outputs.storageAccountConnectionString
+//     }
+//     scope: resourceGroup(resourceGroupName)
+//     dependsOn: [
+//       managedIdentity
+//     ]
+// }
