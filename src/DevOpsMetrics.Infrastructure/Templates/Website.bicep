@@ -27,7 +27,6 @@ resource webSite 'Microsoft.Web/sites@2018-11-01' = {
     }
   }
   properties: {
-    name: webSiteName
     serverFarmId: resourceId('Microsoft.Web/serverfarms', hostingPlanName)
     httpsOnly: true
     siteConfig: {
@@ -64,6 +63,10 @@ resource webSite 'Microsoft.Web/sites@2018-11-01' = {
         {
           name: 'AppSettings:WebServiceURL'
           value: webServiceURL
+        }
+        {
+          name: 'AppSettings:UseCache'
+          value: 'false'
         }
         {
           // This is necessary for authenticating to Secret Vault: https://learn.microsoft.com/en-us/dotnet/api/overview/azure/identity-readme?view=azure-dotnet#specifying-a-user-assigned-managed-identity-with-the-defaultazurecredential

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,12 +46,21 @@ namespace DevOpsMetrics.Web.Controllers
             return RedirectToAction("Project", "Home", new { rowKey = RowKey, numberOfDays = NumberOfDaysSelected });
         }
 
+        private bool GetUseCache(){
+            bool useCache = true;
+            var useCacheConfig = Configuration["AppSettings:UseCache"];
+            if(string.IsNullOrEmpty(useCacheConfig) == false){
+                Boolean.TryParse(useCacheConfig, out useCache);
+            }
+            return useCache;
+        }
+
         [HttpGet]
         public async Task<IActionResult> Project(string projectId, int numberOfDays = 30)
         {
             int maxNumberOfItems = 20;
             bool getSampleData = false;
-            bool useCache = true;
+            bool useCache = GetUseCache();
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             ProjectViewModel model = new();
@@ -154,7 +164,7 @@ namespace DevOpsMetrics.Web.Controllers
             int maxNumberOfItems = 20; //20 is the optimium max that looks good with the current UI            
             int numberOfDays = 60; //TODO: Move number of days variable to a drop down list on the current UI 
             bool getSampleData = false;
-            bool useCache = true; //Use Azure storage instead of hitting the API. Quicker, but data may be up to 4 hours out of date
+            bool useCache = GetUseCache(); //Use Azure storage instead of hitting the API. Quicker, but data may be up to 4 hours out of date
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
 
@@ -216,7 +226,7 @@ namespace DevOpsMetrics.Web.Controllers
             int maxNumberOfItems = 20; //20 is the optimium max that looks good with the current UI            
             int numberOfDays = 30; //TODO: Move number of days variable to a drop down list on the current UI 
             bool getSampleData = false;
-            bool useCache = true; //Use Azure storage instead of hitting the API. Quicker, but data may be up to 4 hours out of date
+            bool useCache = GetUseCache(); //Use Azure storage instead of hitting the API. Quicker, but data may be up to 4 hours out of date
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             ServiceApiClient serviceApiClient = new(Configuration,_logger);
