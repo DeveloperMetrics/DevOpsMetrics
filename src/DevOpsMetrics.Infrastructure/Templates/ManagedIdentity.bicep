@@ -18,3 +18,5 @@ resource roleassignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
 
 output userAssignedManagedIdentityId string = userAssignedManagedIdentity.id
 output userAssignedManagedIdentityPrincipalId string = userAssignedManagedIdentity.properties.principalId
+output userAssignedManagedIdentityClientId string = userAssignedManagedIdentity.properties.clientId
+

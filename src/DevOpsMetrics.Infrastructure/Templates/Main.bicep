@@ -102,6 +102,7 @@ module webService './Website.bicep' = {
     webSiteName: serviceName 
     hostingPlanName: hostingName
     managedIdentityId: managedIdentity.outputs.userAssignedManagedIdentityId
+    managedIdentityClientId: managedIdentity.outputs.userAssignedManagedIdentityClientId
     applicationInsightsInstrumentationKey:appInsights.outputs.applicationInsightsInstrumentationKeyOutput
     storageConnectionString: storage.outputs.storageAccountConnectionString
     keyVaultName:keyVaultName
