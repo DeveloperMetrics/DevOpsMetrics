@@ -1,5 +1,5 @@
 param storageAccountName string
-param location string = resourceGroup().location
+param location string
 
 @allowed([
   'Standard_LRS'

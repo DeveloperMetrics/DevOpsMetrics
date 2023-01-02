@@ -6,7 +6,7 @@ param vaultAdminSecretsPermissions array = [
   'all'
 ]
 
-param location string = resourceGroup().location
+param location string
 
 @description('SKU for the vault')
 @allowed([
@@ -51,14 +51,14 @@ resource keyVault 'Microsoft.KeyVault/vaults@2016-10-01' = {
   }
 }
 
-// resource storageConnString 'Microsoft.KeyVault/vaults/secrets@2021-06-01-preview' = {
-//   parent: keyVault
-//   name: 'AppSettings--AzureStorageAccountConfigurationString'
+resource storageConnString 'Microsoft.KeyVault/vaults/secrets@2021-06-01-preview' = {
+  parent: keyVault
+  name: 'AppSettings--AzureStorageAccountConfigurationString'
   
-//   properties: {
-//     value: storageAccountConnectionString
-//   }
-// }
+  properties: {
+    value: storageAccountConnectionString
+  }
+}
 
 // @description('This is the built-in Key Vault Administrator role. See https://docs.microsoft.com/azure/role-based-access-control/built-in-roles#key-vault-administrator')
 // resource keyVaultAdministratorRoleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {

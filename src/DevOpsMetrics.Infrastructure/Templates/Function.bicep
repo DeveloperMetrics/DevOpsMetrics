@@ -2,13 +2,13 @@ param webSiteName string
 param hostingPlanName string
 param applicationInsightsInstrumentationKey string
 param webServiceURL string
-// param keyVaultName string
+param keyVaultName string
 param storageConnectionString string
 param azureDevOpsPatToken string
 param gitHubClientId string
 @secure()
 param gitHubClientSecret string
-param location string = resourceGroup().location
+param location string
 
 resource webSite 'Microsoft.Web/sites@2018-11-01' = {
   name: webSiteName
@@ -30,10 +30,10 @@ resource webSite 'Microsoft.Web/sites@2018-11-01' = {
           name: 'AppSettings:WebServiceURL'
           value: webServiceURL
         }
-        // {
-        //   name: 'AppSettings:KeyVaultURL'
-        //   value: 'https://${keyVaultName}.vault.azure.net/'
-        // }
+        {
+          name: 'AppSettings:KeyVaultURL'
+          value: 'https://${keyVaultName}.vault.azure.net/'
+        }
         {
           name: 'AppSettings:AzureStorageAccountConfigurationString'
           value: storageConnectionString

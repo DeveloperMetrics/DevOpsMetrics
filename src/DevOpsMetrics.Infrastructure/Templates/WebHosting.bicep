@@ -1,5 +1,5 @@
 param hostingPlanName string
-param location string = resourceGroup().location
+param location string
 
 @description('Describes plan\'s pricing tier and instance size. Check details at https://azure.microsoft.com/en-us/pricing/details/app-service/')
 @allowed([

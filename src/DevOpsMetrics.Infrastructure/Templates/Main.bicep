@@ -35,6 +35,7 @@ module devopsResourceGroup './ResourceGroup.bicep' = {
 module managedIdentity './ManagedIdentity.bicep' = {
   name: '${managedIdentityName}-Deployment'
   params: {
+    location: location
     name: managedIdentityName
   }
   scope: resourceGroup(resourceGroupName)
@@ -46,6 +47,7 @@ module managedIdentity './ManagedIdentity.bicep' = {
 module keyVault './KeyVault.bicep' = {
   name: '${keyVaultName}-Deployment'
   params: {
+    location: location
     keyVaultName: keyVaultName
     administratorUserPrincipalId: managedIdentity.outputs.userAssignedManagedIdentityPrincipalId
     storageAccountConnectionString: storage.outputs.storageAccountConnectionString
@@ -59,6 +61,7 @@ module keyVault './KeyVault.bicep' = {
 module storage './Storage.bicep' = {
   name: '${storageName}-Deployment'
   params: {
+    location: location
     storageAccountName: storageName
     resourceGroupName: resourceGroupName
   }
@@ -71,6 +74,7 @@ module storage './Storage.bicep' = {
 module webHosting './WebHosting.bicep' = {
   name: '${hostingName}-Deployment'
   params: {
+    location: location
     hostingPlanName: hostingName
   }
   scope: resourceGroup(resourceGroupName)
@@ -82,6 +86,7 @@ module webHosting './WebHosting.bicep' = {
 module appInsights './ApplicationInsights.bicep' = {
   name: '${appInsightsName}-Deployment'
   params: {
+    location: location
     applicationInsightsName: appInsightsName
   }
   scope: resourceGroup(resourceGroupName)
@@ -93,6 +98,7 @@ module appInsights './ApplicationInsights.bicep' = {
 module webService './Website.bicep' = {
   name: '${serviceName}-Deployment'
   params: {
+    location: location
     webSiteName: serviceName 
     hostingPlanName: hostingName
     managedIdentityId: managedIdentity.outputs.userAssignedManagedIdentityId
@@ -113,6 +119,7 @@ module webService './Website.bicep' = {
 module webSite './Website.bicep' = {
   name: '${websiteName}-Deployment'
   params: {
+    location: location
     webSiteName: websiteName 
     hostingPlanName: hostingName
     managedIdentityId: managedIdentity.outputs.userAssignedManagedIdentityId
@@ -130,6 +137,7 @@ module webSite './Website.bicep' = {
 module function './Function.bicep' = {
   name: '${functionName}-Deployment'
   params: {
+    location: location
     webSiteName: functionName 
     hostingPlanName: hostingName
     applicationInsightsInstrumentationKey:appInsights.outputs.applicationInsightsInstrumentationKeyOutput
