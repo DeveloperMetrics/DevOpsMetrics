@@ -215,8 +215,8 @@ namespace DevOpsMetrics.Web.Services
                     }
                     else
                     {
-                        //Throw an exception
-                        response.EnsureSuccessStatusCode();
+                        var result = $"{(int)response.StatusCode} ({response.ReasonPhrase})";
+                        throw new HttpRequestException(result);
                     }
                 }
             }
