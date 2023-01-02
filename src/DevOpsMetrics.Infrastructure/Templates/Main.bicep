@@ -124,6 +124,7 @@ module webSite './Website.bicep' = {
     webSiteName: websiteName 
     hostingPlanName: hostingName
     managedIdentityId: managedIdentity.outputs.userAssignedManagedIdentityId
+    managedIdentityClientId: managedIdentity.outputs.userAssignedManagedIdentityClientId
     applicationInsightsInstrumentationKey:appInsights.outputs.applicationInsightsInstrumentationKeyOutput
     webServiceURL: webService.outputs.url
   }

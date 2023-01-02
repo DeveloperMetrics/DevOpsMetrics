@@ -104,6 +104,10 @@ The API can generate a URL for static badges, but more work is needed. Some curr
   - AZ_TENANT_ID: 
   - AZ_RESOURCES_SUFFIX: Suffix for the Azure Resources - as many resources must have unique names
 ## To debug/run tests
+- To Debug issues on Web Service:
+  - Turn on Development in App Service by defining Config "ASPNETCORE_ENVIRONMENT=Development"
+  - Access Swagger using "{server url}/swagger" 
+  - Invoke the desired call
 
 # What's next?
 - Upgrades to packaging and setup (in progress)
