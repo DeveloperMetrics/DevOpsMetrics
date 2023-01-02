@@ -1,3 +1,4 @@
+using Azure.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
@@ -29,19 +30,34 @@ namespace DevOpsMetrics.Service
                         configuration = builder.Build();
                     }
 
-                   //Load a connection to our Azure key vault instance
-                    string keyVaultURL = configuration["AppSettings:KeyVaultURL"];
+                    // **** I see that the KeyVault is not being used for anything, so commenting this line ****
+                    //Load a connection to our Azure key vault instance
+                    // string keyVaultURL = configuration["AppSettings:KeyVaultURL"];
                     // string clientId = configuration["AppSettings:KeyVaultClientId"];
                     // string clientSecret = configuration["AppSettings:KeyVaultClientSecret"];
-                    AzureServiceTokenProvider azureServiceTokenProvider = new();
-                    KeyVaultClient keyVaultClient = new(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
-                    builder.AddAzureKeyVault(keyVaultURL, keyVaultClient, new DefaultKeyVaultSecretManager());
+                    // AzureServiceTokenProvider azureServiceTokenProvider = new();
+                    // KeyVaultClient keyVaultClient = new(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
+                    // builder.AddAzureKeyVault(keyVaultURL, keyVaultClient, new DefaultKeyVaultSecretManager());
                     // builder.AddAzureKeyVault(keyVaultURL, clientId, clientSecret);
+                    //configuration = builder.Build();
 
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.ConfigureAppConfiguration((hostingContext, config) =>
+                    {
+                        var settings = config.Build();
+
+                        config.AddAzureAppConfiguration(options =>
+                        {
+                            options.Connect(settings["AppSettings:KeyVaultURL"])
+                                    .ConfigureKeyVault(kv =>
+                                    {
+                                        kv.SetCredential(new DefaultAzureCredential());
+                                    });
+                        });
+                    })
+                    .UseStartup<Startup>();
                 });
         }
     }
