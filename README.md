@@ -83,13 +83,13 @@ The API can generate a URL for static badges, but more work is needed. Some curr
 
 # Setup
 
-## Deploying Azure Infra
+## (Old Manual Steps - Outdated!) Manually Deploying Azure Infra
 
 - Run the infrastructure setup script [Currently \src\DevOpsMetrics.Infrastructure\DeployInfrastructureToAzure.ps1]
 - DevOpsMetrics.Service setup: Keyvault URL and application insights id set as part of setup script
 - Browse to [website name].azurewebsites.net/Home/Settings, and setup your projects as needed. Note that all secrets are loaded into the keyvault and are controlled by you!
 
-## Deploy code using Github Actions
+## Automatically Deploying Azure Infra and Code using Github Actions
 ### 1) Create a Service Principal with Owner Role to the Subscription in Azure
 ### 2) Set the following Github Secrets:
   - AzureDevOpsPATToken: Azure DevOps PAT Toekn
