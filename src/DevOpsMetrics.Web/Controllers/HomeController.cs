@@ -23,6 +23,7 @@ namespace DevOpsMetrics.Web.Controllers
         public HomeController(IConfiguration configuration, ILogger<HomeController> logger)
         {
             Configuration = configuration;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index()
