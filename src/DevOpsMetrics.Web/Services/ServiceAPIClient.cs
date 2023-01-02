@@ -8,6 +8,7 @@ using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Logging
 
 namespace DevOpsMetrics.Web.Services
 {
@@ -15,14 +16,16 @@ namespace DevOpsMetrics.Web.Services
     {
         private readonly IConfiguration Configuration;
         private readonly HttpClient Client;
+        ILogger _logger;
 
-        public ServiceApiClient(IConfiguration configuration)
+        public ServiceApiClient(IConfiguration configuration, ILogger logger)
         {
             Configuration = configuration;
             Client = new HttpClient
             {
                 BaseAddress = new Uri(Configuration["AppSettings:WebServiceURL"])
             };
+            _logger = logger;
         }
 
         public async Task<DeploymentFrequencyModel> GetAzureDevOpsDeploymentFrequency(bool getSampleData, string organization, string project, string repository, string branch, string buildName, string buildId, int numberOfDays, int maxNumberOfItems, bool useCache)
@@ -34,6 +37,7 @@ namespace DevOpsMetrics.Web.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex,url);
                 return new DeploymentFrequencyModel
                 {
                     DeploymentName = buildName,
@@ -54,6 +58,7 @@ namespace DevOpsMetrics.Web.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex,url);
                 return new DeploymentFrequencyModel
                 {
 
@@ -75,6 +80,7 @@ namespace DevOpsMetrics.Web.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex,url);
                 return new LeadTimeForChangesModel
                 {
                     ProjectName = project,
@@ -95,6 +101,7 @@ namespace DevOpsMetrics.Web.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex,url);
                 return new LeadTimeForChangesModel
                 {
                     ProjectName = repo,
@@ -115,6 +122,7 @@ namespace DevOpsMetrics.Web.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex,url);
                 return new MeanTimeToRestoreModel
                 {
                     ResourceGroup = resourceGroup,
@@ -135,6 +143,7 @@ namespace DevOpsMetrics.Web.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex,url);
                 return new ChangeFailureRateModel
                 {
                     DeploymentName = buildName_workflowName,
@@ -196,16 +205,17 @@ namespace DevOpsMetrics.Web.Services
             return await GetResponse<List<ProjectLog>>(Client, url);
         }
 
-        private static async Task<T> GetResponse<T>(HttpClient client, string url)
+        private async Task<T> GetResponse<T>(HttpClient client, string url)
         {
             T obj = default;
             if (client != null && url != null)
             {
-                Debug.WriteLine("Running url: " + client.BaseAddress.ToString() + url);
-                Console.WriteLine("Running url: " + client.BaseAddress.ToString() + url);
+                _logger.LogInformation("Running url: " + client.BaseAddress.ToString() + url);
+                _logger.LogInformation("Running url: " + client.BaseAddress.ToString() + url);
                 using (HttpResponseMessage response = await client.GetAsync(url))
                 {
-                    if (response.IsSuccessStatusCode == true)
+                    _logger.LogInformation("Return Status Code: " + response.StatusCode);
+                    if (response.IsSuccessStatusCode)
                     {
                         string responseBody = await response.Content.ReadAsStringAsync();
                         if (string.IsNullOrEmpty(responseBody) == false)
@@ -216,6 +226,7 @@ namespace DevOpsMetrics.Web.Services
                     else
                     {
                         var result = $"{(int)response.StatusCode} ({response.ReasonPhrase})";
+                        _logger.LogError("Erorr when calling " + url + ". result: " + result);
                         throw new HttpRequestException(result);
                     }
                 }
