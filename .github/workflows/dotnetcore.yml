@@ -1,248 +1,248 @@
-name: CI/CD Web App and Service
+# name: CI/CD Web App and Service
 
-on:
-  # push:
-  #   branches: [ main ]
-  #   paths-ignore:
-  #     - "src/DevOpsMetrics.Service/**"
-  #     - ".github/workflows/ci_cd_service.yml"
-  #     - ".github/workflows/iac.yml"
-  #     - "src/DevOpsMetrics.Infrastructure/**"
-  workflow_dispatch:
+# on:
+#   # push:
+#   #   branches: [ main ]
+#   #   paths-ignore:
+#   #     - "src/DevOpsMetrics.Service/**"
+#   #     - ".github/workflows/ci_cd_service.yml"
+#   #     - ".github/workflows/iac.yml"
+#   #     - "src/DevOpsMetrics.Infrastructure/**"
+#   workflow_dispatch:
 
-jobs:
+# jobs:
 
-  build:
-    runs-on: windows-latest 
-    outputs: # https://stackoverflow.com/questions/59175332/using-output-from-a-previous-job-in-a-new-one-in-a-github-action
-      Version: ${{ steps.gitversion.outputs.SemVer }}
-      CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}  
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0 #fetch-depth is needed for GitVersion  
-    #Install and calculate the new version with GitVersion  
-    - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v0.9.15
-      with:
-        versionSpec: 5.x
-    - name: Determine Version
-      uses: gittools/actions/gitversion/execute@v0.9.15
-      id: gitversion # step id used as reference for output values
-    - name: Display GitVersion outputs
-      run: |
-        echo "Version: ${{ steps.gitversion.outputs.SemVer }}"
-        echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}"
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0.x
+#   build:
+#     runs-on: windows-latest 
+#     outputs: # https://stackoverflow.com/questions/59175332/using-output-from-a-previous-job-in-a-new-one-in-a-github-action
+#       Version: ${{ steps.gitversion.outputs.SemVer }}
+#       CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}  
+#     steps:
+#     - uses: actions/checkout@v3
+#       with:
+#         fetch-depth: 0 #fetch-depth is needed for GitVersion  
+#     #Install and calculate the new version with GitVersion  
+#     - name: Install GitVersion
+#       uses: gittools/actions/gitversion/setup@v0.9.15
+#       with:
+#         versionSpec: 5.x
+#     - name: Determine Version
+#       uses: gittools/actions/gitversion/execute@v0.9.15
+#       id: gitversion # step id used as reference for output values
+#     - name: Display GitVersion outputs
+#       run: |
+#         echo "Version: ${{ steps.gitversion.outputs.SemVer }}"
+#         echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}"
+#     - name: Setup .NET Core
+#       uses: actions/setup-dotnet@v3
+#       with:
+#         dotnet-version: 7.0.x
     
-    #Publish dotnet objects
-    - name: .NET Publish Web Service
-      run: dotnet publish src/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj --configuration Debug --output ${{ github.workspace }}/webservice
-    - name: .NET Publish Website
-      run: dotnet publish src/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj --configuration Release --output ${{ github.workspace }}/web
+#     #Publish dotnet objects
+#     - name: .NET Publish Web Service
+#       run: dotnet publish src/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj --configuration Debug --output ${{ github.workspace }}/webservice
+#     - name: .NET Publish Website
+#       run: dotnet publish src/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj --configuration Release --output ${{ github.workspace }}/web
     
-    - name: .NET Publish functional tests
-      run: dotnet publish src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj --configuration Release --output ${{ github.workspace }}/functionalTests
-    - name: Copy chromedriver for functional test
-      run: copy "src/DevOpsMetrics.FunctionalTests/bin/Release/net7.0/chromedriver.exe" "${{ github.workspace }}/functionalTests"
-      shell: powershell
-    - name: DotNet restore functional tests to get correct NewtonSoft version
-      run: dotnet restore src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj 
-    - name: Copy new NewtonSoft version for functional test
-      run: copy "src/DevOpsMetrics.FunctionalTests/bin/Release/net7.0/Newtonsoft.Json.dll" "${{ github.workspace }}/functionalTests"
-      shell: powershell
+#     - name: .NET Publish functional tests
+#       run: dotnet publish src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj --configuration Release --output ${{ github.workspace }}/functionalTests
+#     - name: Copy chromedriver for functional test
+#       run: copy "src/DevOpsMetrics.FunctionalTests/bin/Release/net7.0/chromedriver.exe" "${{ github.workspace }}/functionalTests"
+#       shell: powershell
+#     - name: DotNet restore functional tests to get correct NewtonSoft version
+#       run: dotnet restore src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj 
+#     - name: Copy new NewtonSoft version for functional test
+#       run: copy "src/DevOpsMetrics.FunctionalTests/bin/Release/net7.0/Newtonsoft.Json.dll" "${{ github.workspace }}/functionalTests"
+#       shell: powershell
         
-    #Publish build artifacts to GitHub
-    - name: Upload web service build artifacts back to GitHub
-      uses: actions/upload-artifact@v3
-      with:
-        name: serviceapp
-        path: ${{ github.workspace }}/webservice
-    - name: Upload website build artifacts back to GitHub
-      uses: actions/upload-artifact@v3
-      with:
-        name: webapp
-        path: ${{ github.workspace }}/web
+#     #Publish build artifacts to GitHub
+#     - name: Upload web service build artifacts back to GitHub
+#       uses: actions/upload-artifact@v3
+#       with:
+#         name: serviceapp
+#         path: ${{ github.workspace }}/webservice
+#     - name: Upload website build artifacts back to GitHub
+#       uses: actions/upload-artifact@v3
+#       with:
+#         name: webapp
+#         path: ${{ github.workspace }}/web
 
-    - name: Upload functional test build artifacts back to GitHub
-      uses: actions/upload-artifact@v3
-      with:
-        name: functionaltests
-        path: ${{ github.workspace }}/functionalTests
-    - name: Upload probot build artifacts back to GitHub
-      uses: actions/upload-artifact@v3
-      with:
-        name: probot
-        path: src/ProbotMetrics
-
-
-  # test:
-  #   runs-on: windows-latest
-  #   permissions:
-  #     actions: read 
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #   - name: Setup .NET Core
-  #     uses: actions/setup-dotnet@v3
-  #     with:
-  #       dotnet-version: 7.0.x
-  #   #Run automated .NET tests   
-  #   - name: Variable Substitution appsettings file for tests
-  #     uses: microsoft/variable-substitution@v1
-  #     with:
-  #       files: 'src/DevOpsMetrics.Tests/appsettings.json'
-  #     env:
-  #       AppSettings.AzureDevOpsPatToken: "${{ secrets.AzureDevOpsPATToken }}"
-  #       AppSettings.GitHubClientId: "${{ secrets.GitHubClientId }}" 
-  #       AppSettings.GitHubClientSecret: "${{ secrets.GitHubClientSecret }}" 
-  #       AppSettings.AzureStorageAccountConfigurationString: "${{ secrets.AzureStorageConnectionString }}" 
-  #       AppSettings.KeyVaultClientId: "${{ secrets.KeyVaultClientId }}" 
-  #       AppSettings.KeyVaultClientSecret: "${{ secrets.KeyVaultClientSecret }}" 
-  #   - name: build test project
-  #     run: dotnet build src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Debug
-  #   - name: Run automated unit and integration tests
-  #     run: dotnet test src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --no-build --configuration Debug --logger trx -e:CollectCoverage=true -e:CoverletOutput=TestResults/ -e:CoverletOutputFormat=lcov --settings:./src/DevOpsMetrics.Tests/CodeCoverage.runsettings 
-  #   - name: Publish coverage report to coveralls.io
-  #     uses: coverallsapp/github-action@master
-  #     with:
-  #       github-token: ${{ secrets.GITHUB_TOKEN }}
-  #       path-to-lcov: src/DevOpsMetrics.Tests/TestResults/coverage.info 
+#     - name: Upload functional test build artifacts back to GitHub
+#       uses: actions/upload-artifact@v3
+#       with:
+#         name: functionaltests
+#         path: ${{ github.workspace }}/functionalTests
+#     - name: Upload probot build artifacts back to GitHub
+#       uses: actions/upload-artifact@v3
+#       with:
+#         name: probot
+#         path: src/ProbotMetrics
 
 
-  buildFunction:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0.x
-    - name: .NET Publish Function
-      run: dotnet publish src/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj --configuration Debug --output ${{ github.workspace }}/function 
-    - name: Upload function build artifacts back to GitHub
-      uses: actions/upload-artifact@v3
-      with:
-        name: functionapp
-        path: ${{ github.workspace }}/function
+#   # test:
+#   #   runs-on: windows-latest
+#   #   permissions:
+#   #     actions: read 
+#   #   steps:
+#   #   - uses: actions/checkout@v3
+#   #   - name: Setup .NET Core
+#   #     uses: actions/setup-dotnet@v3
+#   #     with:
+#   #       dotnet-version: 7.0.x
+#   #   #Run automated .NET tests   
+#   #   - name: Variable Substitution appsettings file for tests
+#   #     uses: microsoft/variable-substitution@v1
+#   #     with:
+#   #       files: 'src/DevOpsMetrics.Tests/appsettings.json'
+#   #     env:
+#   #       AppSettings.AzureDevOpsPatToken: "${{ secrets.AzureDevOpsPATToken }}"
+#   #       AppSettings.GitHubClientId: "${{ secrets.GitHubClientId }}" 
+#   #       AppSettings.GitHubClientSecret: "${{ secrets.GitHubClientSecret }}" 
+#   #       AppSettings.AzureStorageAccountConfigurationString: "${{ secrets.AzureStorageConnectionString }}" 
+#   #       AppSettings.KeyVaultClientId: "${{ secrets.KeyVaultClientId }}" 
+#   #       AppSettings.KeyVaultClientSecret: "${{ secrets.KeyVaultClientSecret }}" 
+#   #   - name: build test project
+#   #     run: dotnet build src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --configuration Debug
+#   #   - name: Run automated unit and integration tests
+#   #     run: dotnet test src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj --no-build --configuration Debug --logger trx -e:CollectCoverage=true -e:CoverletOutput=TestResults/ -e:CoverletOutputFormat=lcov --settings:./src/DevOpsMetrics.Tests/CodeCoverage.runsettings 
+#   #   - name: Publish coverage report to coveralls.io
+#   #     uses: coverallsapp/github-action@master
+#   #     with:
+#   #       github-token: ${{ secrets.GITHUB_TOKEN }}
+#   #       path-to-lcov: src/DevOpsMetrics.Tests/TestResults/coverage.info 
+
+
+#   buildFunction:
+#     runs-on: windows-latest
+#     steps:
+#     - uses: actions/checkout@v3
+#     - name: Setup .NET Core
+#       uses: actions/setup-dotnet@v3
+#       with:
+#         dotnet-version: 7.0.x
+#     - name: .NET Publish Function
+#       run: dotnet publish src/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj --configuration Debug --output ${{ github.workspace }}/function 
+#     - name: Upload function build artifacts back to GitHub
+#       uses: actions/upload-artifact@v3
+#       with:
+#         name: functionapp
+#         path: ${{ github.workspace }}/function
 
 
 
-  #Disabling PROBOT for 2021 reboot to focus on website
-  #Deploy the probot artifacts to Azure
-#  deployProbot:
-#    runs-on: ubuntu-latest
-#    needs: build    
-#    #if: github.ref == 'refs/heads/main'    
-#    if: 0 == 1 #Disabling PROBOT for 2021 reboot to focus on website
-#    steps:        
-#    # Login with the secret SP details
-#    - name: Log into Azure
-#      uses: azure/login@v1
-#      with:
-#        creds: ${{ secrets.AZURE_SP_PROBOT }}  
-#    - name: Download webapp artifact
-#      uses: actions/download-artifact@v3
-#      with:
-#        name: probot 
-#    - name: Deploy probot to Azure WebApp
-#      uses: Azure/webapps-deploy@v2.2.5
-#      with:
-#        app-name: devops-prod-eu-probot
-#        package: probot 
-#    - name: Deploy probot app settings
-#      run: az webapp config appsettings set --name devops-prod-eu-probot --resource-group "DevOpsMetricsProbot" --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true
+#   #Disabling PROBOT for 2021 reboot to focus on website
+#   #Deploy the probot artifacts to Azure
+# #  deployProbot:
+# #    runs-on: ubuntu-latest
+# #    needs: build    
+# #    #if: github.ref == 'refs/heads/main'    
+# #    if: 0 == 1 #Disabling PROBOT for 2021 reboot to focus on website
+# #    steps:        
+# #    # Login with the secret SP details
+# #    - name: Log into Azure
+# #      uses: azure/login@v1
+# #      with:
+# #        creds: ${{ secrets.AZURE_SP_PROBOT }}  
+# #    - name: Download webapp artifact
+# #      uses: actions/download-artifact@v3
+# #      with:
+# #        name: probot 
+# #    - name: Deploy probot to Azure WebApp
+# #      uses: Azure/webapps-deploy@v2.2.5
+# #      with:
+# #        app-name: devops-prod-eu-probot
+# #        package: probot 
+# #    - name: Deploy probot app settings
+# #      run: az webapp config appsettings set --name devops-prod-eu-probot --resource-group "DevOpsMetricsProbot" --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true
 
-  deploy:
-    runs-on: windows-latest
-    needs: 
-    - build      
-    # - test
-    - buildFunction
-    # - sonarCloud
-    if: github.ref == 'refs/heads/main'
-    steps:        
-    # Login with the secret SP details
-    - name: Log into Azure
-      uses: azure/login@v1
-      with:
-        creds: '{"clientId":"${{ secrets.AZ_CLIENT_ID }}","clientSecret":"${{ secrets.AZ_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZ_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZ_TENANT_ID }}"}'
+#   deploy:
+#     runs-on: windows-latest
+#     needs: 
+#     - build      
+#     # - test
+#     - buildFunction
+#     # - sonarCloud
+#     if: github.ref == 'refs/heads/main'
+#     steps:        
+#     # Login with the secret SP details
+#     - name: Log into Azure
+#       uses: azure/login@v1
+#       with:
+#         creds: '{"clientId":"${{ secrets.AZ_CLIENT_ID }}","clientSecret":"${{ secrets.AZ_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZ_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZ_TENANT_ID }}"}'
     
-    #Download the artifacts from GitHub
-    - name: Download serviceapp artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: serviceapp 
-        path: serviceapp
-    - name: Download webapp artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: webapp  
-        path: webapp
-    - name: Download webapp artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: functionapp  
-        path: functionapp   
-    - name: Download functionaltests artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: functionaltests 
-        path: functionaltests
+#     #Download the artifacts from GitHub
+#     - name: Download serviceapp artifact
+#       uses: actions/download-artifact@v3
+#       with:
+#         name: serviceapp 
+#         path: serviceapp
+#     - name: Download webapp artifact
+#       uses: actions/download-artifact@v3
+#       with:
+#         name: webapp  
+#         path: webapp
+#     - name: Download webapp artifact
+#       uses: actions/download-artifact@v3
+#       with:
+#         name: functionapp  
+#         path: functionapp   
+#     - name: Download functionaltests artifact
+#       uses: actions/download-artifact@v3
+#       with:
+#         name: functionaltests 
+#         path: functionaltests
 
-    #Deploy service, website, and function to Azure
-    - name: Deploy web service to Azure WebApp
-      uses: Azure/webapps-deploy@v2.2.5
-      id: deploywebservice
-      with:
-        app-name: devops-prod-eu-servicerm2
-        package: serviceapp
-    - name: Deploy web service app settings
-      run: az webapp config appsettings set --name "devops-prod-eu-servicerm2" --resource-group "devopsmetricsrm2" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}"
+#     #Deploy service, website, and function to Azure
+#     - name: Deploy web service to Azure WebApp
+#       uses: Azure/webapps-deploy@v2.2.5
+#       id: deploywebservice
+#       with:
+#         app-name: devops-prod-eu-servicerm2
+#         package: serviceapp
+#     - name: Deploy web service app settings
+#       run: az webapp config appsettings set --name "devops-prod-eu-servicerm2" --resource-group "devopsmetricsrm2" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}"
     
-    - name: Deploy website to Azure WebApp
-      uses: Azure/webapps-deploy@v2.2.5
-      with:
-        app-name: devops-prod-eu-webrm2
-        package: webapp 
-    - name: Deploy website app settings
-      run: az webapp config appsettings set --name devops-prod-eu-webrm2 --resource-group "devopsmetricsrm2" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:WebServiceURL=${{ steps.deploywebservice.outputs.webapp-url }}" 
+#     - name: Deploy website to Azure WebApp
+#       uses: Azure/webapps-deploy@v2.2.5
+#       with:
+#         app-name: devops-prod-eu-webrm2
+#         package: webapp 
+#     - name: Deploy website app settings
+#       run: az webapp config appsettings set --name devops-prod-eu-webrm2 --resource-group "devopsmetricsrm2" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:WebServiceURL=${{ steps.deploywebservice.outputs.webapp-url }}" 
 
-    # # Run functional tests on staging slots
-    # - name: Functional Tests
-    #   if: 0 == 1
-    #   run: |
-    #     $vsTestConsoleExe = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\Common7\\IDE\\Extensions\\TestPlatform\\vstest.console.exe"
-    #     $targetTestDll = "functionaltests\DevOpsMetrics.FunctionalTests.dll"
-    #     $testRunSettings = "/Settings:`"functionaltests\test.runsettings`" "
-    #     $parameters = " -- ServiceUrl=""https://devops-prod-eu-servicerm2.azurewebsites.net/"" WebsiteUrl=""https://devops-prod-eu-webrm2.azurewebsites.net/"" "
-    #     #Note that the `" is an escape character to quote strings, and the `& is needed to start the command
-    #     $command = "`& `"$vsTestConsoleExe`" `"$targetTestDll`" $testRunSettings $parameters " 
-    #     Write-Host "$command"
-    #     Invoke-Expression $command
-    #   shell: powershell
+#     # # Run functional tests on staging slots
+#     # - name: Functional Tests
+#     #   if: 0 == 1
+#     #   run: |
+#     #     $vsTestConsoleExe = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\Common7\\IDE\\Extensions\\TestPlatform\\vstest.console.exe"
+#     #     $targetTestDll = "functionaltests\DevOpsMetrics.FunctionalTests.dll"
+#     #     $testRunSettings = "/Settings:`"functionaltests\test.runsettings`" "
+#     #     $parameters = " -- ServiceUrl=""https://devops-prod-eu-servicerm2.azurewebsites.net/"" WebsiteUrl=""https://devops-prod-eu-webrm2.azurewebsites.net/"" "
+#     #     #Note that the `" is an escape character to quote strings, and the `& is needed to start the command
+#     #     $command = "`& `"$vsTestConsoleExe`" `"$targetTestDll`" $testRunSettings $parameters " 
+#     #     Write-Host "$command"
+#     #     Invoke-Expression $command
+#     #   shell: powershell
     
-    # deploy function and settings
-    - name: Deploy function to Azure WebApp
-      uses: Azure/webapps-deploy@v2.2.5
-      with:
-        app-name: devops-prod-eu-functionrm2
-        package: functionapp 
-    - name: Deploy function app settings
-      run: az webapp config appsettings set --name "devops-prod-eu-functionrm2" --resource-group "devopsmetricsrm2" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:WebServiceURL=${{ steps.deploywebservice.outputs.webapp-url }}"  "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}"  "AppSettings:KeyVaultURL=https://devops-prod-eu-vaultrm2.vault.azure.net/" "AzureStorageAccountContainerAzureDevOpsBuilds=DevOpsAzureDevOpsBuilds" "AppSettings:AzureStorageAccountContainerAzureDevOpsPRs=DevOpsAzureDevOpsPRs" "AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits=DevOpsAzureDevOpsPRCommits" "AppSettings:AzureStorageAccountContainerAzureDevOpsSettings=DevOpsAzureDevOpsSettings" "AppSettings:AzureStorageAccountContainerGitHubRuns=DevOpsGitHubRuns" "AppSettings:AzureStorageAccountContainerGitHubPRs=DevOpsGitHubPRs" "AppSettings:AzureStorageAccountContainerGitHubPRCommits=DevOpsGitHubPRCommits" "AppSettings:AzureStorageAccountContainerGitHubSettings=DevOpsGitHubSettings" "AppSettings:AzureStorageAccountContainerMTTR=DevOpsMTTR" "AppSettings:AzureStorageAccountContainerChangeFailureRate=DevOpsChangeFailureRate" "AppSettings:AzureStorageAccountContainerTableLog=DevOpsLog"
+#     # deploy function and settings
+#     - name: Deploy function to Azure WebApp
+#       uses: Azure/webapps-deploy@v2.2.5
+#       with:
+#         app-name: devops-prod-eu-functionrm2
+#         package: functionapp 
+#     - name: Deploy function app settings
+#       run: az webapp config appsettings set --name "devops-prod-eu-functionrm2" --resource-group "devopsmetricsrm2" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:WebServiceURL=${{ steps.deploywebservice.outputs.webapp-url }}"  "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}"  "AppSettings:KeyVaultURL=https://devops-prod-eu-vaultrm2.vault.azure.net/" "AzureStorageAccountContainerAzureDevOpsBuilds=DevOpsAzureDevOpsBuilds" "AppSettings:AzureStorageAccountContainerAzureDevOpsPRs=DevOpsAzureDevOpsPRs" "AppSettings:AzureStorageAccountContainerAzureDevOpsPRCommits=DevOpsAzureDevOpsPRCommits" "AppSettings:AzureStorageAccountContainerAzureDevOpsSettings=DevOpsAzureDevOpsSettings" "AppSettings:AzureStorageAccountContainerGitHubRuns=DevOpsGitHubRuns" "AppSettings:AzureStorageAccountContainerGitHubPRs=DevOpsGitHubPRs" "AppSettings:AzureStorageAccountContainerGitHubPRCommits=DevOpsGitHubPRCommits" "AppSettings:AzureStorageAccountContainerGitHubSettings=DevOpsGitHubSettings" "AppSettings:AzureStorageAccountContainerMTTR=DevOpsMTTR" "AppSettings:AzureStorageAccountContainerChangeFailureRate=DevOpsChangeFailureRate" "AppSettings:AzureStorageAccountContainerTableLog=DevOpsLog"
 
-    - name: Display GitVersion outputs
-      run: |
-        echo "Version: ${{ needs.build.outputs.Version }}" 
-        echo "CommitsSinceVersionSource: ${{ needs.build.outputs.CommitsSinceVersionSource }}" 
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      if: github.ref == 'refs/heads/main' && needs.build.outputs.CommitsSinceVersionSource > 0 #Only create a release if there has been a commit/version change
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-      with:
-        tag_name: ${{ needs.build.outputs.Version }}
-        release_name: Release ${{ needs.build.outputs.Version }}
+#     - name: Display GitVersion outputs
+#       run: |
+#         echo "Version: ${{ needs.build.outputs.Version }}" 
+#         echo "CommitsSinceVersionSource: ${{ needs.build.outputs.CommitsSinceVersionSource }}" 
+#     - name: Create Release
+#       id: create_release
+#       uses: actions/create-release@v1
+#       if: github.ref == 'refs/heads/main' && needs.build.outputs.CommitsSinceVersionSource > 0 #Only create a release if there has been a commit/version change
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+#       with:
+#         tag_name: ${{ needs.build.outputs.Version }}
+#         release_name: Release ${{ needs.build.outputs.Version }}

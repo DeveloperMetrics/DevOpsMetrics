@@ -95,14 +95,13 @@ The API can generate a URL for static badges, but more work is needed. Some curr
   - AzureDevOpsPATToken: Azure DevOps PAT Toekn
   - GitHubClientId: Client Id of OAuth Application in Github
   - GitHubClientSecret: Secret of OAuth Application in Github
-  - AzureStorageConnectionString:  Azure Storage Account Connection String
-  - KeyVaultClientId: Azure AD Application Client ID
-  - KeyVaultClientSecret: Azure AD Application Secret
-  - AZ_CLIENT_ID: 
-  - AZ_CLIENT_SECRET: 
-  - AZ_SUBSCRIPTION_ID: 
-  - AZ_TENANT_ID: 
+  - AZ_CLIENT_ID: Client ID of the Azure Service Principal to deploy this tool
+  - AZ_CLIENT_SECRET: : Client Secret of the Azure Service Principal to deploy this tool
+  - AZ_SUBSCRIPTION_ID: Subscription ID of the Azure Service Principal
+  - AZ_TENANT_ID: Tenant ID of the Azure Service Principal
   - AZ_RESOURCES_SUFFIX: Suffix for the Azure Resources - as many resources must have unique names
+### 3) Run the IaC CI/CD pipeline to create the Infra components
+### 4) Run the other pipelines to deploy the solution
 ## To debug/run tests
 - To Debug issues on Web Service:
   - Turn on Development in App Service by defining Config "ASPNETCORE_ENVIRONMENT=Development"
