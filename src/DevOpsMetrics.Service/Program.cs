@@ -1,3 +1,4 @@
+using System;
 using Azure.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.KeyVault;
@@ -40,23 +41,27 @@ namespace DevOpsMetrics.Service
                     // builder.AddAzureKeyVault(keyVaultURL, keyVaultClient, new DefaultKeyVaultSecretManager());
                     // builder.AddAzureKeyVault(keyVaultURL, clientId, clientSecret);
                     //configuration = builder.Build();
+                
+                    builder.AddAzureKeyVault(new Uri(configuration["AppSettings:KeyVaultURL"]), new DefaultAzureCredential());
 
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.ConfigureAppConfiguration((hostingContext, config) =>
-                    {
-                        var settings = config.Build();
+                    // This is the code to Load Secrets into the Configuration!
+                    webBuilder
+                    // .ConfigureAppConfiguration((hostingContext, config) =>
+                    // {
+                    //     var settings = config.Build();
 
-                        config.AddAzureAppConfiguration(options =>
-                        {
-                            options.Connect(settings["AppSettings:KeyVaultURL"])
-                                    .ConfigureKeyVault(kv =>
-                                    {
-                                        kv.SetCredential(new DefaultAzureCredential());
-                                    });
-                        });
-                    })
+                    //     config.AddAzureAppConfiguration(options =>
+                    //     {
+                    //         options.Connect(settings["AppSettings:KeyVaultURL"])
+                    //                 .ConfigureKeyVault(kv =>
+                    //                 {
+                    //                     kv.SetCredential(new DefaultAzureCredential());
+                    //                 });
+                    //     });
+                    // })
                     .UseStartup<Startup>();
                 });
         }
