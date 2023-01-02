@@ -64,6 +64,11 @@ resource webSite 'Microsoft.Web/sites@2018-11-01' = {
           name: 'AppSettings:WebServiceURL'
           value: webServiceURL
         }
+        {
+          // This is necessary for authenticating to Secret Vault: https://learn.microsoft.com/en-us/dotnet/api/overview/azure/identity-readme?view=azure-dotnet#specifying-a-user-assigned-managed-identity-with-the-defaultazurecredential
+          name: 'AZURE_CLIENT_ID'
+          value: managedIdentityId
+        }
       ]
     }
   }
