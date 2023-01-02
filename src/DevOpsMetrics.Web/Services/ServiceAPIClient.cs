@@ -8,7 +8,7 @@ using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using Microsoft.Extensions.Logging
+using Microsoft.Extensions.Logging;
 
 namespace DevOpsMetrics.Web.Services
 {

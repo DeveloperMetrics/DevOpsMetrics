@@ -11,14 +11,16 @@ using DevOpsMetrics.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace DevOpsMetrics.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IConfiguration Configuration;
+        private readonly ILogger _logger;
 
-        public HomeController(IConfiguration configuration)
+        public HomeController(IConfiguration configuration, ILogger<HomeController> logger)
         {
             Configuration = configuration;
         }
@@ -26,7 +28,7 @@ namespace DevOpsMetrics.Web.Controllers
         public async Task<IActionResult> Index()
         {
             //Get a list of settings
-            ServiceApiClient serviceApiClient = new(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration,_logger);
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
 
@@ -52,7 +54,7 @@ namespace DevOpsMetrics.Web.Controllers
             ProjectViewModel model = new();
 
             //Find the right project to load
-            ServiceApiClient serviceApiClient = new(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration,_logger);
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
 
@@ -154,7 +156,7 @@ namespace DevOpsMetrics.Web.Controllers
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
 
-            ServiceApiClient serviceApiClient = new(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration,_logger);
             List<DeploymentFrequencyModel> items = new();
 
             //Get a list of settings
@@ -215,7 +217,7 @@ namespace DevOpsMetrics.Web.Controllers
             bool useCache = true; //Use Azure storage instead of hitting the API. Quicker, but data may be up to 4 hours out of date
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            ServiceApiClient serviceApiClient = new(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration,_logger);
             List<LeadTimeForChangesModel> items = new();
 
             //Get a list of settings
@@ -257,7 +259,7 @@ namespace DevOpsMetrics.Web.Controllers
             int maxNumberOfItems = 20; //20 is the optimium max that looks good with the current UI            
             int numberOfDays = 30; //TODO: Move number of days variable to a drop down list on the current UI 
             bool getSampleData = false;
-            ServiceApiClient serviceApiClient = new(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration,_logger);
             List<MeanTimeToRestoreModel> items = new();
 
             //Get a list of settings
@@ -297,7 +299,7 @@ namespace DevOpsMetrics.Web.Controllers
             int maxNumberOfItems = 20; //20 is the optimium max that looks good with the current UI            
             int numberOfDays = 30; //TODO: Move number of days variable to a drop down list on the current UI 
             bool getSampleData = false;
-            ServiceApiClient serviceApiClient = new(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration,_logger);
             List<ChangeFailureRateModel> items = new();
 
             //Get a list of settings
@@ -341,7 +343,7 @@ namespace DevOpsMetrics.Web.Controllers
 
         public async Task<IActionResult> ChangeFailureRateUpdates()
         {
-            ServiceApiClient serviceApiClient = new(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration,_logger);
 
             //Get a list of settings
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
@@ -405,7 +407,7 @@ namespace DevOpsMetrics.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateChangeFailureRate(string ProjectIdSelected, int CompletionPercentSelected, int NumberOfDaysSelected)
         {
-            ServiceApiClient serviceApiClient = new(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration,_logger);
 
             //Get a list of settings
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
@@ -472,7 +474,7 @@ namespace DevOpsMetrics.Web.Controllers
         public async Task<IActionResult> Logs(string projectId = null)
         {
             //Get a list of settings
-            ServiceApiClient serviceApiClient = new(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration,_logger);
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
             List<KeyValuePair<string, string>> projects = new()
@@ -525,7 +527,7 @@ namespace DevOpsMetrics.Web.Controllers
         public async Task<IActionResult> Settings()
         {
             //Find the right project to load
-            ServiceApiClient serviceApiClient = new(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration,_logger);
             List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
 
@@ -546,7 +548,7 @@ namespace DevOpsMetrics.Web.Controllers
                 int itemOrder, bool showSetting)
         {
             //Find the right project to load
-            ServiceApiClient serviceApiClient = new(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration,_logger);
             if (patToken != null)
             {
 
@@ -572,7 +574,7 @@ namespace DevOpsMetrics.Web.Controllers
             int itemOrder, bool showSetting)
         {
             //Find the right project to load
-            ServiceApiClient serviceApiClient = new(Configuration);
+            ServiceApiClient serviceApiClient = new(Configuration,_logger);
             await serviceApiClient.UpdateGitHubSetting(clientId, clientSecret,
                 owner, repo,
                 branch, workflowName, workflowId, resourceGroup,
