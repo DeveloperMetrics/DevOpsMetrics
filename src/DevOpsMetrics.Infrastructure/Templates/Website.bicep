@@ -3,7 +3,7 @@ param hostingPlanName string
 param managedIdentityId string
 param applicationInsightsInstrumentationKey string
 param storageConnectionString string = ''
-// param keyVaultName string = ''
+param keyVaultName string = ''
 @secure()
 param azureDevOpsPatToken string = ''
 param gitHubClientId string = ''
@@ -35,10 +35,10 @@ resource webSite 'Microsoft.Web/sites@2018-11-01' = {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
           value: applicationInsightsInstrumentationKey
         }
-        // {
-        //   name: 'AppSettings:KeyVaultURL'
-        //   value: 'https://${keyVaultName}.vault.azure.net/'
-        // }
+        {
+          name: 'AppSettings:KeyVaultURL'
+          value: 'https://${keyVaultName}.vault.azure.net/'
+        }
         {
           name: 'AppSettings:AzureStorageAccountConfigurationString'
           value: storageConnectionString

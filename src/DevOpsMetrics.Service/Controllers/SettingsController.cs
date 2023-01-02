@@ -143,17 +143,7 @@ namespace DevOpsMetrics.Service.Controllers
         private async Task<KeyVaultSecret> CreateKeyVaultSecret(string secretName, string secretValue)
         {
             string keyVaultURI = Configuration["AppSettings:KeyVaultURL"];
-            string keyClientId = Configuration["AppSettings:KeyVaultClientId"];
-            string keyVaultSecret = Configuration["AppSettings:KeyVaultClientSecret"];
-            string tenantId = Configuration["AppSettings:TenantId"];
-            
-            // Somehow the Default Credentials was not working for me, probably because there's no Managed Identify
-            // This is a work around, to be reviewed later
-            SecretClient secretClient = new(new Uri(keyVaultURI), new ClientSecretCredential(tenantId:tenantId, clientId:keyClientId, clientSecret:keyVaultSecret));
-            if (String.IsNullOrEmpty(secretValue)){
-                throw new Exception("Secret value is empty for Secret " + secretName);
-            }
-
+            SecretClient secretClient = new(new Uri(keyVaultURI), new DefaultAzureCredential());
             return await secretClient.SetSecretAsync(secretName, secretValue);
         }
 

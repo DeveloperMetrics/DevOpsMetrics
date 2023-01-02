@@ -16,7 +16,7 @@ param gitHubClientSecret string = ''
 
 var resourceGroupName = 'rg-devopsmetrics-${resourcesSuffix}'
 var managedIdentityName='app-id-devops-${resourcesSuffix}'
-// var keyVaultName='vault-devops-prd-eu-${resourcesSuffix}'
+var keyVaultName='vault-devops-prd-eu-${resourcesSuffix}'
 var storageName='stgdevopsprdeu${resourcesSuffix}'
 var hostingName='hosting-devops-prd-eu-${resourcesSuffix}'
 var appInsightsName='appinsights-devops-prd-eu-${resourcesSuffix}'
@@ -40,6 +40,19 @@ module managedIdentity './ManagedIdentity.bicep' = {
   scope: resourceGroup(resourceGroupName)
   dependsOn: [
     devopsResourceGroup
+  ]
+}
+
+module keyVault './KeyVault.bicep' = {
+  name: '${keyVaultName}-Deployment'
+  params: {
+    keyVaultName: keyVaultName
+    administratorUserPrincipalId: managedIdentity.outputs.userAssignedManagedIdentityPrincipalId
+    storageAccountConnectionString: storage.outputs.storageAccountConnectionString
+  }
+  scope: resourceGroup(resourceGroupName)
+  dependsOn: [
+    managedIdentity
   ]
 }
 
@@ -85,7 +98,7 @@ module webService './Website.bicep' = {
     managedIdentityId: managedIdentity.outputs.userAssignedManagedIdentityId
     applicationInsightsInstrumentationKey:appInsights.outputs.applicationInsightsInstrumentationKeyOutput
     storageConnectionString: storage.outputs.storageAccountConnectionString
-    // keyVaultName:keyVaultName
+    keyVaultName:keyVaultName
     azureDevOpsPatToken: azureDevOpsPatToken
     gitHubClientId: gitHubClientId
     gitHubClientSecret: gitHubClientSecret
@@ -121,7 +134,7 @@ module function './Function.bicep' = {
     hostingPlanName: hostingName
     applicationInsightsInstrumentationKey:appInsights.outputs.applicationInsightsInstrumentationKeyOutput
     storageConnectionString: storage.outputs.storageAccountConnectionString
-    // keyVaultName:keyVaultName
+    keyVaultName:keyVaultName
     azureDevOpsPatToken: azureDevOpsPatToken
     gitHubClientId: gitHubClientId
     gitHubClientSecret: gitHubClientSecret
@@ -135,16 +148,4 @@ module function './Function.bicep' = {
   ]
 }
 
-// **** Removing this because it is not being used
-// module keyVault './KeyVault.bicep' = {
-//     name: '${keyVaultName}-Deployment'
-//     params: {
-//       keyVaultName: keyVaultName
-//       administratorUserPrincipalId: managedIdentity.outputs.userAssignedManagedIdentityPrincipalId
-//       storageAccountConnectionString: storage.outputs.storageAccountConnectionString
-//     }
-//     scope: resourceGroup(resourceGroupName)
-//     dependsOn: [
-//       managedIdentity
-//     ]
-// }
+
