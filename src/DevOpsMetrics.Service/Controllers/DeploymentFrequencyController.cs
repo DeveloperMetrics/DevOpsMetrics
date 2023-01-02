@@ -75,10 +75,15 @@ namespace DevOpsMetrics.Service.Controllers
                 string clientSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret(owner, repo);
                 clientSecretName = SecretsProcessing.CleanKey(clientSecretName);
                 string clientId = Configuration[clientIdName];
-                string clientSecret = Configuration[clientSecretName];
-                if (string.IsNullOrEmpty(clientId) == true | string.IsNullOrEmpty(clientSecret) == true)
+                if (string.IsNullOrEmpty(clientId))
                 {
-                    throw new Exception($"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault");
+                    throw new Exception($"clientId '{clientIdName}' key not found in key vault");
+                }
+
+                string clientSecret = Configuration[clientSecretName];
+                if (string.IsNullOrEmpty(clientSecret))
+                {
+                    throw new Exception($"clientSecret '{clientSecretName}' key not found in key vault");
                 }
 
                 DeploymentFrequencyDA da = new();
