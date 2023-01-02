@@ -211,7 +211,6 @@ namespace DevOpsMetrics.Web.Services
             if (client != null && url != null)
             {
                 _logger.LogInformation("Running url: " + client.BaseAddress.ToString() + url);
-                _logger.LogInformation("Running url: " + client.BaseAddress.ToString() + url);
                 using (HttpResponseMessage response = await client.GetAsync(url))
                 {
                     _logger.LogInformation("Return Status Code: " + response.StatusCode);

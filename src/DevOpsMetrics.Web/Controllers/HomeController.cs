@@ -24,6 +24,7 @@ namespace DevOpsMetrics.Web.Controllers
         {
             Configuration = configuration;
             _logger = logger;
+            _logger.LogInformation("Testing logger");
         }
 
         public async Task<IActionResult> Index()
