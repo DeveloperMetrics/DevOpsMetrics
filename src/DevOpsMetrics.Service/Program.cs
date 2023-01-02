@@ -31,38 +31,13 @@ namespace DevOpsMetrics.Service
                         configuration = builder.Build();
                     }
 
-                    // **** I see that the KeyVault is not being used for anything, so commenting this line ****
-                    //Load a connection to our Azure key vault instance
-                    // string keyVaultURL = configuration["AppSettings:KeyVaultURL"];
-                    // string clientId = configuration["AppSettings:KeyVaultClientId"];
-                    // string clientSecret = configuration["AppSettings:KeyVaultClientSecret"];
-                    // AzureServiceTokenProvider azureServiceTokenProvider = new();
-                    // KeyVaultClient keyVaultClient = new(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
-                    // builder.AddAzureKeyVault(keyVaultURL, keyVaultClient, new DefaultKeyVaultSecretManager());
-                    // builder.AddAzureKeyVault(keyVaultURL, clientId, clientSecret);
-                    //configuration = builder.Build();
-                
+                    // Load Secrects into Configuration!
                     builder.AddAzureKeyVault(new Uri(configuration["AppSettings:KeyVaultURL"]), new DefaultAzureCredential());
 
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    // This is the code to Load Secrets into the Configuration!
-                    webBuilder
-                    // .ConfigureAppConfiguration((hostingContext, config) =>
-                    // {
-                    //     var settings = config.Build();
-
-                    //     config.AddAzureAppConfiguration(options =>
-                    //     {
-                    //         options.Connect(settings["AppSettings:KeyVaultURL"])
-                    //                 .ConfigureKeyVault(kv =>
-                    //                 {
-                    //                     kv.SetCredential(new DefaultAzureCredential());
-                    //                 });
-                    //     });
-                    // })
-                    .UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>();
                 });
         }
     }
