@@ -37,7 +37,7 @@ namespace DevOpsMetrics.Tests.Core
             //Assert
             Assert.IsTrue(model != null);
             Assert.AreEqual(0.75f, model.LeadTimeForChangesMetric);
-            Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
+            Assert.AreEqual("High", model.LeadTimeForChangesMetricDescription);
             Assert.AreEqual(0.75f, model.LeadTimeForChangesMetricDisplayMetric);
             Assert.AreEqual("hours", model.LeadTimeForChangesMetricDisplayUnit);
             Assert.AreEqual(true, model.IsProjectView);
