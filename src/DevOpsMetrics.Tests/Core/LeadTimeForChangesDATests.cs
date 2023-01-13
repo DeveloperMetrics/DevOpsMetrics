@@ -99,7 +99,7 @@ namespace DevOpsMetrics.Tests.Core
             Assert.AreEqual(1f, model.AverageBuildHours);
             Assert.AreEqual(20.33f, model.AveragePullRequestHours);
             Assert.AreEqual(21.33f, model.LeadTimeForChangesMetric);
-            Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
+            Assert.AreEqual("High", model.LeadTimeForChangesMetricDescription);
             Assert.AreEqual(numberOfDays, model.NumberOfDays);
             Assert.IsTrue(model.MaxNumberOfItems > 0);
             Assert.IsTrue(model.TotalItems > 0);
