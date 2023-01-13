@@ -86,6 +86,10 @@ namespace DevOpsMetrics.Core
             {
                 rating = "Low";
             }
+            else //no rating
+            {
+                rating = "None";
+            }
             return rating;
         }
     }
