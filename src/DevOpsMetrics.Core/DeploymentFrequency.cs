@@ -70,26 +70,22 @@ namespace DevOpsMetrics.Core
             float dailyDeployment = 1f;
             //float weeklyDeployment = 1f / 7f;
             float monthlyDeployment = 1f / 30f;
-            float everySixMonthsDeployment = 1f / (6f * 30f); //Every 6 months
+            //float everySixMonthsDeployment = 1f / (6f * 30f); //Every 6 months
 
             string rating = "";
             if (deploymentsPerDay <= 0f)
             {
                 rating = "None";
             }
-            else if (deploymentsPerDay >= dailyDeployment) //NOTE: Does not capture on-demand deployments
-            {
-                rating = "Elite";
-            }
-            else if (deploymentsPerDay < dailyDeployment && deploymentsPerDay >= monthlyDeployment)
+            else if (deploymentsPerDay >= dailyDeployment) //NOTE: Assumes on-demand deployments are <1 day
             {
                 rating = "High";
             }
-            else if (deploymentsPerDay < monthlyDeployment && deploymentsPerDay >= everySixMonthsDeployment)
+            else if (deploymentsPerDay < dailyDeployment && deploymentsPerDay >= monthlyDeployment) //Captures days to months
             {
                 rating = "Medium";
             }
-            else if (deploymentsPerDay < everySixMonthsDeployment)
+            else if (deploymentsPerDay < monthlyDeployment)
             {
                 rating = "Low";
             }
