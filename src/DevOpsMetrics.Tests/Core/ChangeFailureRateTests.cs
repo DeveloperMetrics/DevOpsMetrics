@@ -13,7 +13,7 @@ namespace DevOpsMetrics.Tests.Core
     {
 
         [TestMethod]
-        public void ChangeFailureRateEliteTest()
+        public void ChangeFailureRateHigh2Test()
         {
             //Arrange
             ChangeFailureRate metrics = new();
@@ -39,12 +39,12 @@ namespace DevOpsMetrics.Tests.Core
             //Assert
             Assert.IsTrue(model != null);
             Assert.AreEqual(0f, model.ChangeFailureRateMetric);
-            Assert.AreEqual("Elite", model.ChangeFailureRateMetricDescription);
+            Assert.AreEqual("High", model.ChangeFailureRateMetricDescription);
             Assert.AreEqual(false, model.IsProjectView);
         }
 
         [TestMethod]
-        public void ChangeFailureRateHighTest()
+        public void ChangeFailureRateMediumTest()
         {
             //Arrange
             ChangeFailureRate metrics = new();
@@ -64,11 +64,11 @@ namespace DevOpsMetrics.Tests.Core
 
             //Assert
             Assert.AreEqual(0.2f, result);
-            Assert.AreEqual("High", rating);
+            Assert.AreEqual("Medium", rating);
         }
 
         [TestMethod]
-        public void ChangeFailureRateMediumTest()
+        public void ChangeFailureRateLowTest()
         {
             //Arrange
             ChangeFailureRate metrics = new();
@@ -88,11 +88,11 @@ namespace DevOpsMetrics.Tests.Core
 
             //Assert
             Assert.AreEqual(0.4f, result);
-            Assert.AreEqual("Medium", rating);
+            Assert.AreEqual("Low", rating);
         }
 
         [TestMethod]
-        public void ChangeFailureRateLowTest()
+        public void ChangeFailureRateLow2Test()
         {
             //Arrange
             ChangeFailureRate metrics = new();
