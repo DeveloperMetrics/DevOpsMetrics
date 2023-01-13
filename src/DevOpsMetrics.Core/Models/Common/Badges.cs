@@ -24,7 +24,7 @@
                     break;
             }
 
-            //Example: https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen
+            //Example: https://img.shields.io/badge/Deployment%20frequency-High-green
             return $"https://img.shields.io/badge/{description}-{rating}-{color}";
         }
     }

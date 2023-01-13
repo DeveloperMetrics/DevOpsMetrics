@@ -107,7 +107,7 @@ namespace DevOpsMetrics.Core.DataAccess
                     DeploymentName = buildName,
                     BuildList = builds,
                     DeploymentsPerDayMetric = 10f,
-                    DeploymentsPerDayMetricDescription = "Elite",
+                    DeploymentsPerDayMetricDescription = "High",
                     NumberOfDays = numberOfDays,
                     MaxNumberOfItems = builds.Count,
                     TotalItems = builds.Count
@@ -212,7 +212,7 @@ namespace DevOpsMetrics.Core.DataAccess
                     DeploymentName = workflowName,
                     BuildList = builds,
                     DeploymentsPerDayMetric = 10f,
-                    DeploymentsPerDayMetricDescription = "Elite",
+                    DeploymentsPerDayMetricDescription = "High",
                     NumberOfDays = numberOfDays,
                     MaxNumberOfItems = builds.Count,
                     TotalItems = builds.Count
