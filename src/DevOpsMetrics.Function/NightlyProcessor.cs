@@ -55,7 +55,7 @@ namespace DevOpsMetrics.Function
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
 
             //Loop through each setting to update the runs, pull requests and pull request commits
-            int numberOfDays = 30;
+            int numberOfDays = 90;
             int maxNumberOfItems = 20;
             int totalResults = 0;
             foreach (AzureDevOpsSettings item in azSettings)
