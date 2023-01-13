@@ -33,7 +33,7 @@ namespace DevOpsMetrics.Tests.Core
             //Assert
             Assert.IsTrue(model != null);
             Assert.AreEqual(1f, model.DeploymentsPerDayMetric);
-            Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual("High", model.DeploymentsPerDayMetricDescription);
             Assert.AreEqual(7, model.DeploymentsToDisplayMetric);
             Assert.AreEqual("times per week", model.DeploymentsToDisplayUnit);
         }
@@ -95,13 +95,13 @@ namespace DevOpsMetrics.Tests.Core
             //Assert
             Assert.IsTrue(model != null);
             Assert.AreEqual(0.7143f, model.DeploymentsPerDayMetric);
-            Assert.AreEqual("High", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual("Medium", model.DeploymentsPerDayMetricDescription);
             Assert.AreEqual(5.0000997f, model.DeploymentsToDisplayMetric);
             Assert.AreEqual("times per week", model.DeploymentsToDisplayUnit);
         }
 
         [TestMethod]
-        public void DeploymentFrequencyRatingEliteTest()
+        public void DeploymentFrequencyRatingHigh2Test()
         {
             //Arrange
             float metric = 1.01f; //daily
@@ -116,7 +116,7 @@ namespace DevOpsMetrics.Tests.Core
             //Assert
             Assert.IsTrue(model != null);
             Assert.AreEqual(1.01f, model.DeploymentsPerDayMetric);
-            Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual("High", model.DeploymentsPerDayMetricDescription);
             Assert.AreEqual(1.01f, model.DeploymentsToDisplayMetric);
             Assert.AreEqual("per day", model.DeploymentsToDisplayUnit);
         }
@@ -137,7 +137,7 @@ namespace DevOpsMetrics.Tests.Core
             //Assert
             Assert.IsTrue(model != null);
             Assert.AreEqual(1f / 7f, model.DeploymentsPerDayMetric);
-            Assert.AreEqual("High", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual("Medium", model.DeploymentsPerDayMetricDescription);
             Assert.AreEqual(1f, model.DeploymentsToDisplayMetric);
             Assert.AreEqual("times per week", model.DeploymentsToDisplayUnit);
         }
@@ -158,7 +158,7 @@ namespace DevOpsMetrics.Tests.Core
             //Assert
             Assert.IsTrue(model != null);
             Assert.AreEqual(0.0055555557f, model.DeploymentsPerDayMetric);
-            Assert.AreEqual("Medium", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual("Low", model.DeploymentsPerDayMetricDescription);
             Assert.AreEqual(0.16666667f, model.DeploymentsToDisplayMetric);
             Assert.AreEqual("times per month", model.DeploymentsToDisplayUnit);
 
