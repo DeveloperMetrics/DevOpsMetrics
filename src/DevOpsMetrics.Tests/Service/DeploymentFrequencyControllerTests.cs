@@ -33,7 +33,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(DevOpsPlatform.AzureDevOps, model.TargetDevOpsPlatform);
             Assert.AreEqual(buildName, model.DeploymentName);
             Assert.AreEqual(10f, model.DeploymentsPerDayMetric);
-            Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual("High", model.DeploymentsPerDayMetricDescription);
             Assert.AreEqual(10, model.BuildList.Count);
             Assert.AreEqual(70, model.BuildList[0].BuildDurationPercent);
             Assert.AreEqual("1", model.BuildList[0].BuildNumber);
@@ -157,7 +157,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(DevOpsPlatform.GitHub, model.TargetDevOpsPlatform);
             Assert.AreEqual(workflowName, model.DeploymentName);
             Assert.AreEqual(10f, model.DeploymentsPerDayMetric);
-            Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual("High", model.DeploymentsPerDayMetricDescription);
             Assert.AreEqual(10, model.BuildList.Count);
             Assert.AreEqual(70, model.BuildList[0].BuildDurationPercent);
             Assert.AreEqual("1", model.BuildList[0].BuildNumber);
@@ -328,7 +328,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual(DevOpsPlatform.GitHub, model.TargetDevOpsPlatform);
             Assert.AreEqual(workflowName, model.DeploymentName);
             Assert.AreEqual(10f, model.DeploymentsPerDayMetric);
-            Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
+            Assert.AreEqual("High", model.DeploymentsPerDayMetricDescription);
             Assert.AreEqual(10, model.BuildList.Count);
             Assert.AreEqual(70, model.BuildList[0].BuildDurationPercent);
             Assert.AreEqual("1", model.BuildList[0].BuildNumber);
