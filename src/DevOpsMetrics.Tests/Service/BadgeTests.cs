@@ -24,8 +24,8 @@ namespace DevOpsMetrics.Tests.Service
 
             //Assert
             Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency-High-green", model.BadgeURL);
-            Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency%20%2812.00%20per%20day%29-High-green", model.BadgeWithMetricURL);
+            Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen", model.BadgeURL);
+            Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency%20%2812.00%20per%20day%29-Elite-brightgreen", model.BadgeWithMetricURL);
         }
 
 
@@ -186,8 +186,8 @@ namespace DevOpsMetrics.Tests.Service
 
             //Assert
             Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-High-green", model.BadgeURL);
-            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes%20%285.3%20hours%29-High-green", model.BadgeWithMetricURL);
+            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes-Elite-brightgreen", model.BadgeURL);
+            Assert.AreEqual("https://img.shields.io/badge/Lead%20time%20for%20changes%20%285.3%20hours%29-Elite-brightgreen", model.BadgeWithMetricURL);
         }
 
 
@@ -278,8 +278,8 @@ namespace DevOpsMetrics.Tests.Service
 
             //Assert
             Assert.AreEqual("Elite", model.MTTRAverageDurationDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service-High-green", model.BadgeURL);
-            Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service%20%280.12%20hours%29-High-green", model.BadgeWithMetricURL);
+            Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service-Elite-brightgreen", model.BadgeURL);
+            Assert.AreEqual("https://img.shields.io/badge/Time%20to%20restore%20service%20%280.12%20hours%29-Elite-brightgreen", model.BadgeWithMetricURL);
         }
 
 
