@@ -13,7 +13,7 @@ namespace DevOpsMetrics.Tests.Core
     {
 
         [TestMethod]
-        public void MTTREliteTest()
+        public void MTTRHigh2Test()
         {
             //Arrange
             MeanTimeToRestore metrics = new();
@@ -41,7 +41,7 @@ namespace DevOpsMetrics.Tests.Core
             //Assert
             Assert.IsTrue(model != null);
             Assert.AreEqual(0.75f, model.MTTRAverageDurationInHours);
-            Assert.AreEqual("Elite", model.MTTRAverageDurationDescription);
+            Assert.AreEqual("High", model.MTTRAverageDurationDescription);
             Assert.AreEqual(false, model.IsProjectView);
             Assert.AreEqual(1, model.ItemOrder);
             Assert.AreEqual(0.9910714f, model.SLA);

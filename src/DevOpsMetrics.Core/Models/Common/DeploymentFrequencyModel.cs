@@ -105,7 +105,7 @@ namespace DevOpsMetrics.Core.Models.Common
         {
             get
             {
-                //Example: https://img.shields.io/badge/Deployment%20frequency-Elite-brightgreen
+                //Example: https://img.shields.io/badge/Deployment%20frequency-High-green
                 string title = Uri.EscapeDataString("Deployment frequency");
                 return Badges.BadgeURL(title, DeploymentsPerDayMetricDescription);
             }
@@ -115,7 +115,7 @@ namespace DevOpsMetrics.Core.Models.Common
         {
             get
             {
-                //Example: https://img.shields.io/badge/Change%20failure%20rate%20(83.33%25)-Elite-brightgreen
+                //Example: https://img.shields.io/badge/Change%20failure%20rate%20(83.33%25)-High-green
                 string title = Uri.EscapeDataString("Deployment frequency (" + DeploymentsToDisplayMetric.ToString("0.00") + " " + DeploymentsToDisplayUnit + ")");
                 return Badges.BadgeURL(title, DeploymentsPerDayMetricDescription);
             }

@@ -13,7 +13,7 @@ namespace DevOpsMetrics.Tests.Core
     {
 
         [TestMethod]
-        public void LeadTimeForChangesSingleOneDayTest()
+        public void LeadTimeForChangesSingleOneDayHighTest()
         {
             //Arrange
             LeadTimeForChanges metrics = new();
@@ -37,7 +37,7 @@ namespace DevOpsMetrics.Tests.Core
             //Assert
             Assert.IsTrue(model != null);
             Assert.AreEqual(0.75f, model.LeadTimeForChangesMetric);
-            Assert.AreEqual("Elite", model.LeadTimeForChangesMetricDescription);
+            Assert.AreEqual("High", model.LeadTimeForChangesMetricDescription);
             Assert.AreEqual(0.75f, model.LeadTimeForChangesMetricDisplayMetric);
             Assert.AreEqual("hours", model.LeadTimeForChangesMetricDisplayUnit);
             Assert.AreEqual(true, model.IsProjectView);
@@ -61,7 +61,7 @@ namespace DevOpsMetrics.Tests.Core
         }
 
         [TestMethod]
-        public void LeadTimeForChangesFiveSevenDaysEliteTest()
+        public void LeadTimeForChangesFiveSevenDaysHighTest()
         {
             //Arrange
             LeadTimeForChanges metrics = new();
@@ -82,11 +82,11 @@ namespace DevOpsMetrics.Tests.Core
 
             //Assert
             Assert.AreEqual(1.05, Math.Round((double)result, 4));
-            Assert.AreEqual("Elite", rating);
+            Assert.AreEqual("High", rating);
         }
 
         [TestMethod]
-        public void LeadTimeForChangesFiveSevenDaysHighTest()
+        public void LeadTimeForChangesFiveSevenDaysHighTest2()
         {
             //Arrange
             LeadTimeForChanges metrics = new();
@@ -145,7 +145,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Assert
             Assert.AreEqual((24 * 31), Math.Round((double)result, 4));
-            Assert.AreEqual("Medium", rating);
+            Assert.AreEqual("Low", rating);
         }
 
 

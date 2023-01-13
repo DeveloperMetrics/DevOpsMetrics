@@ -51,7 +51,7 @@ namespace DevOpsMetrics.Core.Models.Common
         {
             get
             {
-                //Example: https://img.shields.io/badge/Change%20failure%20rate-Elite-brightgreen
+                //Example: https://img.shields.io/badge/Change%20failure%20rate-High-green
                 string title = Uri.EscapeDataString("Change failure rate");
                 return Badges.BadgeURL(title, ChangeFailureRateMetricDescription);
             }
@@ -62,7 +62,7 @@ namespace DevOpsMetrics.Core.Models.Common
             get
             {
                 string changeFailureRate = ChangeFailureRateMetric.ToString("0.00%").Replace("-", "");
-                //Example: https://img.shields.io/badge/Change%20failure%20rate%20(83.33%25)-Elite-brightgreen
+                //Example: https://img.shields.io/badge/Change%20failure%20rate%20(83.33%25)-High-green
                 string title = Uri.EscapeDataString("Change failure rate (" + changeFailureRate + ")");
                 return Badges.BadgeURL(title, ChangeFailureRateMetricDescription);
             }

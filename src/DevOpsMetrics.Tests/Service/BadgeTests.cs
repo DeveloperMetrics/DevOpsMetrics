@@ -102,25 +102,6 @@ namespace DevOpsMetrics.Tests.Service
 
         [TestCategory("L0Test")]
         [TestMethod]
-        public void ChangeFailureRateControllerEliteBadgeTest()
-        {
-            //Arrange
-            ChangeFailureRateModel model = new()
-            {
-                ChangeFailureRateMetricDescription = "Elite",
-                ChangeFailureRateMetric = 0
-            };
-
-            //Act
-
-            //Assert
-            Assert.AreEqual("Elite", model.ChangeFailureRateMetricDescription);
-            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-Elite-brightgreen", model.BadgeURL);
-            Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate%20%280.00%25%29-Elite-brightgreen", model.BadgeWithMetricURL);
-        }
-
-        [TestCategory("L0Test")]
-        [TestMethod]
         public void ChangeFailureRateControllerHighBadgeTest()
         {
             //Arrange

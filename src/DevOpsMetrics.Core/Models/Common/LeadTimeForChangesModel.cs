@@ -85,7 +85,7 @@ namespace DevOpsMetrics.Core.Models.Common
         {
             get
             {
-                //Example: https://img.shields.io/badge/Lead%20time%20for%20changes-Elite-brightgreen
+                //Example: https://img.shields.io/badge/Lead%20time%20for%20changes-High-green
                 string title = Uri.EscapeDataString("Lead time for changes");
                 return Badges.BadgeURL(title, LeadTimeForChangesMetricDescription);
             }
@@ -95,7 +95,7 @@ namespace DevOpsMetrics.Core.Models.Common
         {
             get
             {
-                //Example: https://img.shields.io/badge/Change%20failure%20rate%20(83.33%25)-Elite-brightgreen
+                //Example: https://img.shields.io/badge/Change%20failure%20rate%20(83.33%25)-High-green
                 string title = Uri.EscapeDataString("Lead time for changes (" + LeadTimeForChangesMetricDisplayMetric.ToString("0.0") + " " + LeadTimeForChangesMetricDisplayUnit + ")");
                 return Badges.BadgeURL(title, LeadTimeForChangesMetricDescription);
             }

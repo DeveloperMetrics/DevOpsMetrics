@@ -65,28 +65,24 @@ namespace DevOpsMetrics.Core
 
         public static string GetMeanTimeToRestoreRating(float meanTimeToRestoreInHours)
         {
-            float hourlyRestoration = 1f;
-            float dailyDeployment = 24f;
-            float weeklyDeployment = 24f * 7f;
+            //float hourlyRestoration = 1f;
+            float dailyRestoration = 24f;
+            float weeklyRestoration = 24f * 7f;
 
             string rating;
             if (meanTimeToRestoreInHours <= 0)
             {
                 rating = "None";
             }
-            else if (meanTimeToRestoreInHours < hourlyRestoration) //less than one hour
-            {
-                rating = "Elite";
-            }
-            else if (meanTimeToRestoreInHours < dailyDeployment) //less than one day
+            else if (meanTimeToRestoreInHours < dailyRestoration) //less than one day
             {
                 rating = "High";
             }
-            else if (meanTimeToRestoreInHours < weeklyDeployment) //less than one day and one week
+            else if (meanTimeToRestoreInHours < weeklyRestoration) //less than one day and one week
             {
                 rating = "Medium";
             }
-            else if (meanTimeToRestoreInHours > weeklyDeployment) //more than one week
+            else if (meanTimeToRestoreInHours > weeklyRestoration) //more than one week (originally 1 week - 1 month)
             {
                 rating = "Low";
             }
