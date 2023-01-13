@@ -31,12 +31,29 @@ namespace DevOpsMetrics.Function
             };
             try
             {
-                log.LogInformation($"Processing GitHub owner {ghSetting.Owner}, repo {ghSetting.Repo}");
+                //TODO: fix this - should be using a common interface, not this null hack
+                string message = $"Processing GitHub owner {ghSetting.Owner}, repo {ghSetting.Repo}";
+                if (log == null)
+                {
+                    Console.WriteLine(message);
+                }
+                else
+                {
+                    log.LogInformation(message);
+                }
                 result.BuildsUpdated = await buildsController.UpdateGitHubActionRuns(ghSetting.Owner, ghSetting.Repo, ghSetting.Branch, ghSetting.WorkflowName, ghSetting.WorkflowId, numberOfDays, maxNumberOfItems);
                 //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {buildsUpdated} builds updated");
                 result.PRsUpdated = await pullRequestsController.UpdateGitHubActionPullRequests(ghSetting.Owner, ghSetting.Repo, ghSetting.Branch, numberOfDays, maxNumberOfItems);
                 //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {prsUpdated} pull requests updated");
-                log.LogInformation($"Processed GitHub owner {ghSetting.Owner}, repo {ghSetting.Repo}. {result.BuildsUpdated} builds and {result.PRsUpdated} prs/commits updated");
+                message = $"Processed GitHub owner {ghSetting.Owner}, repo {ghSetting.Repo}. {result.BuildsUpdated} builds and {result.PRsUpdated} prs/commits updated";
+                if (log == null)
+                {
+                    Console.WriteLine(message);
+                }
+                else
+                {
+                    log.LogInformation(message);
+                }
                 result.TotalResults += result.BuildsUpdated + result.PRsUpdated;
 
                 //Process summary results for last 90 days, creating badges for the four metrics
@@ -51,7 +68,14 @@ namespace DevOpsMetrics.Function
             catch (Exception ex)
             {
                 string error = $"Exception while processing GitHub owner {ghSetting.Owner}, repo {ghSetting.Repo}. {result.BuildsUpdated} builds and {result.PRsUpdated} prs/commits updated";
-                log.LogInformation(error);
+                if (log == null)
+                {
+                    Console.WriteLine(error);
+                }
+                else
+                {
+                    log.LogInformation(error);
+                }
                 await settingsController.UpdateGitHubProjectLog(ghSetting.Owner, ghSetting.Repo, result.BuildsUpdated, result.PRsUpdated,
                     ghSetting.Owner + "_" + ghSetting.Repo + "_" + ghSetting.Branch + "_" + ghSetting.WorkflowName + "_" + ghSetting.WorkflowId + "_" + numberOfDays + "_" + maxNumberOfItems,
                     ghSetting.Owner + "_" + ghSetting.Repo + "_" + ghSetting.Branch + "_" + numberOfDays + "_" + maxNumberOfItems,
