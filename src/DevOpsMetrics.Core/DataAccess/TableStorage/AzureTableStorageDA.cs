@@ -277,7 +277,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             {
                 GitHubPR pr = JsonConvert.DeserializeObject<GitHubPR>(item.ToString());
 
-                if (pr.state == "closed" & pr.merged_at != null)
+                if (pr.state == "closed" && pr.merged_at != null)
                 {
                     string partitionKey = PartitionKeys.CreateGitHubPRPartitionKey(owner, repo);
                     string rowKey = pr.number;
