@@ -69,7 +69,7 @@ namespace DevOpsMetrics.Core
             float dailyRestoration = 24f;
             float weeklyRestoration = 24f * 7f;
 
-            string rating;
+            string rating = "";
             if (meanTimeToRestoreInHours <= 0)
             {
                 rating = "None";
@@ -86,10 +86,8 @@ namespace DevOpsMetrics.Core
             {
                 rating = "Low";
             }
-            else //no rating
-            {
-                rating = "None";
-            }
+            //no rating else statement not required here, as all scenarios are covered above with < and >
+
             return rating;
         }
     }
