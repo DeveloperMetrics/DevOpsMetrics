@@ -35,7 +35,7 @@ namespace DevOpsMetrics.Service.Controllers
                 string patTokenName = PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken(organization, project, repository);
                 patTokenName = SecretsProcessing.CleanKey(patTokenName);
                 string patToken = Configuration[patTokenName];
-                if (string.IsNullOrEmpty(patToken) == true)
+                if (string.IsNullOrEmpty(patToken))
                 {
                     throw new Exception($"patToken '{patTokenName}' not found in key vault");
                 }
@@ -77,7 +77,7 @@ namespace DevOpsMetrics.Service.Controllers
                 clientSecretName = SecretsProcessing.CleanKey(clientSecretName);
                 string clientId = Configuration[clientIdName];
                 string clientSecret = Configuration[clientSecretName];
-                if (string.IsNullOrEmpty(clientId) == true || string.IsNullOrEmpty(clientSecret) == true)
+                if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(clientSecret))
                 {
                     throw new Exception($"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault");
                 }
