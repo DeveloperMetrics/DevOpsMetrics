@@ -23,7 +23,7 @@
 
 @* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
 <div class="chartContainer vertical flat">
-    @if (Model.IsProjectView == true)
+    @if (Model.IsProjectView)
     {
         <h4>Change Failure Rate</h4>
     }
@@ -49,7 +49,7 @@
         foreach (ChangeFailureRateBuild item in Model.ChangeFailureRateBuildList)
         {
             string progressFillStatus = "";
-            if (item.DeploymentWasSuccessful == true)
+            if (item.DeploymentWasSuccessful)
             {
                 progressFillStatus = "completed";
             }
