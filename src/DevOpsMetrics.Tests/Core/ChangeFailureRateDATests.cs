@@ -121,7 +121,7 @@ namespace DevOpsMetrics.Tests.Core
                organization, project, buildName, percent, numberOfDays);
 
             //Assert
-            Assert.IsTrue(result == true);
+            Assert.IsTrue(result);
 
         }
 

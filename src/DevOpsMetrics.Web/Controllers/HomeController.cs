@@ -481,19 +481,13 @@ namespace DevOpsMetrics.Web.Controllers
             };
             foreach (AzureDevOpsSettings item in azureDevOpsSettings)
             {
-                //if (item.ShowSetting == true)
-                //{
                 string partitionKey = PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(item.Organization, item.Project, item.Repository);
                 projects.Add(new KeyValuePair<string, string>(partitionKey, item.Project));
-                //}
             }
             foreach (GitHubSettings item in githubSettings)
             {
-                //if (item.ShowSetting == true)
-                //{
                 string partitionKey = PartitionKeys.CreateGitHubSettingsPartitionKey(item.Owner, item.Repo);
                 projects.Add(new KeyValuePair<string, string>(partitionKey, item.Repo));
-                //}
             }
 
             List<ProjectLog> logs = new();
