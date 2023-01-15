@@ -46,7 +46,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         {
             //Check if the item exists in storage
             AzureStorageTableModel item = await GetItem(data.PartitionKey, data.RowKey);
-            if (item == null || forceUpdate == true)
+            if (item == null || forceUpdate)
             {
                 await SaveItem(data);
                 return true; //data saved to table!
