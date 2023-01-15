@@ -61,6 +61,7 @@ button.accept-policy {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
+    background: #fff;
 }
 
 .footer {
@@ -76,10 +77,6 @@ body {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-}
-
-body {
-    background: #fff;
 }
 
 h4 {
