@@ -17,7 +17,7 @@ namespace DevOpsMetrics.Core.DataAccess
         {
             List<AzureDevOpsPR> prs = new();
             JArray list;
-            if (useCache == true)
+            if (useCache)
             {
                 //Get the pull requests from Azure storage
                 AzureTableStorageDA daTableStorage = new();
@@ -49,7 +49,7 @@ namespace DevOpsMetrics.Core.DataAccess
         public static async Task<List<AzureDevOpsPRCommit>> GetAzureDevOpsPullRequestCommits(string patToken, TableStorageConfiguration tableStorageConfig, string organization, string project, string repository, string pullRequestId, bool useCache)
         {
             JArray list;
-            if (useCache == true)
+            if (useCache)
             {
                 //Get the commits from Azure storage
                 AzureTableStorageDA daTableStorage = new();
@@ -69,7 +69,7 @@ namespace DevOpsMetrics.Core.DataAccess
         {
             List<GitHubPR> prs = new();
             JArray list;
-            if (useCache == true)
+            if (useCache)
             {
                 //Get the pull requests from Azure storage
                 AzureTableStorageDA daTableStorage = new();
@@ -101,7 +101,7 @@ namespace DevOpsMetrics.Core.DataAccess
         public static async Task<List<GitHubPRCommit>> GetGitHubPullRequestCommits(string clientId, string clientSecret, TableStorageConfiguration tableStorageConfig, string owner, string repo, string pull_number, bool useCache)
         {
             JArray list;
-            if (useCache == true)
+            if (useCache)
             {
                 //Get the commits from Azure storage
                 AzureTableStorageDA daTableStorage = new();

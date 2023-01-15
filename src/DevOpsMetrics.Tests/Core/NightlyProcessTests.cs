@@ -72,7 +72,7 @@ namespace DevOpsMetrics.Tests.Core
         //            owner, repo, branch, workflowName, workflowId, resourceGroupName, itemOrder, showSetting);
 
         //    //Assert
-        //    Assert.IsTrue(result == true);
+        //    Assert.IsTrue(result);
         //}
 
 

@@ -18,7 +18,7 @@ namespace DevOpsMetrics.Core.DataAccess
         {
             List<AzureDevOpsBuild> builds = new();
             JArray list = null;
-            if (useCache == true)
+            if (useCache)
             {
                 //Get the builds from Azure storage
                 AzureTableStorageDA daTableStorage = new();
@@ -51,7 +51,7 @@ namespace DevOpsMetrics.Core.DataAccess
         {
             List<GitHubActionsRun> runs = new();
             JArray list = null;
-            if (useCache == true)
+            if (useCache)
             {
                 //Get the builds from Azure storage
                 AzureTableStorageDA daTableStorage = new();

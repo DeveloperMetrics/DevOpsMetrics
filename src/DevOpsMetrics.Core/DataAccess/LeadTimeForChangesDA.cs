@@ -282,10 +282,6 @@ namespace DevOpsMetrics.Core.DataAccess
                         {
                             pullRequest.Status = "inProgress";
                         }
-                        else
-                        {
-                            pullRequest.Status = pullRequest.Status;
-                        }
 
                         leadTimeForChangesList.Add(new KeyValuePair<DateTime, TimeSpan>(minTime, pullRequest.Duration));
                         pullRequests.Add(pullRequest);

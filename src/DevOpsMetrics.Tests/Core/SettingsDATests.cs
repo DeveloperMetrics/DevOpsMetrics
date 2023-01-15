@@ -81,7 +81,7 @@ namespace DevOpsMetrics.Tests.Core
                     organization, project, repository, branch, buildName, buildId, resourceGroupName, itemOrder, showSetting);
 
             //Assert
-            Assert.IsTrue(result == true);
+            Assert.IsTrue(result);
         }
 
         [TestMethod]
@@ -104,7 +104,7 @@ namespace DevOpsMetrics.Tests.Core
                     owner, repo, branch, workflowName, workflowId, resourceGroupName, itemOrder, showSetting);
 
             //Assert
-            Assert.IsTrue(result == true);
+            Assert.IsTrue(result);
         }
 
         [TestMethod]
@@ -127,7 +127,7 @@ namespace DevOpsMetrics.Tests.Core
                     owner, repo, branch, workflowName, workflowId, resourceGroupName, itemOrder, showSetting);
 
             //Assert
-            Assert.IsTrue(result == true);
+            Assert.IsTrue(result);
         }
 
         [TestMethod]
@@ -150,7 +150,7 @@ namespace DevOpsMetrics.Tests.Core
                     owner, repo, branch, workflowName, workflowId, resourceGroupName, itemOrder, showSetting);
 
             //Assert
-            Assert.IsTrue(result == true);
+            Assert.IsTrue(result);
         }
 
     }

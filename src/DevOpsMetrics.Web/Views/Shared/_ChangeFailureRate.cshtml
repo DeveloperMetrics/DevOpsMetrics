@@ -23,13 +23,13 @@
 
 @* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
 <div class="chartContainer vertical flat">
-    @if (Model.IsProjectView == true)
+    @if (Model.IsProjectView)
     {
         <h4>Change Failure Rate</h4>
     }
     else
     {
-        <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.DeploymentName</h4>
+        <h4><img src="~/images/@widgetImageName" style="width:32px;" alt="Widget image name" />&nbsp; @widgetName - @Model.DeploymentName</h4>
     }
     @if (Model.Exception != null)
     {
@@ -49,7 +49,7 @@
         foreach (ChangeFailureRateBuild item in Model.ChangeFailureRateBuildList)
         {
             string progressFillStatus = "";
-            if (item.DeploymentWasSuccessful == true)
+            if (item.DeploymentWasSuccessful)
             {
                 progressFillStatus = "completed";
             }
@@ -78,5 +78,5 @@
         <b>Change failure rate:</b><span> @Model.ChangeFailureRateMetric.ToString("0.00%")</span><br />
     }
     <b>Change failure rate ranking:</b><span> @Model.ChangeFailureRateMetricDescription</span><br />
-    <b>Badge:</b> <img src="@Model.BadgeWithMetricURL" />
+    <b>Badge:</b> <img src="@Model.BadgeWithMetricURL" alt="Badge with metric image" />
 </div>

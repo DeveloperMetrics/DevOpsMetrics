@@ -86,10 +86,8 @@ namespace DevOpsMetrics.Core
             {
                 rating = "Low";
             }
-            else //no rating
-            {
-                rating = "None";
-            }
+            //no rating else statement not required here, as all scenarios are covered above with < and >
+            
             return rating;
         }
     }

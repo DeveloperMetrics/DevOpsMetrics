@@ -9,7 +9,7 @@
         <span style="color: red">Note: This is a POC. Please don't put your secrets/PAT tokens in here. While they are safely stored in an Azure Key Vault - I can still see them, and I don't want to have access to your secrets. Besides - you don't know me. Be smart. Only upload secrets to a website with a verified publisher or one you control.</span>
         <br />
         <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="UpdateGitHubSetting">
-            <h3><img src="~/images/GitHub-icon.png" style="width:32px;" />&nbsp; GitHub</h3>
+            <h3><img src="~/images/GitHub-icon.png" style="width:32px;" alt="GitHub icon" />&nbsp; GitHub</h3>
             <a href="@Url.Action("AddGitHubSetting","Home")">Add new GitHub setting</a><br />
             <table class="table table-striped table-bordered">
                 <tr>

@@ -28,6 +28,8 @@ a {
 -------------------------------------------------- */
 html {
     font-size: 14px;
+    position: relative;
+    min-height: 100%;
 }
 
 @media (min-width: 768px) {
@@ -55,14 +57,11 @@ button.accept-policy {
 
 /* Sticky footer styles
 -------------------------------------------------- */
-html {
-    position: relative;
-    min-height: 100%;
-}
 
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
+    background: #fff;
 }
 
 .footer {
@@ -78,10 +77,6 @@ body {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-}
-
-body {
-    background: #fff;
 }
 
 h4 {
@@ -128,7 +123,6 @@ h4 {
     /*background: #107c10;*/
     height: 50%;
     width: 18px;
-    color: #fff;
     text-align: center;
     font-family: "Lato","Verdana",sans-serif;
     font-size: 12px;

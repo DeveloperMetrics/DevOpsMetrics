@@ -23,13 +23,13 @@
 
 @* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
 <div class="chartContainer vertical flat">
-    @if (Model.IsProjectView == true)
+    @if (Model.IsProjectView)
     {
         <h4>Time to restore service</h4>
     }
     else
     {
-        <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ResourceGroup</h4>
+        <h4><img src="~/images/@widgetImageName" style="width:32px;" alt="Widget image name" />&nbsp; @widgetName - @Model.ResourceGroup</h4>
     }
     @if (Model.Exception != null)
     {
@@ -72,7 +72,7 @@
 <div class="metricSpan">
     <b>Mean time to restore:</b><span> @Model.MTTRAverageDurationInHours.ToString("0.00") hours</span><br />
     <b>Time to restore ranking:</b><span> @Model.MTTRAverageDurationDescription</span><br />
-    <b>Badge:</b> <img src="@Model.BadgeWithMetricURL" /><br />
+    <b>Badge:</b> <img src="@Model.BadgeWithMetricURL" alt="Badge with metric image" /><br />
     @if (@Model.SLA >= 0)
     {
         <b>SLA: </b><span> @Model.SLA.ToString("0.00%")</span><br />

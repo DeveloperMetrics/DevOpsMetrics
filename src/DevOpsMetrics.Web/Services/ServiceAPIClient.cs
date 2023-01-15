@@ -205,10 +205,10 @@ namespace DevOpsMetrics.Web.Services
                 Console.WriteLine("Running url: " + client.BaseAddress.ToString() + url);
                 using (HttpResponseMessage response = await client.GetAsync(url))
                 {
-                    if (response.IsSuccessStatusCode == true)
+                    if (response.IsSuccessStatusCode)
                     {
                         string responseBody = await response.Content.ReadAsStringAsync();
-                        if (string.IsNullOrEmpty(responseBody) == false)
+                        if (!string.IsNullOrEmpty(responseBody))
                         {
                             obj = JsonConvert.DeserializeObject<T>(responseBody);
                         }

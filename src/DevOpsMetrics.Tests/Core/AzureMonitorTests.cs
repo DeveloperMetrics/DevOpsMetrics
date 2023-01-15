@@ -66,7 +66,7 @@ namespace DevOpsMetrics.Tests.Core
             bool result = await da.UpdateDevOpsMonitoringEventInStorage(tableStorageConfig, monitoringEvent);
 
             //Assert
-            Assert.IsTrue(result == true);
+            Assert.IsTrue(result);
         }
     }
 }

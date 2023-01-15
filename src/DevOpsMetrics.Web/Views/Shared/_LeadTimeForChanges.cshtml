@@ -23,13 +23,13 @@
 
 @* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
 <div class="chartContainer vertical flat">
-    @if (Model.IsProjectView == true)
+    @if (Model.IsProjectView)
     {
         <h4>Lead time for changes</h4>
     }
     else
     {
-        <h4><img src="~/images/@widgetImageName" style="width:32px;" />&nbsp; @widgetName - @Model.ProjectName</h4>
+        <h4><img src="~/images/@widgetImageName" style="width:32px;" alt="Widget image name" />&nbsp; @widgetName - @Model.ProjectName</h4>
     }
     @if (Model.Exception != null)
     {
@@ -38,7 +38,7 @@
             <span>There was an exception retreiving data from this <a href="@Model.ExceptionUrl" target="_blank">service request</a>.</span>
         </div>
     }
-    else if (Model.RateLimitHit == true)
+    else if (Model.RateLimitHit)
     {
         <div style="height:100px">
             <span>API rate limit has been reached, please try again later</span>
@@ -76,6 +76,6 @@
         <b>Pull request time:</b><span> @Model.AveragePullRequestHours.ToString("0.0") hours</span><br />*@
     <b>Lead time for changes:</b><span> @Model.LeadTimeForChangesMetricDisplayMetric.ToString("0.0") @Model.LeadTimeForChangesMetricDisplayUnit</span><br />
     <b>Lead time for changes ranking:</b><span> @Model.LeadTimeForChangesMetricDescription</span><br />
-    <b>Badge:</b> <img src="@Model.BadgeWithMetricURL" />
+        <b>Badge:</b> <img src="@Model.BadgeWithMetricURL" alt="Badge with metric image" />
 </div>
 }
