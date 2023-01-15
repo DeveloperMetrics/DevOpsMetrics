@@ -23,7 +23,7 @@
 
 @* HTML based on example at https://codepen.io/vmz/pen/GpKbjm*@
 <div class="chartContainer vertical flat">
-    @if (Model.IsProjectView == true)
+    @if (Model.IsProjectView)
     {
         <h4>Lead time for changes</h4>
     }
@@ -38,7 +38,7 @@
             <span>There was an exception retreiving data from this <a href="@Model.ExceptionUrl" target="_blank">service request</a>.</span>
         </div>
     }
-    else if (Model.RateLimitHit == true)
+    else if (Model.RateLimitHit)
     {
         <div style="height:100px">
             <span>API rate limit has been reached, please try again later</span>
