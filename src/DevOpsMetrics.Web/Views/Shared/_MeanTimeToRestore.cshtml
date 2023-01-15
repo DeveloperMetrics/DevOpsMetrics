@@ -72,7 +72,7 @@
 <div class="metricSpan">
     <b>Mean time to restore:</b><span> @Model.MTTRAverageDurationInHours.ToString("0.00") hours</span><br />
     <b>Time to restore ranking:</b><span> @Model.MTTRAverageDurationDescription</span><br />
-    <b>Badge:</b> <img src="@Model.BadgeWithMetricURL" /><br />
+    <b>Badge:</b> <img src="@Model.BadgeWithMetricURL" alt="Badge with metric image" /><br />
     @if (@Model.SLA >= 0)
     {
         <b>SLA: </b><span> @Model.SLA.ToString("0.00%")</span><br />
