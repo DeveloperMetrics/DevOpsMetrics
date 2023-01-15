@@ -30,7 +30,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             JArray list = new();
             foreach (AzureStorageTableModel item in items)
             {
-                if (includePartitionAndRowKeys == true)
+                if (includePartitionAndRowKeys)
                 {
                     string data = item.Data?.ToString();
                     list.Add(
@@ -124,7 +124,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                     string partitionKey = PartitionKeys.CreateBuildWorkflowPartitionKey(organization, project, buildName);
                     string rowKey = build.buildNumber;
                     AzureStorageTableModel newItem = new(partitionKey, rowKey, item.ToString());
-                    if (await tableBuildsDA.AddItem(newItem) == true)
+                    if (await tableBuildsDA.AddItem(newItem))
                     {
                         itemsAdded++;
                     }
@@ -165,7 +165,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 string partitionKey = PartitionKeys.CreateAzureDevOpsPRPartitionKey(organization, project);
                 string rowKey = pullRequest.PullRequestId;
                 AzureStorageTableModel newItem = new(partitionKey, rowKey, item.ToString());
-                if (await tableDA.AddItem(newItem) == true)
+                if (await tableDA.AddItem(newItem))
                 {
                     itemsAdded++;
                 }
@@ -194,7 +194,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 string partitionKey = PartitionKeys.CreateAzureDevOpsPRCommitPartitionKey(organization, project, pullRequestId);
                 string rowKey = pullRequestCommit.commitId;
                 AzureStorageTableModel newItem = new(partitionKey, rowKey, item.ToString());
-                if (await tableDA.AddItem(newItem) == true)
+                if (await tableDA.AddItem(newItem))
                 {
                     itemsAdded++;
                 }
@@ -224,7 +224,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                     string partitionKey = PartitionKeys.CreateBuildWorkflowPartitionKey(owner, repo, workflowName);
                     string rowKey = build.run_number;
                     AzureStorageTableModel newItem = new(partitionKey, rowKey, item.ToString());
-                    if (await tableBuildDA.AddItem(newItem) == true)
+                    if (await tableBuildDA.AddItem(newItem))
                     {
                         itemsAdded++;
                     }
@@ -257,7 +257,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             string rowKey = newBuild.Id;
             string json = JsonConvert.SerializeObject(newBuild);
             AzureStorageTableModel newItem = new(partitionKey, rowKey, json);
-            if (await tableChangeFailureRateDA.AddItem(newItem, forceUpdate) == true)
+            if (await tableChangeFailureRateDA.AddItem(newItem, forceUpdate))
             {
                 itemsAdded++;
             }
@@ -292,7 +292,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                         json = o.ToString();
                     }
                     AzureStorageTableModel newItem = new(partitionKey, rowKey, json);
-                    if (await tableDA.AddItem(newItem) == true)
+                    if (await tableDA.AddItem(newItem))
                     {
                         itemsAdded++;
                     }
@@ -318,7 +318,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 string partitionKey = PartitionKeys.CreateGitHubPRCommitPartitionKey(owner, repo, pull_number);
                 string rowKey = commit.sha;
                 AzureStorageTableModel newItem = new(partitionKey, rowKey, item.ToString());
-                if (await tableDA.AddItem(newItem) == true)
+                if (await tableDA.AddItem(newItem))
                 {
                     itemsAdded++;
                 }
