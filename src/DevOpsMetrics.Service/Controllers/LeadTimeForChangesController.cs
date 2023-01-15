@@ -77,7 +77,7 @@ namespace DevOpsMetrics.Service.Controllers
                 clientSecretName = SecretsProcessing.CleanKey(clientSecretName);
                 string clientId = Configuration[clientIdName];
                 string clientSecret = Configuration[clientSecretName];
-                if (string.IsNullOrEmpty(clientId) == true | string.IsNullOrEmpty(clientSecret) == true)
+                if (string.IsNullOrEmpty(clientId) == true || string.IsNullOrEmpty(clientSecret) == true)
                 {
                     throw new Exception($"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault");
                 }
