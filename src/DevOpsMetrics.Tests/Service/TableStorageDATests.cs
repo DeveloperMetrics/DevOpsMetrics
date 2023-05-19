@@ -142,7 +142,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
-            string owner = "samsmithnz";
+            string owner = "DeveloperMetrics";
             string repo = "DevOpsMetrics";
             string workflowName = "DevOpsMetrics CI/CD";
 
@@ -161,7 +161,7 @@ namespace DevOpsMetrics.Tests.Service
             string clientId = base.Configuration["AppSettings:GitHubClientId"];
             string clientSecret = base.Configuration["AppSettings:GitHubClientSecret"];
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
-            string owner = "samsmithnz";
+            string owner = "DeveloperMetrics";
             string repo = "DevOpsMetrics";
             string branch = "main";
             string workflowName = "DevOpsMetrics CI/CD";
@@ -207,7 +207,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
-            string owner = "samsmithnz";
+            string owner = "DeveloperMetrics";
             string repo = "DevOpsMetrics";
 
             //Act
@@ -225,7 +225,7 @@ namespace DevOpsMetrics.Tests.Service
             string clientId = base.Configuration["AppSettings:GitHubClientId"];
             string clientSecret = base.Configuration["AppSettings:GitHubClientSecret"];
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
-            string owner = "samsmithnz";
+            string owner = "DeveloperMetrics";
             string repo = "DevOpsMetrics";
             string branch = "main";
             string workflowName = "CI/CD";

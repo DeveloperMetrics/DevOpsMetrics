@@ -50,7 +50,7 @@ namespace DevOpsMetrics.Tests.Core
             string clientId = base.Configuration["AppSettings:GitHubClientId"];
             string clientSecret = base.Configuration["AppSettings:GitHubClientSecret"];
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
-            string owner = "samsmithnz";
+            string owner = "DeveloperMetrics";
             string repo = "DevOpsMetrics";
             string branch = "main";
             string workflowName = "DevOpsMetrics CI/CD";

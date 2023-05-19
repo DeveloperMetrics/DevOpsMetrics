@@ -89,7 +89,7 @@ namespace DevOpsMetrics.Tests.Core
         {
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
-            string owner = "samsmithnz";
+            string owner = "DeveloperMetrics";
             string repo = "DevOpsMetrics";
             string branch = "main";
             string workflowName = "CI/CD";
