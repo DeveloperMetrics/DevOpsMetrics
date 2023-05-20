@@ -145,7 +145,7 @@ namespace DevOpsMetrics.FunctionalTests
             bool webLoaded;
 
             //Act
-            string webURL = _webUrl + "Home//Project?projectId=samsmithnz_DevOpsMetrics";
+            string webURL = _webUrl + "Home//Project?projectId=DeveloperMetrics_DevOpsMetrics";
             Console.WriteLine("webURL:" + webURL);
             _driver.Navigate().GoToUrl(webURL);
             webLoaded = (_driver.Url == webURL);

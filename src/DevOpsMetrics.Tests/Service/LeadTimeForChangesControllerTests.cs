@@ -62,7 +62,7 @@ namespace DevOpsMetrics.Tests.Service
             //branch=master&workflowId=1162561&numberOfDays=30&maxNumberOfItems=20
             //Arrange
             bool getSampleData = true;
-            string owner = "samsmithnz";
+            string owner = "DeveloperMetrics";
             string repo = "devopsmetrics";
             string branch = "main";
             string workflowName = "DevOpsMetrics.CICD";
@@ -150,7 +150,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            string owner = "samsmithnz";
+            string owner = "DeveloperMetrics";
             string repo = "devopsmetrics";
             string branch = "main";
             string workflowName = "DevOpsMetrics.CICD";
@@ -247,7 +247,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = false;
-            string owner = "samsmithnz";
+            string owner = "DeveloperMetrics";
             string repo = "devopsmetrics";
             string branch = "main";
             string workflowName = "DevOpsMetrics.CICD";
