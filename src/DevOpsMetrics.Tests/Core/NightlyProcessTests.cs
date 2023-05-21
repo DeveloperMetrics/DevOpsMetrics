@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
-using DevOpsMetrics.Function;
 using DevOpsMetrics.Service;
 using DevOpsMetrics.Service.Controllers;
 using Microsoft.Extensions.Logging;

@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.Common;
+using DevOpsMetrics.Core.Models.GitHub;
+using DevOpsMetrics.Core.Models.Processing;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -25,6 +29,8 @@ namespace DevOpsMetrics.Core.DataAccess
             }
             return model;
         }
+
+      
 
     }
 }
