@@ -39,7 +39,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DevOpsMetrics.Core\DevOpsMetrics.Core.csproj" />
-    <ProjectReference Include="..\DevOpsMetrics.Function\DevOpsMetrics.Function.csproj" />
     <ProjectReference Include="..\DevOpsMetrics.Service\DevOpsMetrics.Service.csproj" />
   </ItemGroup>
 
