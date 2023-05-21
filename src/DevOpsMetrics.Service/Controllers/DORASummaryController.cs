@@ -19,12 +19,10 @@ namespace DevOpsMetrics.Service.Controllers
     public class DORASummaryController : ControllerBase
     {
         private readonly IConfiguration Configuration;
-        private readonly IAzureTableStorageDA AzureTableStorageDA;
 
-        public DORASummaryController(IConfiguration configuration, IAzureTableStorageDA azureTableStorageDA)
+        public DORASummaryController(IConfiguration configuration)
         {
             Configuration = configuration;
-            AzureTableStorageDA = azureTableStorageDA;
         }
 
         // Get DORA Summary Items
@@ -57,6 +55,7 @@ namespace DevOpsMetrics.Service.Controllers
           int totalResults,
           bool useCache)
         {
+            AzureTableStorageDA azureTableStorageDA = new();
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             //Get the client id and secret from the settings
             string clientIdName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientId(owner, repo);
@@ -84,10 +83,10 @@ namespace DevOpsMetrics.Service.Controllers
                 {
                     log.LogInformation(message);
                 }
-                result.BuildsUpdated = await AzureTableStorageDA.UpdateGitHubActionRunsInStorage(clientId, clientSecret, tableStorageConfig,
+                result.BuildsUpdated = await azureTableStorageDA.UpdateGitHubActionRunsInStorage(clientId, clientSecret, tableStorageConfig,
                     owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
                 //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {buildsUpdated} builds updated");
-                result.PRsUpdated = await AzureTableStorageDA.UpdateGitHubActionPullRequestsInStorage(clientId, clientSecret, tableStorageConfig,
+                result.PRsUpdated = await azureTableStorageDA.UpdateGitHubActionPullRequestsInStorage(clientId, clientSecret, tableStorageConfig,
                         owner, repo, branch, numberOfDays, maxNumberOfItems);
                 //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {prsUpdated} pull requests updated");
                 message = $"Processed GitHub owner {owner}, repo {repo}. {result.BuildsUpdated} builds and {result.PRsUpdated} prs/commits updated";
@@ -152,7 +151,7 @@ namespace DevOpsMetrics.Service.Controllers
                 ProjectLog projectLog = new(
                     PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo),
                     result.BuildsUpdated, result.PRsUpdated, "", "", null, null);
-                await AzureTableStorageDA.UpdateProjectLogInStorage(tableStorageConfig, projectLog);
+                await azureTableStorageDA.UpdateProjectLogInStorage(tableStorageConfig, projectLog);
             }
             catch (Exception ex)
             {
@@ -175,7 +174,7 @@ namespace DevOpsMetrics.Service.Controllers
                     owner + "_" + repo + "_" + branch + "_" + workflowName + "_" + workflowId + "_" + numberOfDays + "_" + maxNumberOfItems,
                     owner + "_" + repo + "_" + branch + "_" + numberOfDays + "_" + maxNumberOfItems,
                     ex.ToString(), error);
-                await AzureTableStorageDA.UpdateProjectLogInStorage(tableStorageConfig, projectLog);
+                await azureTableStorageDA.UpdateProjectLogInStorage(tableStorageConfig, projectLog);
 
             }
 

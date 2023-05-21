@@ -15,7 +15,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             string organization = "samsmithnz";
             string repository = "AzurePipelinesToGitHubActionsConverter";
-            DORASummaryController controller = new(base.Configuration);
+            DORASummaryController controller = new(base.Configuration, null);
 
             //Act
             DORASummaryItem model = controller.GetDORASummaryItems(organization, repository);
