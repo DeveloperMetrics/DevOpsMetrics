@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Azure.Documents;
 using System.Security.Policy;
 using System.Web;
+using System.Collections.Generic;
 
 namespace DevOpsMetrics.Service.Controllers
 {
@@ -27,11 +28,19 @@ namespace DevOpsMetrics.Service.Controllers
 
         // Get DORA Summary Items
         [HttpGet("GetDORASummaryItems")]
-        public DORASummaryItem GetDORASummaryItems(string owner, string repository)
+        public List<DORASummaryItem> GetDORASummaryItems(string owner)
+        {
+            TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+            List<DORASummaryItem> model = DORASummaryDA.GetDORASummaryItems(tableStorageConfig, owner);
+            return model;
+        }
+
+        // Get DORA Summary Item
+        [HttpGet("GetDORASummaryItem")]
+        public DORASummaryItem GetDORASummaryItem(string owner, string repository)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             DORASummaryItem model = DORASummaryDA.GetDORASummaryItem(tableStorageConfig, owner, repository);
-
             return model;
         }
 
@@ -42,15 +51,9 @@ namespace DevOpsMetrics.Service.Controllers
           string branch,
           string workflowName,
           string workflowId,
-          //string clientId,
-          //string clientSecret,
-          //TableStorageConfiguration tableStorageConfig,
+          string resourceGroup,
           int numberOfDays,
           int maxNumberOfItems,
-          //BuildsController buildsController,
-          //PullRequestsController pullRequestsController,
-          //SettingsController settingsController,
-          string resourceGroup,
           ILogger log,
           int totalResults,
           bool useCache)

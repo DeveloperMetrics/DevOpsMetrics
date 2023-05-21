@@ -49,10 +49,10 @@ namespace DevOpsMetrics.Function
             AzureTableStorageDA azureTableStorageDA = new();
             //BuildsController buildsController = new(Configuration, azureTableStorageDA);
             //PullRequestsController pullRequestsController = new(Configuration, azureTableStorageDA);
-            //SettingsController settingsController = new(Configuration, azureTableStorageDA);
+            SettingsController settingsController = new(Configuration, azureTableStorageDA);
             DORASummaryController doraSummaryController = new(Configuration);
-            //List<AzureDevOpsSettings> azSettings = settingsController.GetAzureDevOpsSettings();
-            //List<GitHubSettings> ghSettings = settingsController.GetGitHubSettings();
+            List<AzureDevOpsSettings> azSettings = settingsController.GetAzureDevOpsSettings();
+            List<GitHubSettings> ghSettings = settingsController.GetGitHubSettings();
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
 
             //Loop through each setting to update the runs, pull requests and pull request commits
@@ -83,11 +83,12 @@ namespace DevOpsMetrics.Function
             foreach (GitHubSettings ghSetting in ghSettings)
             {
 
-                ProcessingResult ghResult = await Processing.ProcessGitHubItem(ghSetting,
-                    clientId, clientSecret, tableStorageConfig,
+                ProcessingResult ghResult = await doraSummaryController.UpdateDORASummaryItem(
+                    ghSetting.Owner, ghSetting.Repo, ghSetting.Branch,
+                    ghSetting.WorkflowName, ghSetting.WorkflowId,
+                    ghSetting.ProductionResourceGroup,
                     numberOfDays, maxNumberOfItems,
-                    buildsController, pullRequestsController, settingsController,
-                    log, totalResults);
+                    log, totalResults, true);
                 totalResults = ghResult.TotalResults;
             }
             log.LogInformation($"C# Timer trigger function complete at: {DateTime.Now} after updating {totalResults} records");

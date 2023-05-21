@@ -18,7 +18,7 @@ namespace DevOpsMetrics.Tests.Service
             DORASummaryController controller = new(base.Configuration);
 
             //Act
-            DORASummaryItem model = controller.GetDORASummaryItems(organization, repository);
+            DORASummaryItem model = controller.GetDORASummaryItem(organization, repository);
 
             //Assert
             Assert.IsNotNull(model);
