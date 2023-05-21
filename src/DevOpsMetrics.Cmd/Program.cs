@@ -8,6 +8,7 @@ using DevOpsMetrics.Service.Controllers;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace DevOpsMetrics.Cmd
 {
@@ -23,6 +24,7 @@ namespace DevOpsMetrics.Cmd
                  .AddJsonFile("appsettings.json", optional: false)
                  .AddUserSecrets<Program>(true);
             IConfigurationRoot Configuration = builder.Build();
+            ILogger log = new Logger<Program>(new LoggerFactory());
 
             string keyVaultURL = Configuration["AppSettings:KeyVaultURL"];
             string keyVaultId = Configuration["AppSettings:KeyVaultClientId"];
@@ -36,9 +38,8 @@ namespace DevOpsMetrics.Cmd
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             AzureTableStorageDA azureTableStorageDA = new();
-            BuildsController buildsController = new(Configuration, azureTableStorageDA);
-            PullRequestsController pullRequestsController = new(Configuration, azureTableStorageDA);
             SettingsController settingsController = new(Configuration, azureTableStorageDA);
+            DORASummaryController doraSummaryController = new(Configuration);
             List<AzureDevOpsSettings> azSettings = settingsController.GetAzureDevOpsSettings();
             List<GitHubSettings> ghSettings = settingsController.GetGitHubSettings();
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
@@ -70,11 +71,12 @@ namespace DevOpsMetrics.Cmd
 
             foreach (GitHubSettings ghSetting in ghSettings)
             {
-                ProcessingResult ghResult = await Processing.ProcessGitHubItem(ghSetting,
-                    clientId, clientSecret, tableStorageConfig,
+                ProcessingResult ghResult = await doraSummaryController.UpdateDORASummaryItem(
+                    ghSetting.Owner, ghSetting.Repo, ghSetting.Branch,
+                    ghSetting.WorkflowName, ghSetting.WorkflowId,
+                    ghSetting.ProductionResourceGroup,
                     numberOfDays, maxNumberOfItems,
-                    buildsController, pullRequestsController, settingsController,
-                    null, totalResults);
+                    log, totalResults, true);
                 totalResults = ghResult.TotalResults;
             }
             Console.WriteLine($"C# Timer trigger function complete at: {DateTime.Now} after updating {totalResults} records");

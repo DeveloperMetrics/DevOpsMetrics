@@ -47,8 +47,6 @@ namespace DevOpsMetrics.Function
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             AzureTableStorageDA azureTableStorageDA = new();
-            //BuildsController buildsController = new(Configuration, azureTableStorageDA);
-            //PullRequestsController pullRequestsController = new(Configuration, azureTableStorageDA);
             SettingsController settingsController = new(Configuration, azureTableStorageDA);
             DORASummaryController doraSummaryController = new(Configuration);
             List<AzureDevOpsSettings> azSettings = settingsController.GetAzureDevOpsSettings();
