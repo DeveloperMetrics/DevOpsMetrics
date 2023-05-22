@@ -19,9 +19,9 @@ namespace DevOpsMetrics.Tests.Core
             bool getSampleData = true;
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildName = "SamLearnsAzure.CI";
+            string project = "AzDoDevOpsMetrics";
+            string branch = "refs/heads/main";
+            string buildName = "azure-pipelines.yml";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
@@ -111,8 +111,8 @@ namespace DevOpsMetrics.Tests.Core
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string buildName = "SamLearnsAzure.CI";
+            string project = "AzDoDevOpsMetrics";
+            string buildName = "azure-pipelines.yml";
             int percent = 50;
             int numberOfDays = 1;
 

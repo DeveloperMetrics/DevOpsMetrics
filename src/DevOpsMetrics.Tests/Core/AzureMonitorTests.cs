@@ -25,7 +25,7 @@ namespace DevOpsMetrics.Tests.Core
     ""status"": ""Activated"",
     ""context"": {
       ""timestamp"": ""2020-05-25T00:11:28.7763615Z"",
-      ""id"": ""/subscriptions/07db7d0b-a6cb-4e58-b07e-e1d541c39f5b/resourceGroups/SamLearnsAzureFeatureFlags/providers/microsoft.insights/metricAlerts/ServerErrors%20featureflags-data-eu-service"",
+      ""id"": ""/subscriptions/07db7d0b-a6cb-4e58-b07e-e1d541c39f5b/resourceGroups/SamsFeatureFlags/providers/microsoft.insights/metricAlerts/ServerErrors%20featureflags-data-eu-service"",
       ""name"": ""ServerErrors featureflags-data-eu-service"",
       ""description"": """",
       ""conditionType"": ""SingleResourceMultipleMetricCriteria"",
@@ -51,11 +51,11 @@ namespace DevOpsMetrics.Tests.Core
         ]
       },
       ""subscriptionId"": ""07db7d0b-a6cb-4e58-b07e-e1d541c39f5b"",
-      ""resourceGroupName"": ""SamLearnsAzureTest"",
+      ""resourceGroupName"": ""SamsFeatureFlags"",
       ""resourceName"": ""featureflags-data-eu-service"",
       ""resourceType"": ""Microsoft.Web/sites"",
-      ""resourceId"": ""/subscriptions/07db7d0b-a6cb-4e58-b07e-e1d541c39f5b/resourceGroups/SamLearnsAzureFeatureFlags/providers/Microsoft.Web/sites/featureflags-data-eu-service"",
-      ""portalLink"": ""https://portal.azure.com/#resource/subscriptions/07db7d0b-a6cb-4e58-b07e-e1d541c39f5b/resourceGroups/SamLearnsAzureFeatureFlags/providers/Microsoft.Web/sites/featureflags-data-eu-service""
+      ""resourceId"": ""/subscriptions/07db7d0b-a6cb-4e58-b07e-e1d541c39f5b/resourceGroups/SamsFeatureFlags/providers/Microsoft.Web/sites/featureflags-data-eu-service"",
+      ""portalLink"": ""https://portal.azure.com/#resource/subscriptions/07db7d0b-a6cb-4e58-b07e-e1d541c39f5b/resourceGroups/SamsFeatureFlags/providers/Microsoft.Web/sites/featureflags-data-eu-service""
     }
   }
 }
