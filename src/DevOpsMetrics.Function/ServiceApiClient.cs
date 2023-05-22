@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
@@ -43,6 +44,12 @@ namespace DevOpsMetrics.Function
             return await GetResponse<ProcessingResult>(Client, url);
         }
 
+        public async Task<bool> UpdateDevOpsMonitoringEvent(MonitoringEvent monitoringEvent)
+        {
+            string url = $"/api/Settings/UpdateDevOpsMonitoringEvent";
+            return await PostResponse(Client, url, monitoringEvent);
+        }
+
         private async Task<T> GetResponse<T>(HttpClient client, string url)
         {
             T obj = default;
@@ -67,25 +74,25 @@ namespace DevOpsMetrics.Function
             return obj;
         }
 
-        //private async Task<bool> PostResponse(HttpClient client, string url, MonitoringEvent monitoringEvent)
-        //{
+        private async Task<bool> PostResponse(HttpClient client, string url, MonitoringEvent monitoringEvent)
+        {
 
-        //    if (client != null && url != null)
-        //    {
-        //        StringContent content = new StringContent(JsonConvert.SerializeObject(monitoringEvent), Encoding.UTF8, "application/json");
+            if (client != null && url != null)
+            {
+                StringContent content = new StringContent(JsonConvert.SerializeObject(monitoringEvent), Encoding.UTF8, "application/json");
 
-        //        Debug.WriteLine("Running url: " + client.BaseAddress.ToString() + url);
-        //        using (HttpResponseMessage response = await client.PostAsync(url, content))
-        //        {
-        //            response.EnsureSuccessStatusCode();
-        //            //string responseBody = await response.Content.ReadAsStringAsync();
-        //            //if (string.IsNullOrEmpty(responseBody) == false)
-        //            //{
-        //            //    obj = JsonConvert.DeserializeObject<T>(responseBody);
-        //            //}
-        //        }
-        //    }
-        //    return true;
-        //}
+                Debug.WriteLine("Running url: " + client.BaseAddress.ToString() + url);
+                using (HttpResponseMessage response = await client.PostAsync(url, content))
+                {
+                    response.EnsureSuccessStatusCode();
+                    //string responseBody = await response.Content.ReadAsStringAsync();
+                    //if (string.IsNullOrEmpty(responseBody) == false)
+                    //{
+                    //    obj = JsonConvert.DeserializeObject<T>(responseBody);
+                    //}
+                }
+            }
+            return true;
+        }
     }
 }
