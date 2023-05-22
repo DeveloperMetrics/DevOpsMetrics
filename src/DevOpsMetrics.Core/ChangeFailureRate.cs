@@ -74,7 +74,7 @@ namespace DevOpsMetrics.Core
 
         public static string GetChangeFailureRateRating(float changeFailureRate)
         {
-            string rating = "";
+            string rating;
             if (changeFailureRate < 0)
             {
                 rating = "None";
