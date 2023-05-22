@@ -140,7 +140,7 @@ namespace DevOpsMetrics.Service.Controllers
                 };
 
                 //Serialize the summary into an Azure storage table
-                //await AzureTableStorageDA.UpdateDORASummaryItem(tableStorageConfig, owner, repo, DORASummary);
+                await AzureTableStorageDA.UpdateDORASummaryItem(tableStorageConfig, owner, repo, DORASummary);
 
                 //await settingsController.UpdateGitHubProjectLog(ghSetting.Owner, ghSetting.Repo, result.BuildsUpdated, result.PRsUpdated, "", "", null, null);
                 ProjectLog projectLog = new(
