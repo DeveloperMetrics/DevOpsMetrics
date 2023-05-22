@@ -13,7 +13,7 @@ namespace DevOpsMetrics.Cmd
 {
     internal class Program
     {
-        static async Task Main(string[] args)
+        static async Task Main()
         {
             Console.WriteLine($"C# Timer trigger function UpdateStorageTables started at: {DateTime.Now}");
 
