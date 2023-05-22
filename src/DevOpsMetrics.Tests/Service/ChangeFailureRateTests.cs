@@ -15,9 +15,9 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             bool getSampleData = true;
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildName = "SamLearnsAzure.CI";
+            string project = "AzDoDevOpsMetrics";
+            string branch = "refs/heads/main";
+            string buildName = "azure-pipelines.yml";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
@@ -46,9 +46,9 @@ namespace DevOpsMetrics.Tests.Service
         //    //Arrange
         //    bool getSampleData = false;
         //    string organization = "samsmithnz";
-        //    string project = "SamLearnsAzure";
-        //    string branch = "refs/heads/master";
-        //    string buildName = "SamLearnsAzure.CI";
+        //string project = "AzDoDevOpsMetrics";
+        //string branch = "refs/heads/main";
+        //string buildName = "azure-pipelines.yml";
         //    DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
         //    int numberOfDays = 30;
         //    int maxNumberOfItems = 20;

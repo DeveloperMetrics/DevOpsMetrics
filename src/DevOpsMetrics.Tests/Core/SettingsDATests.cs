@@ -33,7 +33,7 @@ namespace DevOpsMetrics.Tests.Core
         }
 
         [TestMethod]
-        public void AzGetSamLearnsAzureSettingDAIntegrationTest()
+        public void AzGetAzDoDevOpsMetricsSettingDAIntegrationTest()
         {
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
@@ -47,8 +47,9 @@ namespace DevOpsMetrics.Tests.Core
         }
 
         [TestMethod]
-        public void GHGetSamLearnsAzureSettingDAIntegrationTest()
+        public void GHGetSettingDAIntegrationTest()
         {
+            
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
 
@@ -61,17 +62,17 @@ namespace DevOpsMetrics.Tests.Core
         }
 
         [TestMethod]
-        public async Task AzUpdateSamLearnsAzureSettingDAIntegrationTest()
+        public async Task AzUpdateAzDoDevOpsMetricsSettingDAIntegrationTest()
         {
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string repository = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildName = "SamLearnsAzure.CI";
+            string project = "AzDoDevOpsMetrics";
+            string repository = "AzDoDevOpsMetrics";
+            string branch = "refs/heads/main";
+            string buildName = "azure-pipelines.yml";
             string buildId = "3673";
-            string resourceGroupName = "SamLearnsAzureProd";
+            string resourceGroupName = "DevOpsMetrics";
             int itemOrder = 1;
             bool showSetting = true;
 
@@ -117,7 +118,7 @@ namespace DevOpsMetrics.Tests.Core
             string branch = "main";
             string workflowName = "SamsFeatureFlags CI/CD";
             string workflowId = "108084";
-            string resourceGroupName = "SamLearnsAzureFeatureFlags";
+            string resourceGroupName = "SamsFeatureFlags";
             int itemOrder = 3;
             bool showSetting = true;
 

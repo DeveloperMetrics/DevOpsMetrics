@@ -31,7 +31,7 @@ namespace DevOpsMetrics.Tests.Service
             //Assert.AreEqual("1", model.BuildList[0].BuildNumber);
             //Assert.AreEqual("main", model.BuildList[0].Branch);
             //Assert.AreEqual("completed", model.BuildList[0].Status);
-            //Assert.AreEqual("https://dev.azure.com/samsmithnz/samlearnsazure/1", model.BuildList[0].Url);
+            //Assert.AreEqual("https://dev.azure.com/samsmithnz/AzDoDevOpsMetrics/1", model.BuildList[0].Url);
             //Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
             //Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
         }

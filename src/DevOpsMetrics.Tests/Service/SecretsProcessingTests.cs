@@ -12,65 +12,65 @@ namespace DevOpsMetrics.Tests.Service
         public void SecretWithDotTest()
         {
             //Arrange
-            string name = "SamLearnsAzure.CI";
+            string name = "Secret.CI";
 
             //Act
             string result = SecretsProcessing.CleanKey(name);
 
             //Assert
-            Assert.AreEqual("SamLearnsAzure-CI", result);
+            Assert.AreEqual("Secret-CI", result);
         }
 
         [TestMethod]
         public void SecretWithSpaceTest()
         {
             //Arrange
-            string name = "SamLearnsAzure CI";
+            string name = "Secret CI";
 
             //Act
             string result = SecretsProcessing.CleanKey(name);
 
             //Assert
-            Assert.AreEqual("SamLearnsAzure-CI", result);
+            Assert.AreEqual("Secret-CI", result);
         }
 
         [TestMethod]
         public void SecretWithColonTest()
         {
             //Arrange
-            string name = "SamLearnsAzure:CI";
+            string name = "Secret:CI";
 
             //Act
             string result = SecretsProcessing.CleanKey(name);
 
             //Assert
-            Assert.AreEqual("SamLearnsAzure-CI", result);
+            Assert.AreEqual("Secret-CI", result);
         }
 
         [TestMethod]
         public void SecretWithQuestionTest()
         {
             //Arrange
-            string name = "SamLearnsAzure?CI";
+            string name = "Secret?CI";
 
             //Act
             string result = SecretsProcessing.CleanKey(name);
 
             //Assert
-            Assert.AreEqual("SamLearnsAzure-CI", result);
+            Assert.AreEqual("Secret-CI", result);
         }
 
         [TestMethod]
         public void SecretThatIsValidTest()
         {
             //Arrange
-            string name = "SamLearnsAzure123abcCI";
+            string name = "Secret123abcCI";
 
             //Act
             string result = SecretsProcessing.CleanKey(name);
 
             //Assert
-            Assert.AreEqual("SamLearnsAzure123abcCI", result);
+            Assert.AreEqual("Secret123abcCI", result);
         }
 
     }

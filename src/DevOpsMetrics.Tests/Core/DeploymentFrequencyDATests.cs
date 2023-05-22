@@ -19,9 +19,9 @@ namespace DevOpsMetrics.Tests.Core
             string patToken = base.Configuration["AppSettings:AzureDevOpsPatToken"];
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildName = "SamLearnsAzure.CI";
+            string project = "AzDoDevOpsMetrics";
+            string branch = "refs/heads/main";
+            string buildName = "azure-pipelines.yml";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             bool useCache = true;

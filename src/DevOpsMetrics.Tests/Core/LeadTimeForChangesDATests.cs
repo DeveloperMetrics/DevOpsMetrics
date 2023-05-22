@@ -20,17 +20,17 @@ namespace DevOpsMetrics.Tests.Core
             string patToken = base.Configuration["AppSettings:AzureDevOpsPatToken"];
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string repository = "SamLearnsAzure";
-            string mainBranch = "refs/heads/master";
-            string buildName = "SamLearnsAzure.CI";
+            string project = "AzDoDevOpsMetrics";
+            string repository = "AzDoDevOpsMetrics";
+            string branch = "refs/heads/main";
+            string buildName = "azure-pipelines.yml";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
 
             //Act
             LeadTimeForChangesModel model = await LeadTimeForChangesDA.GetAzureDevOpsLeadTimesForChanges(getSampleData, patToken, tableStorageConfig,
-                    organization, project, repository, mainBranch, buildName,
+                    organization, project, repository, branch, buildName,
                     numberOfDays, maxNumberOfItems, useCache);
 
             //Assert
