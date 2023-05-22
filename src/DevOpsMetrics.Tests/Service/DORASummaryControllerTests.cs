@@ -23,18 +23,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Assert
             Assert.IsNotNull(model);
-            //Assert.AreEqual(DevOpsPlatform.AzureDevOps, model.TargetDevOpsPlatform);
-            //Assert.AreEqual(buildName, model.DeploymentName);
-            //Assert.AreEqual(10f, model.DeploymentsPerDayMetric);
-            //Assert.AreEqual("Elite", model.DeploymentsPerDayMetricDescription);
-            //Assert.AreEqual(10, model.BuildList.Count);
-            //Assert.AreEqual(70, model.BuildList[0].BuildDurationPercent);
-            //Assert.AreEqual("1", model.BuildList[0].BuildNumber);
-            //Assert.AreEqual("main", model.BuildList[0].Branch);
-            //Assert.AreEqual("completed", model.BuildList[0].Status);
-            //Assert.AreEqual("https://dev.azure.com/samsmithnz/AzDoDevOpsMetrics/1", model.BuildList[0].Url);
-            //Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
-            //Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
+
         }
 
         [TestMethod]
