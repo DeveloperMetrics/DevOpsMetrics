@@ -33,7 +33,7 @@ namespace DevOpsMetrics.Tests.Service
             string organization = "DeveloperMetrics";
             string repository = "DevOpsMetrics";
             string branch = "main";
-            string workflowName = "1162561";
+            string workflowName = "CI/CD";
             string workflowId = "1162561";
             string resourceGroup = "DevOpsMetrics";
             int numberOfDays = 30;
