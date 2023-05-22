@@ -1,25 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
     <UserSecretsId>ed162474-1392-455c-b088-8b07e5438062</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.1.24" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
-    <!-- commenting out as we convert to an isolated function
-	<PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.2.0" />-->
-	  <!-- the four isolated function dependencies are listed next -->
-	  <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.14.1" />
-	  <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.13" />
-	  <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.10.0" />
-	  <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.OpenApi" Version="1.5.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.0" />
+	<PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.2.0" />
+
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DevOpsMetrics.Core\DevOpsMetrics.Core.csproj" />
-    <ProjectReference Include="..\DevOpsMetrics.Service\DevOpsMetrics.Service.csproj" />
-  </ItemGroup>
-  <ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\DevOpsMetrics.Core\DevOpsMetrics.Core.csproj" />
+	</ItemGroup>
+	<ItemGroup>
     <None Update="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

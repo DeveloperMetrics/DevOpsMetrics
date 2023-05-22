@@ -63,10 +63,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         //Only Alphanumerics and hyphens allowed https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules#microsoftkeyvault
         public static string CleanKey(string name)
         {
-            return MyRegex().Replace(name, "-").Trim('-');
+            return Regex.Replace(name, @"[^a-zA-Z0-9]+", "-").Trim('-');
         }
-
-        [GeneratedRegex("[^a-zA-Z0-9]+")]
-        private static partial Regex MyRegex();
     }
 }
