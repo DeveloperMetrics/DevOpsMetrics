@@ -2,7 +2,7 @@
 
 namespace DevOpsMetrics.Core.DataAccess.TableStorage
 {
-    public static class PartitionKeys
+    public static partial class PartitionKeys
     {
         public static string CreateAzureDevOpsSettingsPartitionKey(string organization, string project, string repository)
         {
@@ -63,8 +63,10 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         //Only Alphanumerics and hyphens allowed https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules#microsoftkeyvault
         public static string CleanKey(string name)
         {
-            return Regex.Replace(name, @"[^a-zA-Z0-9]+", "-").Trim('-');
+            return MyRegex().Replace(name, "-").Trim('-');
         }
 
+        [GeneratedRegex("[^a-zA-Z0-9]+")]
+        private static partial Regex MyRegex();
     }
 }
