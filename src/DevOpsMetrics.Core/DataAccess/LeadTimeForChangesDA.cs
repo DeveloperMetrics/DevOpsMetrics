@@ -323,7 +323,7 @@ namespace DevOpsMetrics.Core.DataAccess
                     AverageBuildHours = averageBuildHours,
                     AveragePullRequestHours = leadTime,
                     LeadTimeForChangesMetric = leadTime + averageBuildHours,
-                    LeadTimeForChangesMetricDescription = LeadTimeForChanges.GetLeadTimeForChangesRating(leadTime),
+                    LeadTimeForChangesMetricDescription = LeadTimeForChanges.GetLeadTimeForChangesRating(leadTime + averageBuildHours),
                     PullRequests = utility.GetLastNItems(pullRequests, maxNumberOfItems),
                     NumberOfDays = numberOfDays,
                     MaxNumberOfItems = uiPullRequests.Count,

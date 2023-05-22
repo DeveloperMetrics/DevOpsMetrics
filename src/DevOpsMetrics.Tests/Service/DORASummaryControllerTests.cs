@@ -25,17 +25,38 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsNotNull(model);
 
         }
+        [TestMethod]
+        public void DORASummaryControllerGetIntegrationTest2()
+        {
+            //Arrange
+            string organization = "samsmithnz";
+            string repository = "AzurePipelinesToGitHubActionsConverter";
+            DORASummaryController controller = new(base.Configuration);
+
+            //Act
+            DORASummaryItem model = controller.GetDORASummaryItem(organization, repository);
+
+            //Assert
+            Assert.IsNotNull(model);
+
+        }
 
         [TestMethod]
         public async Task DORASummaryControllerUpdateIntegrationTest()
         {
             //Arrange
-            string organization = "DeveloperMetrics";
-            string repository = "DevOpsMetrics";
+            string organization = "samsmithnz";
+            string repository = "AzurePipelinesToGitHubActionsConverter";
             string branch = "main";
-            string workflowName = "1162561";
-            string workflowId = "1162561";
-            string resourceGroup = "DevOpsMetrics";
+            string workflowName = "CI/CD";
+            string workflowId = "38158";
+            string resourceGroup = "PipelinesToActions";
+            //string organization = "DeveloperMetrics";
+            //string repository = "DevOpsMetrics";
+            //string branch = "main";
+            //string workflowName = "CI/CD";
+            //string workflowId = "1162561";
+            //string resourceGroup = "DevOpsMetrics";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             DORASummaryController controller = new(base.Configuration);
