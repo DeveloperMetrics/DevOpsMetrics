@@ -1,4 +1,4 @@
-﻿namespace DevOpsMetrics.Function
+﻿namespace DevOpsMetrics.Core.Models.Common
 {
     public class ProcessingResult
     {

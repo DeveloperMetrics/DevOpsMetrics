@@ -1,6 +1,8 @@
-﻿namespace DevOpsMetrics.Core.DataAccess.TableStorage
+﻿using System.Text.RegularExpressions;
+
+namespace DevOpsMetrics.Core.DataAccess.TableStorage
 {
-    public static class PartitionKeys
+    public static partial class PartitionKeys
     {
         public static string CreateAzureDevOpsSettingsPartitionKey(string organization, string project, string repository)
         {
@@ -11,7 +13,7 @@
         {
             //add a azdo/Azure DevOps prefix, remove _/underscores and append a suffix for the pat token
             string result = "azdo" + CreateAzureDevOpsSettingsPartitionKey(organization, project, repository) + "patToken";
-            return result.Replace("_", "");
+            return CleanKey(result.Replace("_", ""));
         }
 
         public static string CreateBuildWorkflowPartitionKey(string organization_owner, string project_repo, string buildName_workflowName)
@@ -38,14 +40,14 @@
         {
             //add a gh/github prefix, remove _/underscores and append a suffix for the client id
             string result = "gh" + CreateGitHubSettingsPartitionKey(owner, repo) + "clientId";
-            return result.Replace("_", "");
+            return CleanKey(result.Replace("_", ""));
         }
 
         public static string CreateGitHubSettingsPartitionKeyClientSecret(string owner, string repo)
         {
             //add a gh/github prefix, remove _/underscores and append a suffix for the client secret
             string result = "gh" + CreateGitHubSettingsPartitionKey(owner, repo) + "clientSecret";
-            return result.Replace("_", "");
+            return CleanKey(result.Replace("_", ""));
         }
 
         public static string CreateGitHubPRPartitionKey(string owner, string repo)
@@ -56,6 +58,12 @@
         public static string CreateGitHubPRCommitPartitionKey(string owner, string repo, string pullRequestId)
         {
             return owner + "_" + repo + "_" + pullRequestId;
+        }
+
+        //Only Alphanumerics and hyphens allowed https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules#microsoftkeyvault
+        public static string CleanKey(string name)
+        {
+            return Regex.Replace(name, @"[^a-zA-Z0-9]+", "-").Trim('-');
         }
     }
 }

@@ -17,10 +17,10 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             bool getSampleData = true;
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string repository = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildName = "SamLearnsAzure.CI";
+            string project = "AzDoDevOpsMetrics";
+            string repository = "AzDoDevOpsMetrics";
+            string branch = "refs/heads/main";
+            string buildName = "azure-pipelines.yml";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = false;
@@ -51,10 +51,10 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             bool getSampleData = false;
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string repository = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildName = "SamLearnsAzure.CI";
+            string project = "AzDoDevOpsMetrics";
+            string repository = "AzDoDevOpsMetrics";
+            string branch = "refs/heads/main";
+            string buildName = "azure-pipelines.yml";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             bool useCache = false;
@@ -92,15 +92,15 @@ namespace DevOpsMetrics.Tests.Service
         [TestMethod]
         public async Task AzDeploymentsCacheControllerIntegrationTest()
         {
-            //https://devops-prod-eu-service.azurewebsites.net//api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData=False&organization=samsmithnz&project=SamLearnsAzure&repository=SamLearnsAzure&branch=refs/heads/master&buildName=SamLearnsAzure.CI&buildId=3673&numberOfDays=30&maxNumberOfItems=20&useCache=true
+            //https://devops-prod-eu-service.azurewebsites.net//api/DeploymentFrequency/GetAzureDevOpsDeploymentFrequency?getSampleData=False&organization=samsmithnz&project=AzDoDevOpsMetrics&repository=SamLearnsAzure&branch=refs/heads/main&buildName=azure-pipelines.yml&buildId=3673&numberOfDays=30&maxNumberOfItems=20&useCache=true
 
             //Arrange
             bool getSampleData = false;
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string repository = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildName = "SamLearnsAzure.CI";
+            string project = "AzDoDevOpsMetrics";
+            string repository = "AzDoDevOpsMetrics";
+            string branch = "refs/heads/main";
+            string buildName = "azure-pipelines.yml";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             bool useCache = true;
@@ -267,10 +267,10 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             bool getSampleData = false;
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string repository = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildName = "SamLearnsAzure.CI";
+            string project = "AzDoDevOpsMetrics";
+            string repository = "AzDoDevOpsMetrics";
+            string branch = "refs/heads/main";
+            string buildName = "azure-pipelines.yml";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = true;
@@ -350,10 +350,10 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             bool getSampleData = false;
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string repository = "SamLearnsAzure";
-            string branch = "refs/heads/master";
-            string buildName = "SamLearnsAzure.CI";
+            string project = "AzDoDevOpsMetrics";
+            string repository = "AzDoDevOpsMetrics";
+            string branch = "refs/heads/main";
+            string buildName = "azure-pipelines.yml";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
             bool useCache = false;

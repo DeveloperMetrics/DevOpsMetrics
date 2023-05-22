@@ -15,7 +15,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
-            string resourceGroupName = "SamLearnsAzureProd";
+            string resourceGroupName = "DevOpsMetrics";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
@@ -50,7 +50,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = false;
-            string resourceGroupName = "SamLearnsAzureProd";
+            string resourceGroupName = "DevOpsMetrics";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 60;
             int maxNumberOfItems = 20;

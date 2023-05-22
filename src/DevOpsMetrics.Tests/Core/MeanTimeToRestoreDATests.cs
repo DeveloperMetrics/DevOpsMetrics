@@ -36,12 +36,12 @@ namespace DevOpsMetrics.Tests.Core
         }
 
         [TestMethod]
-        public void MeanTimeToRestoreDASamLearnsAzureProdIntegrationTest()
+        public void MeanTimeToRestoreDADevOpsMetricsProdIntegrationTest()
         {
             //Arrange
             bool getSampleData = false;
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
-            string resourceGroup = "SamLearnsAzureProd";
+            string resourceGroup = "DevOpsMetrics";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
@@ -67,7 +67,7 @@ namespace DevOpsMetrics.Tests.Core
             //Arrange
             bool getSampleData = false;
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
-            string resourceGroup = "SamLearnsAzureProd";
+            string resourceGroup = "DevOpsMetrics";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 60;
             int maxNumberOfItems = 20;
@@ -93,7 +93,7 @@ namespace DevOpsMetrics.Tests.Core
             //Arrange
             bool getSampleData = false;
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
-            string resourceGroup = "SamLearnsAzureProd";
+            string resourceGroup = "DevOpsMetrics";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.AzureDevOps;
             int numberOfDays = 60;
             int maxNumberOfItems = 20;

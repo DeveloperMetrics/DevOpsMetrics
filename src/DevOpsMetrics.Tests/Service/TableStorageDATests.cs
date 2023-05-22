@@ -21,8 +21,8 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string buildName = "SamLearnsAzure.CI";
+            string project = "AzDoDevOpsMetrics";
+            string buildName = "azure-pipelines.yml";
 
             //Act
             AzureTableStorageDA da = new();
@@ -39,9 +39,9 @@ namespace DevOpsMetrics.Tests.Service
             string patToken = base.Configuration["AppSettings:AzureDevOpsPatToken"];
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
             string organization = "samsmithnz";
-            string project = "AzDevOpsMetricsTest";
+            string project = "AzDoDevOpsMetrics";
             string branch = "refs/heads/main";
-            string buildName = "AzDevOpsMetricsTest";
+            string buildName = "azure-pipelines.yml";
             string buildId = "217";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
@@ -60,7 +60,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
+            string project = "AzDoDevOpsMetrics";
 
             //Act
             AzureTableStorageDA da = new();
@@ -77,8 +77,8 @@ namespace DevOpsMetrics.Tests.Service
             string patToken = base.Configuration["AppSettings:AzureDevOpsPatToken"];
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
             string organization = "samsmithnz";
-            string project = "AzDevOpsMetricsTest";
-            string repository = "AzDevOpsMetricsTest";
+            string project = "AzDoDevOpsMetrics";
+            string repository = "AzDoDevOpsMetrics";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
 
@@ -97,7 +97,7 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
+            string project = "AzDoDevOpsMetrics";
 
             //Act
             AzureTableStorageDA da = new();
@@ -120,13 +120,13 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public void AzGetSamLearnsAzureLogsDAIntegrationTest()
+        public void AzGetAzDoDevOpsMetricsLogsDAIntegrationTest()
         {
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string repository = "SamLearnsAzure";
+            string project = "AzDoDevOpsMetrics";
+            string repository = "AzDoDevOpsMetrics";
 
             //Act
             AzureTableStorageDA da = new();
