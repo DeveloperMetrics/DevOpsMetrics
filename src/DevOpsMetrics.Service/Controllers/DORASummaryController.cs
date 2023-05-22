@@ -1,17 +1,13 @@
-﻿using DevOpsMetrics.Core;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using System;
+using DevOpsMetrics.Core;
 using DevOpsMetrics.Core.DataAccess;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.Common;
-using DevOpsMetrics.Core.Models.GitHub;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Azure.Documents;
-using System.Security.Policy;
-using System.Web;
-using System.Collections.Generic;
 
 namespace DevOpsMetrics.Service.Controllers
 {

@@ -74,7 +74,7 @@ namespace DevOpsMetrics.Core
             {
                 rating = "None";
             }
-            else if ( leadTimeForChangesInHours <= weeklyDeployment) //between one day and one week/ or once a week or faster
+            else if (leadTimeForChangesInHours <= weeklyDeployment) //between one day and one week/ or once a week or faster
             {
                 rating = "High";
             }
@@ -87,7 +87,7 @@ namespace DevOpsMetrics.Core
                 rating = "Low";
             }
             //no rating else statement not required here, as all scenarios are covered above with < and >
-            
+
             return rating;
         }
     }

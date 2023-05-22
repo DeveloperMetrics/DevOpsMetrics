@@ -1,5 +1,4 @@
-﻿using System.Net.NetworkInformation;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace DevOpsMetrics.Core.DataAccess.TableStorage
 {

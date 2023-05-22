@@ -49,7 +49,7 @@ namespace DevOpsMetrics.Tests.Core
         [TestMethod]
         public void GHGetSettingDAIntegrationTest()
         {
-            
+
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
 
