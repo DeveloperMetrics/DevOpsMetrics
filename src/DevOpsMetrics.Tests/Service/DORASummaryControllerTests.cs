@@ -1,4 +1,5 @@
-﻿using DevOpsMetrics.Core.Models.Common;
+﻿using System.Threading.Tasks;
+using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Service.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -34,6 +35,29 @@ namespace DevOpsMetrics.Tests.Service
             //Assert.AreEqual("https://dev.azure.com/samsmithnz/AzDoDevOpsMetrics/1", model.BuildList[0].Url);
             //Assert.IsTrue(model.BuildList[0].StartTime > DateTime.MinValue);
             //Assert.IsTrue(model.BuildList[0].EndTime > DateTime.MinValue);
+        }
+
+        [TestMethod]
+        public async Task DORASummaryControllerUpdateIntegrationTest()
+        {
+            //Arrange
+            string organization = "DeveloperMetrics";
+            string repository = "DevOpsMetrics";
+            string branch = "main";
+            string workflowName = "1162561";
+            string workflowId = "1162561";
+            string resourceGroup = "DevOpsMetrics";
+            int numberOfDays = 30;
+            int maxNumberOfItems = 20;
+            DORASummaryController controller = new(base.Configuration);
+
+            //Act
+            ProcessingResult model = await controller.UpdateDORASummaryItem(organization, repository,
+                branch, workflowName, workflowId, resourceGroup, numberOfDays, maxNumberOfItems);
+
+            //Assert
+            Assert.IsNotNull(model);
+            Assert.IsTrue(model.TotalResults > 0);
         }
 
     }
