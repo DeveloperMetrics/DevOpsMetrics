@@ -50,9 +50,8 @@ namespace DevOpsMetrics.Service.Controllers
           string resourceGroup,
           int numberOfDays,
           int maxNumberOfItems,
-          ILogger log,
-          int totalResults,
-          bool useCache)
+          ILogger log = null,
+          bool useCache = true)
         {
             AzureTableStorageDA azureTableStorageDA = new();
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
@@ -66,10 +65,7 @@ namespace DevOpsMetrics.Service.Controllers
                 throw new Exception($"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault");
             }
 
-            ProcessingResult result = new()
-            {
-                TotalResults = totalResults
-            };
+            ProcessingResult result = new();
             try
             {
                 //TODO: fix this - should be using a common interface, not this null hack
@@ -174,7 +170,6 @@ namespace DevOpsMetrics.Service.Controllers
                     owner + "_" + repo + "_" + branch + "_" + numberOfDays + "_" + maxNumberOfItems,
                     ex.ToString(), error);
                 await azureTableStorageDA.UpdateProjectLogInStorage(tableStorageConfig, projectLog);
-
             }
 
             return result;

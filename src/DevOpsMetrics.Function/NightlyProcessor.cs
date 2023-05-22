@@ -42,6 +42,7 @@ namespace DevOpsMetrics.Function
             KeyVaultClient keyVaultClient = new(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
             builder.AddAzureKeyVault(keyVaultURL, keyVaultId, keyVaultSecret);
             Configuration = builder.Build();
+            ServiceApiClient serviceApiClient = new(Configuration);
 
             //Get settings
             string clientId = Configuration["AppSettings:GitHubClientId"];
@@ -49,8 +50,8 @@ namespace DevOpsMetrics.Function
             AzureTableStorageDA azureTableStorageDA = new();
             //SettingsController settingsController = new(Configuration, azureTableStorageDA);
             //DORASummaryController doraSummaryController = new(Configuration);
-            List<AzureDevOpsSettings> azSettings = new();//settingsController.GetAzureDevOpsSettings();
-            List<GitHubSettings> ghSettings = new();// settingsController.GetGitHubSettings();
+            List<AzureDevOpsSettings> azSettings = await serviceApiClient.GetAzureDevOpsSettings();
+            List<GitHubSettings> ghSettings = await serviceApiClient.GetGitHubSettings();
             //TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
 
             //Loop through each setting to update the runs, pull requests and pull request commits
@@ -81,13 +82,12 @@ namespace DevOpsMetrics.Function
             foreach (GitHubSettings ghSetting in ghSettings)
             {
 
-                //ProcessingResult ghResult = await doraSummaryController.UpdateDORASummaryItem(
-                //    ghSetting.Owner, ghSetting.Repo, ghSetting.Branch,
-                //    ghSetting.WorkflowName, ghSetting.WorkflowId,
-                //    ghSetting.ProductionResourceGroup,
-                //    numberOfDays, maxNumberOfItems,
-                //    log, totalResults, true);
-                //totalResults = ghResult.TotalResults;
+                ProcessingResult ghResult = await serviceApiClient.UpdateDORASummaryItem(
+                    ghSetting.Owner, ghSetting.Repo, ghSetting.Branch,
+                    ghSetting.WorkflowName, ghSetting.WorkflowId,
+                    ghSetting.ProductionResourceGroup,
+                    numberOfDays, maxNumberOfItems);
+                totalResults = ghResult.TotalResults;
             }
             log.LogInformation($"C# Timer trigger function complete at: {DateTime.Now} after updating {totalResults} records");
         }
