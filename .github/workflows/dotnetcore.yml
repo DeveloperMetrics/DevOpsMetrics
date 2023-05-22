@@ -116,7 +116,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: 6.0.x #Not a typo, the function is locked to a LTS version of .NET
     - name: .NET Publish Function
       run: dotnet publish src/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj --configuration Debug --output ${{ github.workspace }}/function 
     - name: Upload function build artifacts back to GitHub
