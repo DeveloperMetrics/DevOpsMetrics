@@ -66,7 +66,7 @@ namespace DevOpsMetrics.Tests.Service
             string owner = "DeveloperMetrics";
             string repo = "devopsmetrics";
             string branch = "main";
-            string workflowName = "DevOpsMetrics.CICD";
+            string workflowName = "CI/CD";
             string workflowId = "1162561";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
@@ -154,7 +154,7 @@ namespace DevOpsMetrics.Tests.Service
             string owner = "DeveloperMetrics";
             string repo = "devopsmetrics";
             string branch = "main";
-            string workflowName = "DevOpsMetrics.CICD";
+            string workflowName = "CI/CD";
             string workflowId = "1162561";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
@@ -249,7 +249,7 @@ namespace DevOpsMetrics.Tests.Service
             string owner = "DeveloperMetrics";
             string repo = "devopsmetrics";
             string branch = "main";
-            string workflowName = "DevOpsMetrics.CICD";
+            string workflowName = "CI/CD";
             string workflowId = "1162561";
             int numberOfDays = 20;
             int maxNumberOfItems = 60;

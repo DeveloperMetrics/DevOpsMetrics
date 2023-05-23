@@ -71,7 +71,7 @@ namespace DevOpsMetrics.Tests.Core
             string owner = "DeveloperMetrics";
             string repo = "devopsmetrics";
             string mainBranch = "main";
-            string workflowName = "DevOpsMetrics.CI";
+            string workflowName = "CI/CD";
             string workflowId = "1162561";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;

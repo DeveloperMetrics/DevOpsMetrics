@@ -144,7 +144,7 @@ namespace DevOpsMetrics.Tests.Service
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
             string owner = "DeveloperMetrics";
             string repo = "DevOpsMetrics";
-            string workflowName = "DevOpsMetrics CI/CD";
+            string workflowName = "CI/CD";
 
             //Act
             AzureTableStorageDA da = new();
@@ -164,7 +164,7 @@ namespace DevOpsMetrics.Tests.Service
             string owner = "DeveloperMetrics";
             string repo = "DevOpsMetrics";
             string branch = "main";
-            string workflowName = "DevOpsMetrics CI/CD";
+            string workflowName = "CI/CD";
             string workflowId = "1162561";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
