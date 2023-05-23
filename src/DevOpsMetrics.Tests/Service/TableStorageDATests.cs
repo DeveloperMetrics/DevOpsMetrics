@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 namespace DevOpsMetrics.Tests.Service
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("L1Test")]
+    [TestCategory("IntegrationTest")]
     [TestClass]
     public class TableStorageDATests : BaseConfiguration
     {

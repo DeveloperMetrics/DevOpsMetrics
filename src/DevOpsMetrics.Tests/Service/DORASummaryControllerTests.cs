@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DevOpsMetrics.Tests.Service
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("L1Test")]
+    [TestCategory("IntegrationTest")]
     [TestClass]
     public class DORASummaryControllerTests : BaseConfiguration
     {

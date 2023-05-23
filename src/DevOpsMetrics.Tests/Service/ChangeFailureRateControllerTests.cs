@@ -5,9 +5,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DevOpsMetrics.Tests.Service
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("L1Test")]
+    [TestCategory("UnitTest")]
     [TestClass]
-    public class ChangeFailureRateTests : BaseConfiguration
+    public class ChangeFailureRateControllerTests : BaseConfiguration
     {
         [TestMethod]
         public void AzChangeFailureRateSampleControllerIntegrationTest()
@@ -39,7 +39,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        //[TestCategory("L1Test")]
+        //[TestCategory("IntegrationTest")]
         //[TestMethod]
         //public void AzChangeFailureRateLiveControllerIntegrationTest()
         //{
@@ -69,7 +69,6 @@ namespace DevOpsMetrics.Tests.Service
         //    Assert.IsTrue(model.TotalItems > 0);
         //}
 
-        [TestCategory("L1Test")]
         [TestMethod]
         public void GHChangeFailureRateSampleControllerIntegrationTest()
         {
@@ -104,7 +103,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        [TestCategory("L1Test")]
+        [TestCategory("IntegrationTest")]
         [TestMethod]
         public void GHChangeFailureRateLiveControllerIntegrationTest()
         {

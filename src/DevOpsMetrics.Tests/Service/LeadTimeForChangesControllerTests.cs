@@ -7,10 +7,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DevOpsMetrics.Tests.Service
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [TestCategory("IntegrationTest")]
     [TestClass]
-    public class LeadTimeForChangesL1s : BaseConfiguration
+    public class LeadTimeForChangesControllerTests : BaseConfiguration
     {
-        [TestCategory("L1Test")]
+        [TestCategory("UnitTest")]
         [TestMethod]
         public async Task AzLeadTimeControllerIntegrationTest()
         {
@@ -53,7 +54,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        [TestCategory("L1Test")]
+        [TestCategory("UnitTest")]
         [TestMethod]
         public async Task GHLeadTimeControllerIntegrationTest()
         {
@@ -100,7 +101,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L1Test")]
+        [TestCategory("UnitTest")]
         [TestMethod]
         public async Task AzLeadTimeControllerAPIIntegrationTest()
         {
@@ -144,7 +145,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L1Test")]
+        [TestCategory("UnitTest")]
         [TestMethod]
         public async Task GHLeadTimeControllerAPIIntegrationTest()
         {
@@ -188,7 +189,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L1Test")]
         [TestMethod]
         public async Task AzLeadTimeControllerAPILiveIntegrationTest()
         {
@@ -241,7 +241,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L1Test")]
         [TestMethod]
         public async Task GHLeadTimeControllerAPILiveIntegrationTest()
         {
@@ -294,7 +293,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        //[TestCategory("L1Test")]
         //[TestMethod]
         //public async Task GHFeatureFlagsLeadTimeControllerAPILiveIntegrationTest()
         //{

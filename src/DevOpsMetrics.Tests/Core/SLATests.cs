@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DevOpsMetrics.Tests.Core
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("L0Test")]
+    [TestCategory("UnitTest")]
     [TestClass]
     public class SLATests
     {

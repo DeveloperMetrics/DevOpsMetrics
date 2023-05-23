@@ -7,10 +7,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DevOpsMetrics.Tests.Service
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("L1Test")]
+    [TestCategory("IntegrationTest")]
     [TestClass]
-    public class DeploymentFrequencyL1s : BaseConfiguration
+    public class DeploymentFrequencyControllerTests : BaseConfiguration
     {
+        [TestCategory("UnitTest")]
         [TestMethod]
         public async Task AzDeploymentsSampleControllerIntegrationTest()
         {
@@ -135,6 +136,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
+        [TestCategory("UnitTest")]
         [TestMethod]
         public async Task GHDeploymentsSampleControllerIntegrationTest()
         {
@@ -306,6 +308,7 @@ namespace DevOpsMetrics.Tests.Service
 
 
 
+        [TestCategory("UnitTest")]
         [TestMethod]
         public async Task GHDeploymentsControllerAPILiveWithCacheIntegrationTest()
         {

@@ -6,10 +6,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DevOpsMetrics.Tests.Service
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    [TestCategory("IntegrationTest")]
     [TestClass]
-    public class MeanTimeToRestoreL1s : BaseConfiguration
+    public class MeanTimeToRestoreControllerTests : BaseConfiguration
     {
-        [TestCategory("L1Test")]
+        [TestCategory("UnitTest")]
         [TestMethod]
         public void AzureMTTRSampleControllerIntegrationTest()
         {
@@ -44,7 +45,6 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        [TestCategory("L1Test")]
         [TestMethod]
         public void AzureMTTRsAPIControllerIntegrationTest()
         {
@@ -82,7 +82,6 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems >= 0);
         }
 
-        [TestCategory("L1Test")]
         [TestMethod]
         public void AzureMTTRsAPINullIntegrationTest()
         {
@@ -120,7 +119,6 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems >= 0);
         }
 
-        [TestCategory("L1Test")]
         [TestMethod]
         public void AzureMTTRsAPIEmptyIntegrationTest()
         {

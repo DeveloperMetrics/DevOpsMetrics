@@ -12,7 +12,7 @@ using Moq;
 namespace DevOpsMetrics.Tests.Service
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("L0Test")]
+    [TestCategory("UnitTest")]
     [TestClass]
     public class TableStorageControllerDATests
     {

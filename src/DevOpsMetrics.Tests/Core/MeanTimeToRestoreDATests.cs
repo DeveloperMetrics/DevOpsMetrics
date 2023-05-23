@@ -6,10 +6,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DevOpsMetrics.Tests.Core
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("L1Test")]
+    [TestCategory("IntegrationTest")]
     [TestClass]
     public class MeanTimeToRestoreDATests : BaseConfiguration
     {
+        [TestCategory("UnitTest")]
         [TestMethod]
         public void MeanTimeToRestoreDAIntegrationTest()
         {
