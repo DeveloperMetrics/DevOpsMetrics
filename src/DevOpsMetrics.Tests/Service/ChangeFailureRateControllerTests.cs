@@ -114,7 +114,7 @@ namespace DevOpsMetrics.Tests.Service
             string branch = "main";
             string workflowName = "CI/ CD";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
-            int numberOfDays = 7;
+            int numberOfDays = 30;
             int maxNumberOfItems = 20;
             ChangeFailureRateController controller = new(base.Configuration);
 
