@@ -145,11 +145,11 @@ namespace DevOpsMetrics.Service.Controllers
                 else
                 {
                     deploymentFrequencyModel = await DeploymentFrequencyDA.GetAzureDevOpsDeploymentFrequency(false, patToken, tableStorageConfig,
-                        owner, project, branch, workflowName, 
+                        owner, project, branch, workflowName,
                         numberOfDays, maxNumberOfItems, useCache);
 
                     leadTimeForChangesModel = await LeadTimeForChangesDA.GetAzureDevOpsLeadTimesForChanges(false, patToken, tableStorageConfig,
-                       owner, project, repo, branch, workflowName, 
+                       owner, project, repo, branch, workflowName,
                        numberOfDays, maxNumberOfItems, useCache);
                 }
                 MeanTimeToRestoreModel meanTimeToRestoreModel = new();
@@ -187,7 +187,7 @@ namespace DevOpsMetrics.Service.Controllers
                 };
 
                 //Serialize the summary into an Azure storage table
-                await AzureTableStorageDA.UpdateDORASummaryItem(tableStorageConfig, owner, repo, DORASummary);
+                await AzureTableStorageDA.UpdateDORASummaryItem(tableStorageConfig, owner, project, repo, DORASummary);
 
                 //await settingsController.UpdateGitHubProjectLog(ghSetting.Owner, ghSetting.Repo, result.BuildsUpdated, result.PRsUpdated, "", "", null, null);
                 ProjectLog projectLog = null;
@@ -195,6 +195,13 @@ namespace DevOpsMetrics.Service.Controllers
                 {
                     projectLog = new(
                         PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo),
+                        result.BuildsUpdated, result.PRsUpdated,
+                        "", "", null, null);
+                }
+                else
+                {
+                    projectLog = new(
+                        PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(owner, project, repo),
                         result.BuildsUpdated, result.PRsUpdated,
                         "", "", null, null);
                 }
@@ -214,19 +221,24 @@ namespace DevOpsMetrics.Service.Controllers
                 {
                     log.LogInformation(error);
                 }
-                //await settingsController.UpdateGitHubProjectLog(ghSetting.Owner, ghSetting.Repo, result.BuildsUpdated, result.PRsUpdated,
-                //    ghSetting.Owner + "_" + ghSetting.Repo + "_" + ghSetting.Branch + "_" + ghSetting.WorkflowName + "_" + ghSetting.WorkflowId + "_" + numberOfDays + "_" + maxNumberOfItems,
-                //    ghSetting.Owner + "_" + ghSetting.Repo + "_" + ghSetting.Branch + "_" + numberOfDays + "_" + maxNumberOfItems,
-                //    ex.ToString(), error);
                 ProjectLog projectLog = null;
                 if (isGitHub == true)
                 {
                     projectLog = new(
-                    PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo),
-                    result.BuildsUpdated, result.PRsUpdated,
-                    owner + "_" + repo + "_" + branch + "_" + workflowName + "_" + workflowId + "_" + numberOfDays + "_" + maxNumberOfItems,
-                    owner + "_" + repo + "_" + branch + "_" + numberOfDays + "_" + maxNumberOfItems,
-                    ex.ToString(), error);
+                        PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo),
+                        result.BuildsUpdated, result.PRsUpdated,
+                        owner + "_" + repo + "_" + branch + "_" + workflowName + "_" + workflowId + "_" + numberOfDays + "_" + maxNumberOfItems,
+                        owner + "_" + repo + "_" + branch + "_" + numberOfDays + "_" + maxNumberOfItems,
+                        ex.ToString(), error);
+                }
+                else
+                {
+                    projectLog = new(
+                        PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(owner, project, repo),
+                        result.BuildsUpdated, result.PRsUpdated,
+                        owner + "_" + project + "_" + repo + "_" + branch + "_" + workflowName + "_" + workflowId + "_" + numberOfDays + "_" + maxNumberOfItems,
+                        owner + "_" + project + "_" + repo + "_" + branch + "_" + numberOfDays + "_" + maxNumberOfItems,
+                        ex.ToString(), error);
                 }
                 if (projectLog != null)
                 {
