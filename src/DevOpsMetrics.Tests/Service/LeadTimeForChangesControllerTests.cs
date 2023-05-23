@@ -247,11 +247,16 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = false;
-            string owner = "DeveloperMetrics";
-            string repo = "devopsmetrics";
+            //string owner = "DeveloperMetrics";
+            //string repo = "devopsmetrics";
+            //string branch = "main";
+            //string workflowName = "DevOpsMetrics.CICD";
+            //string workflowId = "1162561";
+            string owner = "samsmithnz";
+            string repo = "AzurePipelinesToGitHubActionsConverter";
             string branch = "main";
-            string workflowName = "DevOpsMetrics.CICD";
-            string workflowId = "1162561";
+            string workflowName = "CI/ CD";
+            string workflowId = "38158";
             int numberOfDays = 20;
             int maxNumberOfItems = 60;
             bool useCache = true;
