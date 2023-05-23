@@ -82,7 +82,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
 
             // execute the query on the table
             List<AzureStorageTableModel> list = table.CreateQuery<AzureStorageTableModel>()
-                                     //.Where(ent => ent.PartitionKey == partitionKey)
+                                     .Where(ent => ent.PartitionKey == partitionKey)
                                      .ToList();
 
             return list;

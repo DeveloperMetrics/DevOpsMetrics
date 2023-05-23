@@ -25,6 +25,21 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsNotNull(model);
 
         }
+        [TestMethod]
+        public void DORASummaryControllerGetIntegrationTest2()
+        {
+            //Arrange
+            string organization = "samsmithnz";
+            string repository = "AzurePipelinesToGitHubActionsConverter";
+            DORASummaryController controller = new(base.Configuration);
+
+            //Act
+            DORASummaryItem model = controller.GetDORASummaryItem(organization, repository);
+
+            //Assert
+            Assert.IsNotNull(model);
+
+        }
 
         [TestMethod]
         public async Task DORASummaryControllerGitHubUpdateIntegrationTest()
