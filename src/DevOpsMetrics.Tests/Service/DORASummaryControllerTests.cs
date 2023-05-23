@@ -1,11 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
-using System.Threading.Tasks;
-using DevOpsMetrics.Core.DataAccess.TableStorage;
-using DevOpsMetrics.Core.Models.AzureDevOps;
+﻿using System.Threading.Tasks;
 using DevOpsMetrics.Core.Models.Common;
-using DevOpsMetrics.Core.Models.GitHub;
 using DevOpsMetrics.Service.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -33,7 +27,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public async Task DORASummaryControllerUpdateIntegrationTest()
+        public async Task DORASummaryControllerGitHubUpdateIntegrationTest()
         {
             //Arrange
             //string organization = "DeveloperMetrics";
@@ -59,7 +53,30 @@ namespace DevOpsMetrics.Tests.Service
 
             //Assert
             Assert.IsNotNull(model);
-            //Assert.IsTrue(model.TotalResults > 0);
+        }
+
+        [TestMethod]
+        public async Task DORASummaryControllerAzureDevOpsUpdateIntegrationTest()
+        {
+            //Arrange
+            string organization = "samsmithnz";
+            string project = "AzDoDevOpsMetrics";
+            string repository = "AzDoDevOpsMetrics";
+            string branch = "refs/heads/main";
+            string buildName = "azure-pipelines.yml";
+            string buildId = "3673";
+            string resourceGroup = null;
+            int numberOfDays = 30;
+            int maxNumberOfItems = 20;
+            DORASummaryController controller = new(base.Configuration);
+
+            //Act
+            ProcessingResult model = await controller.UpdateDORASummaryItem(organization, project, repository,
+                branch, buildName, buildId, resourceGroup, numberOfDays, maxNumberOfItems,
+                null, true, false);
+
+            //Assert
+            Assert.IsNotNull(model);
         }
 
         //[TestMethod]

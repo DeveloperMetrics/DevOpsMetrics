@@ -92,7 +92,7 @@ namespace DevOpsMetrics.Service.Controllers
                 }
                 else
                 {
-                    message = $"Processing Azure DevOps organization {owner}, project {project}";
+                    message = $"Processing Azure DevOps organization {owner}, project {project}, repo {repo}";
                 }
                 if (log == null)
                 {
@@ -106,11 +106,17 @@ namespace DevOpsMetrics.Service.Controllers
                 {
                     result.BuildsUpdated = await azureTableStorageDA.UpdateGitHubActionRunsInStorage(clientId, clientSecret, tableStorageConfig,
                         owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
-                    //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {buildsUpdated} builds updated");
                     result.PRsUpdated = await azureTableStorageDA.UpdateGitHubActionPullRequestsInStorage(clientId, clientSecret, tableStorageConfig,
-                            owner, repo, branch, numberOfDays, maxNumberOfItems);
-                    //log.LogInformation($"Processing GitHub owner {item.Owner}, repo {item.Repo}: {prsUpdated} pull requests updated");
+                        owner, repo, branch, numberOfDays, maxNumberOfItems);
                     message = $"Processed GitHub owner {owner}, repo {repo}. {result.BuildsUpdated} builds and {result.PRsUpdated} prs/commits updated";
+                }
+                else
+                {
+                    result.BuildsUpdated = await azureTableStorageDA.UpdateAzureDevOpsBuildsInStorage(patToken, tableStorageConfig,
+                        owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);
+                    result.PRsUpdated = await azureTableStorageDA.UpdateAzureDevOpsPullRequestsInStorage(patToken, tableStorageConfig,
+                        owner, repo, branch, numberOfDays, maxNumberOfItems);
+                    message = $"Processed Azure DevOps organization {owner}, project {project}, repo {repo}. {result.BuildsUpdated} builds and {result.PRsUpdated} prs/commits updated";
                 }
                 if (log == null)
                 {
@@ -126,8 +132,6 @@ namespace DevOpsMetrics.Service.Controllers
                 //Get the DORA metrics for the last 90 days
                 DeploymentFrequencyModel deploymentFrequencyModel = new();
                 LeadTimeForChangesModel leadTimeForChangesModel = new();
-                MeanTimeToRestoreModel meanTimeToRestoreModel = new();
-                ChangeFailureRateModel changeFailureRateModel = new();
                 if (isGitHub == true)
                 {
                     deploymentFrequencyModel = await DeploymentFrequencyDA.GetGitHubDeploymentFrequency(false, clientId, clientSecret, tableStorageConfig,
@@ -137,26 +141,35 @@ namespace DevOpsMetrics.Service.Controllers
                     leadTimeForChangesModel = await LeadTimeForChangesDA.GetGitHubLeadTimesForChanges(false, clientId, clientSecret, tableStorageConfig,
                        owner, repo, branch, workflowName, workflowId,
                        numberOfDays, maxNumberOfItems, useCache);
-
-                    meanTimeToRestoreModel = new();
-                    if (resourceGroup != null)
-                    {
-                        meanTimeToRestoreModel = MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(false, tableStorageConfig,
-                            DevOpsPlatform.GitHub,
-                            resourceGroup,
-                            numberOfDays, maxNumberOfItems);
-                    }
-                    else
-                    {
-                        meanTimeToRestoreModel.MTTRAverageDurationInHours = 0;
-                        meanTimeToRestoreModel.MTTRAverageDurationDescription = MeanTimeToRestore.GetMeanTimeToRestoreRating(0);
-                    }
-
-                    changeFailureRateModel = ChangeFailureRateDA.GetChangeFailureRate(false, tableStorageConfig,
-                       DevOpsPlatform.GitHub,
-                       owner, repo, branch, workflowName,
-                       numberOfDays, maxNumberOfItems);
                 }
+                else
+                {
+                    deploymentFrequencyModel = await DeploymentFrequencyDA.GetAzureDevOpsDeploymentFrequency(false, patToken, tableStorageConfig,
+                        owner, project, branch, workflowName, 
+                        numberOfDays, maxNumberOfItems, useCache);
+
+                    leadTimeForChangesModel = await LeadTimeForChangesDA.GetAzureDevOpsLeadTimesForChanges(false, patToken, tableStorageConfig,
+                       owner, project, repo, branch, workflowName, 
+                       numberOfDays, maxNumberOfItems, useCache);
+                }
+                MeanTimeToRestoreModel meanTimeToRestoreModel = new();
+                if (resourceGroup != null)
+                {
+                    meanTimeToRestoreModel = MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(false, tableStorageConfig,
+                        DevOpsPlatform.GitHub,
+                        resourceGroup,
+                        numberOfDays, maxNumberOfItems);
+                }
+                else
+                {
+                    meanTimeToRestoreModel.MTTRAverageDurationInHours = 0;
+                    meanTimeToRestoreModel.MTTRAverageDurationDescription = MeanTimeToRestore.GetMeanTimeToRestoreRating(0);
+                }
+
+                ChangeFailureRateModel changeFailureRateModel = ChangeFailureRateDA.GetChangeFailureRate(false, tableStorageConfig,
+                   DevOpsPlatform.GitHub,
+                   owner, repo, branch, workflowName,
+                   numberOfDays, maxNumberOfItems);
 
                 //Summarize the results into a new object
                 DORASummaryItem DORASummary = new()
