@@ -84,7 +84,6 @@ namespace DevOpsMetrics.Service.Controllers
             ProcessingResult result = new();
             try
             {
-                //TODO: fix this - should be using a common interface, not this null hack
                 string message = "";
                 if (isGitHub == true)
                 {
@@ -94,6 +93,7 @@ namespace DevOpsMetrics.Service.Controllers
                 {
                     message = $"Processing Azure DevOps organization {owner}, project {project}, repo {repo}";
                 }
+                //TODO: fix this - should be using a common interface, not this null hack
                 if (log == null)
                 {
                     Console.WriteLine(message);
@@ -221,7 +221,7 @@ namespace DevOpsMetrics.Service.Controllers
                 {
                     log.LogInformation(error);
                 }
-                ProjectLog projectLog = null;
+                ProjectLog projectLog;
                 if (isGitHub == true)
                 {
                     projectLog = new(
