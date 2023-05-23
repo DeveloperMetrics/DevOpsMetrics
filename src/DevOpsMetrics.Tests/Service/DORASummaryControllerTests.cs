@@ -53,8 +53,9 @@ namespace DevOpsMetrics.Tests.Service
             DORASummaryController controller = new(base.Configuration);
 
             //Act
-            ProcessingResult model = await controller.UpdateDORASummaryItem(organization, repository,
-                branch, workflowName, workflowId, resourceGroup, numberOfDays, maxNumberOfItems);
+            ProcessingResult model = await controller.UpdateDORASummaryItem(organization, "", repository,
+                branch, workflowName, workflowId, resourceGroup, numberOfDays, maxNumberOfItems,
+                null, true, true);
 
             //Assert
             Assert.IsNotNull(model);

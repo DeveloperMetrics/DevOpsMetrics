@@ -8,6 +8,7 @@ using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace DevOpsMetrics.Function
@@ -38,9 +39,13 @@ namespace DevOpsMetrics.Function
             return await GetResponse<List<GitHubSettings>>(Client, url);
         }
 
-        public async Task<ProcessingResult> UpdateDORASummaryItem(string owner, string repository, string branch, string workflowName, string workflowId, string resourceGroup, int numberOfDays, int maxNumberOfItems)
+        public async Task<ProcessingResult> UpdateDORASummaryItem(
+            string owner, string project, string repository, 
+            string branch, string workflowName, string workflowId, 
+            string resourceGroup, int numberOfDays, int maxNumberOfItems,            
+            bool isGitHub = true)
         {
-            string url = $"/api/DORASummary/UpdateDORASummaryItem?owner={owner}&repository={repository}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&resourceGroup={resourceGroup}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}";
+            string url = $"/api/DORASummary/UpdateDORASummaryItem?owner={owner}&project={project}&repository={repository}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&resourceGroup={resourceGroup}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&log=&useCache=true&isGitHub={isGitHub}";
             return await GetResponse<ProcessingResult>(Client, url);
         }
 

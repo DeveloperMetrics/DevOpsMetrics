@@ -42,28 +42,43 @@ namespace DevOpsMetrics.Service.Controllers
 
         [HttpGet("UpdateDORASummaryItem")]
         public async Task<ProcessingResult> UpdateDORASummaryItem(
-          string owner,
-          string repo,
-          string branch,
-          string workflowName,
-          string workflowId,
-          string resourceGroup,
-          int numberOfDays,
-          int maxNumberOfItems,
-          ILogger log = null,
-          bool useCache = true,
-          bool isGitHub = true)
+            string owner,
+            string project,
+            string repo,
+            string branch,
+            string workflowName,
+            string workflowId,
+            string resourceGroup,
+            int numberOfDays,
+            int maxNumberOfItems,
+            ILogger log = null,
+            bool useCache = true,
+            bool isGitHub = true)
         {
             AzureTableStorageDA azureTableStorageDA = new();
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            //Get the client id and secret from the settings
-            string clientIdName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientId(owner, repo);
-            string clientSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret(owner, repo);
-            string clientId = Configuration[clientIdName];
-            string clientSecret = Configuration[clientSecretName];
-            if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(clientSecret))
+            string clientId = null;
+            string clientSecret = null;
+            string patToken = null;
+            if (isGitHub == true)
+            {  //Get the client id and secret from the settings
+                string clientIdName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientId(owner, repo);
+                string clientSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret(owner, repo);
+                clientId = Configuration[clientIdName];
+                clientSecret = Configuration[clientSecretName];
+                if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(clientSecret))
+                {
+                    throw new Exception($"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault");
+                }
+            }
+            else
             {
-                throw new Exception($"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault");
+                string patTokenName = PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken(owner, project, repo);
+                patToken = Configuration[patTokenName];
+                if (string.IsNullOrEmpty(patToken))
+                {
+                    throw new Exception($"patToken '{patTokenName}' not found in key vault");
+                }
             }
 
             ProcessingResult result = new();
@@ -74,6 +89,10 @@ namespace DevOpsMetrics.Service.Controllers
                 if (isGitHub == true)
                 {
                     message = $"Processing GitHub owner {owner}, repo {repo}";
+                }
+                else
+                {
+                    message = $"Processing Azure DevOps organization {owner}, project {project}";
                 }
                 if (log == null)
                 {
