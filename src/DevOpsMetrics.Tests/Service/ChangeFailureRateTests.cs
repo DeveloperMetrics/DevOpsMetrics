@@ -75,10 +75,14 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             bool getSampleData = true;
+            //string owner = "samsmithnz";
+            //string repo = "SamsFeatureFlags";
+            //string branch = "main";
+            //string workflowName = "SamsFeatureFlags.CI/CD";
             string owner = "samsmithnz";
-            string repo = "SamsFeatureFlags";
+            string repo = "AzurePipelinesToGitHubActionsConverter";
             string branch = "main";
-            string workflowName = "SamsFeatureFlags.CI/CD";
+            string workflowName = "CI/ CD";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
