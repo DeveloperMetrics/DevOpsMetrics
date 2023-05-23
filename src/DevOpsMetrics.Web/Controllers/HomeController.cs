@@ -38,7 +38,7 @@ namespace DevOpsMetrics.Web.Controllers
         [HttpPost]
         public IActionResult ProjectUpdate(string RowKey, int NumberOfDaysSelected = 30)
         {
-            return RedirectToAction("Project", "Home", new { rowKey = RowKey, numberOfDays = NumberOfDaysSelected });
+            return RedirectToAction("Project", "Home", new { projectId = RowKey, numberOfDays = NumberOfDaysSelected });
         }
 
         [HttpGet]

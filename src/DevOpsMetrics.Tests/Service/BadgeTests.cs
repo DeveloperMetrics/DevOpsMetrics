@@ -4,12 +4,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DevOpsMetrics.Tests.Service
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("L0Test")]
+    [TestCategory("UnitTest")]
     [TestClass]
     public class BadgeTests
     {
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void DeploymentFrequencyEliteBadgeTest()
         {
@@ -29,7 +28,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void DeploymentFrequencyHighBadgeTest()
         {
@@ -47,7 +45,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void DeploymentFrequencyMediumBadgeTest()
         {
@@ -65,7 +62,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void DeploymentFrequencyLowBadgeTest()
         {
@@ -83,7 +79,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void DeploymentFrequencyNoneBadgeTest()
         {
@@ -100,7 +95,6 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Deployment%20frequency-None-lightgrey", model.BadgeURL);
         }
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void ChangeFailureRateControllerHighBadgeTest()
         {
@@ -118,7 +112,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void ChangeFailureRateControllerMediumBadgeTest()
         {
@@ -136,7 +129,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void ChangeFailureRateControllerLowBadgeTest()
         {
@@ -154,7 +146,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void ChangeFailureRateControllerNoneBadgeTest()
         {
@@ -171,7 +162,6 @@ namespace DevOpsMetrics.Tests.Service
             Assert.AreEqual("https://img.shields.io/badge/Change%20failure%20rate-None-lightgrey", model.BadgeURL);
         }
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void LeadTimeForChangesEliteBadgeTest()
         {
@@ -191,7 +181,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void LeadTimeForChangesHighBadgeTest()
         {
@@ -209,7 +198,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void LeadTimeForChangesMediumBadgeTest()
         {
@@ -227,7 +215,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void LeadTimeForChangesLowBadgeTest()
         {
@@ -245,7 +232,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void LeadTimeForChangesNoneBadgeTest()
         {
@@ -263,7 +249,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void MeanTimeToRestoreEliteBadgeTest()
         {
@@ -283,7 +268,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void MeanTimeToRestoreHighBadgeTest()
         {
@@ -301,7 +285,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void MeanTimeToRestoreMediumBadgeTest()
         {
@@ -319,7 +302,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void MeanTimeToRestoreLowBadgeTest()
         {
@@ -337,7 +319,6 @@ namespace DevOpsMetrics.Tests.Service
         }
 
 
-        [TestCategory("L0Test")]
         [TestMethod]
         public void MeanTimeToRestoreNoneBadgeTest()
         {

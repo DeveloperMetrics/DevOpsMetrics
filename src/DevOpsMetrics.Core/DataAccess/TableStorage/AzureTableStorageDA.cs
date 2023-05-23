@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -397,10 +398,18 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         }
 
         public static async Task<bool> UpdateDORASummaryItem(TableStorageConfiguration tableStorageConfig,
-            string owner, string repo, DORASummaryItem DORASummaryItem)
+            string owner, string project, string repo, DORASummaryItem DORASummaryItem)
         {
             string partitionKey = owner;
-            string rowKey = repo;
+            string rowKey = "";
+            if (project != null)
+            {
+                rowKey = project;
+            }
+            else
+            {
+                rowKey = repo;
+            }
             string json = JsonConvert.SerializeObject(DORASummaryItem);
             AzureStorageTableModel newItem = new(partitionKey, rowKey, json);
             TableStorageCommonDA tableDA = new(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableDORASummaryItem);

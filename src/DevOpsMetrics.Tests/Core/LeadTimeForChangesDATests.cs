@@ -8,10 +8,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DevOpsMetrics.Tests.Core
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("L1Test")]
+    [TestCategory("IntegrationTest")]
     [TestClass]
     public class LeadTimeForChangesDATests : BaseConfiguration
     {
+        [TestCategory("UnitTest")]
         [TestMethod]
         public async Task AzLeadTimeForChangesDAIntegrationTest()
         {
@@ -58,6 +59,7 @@ namespace DevOpsMetrics.Tests.Core
             Assert.IsTrue(model.TotalItems > 0);
         }
 
+        [TestCategory("UnitTest")]
         [TestMethod]
         public async Task GHLeadTimeForChangesDAIntegrationTest()
         {
@@ -69,7 +71,7 @@ namespace DevOpsMetrics.Tests.Core
             string owner = "DeveloperMetrics";
             string repo = "devopsmetrics";
             string mainBranch = "main";
-            string workflowName = "DevOpsMetrics.CI";
+            string workflowName = "CI/CD";
             string workflowId = "1162561";
             int numberOfDays = 7;
             int maxNumberOfItems = 20;

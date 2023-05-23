@@ -5,9 +5,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DevOpsMetrics.Tests.Service
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("L1Test")]
+    [TestCategory("UnitTest")]
     [TestClass]
-    public class ChangeFailureRateTests : BaseConfiguration
+    public class ChangeFailureRateControllerTests : BaseConfiguration
     {
         [TestMethod]
         public void AzChangeFailureRateSampleControllerIntegrationTest()
@@ -39,7 +39,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        //[TestCategory("L1Test")]
+        //[TestCategory("IntegrationTest")]
         //[TestMethod]
         //public void AzChangeFailureRateLiveControllerIntegrationTest()
         //{
@@ -69,16 +69,19 @@ namespace DevOpsMetrics.Tests.Service
         //    Assert.IsTrue(model.TotalItems > 0);
         //}
 
-        [TestCategory("L1Test")]
         [TestMethod]
         public void GHChangeFailureRateSampleControllerIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
+            //string owner = "samsmithnz";
+            //string repo = "SamsFeatureFlags";
+            //string branch = "main";
+            //string workflowName = "SamsFeatureFlags.CI/CD";
             string owner = "samsmithnz";
-            string repo = "SamsFeatureFlags";
+            string repo = "AzurePipelinesToGitHubActionsConverter";
             string branch = "main";
-            string workflowName = "SamsFeatureFlags.CI/CD";
+            string workflowName = "CI/ CD";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
             int numberOfDays = 7;
             int maxNumberOfItems = 20;
@@ -100,36 +103,36 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(model.TotalItems > 0);
         }
 
-        //[TestCategory("L1Test")]
-        //[TestMethod]
-        //public void GHChangeFailureRateLiveControllerIntegrationTest()
-        //{
-        //    //Arrange
-        //    bool getSampleData = false;
-        //    string owner = "samsmithnz";
-        //    string repo = "SamsFeatureFlags";
-        //    string branch = "main";
-        //    string workflowName = "SamsFeatureFlags.CI/CD";
-        //    DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
-        //    int numberOfDays = 7;
-        //    int maxNumberOfItems = 20;
-        //    ChangeFailureRateController controller = new(base.Configuration);
+        [TestCategory("IntegrationTest")]
+        [TestMethod]
+        public void GHChangeFailureRateLiveControllerIntegrationTest()
+        {
+            //Arrange
+            bool getSampleData = false;
+            string owner = "samsmithnz";
+            string repo = "AzurePipelinesToGitHubActionsConverter";
+            string branch = "main";
+            string workflowName = "CI/ CD";
+            DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
+            int numberOfDays = 30;
+            int maxNumberOfItems = 20;
+            ChangeFailureRateController controller = new(base.Configuration);
 
-        //    //Act
-        //    ChangeFailureRateModel model = controller.GetChangeFailureRate(getSampleData,
-        //       targetDevOpsPlatform, owner, repo, branch, workflowName, numberOfDays, maxNumberOfItems);
+            //Act
+            ChangeFailureRateModel model = controller.GetChangeFailureRate(getSampleData,
+               targetDevOpsPlatform, owner, repo, branch, workflowName, numberOfDays, maxNumberOfItems);
 
-        //    //Assert
-        //    Assert.IsTrue(model != null);
-        //    Assert.IsTrue(model.TargetDevOpsPlatform == targetDevOpsPlatform);
-        //    Assert.IsTrue(model.DeploymentName == workflowName);
-        //    Assert.IsTrue(model.ChangeFailureRateMetric >= 0f);
-        //    Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
-        //    Assert.AreEqual(numberOfDays, model.NumberOfDays);
-        //    Assert.IsTrue(model.MaxNumberOfItems > 0);
-        //    Assert.IsTrue(model.TotalItems > 0);
+            //Assert
+            Assert.IsTrue(model != null);
+            Assert.IsTrue(model.TargetDevOpsPlatform == targetDevOpsPlatform);
+            Assert.IsTrue(model.DeploymentName == workflowName);
+            Assert.IsTrue(model.ChangeFailureRateMetric >= 0f);
+            Assert.AreEqual(false, string.IsNullOrEmpty(model.ChangeFailureRateMetricDescription));
+            Assert.AreEqual(numberOfDays, model.NumberOfDays);
+            Assert.IsTrue(model.MaxNumberOfItems > 0);
+            Assert.IsTrue(model.TotalItems > 0);
 
-        //}
+        }
 
 
     }

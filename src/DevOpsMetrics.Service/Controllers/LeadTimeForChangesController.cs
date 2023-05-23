@@ -33,7 +33,6 @@ namespace DevOpsMetrics.Service.Controllers
 
                 //Get the PAT token from the key vault
                 string patTokenName = PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken(organization, project, repository);
-                patTokenName = SecretsProcessing.CleanKey(patTokenName);
                 string patToken = Configuration[patTokenName];
                 if (string.IsNullOrEmpty(patToken))
                 {

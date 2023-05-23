@@ -7,11 +7,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DevOpsMetrics.Tests.Core
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("L1Test")]
+    [TestCategory("IntegrationTest")]
     [TestClass]
     public class ChangeFailureRateDATests : BaseConfiguration
     {
 
+        [TestCategory("UnitTest")]
         [TestMethod]
         public void AzChangeFailureRateDAIntegrationTest()
         {
@@ -74,6 +75,7 @@ namespace DevOpsMetrics.Tests.Core
         //    Assert.AreNotEqual("Elite", model.ChangeFailureRateMetricDescription);
         //}
 
+        [TestCategory("UnitTest")]
         [TestMethod]
         public void GHChangeFailureRateDAIntegrationTest()
         {
@@ -83,7 +85,7 @@ namespace DevOpsMetrics.Tests.Core
             string owner = "DeveloperMetrics";
             string repo = "DevOpsMetrics";
             string branch = "main";
-            string workflowName = "DevOpsMetrics CI/CD";
+            string workflowName = "CI/CD";
             DevOpsPlatform targetDevOpsPlatform = DevOpsPlatform.GitHub;
             int numberOfDays = 30;
             int maxNumberOfItems = 20;

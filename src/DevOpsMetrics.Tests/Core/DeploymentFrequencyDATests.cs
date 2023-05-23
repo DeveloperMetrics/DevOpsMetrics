@@ -7,10 +7,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DevOpsMetrics.Tests.Core
 {
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [TestCategory("L1Test")]
+    [TestCategory("IntegrationTest")]
     [TestClass]
     public class DeploymentFrequencyDATests : BaseConfiguration
     {
+        [TestCategory("UnitTest")]
         [TestMethod]
         public async Task AzDeploymentFrequencyDAIntegrationTest()
         {
@@ -42,6 +43,7 @@ namespace DevOpsMetrics.Tests.Core
             Assert.IsTrue(model.ItemOrder == 0);
         }
 
+        [TestCategory("UnitTest")]
         [TestMethod]
         public async Task GHDeploymentFrequencyDAIntegrationTest()
         {
@@ -53,7 +55,7 @@ namespace DevOpsMetrics.Tests.Core
             string owner = "DeveloperMetrics";
             string repo = "DevOpsMetrics";
             string branch = "main";
-            string workflowName = "DevOpsMetrics CI/CD";
+            string workflowName = "CI/CD";
             string workflowId = "1162561";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
