@@ -283,7 +283,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                     string partitionKey = PartitionKeys.CreateGitHubPRPartitionKey(owner, repo);
                     string rowKey = pr.number;
                     string json = item.ToString();
-                    Debug.WriteLine($"PartitionKey: {partitionKey}, RowKey: {rowKey}, Length: {json.Length}");
+                    //Debug.WriteLine($"PartitionKey: {partitionKey}, RowKey: {rowKey}, Length: {json.Length}");
 
                     if (item.ToString().Length > (1024 * 32)) //1024 x 32 is the column limit
                     {
