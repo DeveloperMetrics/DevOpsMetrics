@@ -244,6 +244,7 @@ namespace DevOpsMetrics.Service.Controllers
                 {
                     await azureTableStorageDA.UpdateProjectLogInStorage(tableStorageConfig, projectLog);
                 }
+                //throw new Exception(error, ex);
             }
 
             return result;
