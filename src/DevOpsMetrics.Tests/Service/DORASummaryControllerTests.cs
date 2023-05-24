@@ -45,24 +45,24 @@ namespace DevOpsMetrics.Tests.Service
         public async Task DORASummaryControllerGitHubUpdateIntegrationTest()
         {
             //Arrange
-            ////string organization = "DeveloperMetrics";
-            ////string repository = "DevOpsMetrics";
-            ////string branch = "main";
-            ////string workflowName = "CI/CD";
-            ////string workflowId = "1162561";
-            ////string resourceGroup = "DevOpsMetrics";
+            string organization = "DeveloperMetrics";
+            string repository = "DevOpsMetrics";
+            string branch = "main";
+            string workflowName = "CI/CD";
+            string workflowId = "1162561";
+            string resourceGroup = "DevOpsMetrics";
             //string organization = "samsmithnz";
             //string repository = "AzurePipelinesToGitHubActionsConverter";
             //string branch = "main";
             //string workflowName = "CI/ CD";
             //string workflowId = "38158";
             //string resourceGroup = null;
-            string organization = "samsmithnz";
-            string repository = "AzurePipelinesToGitHubActionsConverterWeb";
-            string branch = "main";
-            string workflowName = "Pipelines to Actions website CI/CD";
-            string workflowId = "43084";
-            string resourceGroup = "PipelinesToActions";
+            //string organization = "samsmithnz";
+            //string repository = "AzurePipelinesToGitHubActionsConverterWeb";
+            //string branch = "main";
+            //string workflowName = "Pipelines to Actions website CI/CD";
+            //string workflowId = "43084";
+            //string resourceGroup = "PipelinesToActions";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             DORASummaryController controller = new(base.Configuration);
