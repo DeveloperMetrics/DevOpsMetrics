@@ -402,13 +402,13 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         {
             string partitionKey = owner;
             string rowKey = "";
-            if (project != null)
+            if (string.IsNullOrEmpty(project))
             {
-                rowKey = project;
+                rowKey = repo;
             }
             else
             {
-                rowKey = repo;
+                rowKey = project;
             }
             string json = JsonConvert.SerializeObject(DORASummaryItem);
             AzureStorageTableModel newItem = new(partitionKey, rowKey, json);
