@@ -58,7 +58,7 @@ namespace DevOpsMetrics.Core.DataAccess.APIAccess
 
         public async static Task<string> GetGitHubMessage(string url, string clientId, string clientSecret)
         {
-            Console.WriteLine($"Running GitHub url: {url}");
+            //Console.WriteLine($"Running GitHub url: {url}");
             string responseBody = "";
             if (url.Contains("api.github.com") == false)
             {
