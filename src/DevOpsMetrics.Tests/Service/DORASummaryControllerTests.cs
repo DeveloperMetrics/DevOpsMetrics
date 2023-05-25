@@ -72,8 +72,15 @@ namespace DevOpsMetrics.Tests.Service
                 branch, workflowName, workflowId, resourceGroup, numberOfDays, maxNumberOfItems,
                 null, true, true);
 
+            DORASummaryItem doraSummaryItem = controller.GetDORASummaryItem(organization, repository);
+
             //Assert
             Assert.IsNotNull(model);
+            Assert.IsNotNull(doraSummaryItem);
+            Assert.IsTrue(doraSummaryItem.DeploymentFrequency >= 0);
+            Assert.IsTrue(doraSummaryItem.LeadTimeForChanges >= 0);
+            Assert.IsTrue(doraSummaryItem.MeanTimeToRestore >= 0);
+            Assert.IsTrue(doraSummaryItem.ChangeFailureRate >= -1); //Change failure rate is -1 when there is no data (since 0 means something different from this metric)
         }
 
         [TestMethod]
