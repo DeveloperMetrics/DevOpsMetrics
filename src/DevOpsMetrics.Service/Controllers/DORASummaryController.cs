@@ -176,12 +176,16 @@ namespace DevOpsMetrics.Service.Controllers
                 {
                     Owner = owner,
                     Repo = repo,
+                    DeploymentFrequency = deploymentFrequencyModel.DeploymentsPerDayMetric,
                     DeploymentFrequencyBadgeURL = deploymentFrequencyModel.BadgeURL,
                     DeploymentFrequencyBadgeWithMetricURL = deploymentFrequencyModel.BadgeWithMetricURL,
+                    LeadTimeForChanges = leadTimeForChangesModel.LeadTimeForChangesMetric,
                     LeadTimeForChangesBadgeURL = leadTimeForChangesModel.BadgeURL,
                     LeadTimeForChangesBadgeWithMetricURL = leadTimeForChangesModel.BadgeWithMetricURL,
+                    MeanTimeToRestore = meanTimeToRestoreModel.MTTRAverageDurationInHours,
                     MeanTimeToRestoreBadgeURL = meanTimeToRestoreModel.BadgeURL,
                     MeanTimeToRestoreBadgeWithMetricURL = meanTimeToRestoreModel.BadgeWithMetricURL,
+                    ChangeFailureRate = changeFailureRateModel.ChangeFailureRateMetric,
                     ChangeFailureRateBadgeURL = changeFailureRateModel.BadgeURL,
                     ChangeFailureRateBadgeWithMetricURL = changeFailureRateModel.BadgeWithMetricURL
                 };

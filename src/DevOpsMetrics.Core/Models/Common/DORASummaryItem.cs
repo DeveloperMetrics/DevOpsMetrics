@@ -10,11 +10,19 @@
         {
             get; set;
         }
+        public float DeploymentFrequency
+        {
+            get; set;
+        }
         public string DeploymentFrequencyBadgeURL
         {
             get; set;
         }
         public string DeploymentFrequencyBadgeWithMetricURL
+        {
+            get; set;
+        }
+        public float LeadTimeForChanges
         {
             get; set;
         }
@@ -26,11 +34,19 @@
         {
             get; set;
         }
+        public float MeanTimeToRestore
+        {
+            get; set;
+        }
         public string MeanTimeToRestoreBadgeURL
         {
             get; set;
         }
         public string MeanTimeToRestoreBadgeWithMetricURL
+        {
+            get; set;
+        }
+        public float ChangeFailureRate
         {
             get; set;
         }
