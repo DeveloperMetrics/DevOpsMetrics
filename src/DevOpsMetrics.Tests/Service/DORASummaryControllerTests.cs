@@ -137,7 +137,7 @@ namespace DevOpsMetrics.Tests.Service
                         azSetting.Branch, azSetting.BuildName, azSetting.BuildId,
                         azSetting.ProductionResourceGroup,
                         numberOfDays, maxNumberOfItems, null, true, false);
-                    totalResults = ghResult.TotalResults;
+                    totalResults += ghResult.TotalResults;
                 }
 
                 foreach (GitHubSettings ghSetting in ghSettings)
@@ -148,7 +148,7 @@ namespace DevOpsMetrics.Tests.Service
                         ghSetting.WorkflowName, ghSetting.WorkflowId,
                         ghSetting.ProductionResourceGroup,
                         numberOfDays, maxNumberOfItems, null, true, true);
-                    totalResults = ghResult.TotalResults;
+                    totalResults += ghResult.TotalResults;
                 }
             }
 
