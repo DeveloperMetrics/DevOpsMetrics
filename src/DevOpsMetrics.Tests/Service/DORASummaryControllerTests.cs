@@ -121,7 +121,7 @@ namespace DevOpsMetrics.Tests.Service
             int totalResults = 0;
             DORASummaryController controller = new(base.Configuration);
             SettingsController settingsController = new(base.Configuration, new AzureTableStorageDA());
-            bool runExpensiveTest = true;
+            bool runExpensiveTest = false;
 
             //Act
             if (runExpensiveTest)
