@@ -167,9 +167,9 @@ namespace DevOpsMetrics.Service.Controllers
                 }
 
                 ChangeFailureRateModel changeFailureRateModel = ChangeFailureRateDA.GetChangeFailureRate(false, tableStorageConfig,
-                   DevOpsPlatform.GitHub,
-                   owner, repo, branch, workflowName,
-                   numberOfDays, maxNumberOfItems);
+                    DevOpsPlatform.GitHub,
+                    owner, repo, branch, workflowName,
+                    numberOfDays, maxNumberOfItems);
 
                 //Summarize the results into a new object
                 DORASummaryItem DORASummary = new()

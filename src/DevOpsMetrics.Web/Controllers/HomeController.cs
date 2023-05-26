@@ -427,18 +427,23 @@ namespace DevOpsMetrics.Web.Controllers
                     project_repo = item.Project;
                     repository = item.Repository;
                     buildName_workflowName = item.BuildName;
+                    break;
                 }
             }
             //Update each GitHub setting
-            foreach (GitHubSettings item in githubSettings)
+            if (targetDevOpsPlatform == DevOpsPlatform.UnknownDevOpsPlatform)
             {
-                if (item.RowKey == ProjectIdSelected)
+                foreach (GitHubSettings item in githubSettings)
                 {
-                    targetDevOpsPlatform = DevOpsPlatform.GitHub;
-                    organization_owner = item.Owner;
-                    project_repo = item.Repo;
-                    repository = "";
-                    buildName_workflowName = item.WorkflowName;
+                    if (item.RowKey == ProjectIdSelected)
+                    {
+                        targetDevOpsPlatform = DevOpsPlatform.GitHub;
+                        organization_owner = item.Owner;
+                        project_repo = item.Repo;
+                        repository = "";
+                        buildName_workflowName = item.WorkflowName;
+                        break;
+                    }
                 }
             }
 
@@ -451,11 +456,11 @@ namespace DevOpsMetrics.Web.Controllers
             //Redirect to the correct project page to see the changes
             if (targetDevOpsPlatform == DevOpsPlatform.AzureDevOps)
             {
-                return RedirectToAction("Project", "Home", new { rowKey = organization_owner + "_" + project_repo + "_" + repository + "_" + buildName_workflowName });
+                return RedirectToAction("Project", "Home", new { projectId = organization_owner + "_" + project_repo + "_" + repository + "_" + buildName_workflowName });
             }
             else if (targetDevOpsPlatform == DevOpsPlatform.GitHub)
             {
-                return RedirectToAction("Project", "Home", new { rowKey = organization_owner + "_" + project_repo + "_" + buildName_workflowName });
+                return RedirectToAction("Project", "Home", new { projectId = organization_owner + "_" + project_repo + "_" + buildName_workflowName });
             }
             else
             {
