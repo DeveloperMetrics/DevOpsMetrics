@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using DevOpsMetrics.Core;
 using DevOpsMetrics.Core.DataAccess;
@@ -55,6 +56,8 @@ namespace DevOpsMetrics.Service.Controllers
             bool useCache = true,
             bool isGitHub = true)
         {
+            //Start timer
+            DateTime startTime = DateTime.Now;
             AzureTableStorageDA azureTableStorageDA = new();
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
             string clientId = null;
@@ -82,6 +85,10 @@ namespace DevOpsMetrics.Service.Controllers
             }
 
             ProcessingResult result = new();
+            DeploymentFrequencyModel deploymentFrequencyModel = new();
+            LeadTimeForChangesModel leadTimeForChangesModel = new();
+            MeanTimeToRestoreModel meanTimeToRestoreModel = new();
+            ChangeFailureRateModel changeFailureRateModel = new();
             try
             {
                 string message = "";
@@ -130,8 +137,6 @@ namespace DevOpsMetrics.Service.Controllers
 
                 //Process summary results for last 90 days, creating badges for the four metrics
                 //Get the DORA metrics for the last 90 days
-                DeploymentFrequencyModel deploymentFrequencyModel = new();
-                LeadTimeForChangesModel leadTimeForChangesModel = new();
                 if (isGitHub == true)
                 {
                     deploymentFrequencyModel = await DeploymentFrequencyDA.GetGitHubDeploymentFrequency(false, clientId, clientSecret, tableStorageConfig,
@@ -152,7 +157,6 @@ namespace DevOpsMetrics.Service.Controllers
                        owner, project, repo, branch, workflowName,
                        numberOfDays, maxNumberOfItems, useCache);
                 }
-                MeanTimeToRestoreModel meanTimeToRestoreModel = new();
                 if (resourceGroup != null)
                 {
                     meanTimeToRestoreModel = MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(false, tableStorageConfig,
@@ -166,10 +170,13 @@ namespace DevOpsMetrics.Service.Controllers
                     meanTimeToRestoreModel.MTTRAverageDurationDescription = MeanTimeToRestore.GetMeanTimeToRestoreRating(0);
                 }
 
-                ChangeFailureRateModel changeFailureRateModel = ChangeFailureRateDA.GetChangeFailureRate(false, tableStorageConfig,
-                    DevOpsPlatform.GitHub,
-                    owner, repo, branch, workflowName,
-                    numberOfDays, maxNumberOfItems);
+                changeFailureRateModel = ChangeFailureRateDA.GetChangeFailureRate(false, tableStorageConfig,
+                   DevOpsPlatform.GitHub,
+                   owner, repo, branch, workflowName,
+                   numberOfDays, maxNumberOfItems);
+
+                //Get the total time since startTime
+                string processingLogMessage = $"Processed summary for {owner}, repo {repo} in {(DateTime.Now - startTime).TotalSeconds} seconds";
 
                 //Summarize the results into a new object
                 DORASummaryItem DORASummary = new()
@@ -187,7 +194,8 @@ namespace DevOpsMetrics.Service.Controllers
                     MeanTimeToRestoreBadgeWithMetricURL = meanTimeToRestoreModel.BadgeWithMetricURL,
                     ChangeFailureRate = changeFailureRateModel.ChangeFailureRateMetric,
                     ChangeFailureRateBadgeURL = changeFailureRateModel.BadgeURL,
-                    ChangeFailureRateBadgeWithMetricURL = changeFailureRateModel.BadgeWithMetricURL
+                    ChangeFailureRateBadgeWithMetricURL = changeFailureRateModel.BadgeWithMetricURL,
+                    ProcessingLogMessage = processingLogMessage
                 };
 
                 //Serialize the summary into an Azure storage table
@@ -244,6 +252,39 @@ namespace DevOpsMetrics.Service.Controllers
                         owner + "_" + project + "_" + repo + "_" + branch + "_" + numberOfDays + "_" + maxNumberOfItems,
                         ex.ToString(), error);
                 }
+                //Update the DORA object with the error message
+                try
+                {
+                    //Get the total time since startTime
+                    string processingLogMessage = $"Error processing summary for {owner}, repo {repo} in {(DateTime.Now - startTime).TotalSeconds} seconds";
+
+                    //Summarize the results into a new object
+                    DORASummaryItem DORASummary = new()
+                    {
+                        Owner = owner,
+                        Repo = repo,
+                        DeploymentFrequency = deploymentFrequencyModel.DeploymentsPerDayMetric,
+                        DeploymentFrequencyBadgeURL = deploymentFrequencyModel.BadgeURL,
+                        DeploymentFrequencyBadgeWithMetricURL = deploymentFrequencyModel.BadgeWithMetricURL,
+                        LeadTimeForChanges = leadTimeForChangesModel.LeadTimeForChangesMetric,
+                        LeadTimeForChangesBadgeURL = leadTimeForChangesModel.BadgeURL,
+                        LeadTimeForChangesBadgeWithMetricURL = leadTimeForChangesModel.BadgeWithMetricURL,
+                        MeanTimeToRestore = meanTimeToRestoreModel.MTTRAverageDurationInHours,
+                        MeanTimeToRestoreBadgeURL = meanTimeToRestoreModel.BadgeURL,
+                        MeanTimeToRestoreBadgeWithMetricURL = meanTimeToRestoreModel.BadgeWithMetricURL,
+                        ChangeFailureRate = changeFailureRateModel.ChangeFailureRateMetric,
+                        ChangeFailureRateBadgeURL = changeFailureRateModel.BadgeURL,
+                        ChangeFailureRateBadgeWithMetricURL = changeFailureRateModel.BadgeWithMetricURL,
+                        ProcessingLogMessage = processingLogMessage
+                    };
+                    //Serialize the summary into an Azure storage table
+                    await AzureTableStorageDA.UpdateDORASummaryItem(tableStorageConfig, owner, project, repo, DORASummary);
+                }
+                catch
+                {
+                    //Do nothing, we handled the error above
+                }
+
                 if (projectLog != null)
                 {
                     await azureTableStorageDA.UpdateProjectLogInStorage(tableStorageConfig, projectLog);

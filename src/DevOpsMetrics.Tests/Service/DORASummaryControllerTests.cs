@@ -50,18 +50,18 @@ namespace DevOpsMetrics.Tests.Service
         public async Task DORASummaryControllerGitHubUpdateIntegrationTest()
         {
             //Arrange
-            //string organization = "DeveloperMetrics";
-            //string repository = "DevOpsMetrics";
-            //string branch = "main";
-            //string workflowName = "CI/CD";
-            //string workflowId = "1162561";
-            //string resourceGroup = "DevOpsMetrics";
-            string organization = "samsmithnz";
-            string repository = "AzurePipelinesToGitHubActionsConverter";
+            string organization = "DeveloperMetrics";
+            string repository = "DevOpsMetrics";
             string branch = "main";
-            string workflowName = "CI/ CD";
-            string workflowId = "38158";
-            string resourceGroup = null;
+            string workflowName = "CI/CD";
+            string workflowId = "1162561";
+            string resourceGroup = "DevOpsMetrics";
+            //string organization = "samsmithnz";
+            //string repository = "AzurePipelinesToGitHubActionsConverter";
+            //string branch = "main";
+            //string workflowName = "CI/ CD";
+            //string workflowId = "38158";
+            //string resourceGroup = null;
             //string organization = "samsmithnz";
             //string repository = "AzurePipelinesToGitHubActionsConverterWeb";
             //string branch = "main";

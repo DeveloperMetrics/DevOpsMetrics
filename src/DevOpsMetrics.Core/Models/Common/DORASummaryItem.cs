@@ -58,5 +58,9 @@
         {
             get; set;
         }
+        public string ProcessingLogMessage
+        {
+            get; set;
+        }
     }
 }
