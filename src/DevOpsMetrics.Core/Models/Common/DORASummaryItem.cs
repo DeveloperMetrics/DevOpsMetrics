@@ -10,6 +10,10 @@
         {
             get; set;
         }
+        public int NumberOfDays
+        {
+            get; set;
+        }
         public float DeploymentFrequency
         {
             get; set;
@@ -55,6 +59,10 @@
             get; set;
         }
         public string ChangeFailureRateBadgeWithMetricURL
+        {
+            get; set;
+        }
+        public string ProcessingLogMessage
         {
             get; set;
         }

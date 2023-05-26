@@ -1,5 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using DevOpsMetrics.Core.DataAccess.TableStorage;
+using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
+using DevOpsMetrics.Core.Models.GitHub;
 using DevOpsMetrics.Service.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -107,59 +112,56 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsNotNull(model);
         }
 
-        //[TestMethod]
-        //public async Task DORASummaryControllerUpdateALLIntegrationTest()
-        //{
-        //    //Arrange
-        //    int numberOfDays = 30;
-        //    int maxNumberOfItems = 20;
-        //    int totalResults = 0;
-        //    DORASummaryController controller = new(base.Configuration);
-        //    SettingsController settingsController = new(base.Configuration, new AzureTableStorageDA());
+        [TestMethod]
+        public async Task DORASummaryControllerUpdateALLIntegrationTest()
+        {
+            //Arrange
+            int numberOfDays = 30;
+            int maxNumberOfItems = 20;
+            int totalResults = 0;
+            DORASummaryController controller = new(base.Configuration);
+            SettingsController settingsController = new(base.Configuration, new AzureTableStorageDA());
+            bool runExpensiveTest = false;
 
-        //    //Act
-        //    List<AzureDevOpsSettings> azSettings = settingsController.GetAzureDevOpsSettings();
-        //    List<GitHubSettings> ghSettings = settingsController.GetGitHubSettings();
+            //Act
+            if (runExpensiveTest)
+            {
+                List<AzureDevOpsSettings> azSettings = settingsController.GetAzureDevOpsSettings();
+                List<GitHubSettings> ghSettings = settingsController.GetGitHubSettings();
 
-        //    foreach (AzureDevOpsSettings item in azSettings)
-        //    {
-        //        //    (int, string) buildsUpdated = (0, null);
-        //        //    (int, string) prsUpdated = (0, null);
-        //        //    try
-        //        //    {
-        //        //log.LogInformation($"Processing Azure DevOps organization {item.Organization}, project {item.Project}");
-        //        //        buildsUpdated = await api.UpdateAzureDevOpsBuilds(item.Organization, item.Project, item.Repository, item.Branch, item.BuildName, item.BuildId, numberOfDays, maxNumberOfItems);
-        //        //        prsUpdated = await api.UpdateAzureDevOpsPullRequests(item.Organization, item.Project, item.Repository, numberOfDays, maxNumberOfItems);
-        //        //        log.LogInformation($"Processed Azure DevOps organization {item.Organization}, project {item.Project}. {buildsUpdated.Item1} builds and {prsUpdated.Item1} prs/commits updated");
-        //        //        totalResults += buildsUpdated.Item1 + prsUpdated.Item1;
-        //        //        await api.UpdateAzureDevOpsProjectLog(item.Organization, item.Project, item.Repository, buildsUpdated.Item1, prsUpdated.Item1, buildsUpdated.Item2, prsUpdated.Item2, null, null);
-        //        //    }
-        //        //    catch (Exception ex)
-        //        //    {
-        //        //        string error = $"Exception while processing Azure DevOps organization {item.Organization}, project {item.Project}. {buildsUpdated.Item1} builds and {prsUpdated.Item1} prs/commits updated";
-        //        //        log.LogInformation(error);
-        //        //        await api.UpdateAzureDevOpsProjectLog(item.Organization, item.Project, item.Repository, buildsUpdated.Item1, prsUpdated.Item1, buildsUpdated.Item2, prsUpdated.Item2, ex.Message, error);
-        //        //    }
-        //    }
+                foreach (AzureDevOpsSettings azSetting in azSettings)
+                {
+                    Debug.WriteLine($"Processing Azure DevOps organization {azSetting.Organization}, project {azSetting.Project}");
+                    ProcessingResult ghResult = await controller.UpdateDORASummaryItem(
+                        azSetting.Organization, azSetting.Project, azSetting.Repository,
+                        azSetting.Branch, azSetting.BuildName, azSetting.BuildId,
+                        azSetting.ProductionResourceGroup,
+                        numberOfDays, maxNumberOfItems, null, true, false);
+                    totalResults += ghResult.TotalResults;
+                }
 
-        //    foreach (GitHubSettings ghSetting in ghSettings)
-        //    {
-        //        Debug.WriteLine($"Owner {ghSetting.Owner}, Repo {ghSetting.Repo}");
-        //        ProcessingResult ghResult = await controller.UpdateDORASummaryItem(
-        //            ghSetting.Owner, ghSetting.Repo, ghSetting.Branch,
-        //            ghSetting.WorkflowName, ghSetting.WorkflowId,
-        //            ghSetting.ProductionResourceGroup,
-        //            numberOfDays, maxNumberOfItems);
-        //        totalResults += ghResult.TotalResults;
-        //        Assert.IsNotNull(ghResult);
-        //    }
+                foreach (GitHubSettings ghSetting in ghSettings)
+                {
+                    Debug.WriteLine($"Processing GitHub owner {ghSetting.Owner}, repo {ghSetting.Repo}");
+                    ProcessingResult ghResult = await controller.UpdateDORASummaryItem(
+                        ghSetting.Owner, "", ghSetting.Repo, ghSetting.Branch,
+                        ghSetting.WorkflowName, ghSetting.WorkflowId,
+                        ghSetting.ProductionResourceGroup,
+                        numberOfDays, maxNumberOfItems, null, true, true);
+                    totalResults += ghResult.TotalResults;
+                }
+            }
 
-        //    //ProcessingResult model = await controller.UpdateDORASummaryItem(organization, repository,
-        //    //    branch, workflowName, workflowId, resourceGroup, numberOfDays, maxNumberOfItems);
-
-        //    //Assert
-        //    Assert.IsTrue(totalResults > 0);
-        //}
+            //Assert
+            if (runExpensiveTest)
+            {
+                Assert.IsTrue(totalResults > 0);
+            }
+            else
+            {
+                Assert.IsTrue(totalResults == 0);
+            }
+        }
 
     }
 }

@@ -49,7 +49,7 @@ namespace DevOpsMetrics.Web.Controllers
             bool useCache = true;
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
-            ProjectViewModel model = new();
+            ProjectViewModel model = null;
 
             //Find the right project to load
             ServiceApiClient serviceApiClient = new(Configuration);
@@ -102,43 +102,49 @@ namespace DevOpsMetrics.Web.Controllers
                         NumberOfDays = new SelectList(numberOfDaysList, "NumberOfDays", "NumberOfDays"),
                         NumberOfDaysSelected = numberOfDays
                     };
+                    break;
                 }
             }
+
             //Get GitHub project details
             GitHubSettings githubSetting;
-            foreach (GitHubSettings item in githubSettings)
+            if (model == null)
             {
-                if (item.RowKey == projectId)
+                foreach (GitHubSettings item in githubSettings)
                 {
-                    githubSetting = item;
-
-                    DeploymentFrequencyModel deploymentFrequencyModel = await serviceApiClient.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret,
-                        item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId,
-                        numberOfDays, maxNumberOfItems, useCache);
-                    LeadTimeForChangesModel leadTimeForChangesModel = await serviceApiClient.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret,
-                        item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId,
-                        numberOfDays, maxNumberOfItems, useCache);
-                    MeanTimeToRestoreModel meanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
-                        DevOpsPlatform.GitHub, item.ProductionResourceGroup, numberOfDays, maxNumberOfItems);
-                    ChangeFailureRateModel changeFailureRateModel = await serviceApiClient.GetChangeFailureRate(getSampleData,
-                        DevOpsPlatform.GitHub, item.Owner, item.Repo, item.Branch, item.WorkflowName,
-                        numberOfDays, maxNumberOfItems);
-                    deploymentFrequencyModel.IsProjectView = true;
-                    leadTimeForChangesModel.IsProjectView = true;
-                    meanTimeToRestoreModel.IsProjectView = true;
-                    changeFailureRateModel.IsProjectView = true;
-                    model = new ProjectViewModel
+                    if (item.RowKey == projectId)
                     {
-                        RowKey = item.RowKey,
-                        ProjectName = item.Repo,
-                        TargetDevOpsPlatform = DevOpsPlatform.GitHub,
-                        DeploymentFrequency = deploymentFrequencyModel,
-                        LeadTimeForChanges = leadTimeForChangesModel,
-                        MeanTimeToRestore = meanTimeToRestoreModel,
-                        ChangeFailureRate = changeFailureRateModel,
-                        NumberOfDays = new SelectList(numberOfDaysList, "NumberOfDays", "NumberOfDays"),
-                        NumberOfDaysSelected = numberOfDays
-                    };
+                        githubSetting = item;
+
+                        DeploymentFrequencyModel deploymentFrequencyModel = await serviceApiClient.GetGitHubDeploymentFrequency(getSampleData, clientId, clientSecret,
+                            item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId,
+                            numberOfDays, maxNumberOfItems, useCache);
+                        LeadTimeForChangesModel leadTimeForChangesModel = await serviceApiClient.GetGitHubLeadTimeForChanges(getSampleData, clientId, clientSecret,
+                            item.Owner, item.Repo, item.Branch, item.WorkflowName, item.WorkflowId,
+                            numberOfDays, maxNumberOfItems, useCache);
+                        MeanTimeToRestoreModel meanTimeToRestoreModel = await serviceApiClient.GetAzureMeanTimeToRestore(getSampleData,
+                            DevOpsPlatform.GitHub, item.ProductionResourceGroup, numberOfDays, maxNumberOfItems);
+                        ChangeFailureRateModel changeFailureRateModel = await serviceApiClient.GetChangeFailureRate(getSampleData,
+                            DevOpsPlatform.GitHub, item.Owner, item.Repo, item.Branch, item.WorkflowName,
+                            numberOfDays, maxNumberOfItems);
+                        deploymentFrequencyModel.IsProjectView = true;
+                        leadTimeForChangesModel.IsProjectView = true;
+                        meanTimeToRestoreModel.IsProjectView = true;
+                        changeFailureRateModel.IsProjectView = true;
+                        model = new ProjectViewModel
+                        {
+                            RowKey = item.RowKey,
+                            ProjectName = item.Repo,
+                            TargetDevOpsPlatform = DevOpsPlatform.GitHub,
+                            DeploymentFrequency = deploymentFrequencyModel,
+                            LeadTimeForChanges = leadTimeForChangesModel,
+                            MeanTimeToRestore = meanTimeToRestoreModel,
+                            ChangeFailureRate = changeFailureRateModel,
+                            NumberOfDays = new SelectList(numberOfDaysList, "NumberOfDays", "NumberOfDays"),
+                            NumberOfDaysSelected = numberOfDays
+                        };
+                        break;
+                    }
                 }
             }
 
@@ -427,18 +433,23 @@ namespace DevOpsMetrics.Web.Controllers
                     project_repo = item.Project;
                     repository = item.Repository;
                     buildName_workflowName = item.BuildName;
+                    break;
                 }
             }
             //Update each GitHub setting
-            foreach (GitHubSettings item in githubSettings)
+            if (targetDevOpsPlatform == DevOpsPlatform.UnknownDevOpsPlatform)
             {
-                if (item.RowKey == ProjectIdSelected)
+                foreach (GitHubSettings item in githubSettings)
                 {
-                    targetDevOpsPlatform = DevOpsPlatform.GitHub;
-                    organization_owner = item.Owner;
-                    project_repo = item.Repo;
-                    repository = "";
-                    buildName_workflowName = item.WorkflowName;
+                    if (item.RowKey == ProjectIdSelected)
+                    {
+                        targetDevOpsPlatform = DevOpsPlatform.GitHub;
+                        organization_owner = item.Owner;
+                        project_repo = item.Repo;
+                        repository = "";
+                        buildName_workflowName = item.WorkflowName;
+                        break;
+                    }
                 }
             }
 
@@ -451,11 +462,11 @@ namespace DevOpsMetrics.Web.Controllers
             //Redirect to the correct project page to see the changes
             if (targetDevOpsPlatform == DevOpsPlatform.AzureDevOps)
             {
-                return RedirectToAction("Project", "Home", new { rowKey = organization_owner + "_" + project_repo + "_" + repository + "_" + buildName_workflowName });
+                return RedirectToAction("Project", "Home", new { projectId = organization_owner + "_" + project_repo + "_" + repository });// + "_" + buildName_workflowName });
             }
             else if (targetDevOpsPlatform == DevOpsPlatform.GitHub)
             {
-                return RedirectToAction("Project", "Home", new { rowKey = organization_owner + "_" + project_repo + "_" + buildName_workflowName });
+                return RedirectToAction("Project", "Home", new { projectId = organization_owner + "_" + project_repo });//+ "_" + buildName_workflowName });
             }
             else
             {
