@@ -183,6 +183,7 @@ namespace DevOpsMetrics.Service.Controllers
                 {
                     Owner = owner,
                     Repo = repo,
+                    NumberOfDays = numberOfDays,
                     DeploymentFrequency = deploymentFrequencyModel.DeploymentsPerDayMetric,
                     DeploymentFrequencyBadgeURL = deploymentFrequencyModel.BadgeURL,
                     DeploymentFrequencyBadgeWithMetricURL = deploymentFrequencyModel.BadgeWithMetricURL,
@@ -263,6 +264,7 @@ namespace DevOpsMetrics.Service.Controllers
                     {
                         Owner = owner,
                         Repo = repo,
+                        NumberOfDays = numberOfDays,
                         DeploymentFrequency = deploymentFrequencyModel.DeploymentsPerDayMetric,
                         DeploymentFrequencyBadgeURL = deploymentFrequencyModel.BadgeURL,
                         DeploymentFrequencyBadgeWithMetricURL = deploymentFrequencyModel.BadgeWithMetricURL,

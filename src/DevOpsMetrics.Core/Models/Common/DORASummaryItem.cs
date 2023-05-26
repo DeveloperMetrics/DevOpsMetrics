@@ -10,6 +10,10 @@
         {
             get; set;
         }
+        public int NumberOfDays
+        {
+            get; set;
+        }
         public float DeploymentFrequency
         {
             get; set;
