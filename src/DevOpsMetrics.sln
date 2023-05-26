@@ -41,7 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Probot", "Probot", "{912990
 EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "DevOpsMetrics.Infrastructure", "DevOpsMetrics.Infrastructure\DevOpsMetrics.Infrastructure.deployproj", "{0465BF7A-C791-49CA-A7DE-27B4EECD2020}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsMetrics.Cmd", "DevOpsMetrics.Cmd\DevOpsMetrics.Cmd.csproj", "{D15713F2-D089-45A7-A0FA-1F16D664130D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Cmd", "DevOpsMetrics.Cmd\DevOpsMetrics.Cmd.csproj", "{D15713F2-D089-45A7-A0FA-1F16D664130D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
