@@ -202,7 +202,7 @@ namespace DevOpsMetrics.Web.Services
             string resourceGroup, int numberOfDays, int maxNumberOfItems,
             bool isGitHub = true)
         {
-            string url = $"/api/DORASummary/UpdateDORASummaryItem?owner={owner}&project={project}&repository={repository}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&resourceGroup={resourceGroup}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&log=&useCache=true&isGitHub={isGitHub}";
+            string url = $"/api/DORASummary/UpdateDORASummaryItem?owner={owner}&project={project}&repo={repository}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&resourceGroup={resourceGroup}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&log=&useCache=true&isGitHub={isGitHub}";
             return await GetResponse<ProcessingResult>(Client, url);
         }
 
