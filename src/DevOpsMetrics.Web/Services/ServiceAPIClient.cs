@@ -196,6 +196,16 @@ namespace DevOpsMetrics.Web.Services
             return await GetResponse<List<ProjectLog>>(Client, url);
         }
 
+        public async Task<ProcessingResult> UpdateDORASummaryItem(
+            string owner, string project, string repository,
+            string branch, string workflowName, string workflowId,
+            string resourceGroup, int numberOfDays, int maxNumberOfItems,
+            bool isGitHub = true)
+        {
+            string url = $"/api/DORASummary/UpdateDORASummaryItem?owner={owner}&project={project}&repo={repository}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&resourceGroup={resourceGroup}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&log=&useCache=true&isGitHub={isGitHub}";
+            return await GetResponse<ProcessingResult>(Client, url);
+        }
+
         private static async Task<T> GetResponse<T>(HttpClient client, string url)
         {
             T obj = default;

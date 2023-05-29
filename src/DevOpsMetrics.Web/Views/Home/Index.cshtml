@@ -1,7 +1,7 @@
 ﻿@using DevOpsMetrics.Core.Models.AzureDevOps;
 @using DevOpsMetrics.Core.Models.Common;
 @using DevOpsMetrics.Core.Models.GitHub;
-@model (List<AzureDevOpsSettings>, List<GitHubSettings>)
+@model IndexViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -22,18 +22,32 @@
     <div class="col-md-12">
         View all metrics by project
         <ul>
-            @foreach (AzureDevOpsSettings item in Model.Item1)
+            @foreach (AzureDevOpsSettings item in Model.AzureDevOpsSettings)
             {
                 if (item.ShowSetting)
                 {
-                    <li><img src="~/images/AzureDevops-icon.png" style="width:32px;" alt="Azure DevOps icon" />&nbsp; <a href="@Url.Action("Project", "Home", new { projectId = item.RowKey } )">@item.Project</a> | <a href="" style="font-size:12px">Refresh metric</a></li>
+                    <li>
+                        <img src="~/images/AzureDevops-icon.png" style="width:32px;" alt="Azure DevOps icon" />&nbsp; <a href="@Url.Action("Project", "Home", new { projectId = item.RowKey } )">@item.Project</a> | <a href="@Url.Action("RefreshMetric", "Home", new { projectId = item.RowKey } )" style="font-size:12px">Refresh metric</a>
+                        @if (item.RowKey == Model.ProjectId)
+                        {
+                            <br>
+                            <span style="font-size:12px">@Model.Log</span>
+                        }
+                    </li>
                 }
             }
-            @foreach (GitHubSettings item in Model.Item2)
+            @foreach (GitHubSettings item in Model.GitHubSettings)
             {
                 if (item.ShowSetting)
                 {
-                    <li><img src="~/images/GitHub-icon.png" style="width:32px;" alt="GitHub icon" />&nbsp; <a href="@Url.Action("Project", "Home", new { projectId = item.RowKey })">@item.Repo</a> | <a href="" style="font-size:12px">Refresh metric</a></li>
+                    <li>
+                        <img src="~/images/GitHub-icon.png" style="width:32px;" alt="GitHub icon" />&nbsp; <a href="@Url.Action("Project", "Home", new { projectId = item.RowKey })">@item.Repo</a> | <a href="@Url.Action("RefreshMetric", "Home", new { projectId = item.RowKey } )" style="font-size:12px">Refresh metric</a>
+                        @if (item.RowKey == Model.ProjectId)
+                        {
+                            <br>
+                            <span style="font-size:12px">@Model.Log</span>
+                        }
+                    </li>
                 }
             }
         </ul>

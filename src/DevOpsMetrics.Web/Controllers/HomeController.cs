@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,11 +7,14 @@ using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
+using DevOpsMetrics.Service.Controllers;
 using DevOpsMetrics.Web.Models;
 using DevOpsMetrics.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
+using NuGet.Protocol;
 
 namespace DevOpsMetrics.Web.Controllers
 {
@@ -23,7 +27,7 @@ namespace DevOpsMetrics.Web.Controllers
             Configuration = configuration;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string projectId = null, string log = null)
         {
             //Get a list of settings
             ServiceApiClient serviceApiClient = new(Configuration);
@@ -31,8 +35,63 @@ namespace DevOpsMetrics.Web.Controllers
             List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
 
             //Return the resultant list
-            (List<AzureDevOpsSettings>, List<GitHubSettings>) result = (azureDevOpsSettings, githubSettings);
+            IndexViewModel result = new()
+            {
+                AzureDevOpsSettings = azureDevOpsSettings,
+                GitHubSettings = githubSettings,
+                ProjectId = projectId,
+                Log = log
+            };
             return View(result);
+        }
+
+        [HttpGet("RefreshMetric")]
+        public async Task<IActionResult> RefreshMetric(string projectId)
+        {
+            ServiceApiClient serviceApiClient = new(Configuration);
+            List<AzureDevOpsSettings> azureDevOpsSettings = await serviceApiClient.GetAzureDevOpsSettings();
+            List<GitHubSettings> githubSettings = await serviceApiClient.GetGitHubSettings();
+            bool foundRecord = false;
+            string log = "";
+            foreach (AzureDevOpsSettings item in azureDevOpsSettings)
+            {
+                if (item.RowKey == projectId)
+                {
+                    foundRecord = true;
+                    DateTime startTime = DateTime.Now;
+                    await serviceApiClient.UpdateDORASummaryItem(item.Organization,
+                            item.Project, item.Repository, item.Branch,
+                            item.BuildName, item.BuildId,
+                            item.ProductionResourceGroup,
+                            30, 20, false);
+                    DateTime endTime = DateTime.Now;
+                    projectId = item.RowKey;
+                    log = $"Successfully refreshed {item.Organization} {item.Project} {item.Repository} in {(endTime - startTime).TotalSeconds} seconds";
+                    break;
+                }
+            }
+            if (foundRecord == false)
+            {
+                foreach (GitHubSettings item in githubSettings)
+                {
+                    if (item.RowKey == projectId)
+                    {
+                        foundRecord = true;
+                        DateTime startTime = DateTime.Now;
+                        await serviceApiClient.UpdateDORASummaryItem(item.Owner,
+                            "", item.Repo, item.Branch,
+                            item.WorkflowName, item.WorkflowId,
+                            item.ProductionResourceGroup,
+                            30, 20, true);
+                        DateTime endTime = DateTime.Now;
+                        projectId = item.RowKey;
+                        log = $"Successfully refreshed {item.Owner} {item.Repo} in {(endTime - startTime).TotalSeconds} seconds";
+                        break;
+                    }
+                }
+            }
+
+            return RedirectToAction("Index", "Home", new { projectId = projectId, log = log });
         }
 
         [HttpPost]
