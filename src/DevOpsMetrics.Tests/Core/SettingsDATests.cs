@@ -33,21 +33,21 @@ namespace DevOpsMetrics.Tests.Core
         }
 
         [TestMethod]
-        public void AzGetAzDoDevOpsMetricsSettingDAIntegrationTest()
+        public async Task AzGetAzDoDevOpsMetricsSettingDAIntegrationTest()
         {
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
 
             //Act
             AzureTableStorageDA da = new();
-            List<AzureDevOpsSettings> results = da.GetAzureDevOpsSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings, null);
+            List<AzureDevOpsSettings> results = await da.GetAzureDevOpsSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings, null);
 
             //Assert
             Assert.IsTrue(results.Count > 0);
         }
 
         [TestMethod]
-        public void GHGetSettingDAIntegrationTest()
+        public async Task GHGetSettingDAIntegrationTest()
         {
 
             //Arrange
@@ -55,7 +55,7 @@ namespace DevOpsMetrics.Tests.Core
 
             //Act
             AzureTableStorageDA da = new();
-            List<GitHubSettings> results = da.GetGitHubSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings, null);
+            List<GitHubSettings> results = await da.GetGitHubSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings, null);
 
             //Assert
             Assert.IsTrue(results.Count > 0);

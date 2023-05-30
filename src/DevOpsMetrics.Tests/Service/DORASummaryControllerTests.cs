@@ -16,7 +16,7 @@ namespace DevOpsMetrics.Tests.Service
     public class DORASummaryControllerTests : BaseConfiguration
     {
         [TestMethod]
-        public void DORASummaryControllerGetIntegrationTest()
+        public async Task DORASummaryControllerGetIntegrationTest()
         {
             //Arrange
             string organization = "DeveloperMetrics";
@@ -24,14 +24,14 @@ namespace DevOpsMetrics.Tests.Service
             DORASummaryController controller = new(base.Configuration);
 
             //Act
-            DORASummaryItem model = controller.GetDORASummaryItem(organization, repository);
+            DORASummaryItem model = await controller.GetDORASummaryItem(organization, repository);
 
             //Assert
             Assert.IsNotNull(model);
 
         }
         [TestMethod]
-        public void DORASummaryControllerGetIntegrationTest2()
+        public async Task DORASummaryControllerGetIntegrationTest2()
         {
             //Arrange
             string organization = "samsmithnz";
@@ -39,7 +39,7 @@ namespace DevOpsMetrics.Tests.Service
             DORASummaryController controller = new(base.Configuration);
 
             //Act
-            DORASummaryItem model = controller.GetDORASummaryItem(organization, repository);
+            DORASummaryItem model = await controller.GetDORASummaryItem(organization, repository);
 
             //Assert
             Assert.IsNotNull(model);
@@ -77,7 +77,7 @@ namespace DevOpsMetrics.Tests.Service
                 branch, workflowName, workflowId, resourceGroup, numberOfDays, maxNumberOfItems,
                 null, true, true);
 
-            DORASummaryItem doraSummaryItem = controller.GetDORASummaryItem(organization, repository);
+            DORASummaryItem doraSummaryItem = await controller.GetDORASummaryItem(organization, repository);
 
             //Assert
             Assert.IsNotNull(model);
@@ -126,8 +126,8 @@ namespace DevOpsMetrics.Tests.Service
             //Act
             if (runExpensiveTest)
             {
-                List<AzureDevOpsSettings> azSettings = settingsController.GetAzureDevOpsSettings();
-                List<GitHubSettings> ghSettings = settingsController.GetGitHubSettings();
+                List<AzureDevOpsSettings> azSettings = await settingsController.GetAzureDevOpsSettings();
+                List<GitHubSettings> ghSettings = await settingsController.GetGitHubSettings();
 
                 foreach (AzureDevOpsSettings azSetting in azSettings)
                 {

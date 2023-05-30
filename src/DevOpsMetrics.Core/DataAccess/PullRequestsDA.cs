@@ -21,7 +21,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get the pull requests from Azure storage
                 AzureTableStorageDA daTableStorage = new();
-                list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsPRs, PartitionKeys.CreateGitHubPRPartitionKey(organization, project));
+                list = await daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsPRs, PartitionKeys.CreateGitHubPRPartitionKey(organization, project));
             }
             else
             {
@@ -53,7 +53,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get the commits from Azure storage
                 AzureTableStorageDA daTableStorage = new();
-                list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsPRCommits, PartitionKeys.CreateAzureDevOpsPRCommitPartitionKey(organization, project, pullRequestId));
+                list = await daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsPRCommits, PartitionKeys.CreateAzureDevOpsPRCommitPartitionKey(organization, project, pullRequestId));
             }
             else
             {
@@ -73,7 +73,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get the pull requests from Azure storage
                 AzureTableStorageDA daTableStorage = new();
-                list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubPRs, PartitionKeys.CreateGitHubPRPartitionKey(owner, repo));
+                list = await daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubPRs, PartitionKeys.CreateGitHubPRPartitionKey(owner, repo));
             }
             else
             {
@@ -105,7 +105,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Get the commits from Azure storage
                 AzureTableStorageDA daTableStorage = new();
-                list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubPRCommits, PartitionKeys.CreateGitHubPRCommitPartitionKey(owner, repo, pull_number));
+                list = await daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubPRCommits, PartitionKeys.CreateGitHubPRCommitPartitionKey(owner, repo, pull_number));
             }
             else
             {

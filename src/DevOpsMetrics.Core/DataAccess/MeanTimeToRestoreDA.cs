@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DevOpsMetrics.Core.DataAccess.Common;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.Azure;
@@ -11,7 +12,7 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class MeanTimeToRestoreDA
     {
-        public static MeanTimeToRestoreModel GetAzureMeanTimeToRestore(bool getSampleData,
+        public static async Task<MeanTimeToRestoreModel> GetAzureMeanTimeToRestore(bool getSampleData,
                 TableStorageConfiguration tableStorageConfig,
                 DevOpsPlatform targetDevOpsPlatform, string resourceGroup,
                 int numberOfDays, int maxNumberOfItems)
@@ -27,7 +28,7 @@ namespace DevOpsMetrics.Core.DataAccess
 
                 //Pull the events from the table storage
                 AzureTableStorageDA daTableStorage = new();
-                JArray list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableMTTR, resourceGroup);
+                JArray list = await daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableMTTR, resourceGroup);
                 List<AzureAlert> alerts = new();
                 foreach (JToken item in list)
                 {

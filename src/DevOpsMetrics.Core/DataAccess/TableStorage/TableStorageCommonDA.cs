@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure;
+using Azure.Data.Tables;
 using DevOpsMetrics.Core.Models.Azure;
-using Microsoft.Azure.Cosmos.Table;
 
 namespace DevOpsMetrics.Core.DataAccess.TableStorage
 {
@@ -21,25 +22,18 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         {
         }
 
-        private CloudTable CreateConnection()
+        private TableClient CreateConnection()
         {
-            //CloudStorageAccount storageAccount = new CloudStorageAccount(new StorageCredentials(AccountName, AccessKey), true);
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationString);
-
-            // Create the table client.
-            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
-
-            // Get a reference to a table named "items"
-            CloudTable table = tableClient.GetTableReference(TableName);
+            // Create a TableServiceClient for service level operations
+            TableServiceClient serviceClient = new(ConfigurationString);
 
             // Create the table if it doesn't exist
-            //table.CreateIfNotExists(); // DON"T use this, it throws an internal 409 in App insights: https://stackoverflow.com/questions/48893519/azure-table-storage-exception-409-conflict-unexpected
-            if (!table.Exists())
-            {
-                table.Create();
-            }
+            TableClient tableClient = serviceClient.GetTableClient(TableName);
 
-            return table;
+            // Create the table if it doesn't exist.
+            tableClient.CreateIfNotExists();
+
+            return tableClient;
         }
 
         public async Task<bool> AddItem(AzureStorageTableModel data, bool forceUpdate = false)
@@ -62,39 +56,37 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             //prepare the partition key
             partitionKey = EncodePartitionKey(partitionKey);
 
-            CloudTable table = CreateConnection();
+            TableClient tableClient = CreateConnection();
 
-            // Create a retrieve operation that takes a customer entity.
-            TableOperation retrieveOperation = TableOperation.Retrieve<AzureStorageTableModel>(partitionKey, rowKey);
-
-            // Execute the retrieve operation.
-            TableResult retrievedResult = await table.ExecuteAsync(retrieveOperation);
-
-            return (AzureStorageTableModel)retrievedResult.Result;
+            // Get the entity.
+            NullableResponse<AzureStorageTableModel> temp = await tableClient.GetEntityIfExistsAsync<AzureStorageTableModel>(partitionKey, rowKey);
+            if (temp.HasValue)
+            {
+                return await tableClient.GetEntityAsync<AzureStorageTableModel>(partitionKey, rowKey);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         //This can't be async, because of how it queries the underlying data
-        public List<AzureStorageTableModel> GetItems(string partitionKey)
+        public async Task<List<AzureStorageTableModel>> GetItems(string partitionKey)
         {
             partitionKey = EncodePartitionKey(partitionKey);
 
-            CloudTable table = CreateConnection();
+            TableClient tableClient = CreateConnection();
 
-            // execute the query on the table
-            List<AzureStorageTableModel> list = table.CreateQuery<AzureStorageTableModel>()
-                                     .Where(ent => ent.PartitionKey == partitionKey)
-                                     .ToList();
-
+            AsyncPageable<AzureStorageTableModel> results = tableClient.QueryAsync<AzureStorageTableModel>(e => e.PartitionKey == partitionKey);
+            List<AzureStorageTableModel> list = await results.ToListAsync();
             return list;
         }
 
         public async Task<bool> SaveItem(AzureStorageTableModel data)
         {
-            CloudTable table = CreateConnection();
+            TableClient tableClient = CreateConnection();
+            await tableClient.UpsertEntityAsync(data);
 
-            // Create the TableOperation that inserts/merges the entity.
-            TableOperation operation = TableOperation.InsertOrMerge(data);
-            await table.ExecuteAsync(operation);
             return true;
         }
 

@@ -16,7 +16,7 @@ namespace DevOpsMetrics.Tests.Service
     public class TableStorageDATests : BaseConfiguration
     {
         [TestMethod]
-        public void AzGetBuildsDAIntegrationTest()
+        public async Task AzGetBuildsDAIntegrationTest()
         {
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
@@ -26,7 +26,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new();
-            JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsBuilds, PartitionKeys.CreateBuildWorkflowPartitionKey(organization, project, buildName));
+            JArray list = await da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsBuilds, PartitionKeys.CreateBuildWorkflowPartitionKey(organization, project, buildName));
 
             //Assert
             Assert.IsTrue(list.Count >= 0);
@@ -55,7 +55,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public void AzGetPRsDAIntegrationTest()
+        public async Task AzGetPRsDAIntegrationTest()
         {
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
@@ -64,7 +64,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new();
-            JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsBuilds, PartitionKeys.CreateAzureDevOpsPRPartitionKey(organization, project));
+            JArray list = await da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsBuilds, PartitionKeys.CreateAzureDevOpsPRPartitionKey(organization, project));
 
             //Assert
             Assert.IsTrue(list.Count >= 0);
@@ -92,7 +92,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public void AzGetPRCommitsDAIntegrationTest()
+        public async Task AzGetPRCommitsDAIntegrationTest()
         {
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
@@ -101,13 +101,13 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new();
-            JArray prList = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsPRs, PartitionKeys.CreateAzureDevOpsPRPartitionKey(organization, project));
+            JArray prList = await da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsPRs, PartitionKeys.CreateAzureDevOpsPRPartitionKey(organization, project));
             int itemsAdded = 0;
             foreach (JToken item in prList)
             {
                 AzureDevOpsPR pullRequest = JsonConvert.DeserializeObject<AzureDevOpsPR>(item.ToString());
                 string pullRequestId = pullRequest.PullRequestId;
-                JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsPRCommits, PartitionKeys.CreateAzureDevOpsPRCommitPartitionKey(organization, project, pullRequestId));
+                JArray list =await da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsPRCommits, PartitionKeys.CreateAzureDevOpsPRCommitPartitionKey(organization, project, pullRequestId));
                 if (list.Count > 0)
                 {
                     itemsAdded = list.Count;
@@ -120,7 +120,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public void AzGetAzDoDevOpsMetricsLogsDAIntegrationTest()
+        public async Task AzGetAzDoDevOpsMetricsLogsDAIntegrationTest()
         {
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
@@ -130,7 +130,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new();
-            List<ProjectLog> logs = da.GetProjectLogsFromStorage(tableStorageConfig, PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository));
+            List<ProjectLog> logs = await da.GetProjectLogsFromStorage(tableStorageConfig, PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository));
 
             //Assert
             Assert.IsTrue(logs != null);
@@ -138,7 +138,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public void GHGetBuildsDAIntegrationTest()
+        public async Task GHGetBuildsDAIntegrationTest()
         {
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
@@ -148,7 +148,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new();
-            JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubRuns, PartitionKeys.CreateBuildWorkflowPartitionKey(owner, repo, workflowName));
+            JArray list = await da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubRuns, PartitionKeys.CreateBuildWorkflowPartitionKey(owner, repo, workflowName));
 
             //Assert
             Assert.IsTrue(list.Count >= 0);
@@ -203,7 +203,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public void GHGetPRsDAIntegrationTest()
+        public async Task GHGetPRsDAIntegrationTest()
         {
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
@@ -212,7 +212,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new();
-            JArray list = da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubPRs, PartitionKeys.CreateGitHubPRPartitionKey(owner, repo));
+            JArray list = await da.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubPRs, PartitionKeys.CreateGitHubPRPartitionKey(owner, repo));
 
             //Assert
             Assert.IsTrue(list.Count >= 0);
@@ -263,7 +263,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public void GHGetSamsFeatureFlagsLogsDAIntegrationTest()
+        public async Task GHGetSamsFeatureFlagsLogsDAIntegrationTest()
         {
             //Arrange
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(base.Configuration);
@@ -272,7 +272,7 @@ namespace DevOpsMetrics.Tests.Service
 
             //Act
             AzureTableStorageDA da = new();
-            List<ProjectLog> logs = da.GetProjectLogsFromStorage(tableStorageConfig, PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo));
+            List<ProjectLog> logs = await da.GetProjectLogsFromStorage(tableStorageConfig, PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo));
 
             //Assert
             Assert.IsTrue(logs != null);

@@ -12,7 +12,7 @@ namespace DevOpsMetrics.Core.DataAccess
 {
     public class ChangeFailureRateDA
     {
-        public static ChangeFailureRateModel GetChangeFailureRate(bool getSampleData, TableStorageConfiguration tableStorageConfig,
+        public static async Task<ChangeFailureRateModel> GetChangeFailureRate(bool getSampleData, TableStorageConfiguration tableStorageConfig,
                 DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName,
                 int numberOfDays, int maxNumberOfItems)
         {
@@ -22,7 +22,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 //Gets a list of change failure rate builds from Azure storage
                 AzureTableStorageDA daTableStorage = new();
-                JArray list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableChangeFailureRate, PartitionKeys.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName));
+                JArray list = await daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableChangeFailureRate, PartitionKeys.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName));
                 List<ChangeFailureRateBuild> initialBuilds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
 
                 //Build the date list and then generate the change failure rate metric
@@ -106,7 +106,7 @@ namespace DevOpsMetrics.Core.DataAccess
             //Gets a list of change failure rate builds
             AzureTableStorageDA daTableStorage = new();
             string partitionKey = PartitionKeys.CreateBuildWorkflowPartitionKey(organization_owner, project_repo, buildName_workflowName);
-            JArray list = daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableChangeFailureRate, partitionKey);
+            JArray list = await daTableStorage.GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableChangeFailureRate, partitionKey);
             List<ChangeFailureRateBuild> initialBuilds = JsonConvert.DeserializeObject<List<ChangeFailureRateBuild>>(list.ToString());
 
             //Get the list of items we are going to process, within the date/day range

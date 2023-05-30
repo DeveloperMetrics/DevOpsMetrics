@@ -28,18 +28,18 @@ namespace DevOpsMetrics.Service.Controllers
         }
 
         [HttpGet("GetAzureDevOpsSettings")]
-        public List<AzureDevOpsSettings> GetAzureDevOpsSettings(string rowKey = null)
+        public async Task<List<AzureDevOpsSettings>> GetAzureDevOpsSettings(string rowKey = null)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            List<AzureDevOpsSettings> settings = AzureTableStorageDA.GetAzureDevOpsSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings, rowKey);
+            List<AzureDevOpsSettings> settings = await AzureTableStorageDA.GetAzureDevOpsSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings, rowKey);
             return settings;
         }
 
         [HttpGet("GetGitHubSettings")]
-        public List<GitHubSettings> GetGitHubSettings(string rowKey = null)
+        public async Task<List<GitHubSettings>> GetGitHubSettings(string rowKey = null)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            List<GitHubSettings> settings = AzureTableStorageDA.GetGitHubSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings, rowKey);
+            List<GitHubSettings> settings = await AzureTableStorageDA.GetGitHubSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings, rowKey);
             return settings;
         }
 
@@ -97,12 +97,12 @@ namespace DevOpsMetrics.Service.Controllers
         }
 
         [HttpGet("GetAzureDevOpsProjectLog")]
-        public List<ProjectLog> GetAzureDevOpsProjectLog(string organization, string project, string repository)
+        public async Task<List<ProjectLog>> GetAzureDevOpsProjectLog(string organization, string project, string repository)
         {
             string partitionKey = PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository);
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            return AzureTableStorageDA.GetProjectLogsFromStorage(tableStorageConfig, partitionKey);
+            return await AzureTableStorageDA.GetProjectLogsFromStorage(tableStorageConfig, partitionKey);
         }
 
         [HttpGet("UpdateAzureDevOpsProjectLog")]
@@ -119,12 +119,12 @@ namespace DevOpsMetrics.Service.Controllers
         }
 
         [HttpGet("GetGitHubProjectLog")]
-        public List<ProjectLog> GetGitHubProjectLog(string owner, string repo)
+        public async Task< List<ProjectLog>> GetGitHubProjectLog(string owner, string repo)
         {
             string partitionKey = PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo);
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            return AzureTableStorageDA.GetProjectLogsFromStorage(tableStorageConfig, partitionKey);
+            return await AzureTableStorageDA.GetProjectLogsFromStorage(tableStorageConfig, partitionKey);
         }
 
         [HttpGet("UpdateGitHubProjectLog")]

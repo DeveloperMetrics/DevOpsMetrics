@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Service.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,7 +13,7 @@ namespace DevOpsMetrics.Tests.Service
     {
         [TestCategory("UnitTest")]
         [TestMethod]
-        public void AzureMTTRSampleControllerIntegrationTest()
+        public async Task AzureMTTRSampleControllerIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -23,7 +24,7 @@ namespace DevOpsMetrics.Tests.Service
             MeanTimeToRestoreController controller = new(base.Configuration);
 
             //Act
-            MeanTimeToRestoreModel model = controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems);
+            MeanTimeToRestoreModel model = await controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -46,7 +47,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public void AzureMTTRsAPIControllerIntegrationTest()
+        public async Task AzureMTTRsAPIControllerIntegrationTest()
         {
             //Arrange
             bool getSampleData = false;
@@ -57,7 +58,7 @@ namespace DevOpsMetrics.Tests.Service
             MeanTimeToRestoreController controller = new(base.Configuration);
 
             //Act
-            MeanTimeToRestoreModel model = controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems);
+            MeanTimeToRestoreModel model = await controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -83,7 +84,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public void AzureMTTRsAPINullIntegrationTest()
+        public async Task AzureMTTRsAPINullIntegrationTest()
         {
             //Arrange
             bool getSampleData = false;
@@ -94,7 +95,7 @@ namespace DevOpsMetrics.Tests.Service
             MeanTimeToRestoreController controller = new(base.Configuration);
 
             //Act
-            MeanTimeToRestoreModel model = controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems);
+            MeanTimeToRestoreModel model = await controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model != null);
@@ -120,7 +121,7 @@ namespace DevOpsMetrics.Tests.Service
         }
 
         [TestMethod]
-        public void AzureMTTRsAPIEmptyIntegrationTest()
+        public async Task AzureMTTRsAPIEmptyIntegrationTest()
         {
             //Arrange
             bool getSampleData = false;
@@ -131,7 +132,7 @@ namespace DevOpsMetrics.Tests.Service
             MeanTimeToRestoreController controller = new(base.Configuration);
 
             //Act
-            MeanTimeToRestoreModel model = controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems);
+            MeanTimeToRestoreModel model = await controller.GetAzureMeanTimeToRestore(getSampleData, targetDevOpsPlatform, resourceGroupName, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model != null);
