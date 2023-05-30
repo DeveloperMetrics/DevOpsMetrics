@@ -18,12 +18,12 @@ namespace DevOpsMetrics.Service.Controllers
         }
 
         [HttpGet("GetChangeFailureRate")]
-        public ChangeFailureRateModel GetChangeFailureRate(bool getSampleData,
+        public async Task<ChangeFailureRateModel> GetChangeFailureRate(bool getSampleData,
             DevOpsPlatform targetDevOpsPlatform, string organization_owner, string project_repo, string branch, string buildName_workflowName,
             int numberOfDays, int maxNumberOfItems)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            ChangeFailureRateModel model = ChangeFailureRateDA.GetChangeFailureRate(getSampleData, tableStorageConfig, targetDevOpsPlatform,
+            ChangeFailureRateModel model = await ChangeFailureRateDA.GetChangeFailureRate(getSampleData, tableStorageConfig, targetDevOpsPlatform,
                 organization_owner, project_repo, branch, buildName_workflowName,
                 numberOfDays, maxNumberOfItems);
             return model;
