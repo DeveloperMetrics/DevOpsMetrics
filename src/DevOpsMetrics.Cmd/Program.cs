@@ -5,6 +5,7 @@ using DevOpsMetrics.Core.Models.GitHub;
 using DevOpsMetrics.Service;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -12,6 +13,8 @@ namespace DevOpsMetrics.Cmd
 {
     internal class Program
     {
+        private static string ProjectId = "DeveloperMetrics_DevOpsMetrics";
+
         static async Task Main()
         {
             DateTime startTime = DateTime.Now;
@@ -48,24 +51,30 @@ namespace DevOpsMetrics.Cmd
             int totalResults = 0;
             foreach (AzureDevOpsSettings azSetting in azSettings)
             {
-                log.LogInformation($"Processing Azure DevOps organization {azSetting.Organization}, project {azSetting.Project}");
-                ProcessingResult ghResult = await serviceApiClient.UpdateDORASummaryItem(
-                    azSetting.Organization, azSetting.Project, azSetting.Repository,
-                    azSetting.Branch, azSetting.BuildName, azSetting.BuildId,
-                    azSetting.ProductionResourceGroup,
-                    numberOfDays, maxNumberOfItems, false);
-                totalResults = ghResult.TotalResults;
+                if (ProjectId == azSetting.RowKey)
+                {
+                    log.LogInformation($"Processing Azure DevOps organization {azSetting.Organization}, project {azSetting.Project}");
+                    ProcessingResult ghResult = await serviceApiClient.UpdateDORASummaryItem(
+                        azSetting.Organization, azSetting.Project, azSetting.Repository,
+                        azSetting.Branch, azSetting.BuildName, azSetting.BuildId,
+                        azSetting.ProductionResourceGroup,
+                        numberOfDays, maxNumberOfItems, false);
+                    totalResults = ghResult.TotalResults;
+                }
             }
 
             foreach (GitHubSettings ghSetting in ghSettings)
             {
-                log.LogInformation($"Processing GitHub owner {ghSetting.Owner}, repo {ghSetting.Repo}");
-                ProcessingResult ghResult = await serviceApiClient.UpdateDORASummaryItem(
-                    ghSetting.Owner, "", ghSetting.Repo, ghSetting.Branch,
-                    ghSetting.WorkflowName, ghSetting.WorkflowId,
-                    ghSetting.ProductionResourceGroup,
-                    numberOfDays, maxNumberOfItems, true);
-                totalResults = ghResult.TotalResults;
+                if (ProjectId == ghSetting.RowKey)
+                {
+                    log.LogInformation($"Processing GitHub owner {ghSetting.Owner}, repo {ghSetting.Repo}");
+                    ProcessingResult ghResult = await serviceApiClient.UpdateDORASummaryItem(
+                        ghSetting.Owner, "", ghSetting.Repo, ghSetting.Branch,
+                        ghSetting.WorkflowName, ghSetting.WorkflowId,
+                        ghSetting.ProductionResourceGroup,
+                        numberOfDays, maxNumberOfItems, true);
+                    totalResults = ghResult.TotalResults;
+                }
             }
             DateTime endTime = DateTime.Now;
             Console.WriteLine($"C# Timer trigger function complete at: {endTime} after updating {totalResults} records");
