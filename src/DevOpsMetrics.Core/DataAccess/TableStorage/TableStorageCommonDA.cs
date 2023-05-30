@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure.Data.Tables;
 using DevOpsMetrics.Core.Models.Azure;
-using Microsoft.Azure.Cosmos.Table;
 
 namespace DevOpsMetrics.Core.DataAccess.TableStorage
 {
@@ -21,25 +21,18 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         {
         }
 
-        private CloudTable CreateConnection()
+        private TableClient CreateConnection()
         {
-            //CloudStorageAccount storageAccount = new CloudStorageAccount(new StorageCredentials(AccountName, AccessKey), true);
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationString);
-
-            // Create the table client.
-            CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
-
-            // Get a reference to a table named "items"
-            CloudTable table = tableClient.GetTableReference(TableName);
+            // Create a TableServiceClient for service level operations
+            TableServiceClient serviceClient = new(ConfigurationString);
 
             // Create the table if it doesn't exist
-            //table.CreateIfNotExists(); // DON"T use this, it throws an internal 409 in App insights: https://stackoverflow.com/questions/48893519/azure-table-storage-exception-409-conflict-unexpected
-            if (!table.Exists())
-            {
-                table.Create();
-            }
+            TableClient tableClient = serviceClient.GetTableClient(TableName);
 
-            return table;
+            // Create the table if it doesn't exist.
+            tableClient.CreateIfNotExists();
+
+            return tableClient;
         }
 
         public async Task<bool> AddItem(AzureStorageTableModel data, bool forceUpdate = false)
@@ -74,7 +67,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         }
 
         //This can't be async, because of how it queries the underlying data
-        public List<AzureStorageTableModel> GetItems(string partitionKey)
+        public async Task<List<AzureStorageTableModel>> GetItems(string partitionKey)
         {
             partitionKey = EncodePartitionKey(partitionKey);
 
@@ -84,6 +77,32 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             List<AzureStorageTableModel> list = table.CreateQuery<AzureStorageTableModel>()
                                      .Where(ent => ent.PartitionKey == partitionKey)
                                      .ToList();
+
+            //TableOperation tableOperation = TableOperation.Retrieve<AzureStorageTableModel>(partitionKey, null);
+            //TableContinuationToken Token = null;
+            //var result = table.ExecuteAsync(tableOperation);
+            //var list = new List<AzureStorageTableModel>();
+
+            //List<AzureStorageTableModel> finalResult = result.Result;
+            //return finalResult;
+
+
+            //var tableClient = Microsoft.Azure.Cosmos.Table.CloudStorageAccountExtensions.CreateCloudTableClient(storageAccount);
+            //var tableRef = tableClient.GetTableReference("UserStatuses");
+            //var query = new TableQuery<TableEntity>()
+            //                    .Where(TableQuery.GenerateFilterCondition("PartitionKey", "eq", partitionKey));
+            //var result = new List<AzureStorageTableModel>();
+
+            //var tableQuerySegment = await table.ExecuteQuerySegmentedAsync(query, null);
+            //result.AddRange(tableQuerySegment.Results);
+            //while (tableQuerySegment.ContinuationToken != null)
+            //{
+            //    tableQuerySegment = await tableRef.ExecuteQuerySegmentedAsync(query, tableQuerySegment.ContinuationToken);
+            //    result.AddRange(tableQuerySegment.Results);
+            //}
+            //return result;
+
+
 
             return list;
         }

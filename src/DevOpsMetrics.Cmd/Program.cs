@@ -3,6 +3,7 @@ using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
 using DevOpsMetrics.Service;
+using DevOpsMetrics.Service.Controllers;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.CodeAnalysis;
@@ -41,8 +42,10 @@ namespace DevOpsMetrics.Cmd
             string clientId = Configuration["AppSettings:GitHubClientId"];
             string clientSecret = Configuration["AppSettings:GitHubClientSecret"];
             AzureTableStorageDA azureTableStorageDA = new();
-            List<AzureDevOpsSettings> azSettings = await serviceApiClient.GetAzureDevOpsSettings();
-            List<GitHubSettings> ghSettings = await serviceApiClient.GetGitHubSettings();
+            SettingsController settingsController = new(Configuration, new AzureTableStorageDA());
+            DORASummaryController doraSummaryController = new(Configuration);
+            List<AzureDevOpsSettings> azSettings = settingsController.GetAzureDevOpsSettings();
+            List<GitHubSettings> ghSettings = settingsController.GetGitHubSettings();
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
 
             //Loop through each setting to update the runs, pull requests and pull request commits
@@ -54,11 +57,12 @@ namespace DevOpsMetrics.Cmd
                 if (ProjectId == azSetting.RowKey)
                 {
                     log.LogInformation($"Processing Azure DevOps organization {azSetting.Organization}, project {azSetting.Project}");
-                    ProcessingResult ghResult = await serviceApiClient.UpdateDORASummaryItem(
+                    ProcessingResult ghResult = await doraSummaryController.UpdateDORASummaryItem(
                         azSetting.Organization, azSetting.Project, azSetting.Repository,
                         azSetting.Branch, azSetting.BuildName, azSetting.BuildId,
                         azSetting.ProductionResourceGroup,
-                        numberOfDays, maxNumberOfItems, false);
+                        numberOfDays, maxNumberOfItems,
+                        null, true, false);
                     totalResults = ghResult.TotalResults;
                 }
             }
@@ -68,11 +72,12 @@ namespace DevOpsMetrics.Cmd
                 if (ProjectId == ghSetting.RowKey)
                 {
                     log.LogInformation($"Processing GitHub owner {ghSetting.Owner}, repo {ghSetting.Repo}");
-                    ProcessingResult ghResult = await serviceApiClient.UpdateDORASummaryItem(
+                    ProcessingResult ghResult = await doraSummaryController.UpdateDORASummaryItem(
                         ghSetting.Owner, "", ghSetting.Repo, ghSetting.Branch,
                         ghSetting.WorkflowName, ghSetting.WorkflowId,
                         ghSetting.ProductionResourceGroup,
-                        numberOfDays, maxNumberOfItems, true);
+                        numberOfDays, maxNumberOfItems,
+                        null, true, true, true);
                     totalResults = ghResult.TotalResults;
                 }
             }
