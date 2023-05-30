@@ -1,4 +1,5 @@
-﻿using DevOpsMetrics.Core.Models.Common;
+﻿using System.Threading.Tasks;
+using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Service.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,7 +11,7 @@ namespace DevOpsMetrics.Tests.Service
     public class ChangeFailureRateControllerTests : BaseConfiguration
     {
         [TestMethod]
-        public void AzChangeFailureRateSampleControllerIntegrationTest()
+        public async Task AzChangeFailureRateSampleControllerIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -24,7 +25,7 @@ namespace DevOpsMetrics.Tests.Service
             ChangeFailureRateController controller = new(base.Configuration);
 
             //Act
-            ChangeFailureRateModel model = controller.GetChangeFailureRate(getSampleData,
+            ChangeFailureRateModel model = await controller.GetChangeFailureRate(getSampleData,
                 targetDevOpsPlatform, organization, project, branch, buildName, numberOfDays, maxNumberOfItems);
 
             //Assert
@@ -70,7 +71,7 @@ namespace DevOpsMetrics.Tests.Service
         //}
 
         [TestMethod]
-        public void GHChangeFailureRateSampleControllerIntegrationTest()
+        public async Task GHChangeFailureRateSampleControllerIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -88,7 +89,7 @@ namespace DevOpsMetrics.Tests.Service
             ChangeFailureRateController controller = new(base.Configuration);
 
             //Act
-            ChangeFailureRateModel model = controller.GetChangeFailureRate(getSampleData,
+            ChangeFailureRateModel model = await controller.GetChangeFailureRate(getSampleData,
                targetDevOpsPlatform, owner, repo, branch, workflowName, numberOfDays, maxNumberOfItems);
 
             //Assert
@@ -105,7 +106,7 @@ namespace DevOpsMetrics.Tests.Service
 
         [TestCategory("IntegrationTest")]
         [TestMethod]
-        public void GHChangeFailureRateLiveControllerIntegrationTest()
+        public async Task GHChangeFailureRateLiveControllerIntegrationTest()
         {
             //Arrange
             bool getSampleData = false;
@@ -119,7 +120,7 @@ namespace DevOpsMetrics.Tests.Service
             ChangeFailureRateController controller = new(base.Configuration);
 
             //Act
-            ChangeFailureRateModel model = controller.GetChangeFailureRate(getSampleData,
+            ChangeFailureRateModel model = await controller.GetChangeFailureRate(getSampleData,
                targetDevOpsPlatform, owner, repo, branch, workflowName, numberOfDays, maxNumberOfItems);
 
             //Assert

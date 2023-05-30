@@ -1,4 +1,5 @@
-﻿using DevOpsMetrics.Core.DataAccess;
+﻿using System.Threading.Tasks;
+using DevOpsMetrics.Core.DataAccess;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Service;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,7 +13,7 @@ namespace DevOpsMetrics.Tests.Core
     {
         [TestCategory("UnitTest")]
         [TestMethod]
-        public void MeanTimeToRestoreDAIntegrationTest()
+        public async Task MeanTimeToRestoreDAIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -23,7 +24,7 @@ namespace DevOpsMetrics.Tests.Core
             int maxNumberOfItems = 20;
 
             //Act
-            MeanTimeToRestoreModel model = MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(getSampleData, tableStorageConfig, targetDevOpsPlatform, resourceGroup, numberOfDays, maxNumberOfItems);
+            MeanTimeToRestoreModel model = await MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(getSampleData, tableStorageConfig, targetDevOpsPlatform, resourceGroup, numberOfDays, maxNumberOfItems);
 
             //Assert
             Assert.IsTrue(model != null);
