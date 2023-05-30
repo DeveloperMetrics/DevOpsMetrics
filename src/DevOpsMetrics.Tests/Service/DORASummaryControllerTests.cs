@@ -126,8 +126,8 @@ namespace DevOpsMetrics.Tests.Service
             //Act
             if (runExpensiveTest)
             {
-                List<AzureDevOpsSettings> azSettings = settingsController.GetAzureDevOpsSettings();
-                List<GitHubSettings> ghSettings = settingsController.GetGitHubSettings();
+                List<AzureDevOpsSettings> azSettings = await settingsController.GetAzureDevOpsSettings();
+                List<GitHubSettings> ghSettings = await settingsController.GetGitHubSettings();
 
                 foreach (AzureDevOpsSettings azSetting in azSettings)
                 {
