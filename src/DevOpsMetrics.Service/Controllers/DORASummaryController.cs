@@ -205,6 +205,7 @@ namespace DevOpsMetrics.Service.Controllers
                     }
                     else
                     {
+                        meanTimeToRestoreTask = null;
                         meanTimeToRestoreModel.MTTRAverageDurationInHours = 0;
                         meanTimeToRestoreModel.MTTRAverageDurationDescription = MeanTimeToRestore.GetMeanTimeToRestoreRating(0);
                     }
