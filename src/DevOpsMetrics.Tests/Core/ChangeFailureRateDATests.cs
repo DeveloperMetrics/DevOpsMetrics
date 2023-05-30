@@ -14,7 +14,7 @@ namespace DevOpsMetrics.Tests.Core
 
         [TestCategory("UnitTest")]
         [TestMethod]
-        public void AzChangeFailureRateDAIntegrationTest()
+        public async Task AzChangeFailureRateDAIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -28,7 +28,7 @@ namespace DevOpsMetrics.Tests.Core
             int maxNumberOfItems = 20;
 
             //Act
-            ChangeFailureRateModel model = ChangeFailureRateDA.GetChangeFailureRate(getSampleData, tableStorageConfig,
+            ChangeFailureRateModel model = await ChangeFailureRateDA.GetChangeFailureRate(getSampleData, tableStorageConfig,
                targetDevOpsPlatform, organization, project, branch, buildName, numberOfDays, maxNumberOfItems);
 
             //Assert
@@ -77,7 +77,7 @@ namespace DevOpsMetrics.Tests.Core
 
         [TestCategory("UnitTest")]
         [TestMethod]
-        public void GHChangeFailureRateDAIntegrationTest()
+        public async Task GHChangeFailureRateDAIntegrationTest()
         {
             //Arrange
             bool getSampleData = true;
@@ -91,7 +91,7 @@ namespace DevOpsMetrics.Tests.Core
             int maxNumberOfItems = 20;
 
             //Act
-            ChangeFailureRateModel model = ChangeFailureRateDA.GetChangeFailureRate(getSampleData, tableStorageConfig,
+            ChangeFailureRateModel model = await ChangeFailureRateDA.GetChangeFailureRate(getSampleData, tableStorageConfig,
                targetDevOpsPlatform, owner, repo, branch, workflowName, numberOfDays, maxNumberOfItems);
 
             //Assert
