@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Azure.Data.Tables;
@@ -56,15 +57,10 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             //prepare the partition key
             partitionKey = EncodePartitionKey(partitionKey);
 
-            CloudTable table = CreateConnection();
+            TableClient tableClient = CreateConnection();
 
-            // Create a retrieve operation that takes a customer entity.
-            TableOperation retrieveOperation = TableOperation.Retrieve<AzureStorageTableModel>(partitionKey, rowKey);
-
-            // Execute the retrieve operation.
-            TableResult retrievedResult = await table.ExecuteAsync(retrieveOperation);
-
-            return (AzureStorageTableModel)retrievedResult.Result;
+            // Get the entity.
+            return await tableClient.GetEntityAsync<AzureStorageTableModel>(partitionKey, rowKey);
         }
 
         //This can't be async, because of how it queries the underlying data
