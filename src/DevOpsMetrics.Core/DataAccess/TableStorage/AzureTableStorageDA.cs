@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,10 +23,10 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         /// <param name="partitionKey">Partition key to filter by</param>
         /// <param name="includePartitionAndRowKeys">Include Partition and row key metadata (for debugging)</param>
         /// <returns></returns>
-        public JArray GetTableStorageItemsFromStorage(TableStorageConfiguration tableStorageConfig, string tableName, string partitionKey, bool includePartitionAndRowKeys = false)
+        public async Task<JArray> GetTableStorageItemsFromStorage(TableStorageConfiguration tableStorageConfig, string tableName, string partitionKey, bool includePartitionAndRowKeys = false)
         {
             TableStorageCommonDA tableDA = new(tableStorageConfig.StorageAccountConnectionString, tableName);
-            List<AzureStorageTableModel> items = tableDA.GetItems(partitionKey);
+            List<AzureStorageTableModel> items = await tableDA.GetItems(partitionKey);
             JArray list = new();
             foreach (AzureStorageTableModel item in items)
             {
@@ -49,11 +48,11 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             return list;
         }
 
-        public List<AzureDevOpsSettings> GetAzureDevOpsSettingsFromStorage(TableStorageConfiguration tableStorageConfig, string settingsTable, string rowKey)
+        public async Task<List<AzureDevOpsSettings>> GetAzureDevOpsSettingsFromStorage(TableStorageConfiguration tableStorageConfig, string settingsTable, string rowKey)
         {
             List<AzureDevOpsSettings> settings = null;
             string partitionKey = "AzureDevOpsSettings";
-            JArray list = GetTableStorageItemsFromStorage(tableStorageConfig, settingsTable, partitionKey);
+            JArray list = await GetTableStorageItemsFromStorage(tableStorageConfig, settingsTable, partitionKey);
             if (list != null)
             {
                 settings = JsonConvert.DeserializeObject<List<AzureDevOpsSettings>>(list.ToString());
@@ -71,11 +70,11 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             }
         }
 
-        public List<GitHubSettings> GetGitHubSettingsFromStorage(TableStorageConfiguration tableStorageConfig, string settingsTable, string rowKey)
+        public async Task<List<GitHubSettings>> GetGitHubSettingsFromStorage(TableStorageConfiguration tableStorageConfig, string settingsTable, string rowKey)
         {
             List<GitHubSettings> settings = null;
             string partitionKey = "GitHubSettings";
-            JArray list = GetTableStorageItemsFromStorage(tableStorageConfig, settingsTable, partitionKey);
+            JArray list = await GetTableStorageItemsFromStorage(tableStorageConfig, settingsTable, partitionKey);
             if (list != null)
             {
                 settings = JsonConvert.DeserializeObject<List<GitHubSettings>>(list.ToString());
@@ -93,10 +92,10 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             }
         }
 
-        public List<ProjectLog> GetProjectLogsFromStorage(TableStorageConfiguration tableStorageConfig, string partitionKey)
+        public async Task<List<ProjectLog>> GetProjectLogsFromStorage(TableStorageConfiguration tableStorageConfig, string partitionKey)
         {
             List<ProjectLog> logs = null;
-            JArray list = GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableLog, partitionKey, true);
+            JArray list = await GetTableStorageItemsFromStorage(tableStorageConfig, tableStorageConfig.TableLog, partitionKey, true);
             if (list != null)
             {
                 logs = JsonConvert.DeserializeObject<List<ProjectLog>>(list.ToString());
