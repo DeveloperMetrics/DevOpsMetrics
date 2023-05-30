@@ -77,7 +77,7 @@ namespace DevOpsMetrics.Tests.Service
                 branch, workflowName, workflowId, resourceGroup, numberOfDays, maxNumberOfItems,
                 null, true, true);
 
-            DORASummaryItem doraSummaryItem = awaitcontroller.GetDORASummaryItem(organization, repository);
+            DORASummaryItem doraSummaryItem = await controller.GetDORASummaryItem(organization, repository);
 
             //Assert
             Assert.IsNotNull(model);
