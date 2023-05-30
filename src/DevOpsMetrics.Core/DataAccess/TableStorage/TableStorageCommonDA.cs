@@ -59,7 +59,15 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             TableClient tableClient = CreateConnection();
 
             // Get the entity.
-            return await tableClient.GetEntityAsync<AzureStorageTableModel>(partitionKey, rowKey);
+            NullableResponse<AzureStorageTableModel> temp = await tableClient.GetEntityIfExistsAsync<AzureStorageTableModel>(partitionKey, rowKey);
+            if (temp.HasValue)
+            {
+                return await tableClient.GetEntityAsync<AzureStorageTableModel>(partitionKey, rowKey);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         //This can't be async, because of how it queries the underlying data
