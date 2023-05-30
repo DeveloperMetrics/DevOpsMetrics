@@ -76,7 +76,7 @@ namespace DevOpsMetrics.Cmd
                         ghSetting.WorkflowName, ghSetting.WorkflowId,
                         ghSetting.ProductionResourceGroup,
                         numberOfDays, maxNumberOfItems,
-                        null, true, true, true);
+                        null, true, true, false);
                     totalResults = ghResult.TotalResults;
                 }
             }

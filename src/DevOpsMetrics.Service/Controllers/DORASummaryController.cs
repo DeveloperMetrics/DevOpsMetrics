@@ -174,8 +174,8 @@ namespace DevOpsMetrics.Service.Controllers
                 {
                     Task<DeploymentFrequencyModel> deploymentFrequencyTask;
                     Task<LeadTimeForChangesModel> leadTimeForChangesTask;
-                    MeanTimeToRestoreModel meanTimeToRestoreTask;
-                    ChangeFailureRateModel changeFailureRateTask;
+                    Task<MeanTimeToRestoreModel> meanTimeToRestoreTask;
+                    Task<ChangeFailureRateModel> changeFailureRateTask;
                     if (isGitHub == true)
                     {
                         deploymentFrequencyTask = DeploymentFrequencyDA.GetGitHubDeploymentFrequency(false, clientId, clientSecret, tableStorageConfig,
@@ -198,7 +198,7 @@ namespace DevOpsMetrics.Service.Controllers
                     }
                     if (resourceGroup != null)
                     {
-                        meanTimeToRestoreModel = await MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(false, tableStorageConfig,
+                        meanTimeToRestoreTask = MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(false, tableStorageConfig,
                             DevOpsPlatform.GitHub,
                             resourceGroup,
                             numberOfDays, maxNumberOfItems);
@@ -209,16 +209,16 @@ namespace DevOpsMetrics.Service.Controllers
                         meanTimeToRestoreModel.MTTRAverageDurationDescription = MeanTimeToRestore.GetMeanTimeToRestoreRating(0);
                     }
 
-                    changeFailureRateModel = await ChangeFailureRateDA.GetChangeFailureRate(false, tableStorageConfig,
+                    changeFailureRateTask = ChangeFailureRateDA.GetChangeFailureRate(false, tableStorageConfig,
                        DevOpsPlatform.GitHub,
                        owner, repo, branch, workflowName,
                        numberOfDays, maxNumberOfItems);
 
-                    await Task.WhenAll(deploymentFrequencyTask, leadTimeForChangesTask);
+                    await Task.WhenAll(deploymentFrequencyTask, leadTimeForChangesTask, meanTimeToRestoreTask, changeFailureRateTask);
                     deploymentFrequencyModel = await deploymentFrequencyTask;
                     leadTimeForChangesModel = await leadTimeForChangesTask;
-                    //meanTimeToRestoreModel = meanTimeToRestoreTask;
-                    //changeFailureRateModel = changeFailureRateTask;
+                    meanTimeToRestoreModel = await meanTimeToRestoreTask;
+                    changeFailureRateModel = await changeFailureRateTask;
                 }
                 else
                 {
