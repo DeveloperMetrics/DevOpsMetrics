@@ -6,7 +6,6 @@ using DevOpsMetrics.Service;
 using DevOpsMetrics.Service.Controllers;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
-using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -44,8 +43,8 @@ namespace DevOpsMetrics.Cmd
             AzureTableStorageDA azureTableStorageDA = new();
             SettingsController settingsController = new(Configuration, new AzureTableStorageDA());
             DORASummaryController doraSummaryController = new(Configuration);
-            List<AzureDevOpsSettings> azSettings = settingsController.GetAzureDevOpsSettings();
-            List<GitHubSettings> ghSettings = settingsController.GetGitHubSettings();
+            List<AzureDevOpsSettings> azSettings = await settingsController.GetAzureDevOpsSettings();
+            List<GitHubSettings> ghSettings = await settingsController.GetGitHubSettings();
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
 
             //Loop through each setting to update the runs, pull requests and pull request commits
