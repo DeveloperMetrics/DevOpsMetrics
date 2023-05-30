@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure;
 using Azure.Data.Tables;
 using DevOpsMetrics.Core.Models.Azure;
-using Microsoft.Azure.Cosmos.Table;
 
 namespace DevOpsMetrics.Core.DataAccess.TableStorage
 {
@@ -68,39 +67,10 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         {
             partitionKey = EncodePartitionKey(partitionKey);
 
-            CloudTable table = CreateConnection();
+            TableClient tableClient = CreateConnection();
 
-            // execute the query on the table
-            List<AzureStorageTableModel> list = table.CreateQuery<AzureStorageTableModel>()
-                                     .Where(ent => ent.PartitionKey == partitionKey)
-                                     .ToList();
-
-            //TableOperation tableOperation = TableOperation.Retrieve<AzureStorageTableModel>(partitionKey, null);
-            //TableContinuationToken Token = null;
-            //var result = table.ExecuteAsync(tableOperation);
-            //var list = new List<AzureStorageTableModel>();
-
-            //List<AzureStorageTableModel> finalResult = result.Result;
-            //return finalResult;
-
-
-            //var tableClient = Microsoft.Azure.Cosmos.Table.CloudStorageAccountExtensions.CreateCloudTableClient(storageAccount);
-            //var tableRef = tableClient.GetTableReference("UserStatuses");
-            //var query = new TableQuery<TableEntity>()
-            //                    .Where(TableQuery.GenerateFilterCondition("PartitionKey", "eq", partitionKey));
-            //var result = new List<AzureStorageTableModel>();
-
-            //var tableQuerySegment = await table.ExecuteQuerySegmentedAsync(query, null);
-            //result.AddRange(tableQuerySegment.Results);
-            //while (tableQuerySegment.ContinuationToken != null)
-            //{
-            //    tableQuerySegment = await tableRef.ExecuteQuerySegmentedAsync(query, tableQuerySegment.ContinuationToken);
-            //    result.AddRange(tableQuerySegment.Results);
-            //}
-            //return result;
-
-
-
+            AsyncPageable<AzureStorageTableModel> results = tableClient.QueryAsync<AzureStorageTableModel>(e => e.PartitionKey == partitionKey);
+            List<AzureStorageTableModel> list = await results.ToListAsync();
             return list;
         }
 
