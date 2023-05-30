@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Azure.Data.Tables;
 using DevOpsMetrics.Core.Models.Azure;
+using Microsoft.Azure.Cosmos.Table;
 
 namespace DevOpsMetrics.Core.DataAccess.TableStorage
 {
@@ -109,11 +110,9 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
 
         public async Task<bool> SaveItem(AzureStorageTableModel data)
         {
-            CloudTable table = CreateConnection();
+            TableClient tableClient = CreateConnection();
+            await tableClient.UpsertEntityAsync(data);
 
-            // Create the TableOperation that inserts/merges the entity.
-            TableOperation operation = TableOperation.InsertOrMerge(data);
-            await table.ExecuteAsync(operation);
             return true;
         }
 
