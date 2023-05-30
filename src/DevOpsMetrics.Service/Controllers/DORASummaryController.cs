@@ -25,19 +25,19 @@ namespace DevOpsMetrics.Service.Controllers
 
         // Get DORA Summary Items
         [HttpGet("GetDORASummaryItems")]
-        public List<DORASummaryItem> GetDORASummaryItems(string owner)
+        public async Task<List<DORASummaryItem>> GetDORASummaryItems(string owner)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            List<DORASummaryItem> model = DORASummaryDA.GetDORASummaryItems(tableStorageConfig, owner);
+            List<DORASummaryItem> model = await DORASummaryDA.GetDORASummaryItems(tableStorageConfig, owner);
             return model;
         }
 
         // Get DORA Summary Item
         [HttpGet("GetDORASummaryItem")]
-        public DORASummaryItem GetDORASummaryItem(string owner, string repository)
+        public async Task<DORASummaryItem> GetDORASummaryItem(string owner, string repository)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            DORASummaryItem model = DORASummaryDA.GetDORASummaryItem(tableStorageConfig, owner, repository);
+            DORASummaryItem model = await DORASummaryDA.GetDORASummaryItem(tableStorageConfig, owner, repository);
             return model;
         }
 
@@ -198,7 +198,7 @@ namespace DevOpsMetrics.Service.Controllers
                     }
                     if (resourceGroup != null)
                     {
-                        meanTimeToRestoreModel = MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(false, tableStorageConfig,
+                        meanTimeToRestoreModel = await MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(false, tableStorageConfig,
                             DevOpsPlatform.GitHub,
                             resourceGroup,
                             numberOfDays, maxNumberOfItems);
@@ -209,7 +209,7 @@ namespace DevOpsMetrics.Service.Controllers
                         meanTimeToRestoreModel.MTTRAverageDurationDescription = MeanTimeToRestore.GetMeanTimeToRestoreRating(0);
                     }
 
-                    changeFailureRateModel = ChangeFailureRateDA.GetChangeFailureRate(false, tableStorageConfig,
+                    changeFailureRateModel = await ChangeFailureRateDA.GetChangeFailureRate(false, tableStorageConfig,
                        DevOpsPlatform.GitHub,
                        owner, repo, branch, workflowName,
                        numberOfDays, maxNumberOfItems);
@@ -244,7 +244,7 @@ namespace DevOpsMetrics.Service.Controllers
                     }
                     if (resourceGroup != null)
                     {
-                        meanTimeToRestoreModel = MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(false, tableStorageConfig,
+                        meanTimeToRestoreModel = await MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(false, tableStorageConfig,
                             DevOpsPlatform.GitHub,
                             resourceGroup,
                             numberOfDays, maxNumberOfItems);
@@ -255,7 +255,7 @@ namespace DevOpsMetrics.Service.Controllers
                         meanTimeToRestoreModel.MTTRAverageDurationDescription = MeanTimeToRestore.GetMeanTimeToRestoreRating(0);
                     }
 
-                    changeFailureRateModel = ChangeFailureRateDA.GetChangeFailureRate(false, tableStorageConfig,
+                    changeFailureRateModel = await ChangeFailureRateDA.GetChangeFailureRate(false, tableStorageConfig,
                        DevOpsPlatform.GitHub,
                        owner, repo, branch, workflowName,
                        numberOfDays, maxNumberOfItems);
