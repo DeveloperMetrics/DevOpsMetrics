@@ -119,12 +119,12 @@ namespace DevOpsMetrics.Service.Controllers
         }
 
         [HttpGet("GetGitHubProjectLog")]
-        public List<ProjectLog> GetGitHubProjectLog(string owner, string repo)
+        public async Task< List<ProjectLog>> GetGitHubProjectLog(string owner, string repo)
         {
             string partitionKey = PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo);
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            return AzureTableStorageDA.GetProjectLogsFromStorage(tableStorageConfig, partitionKey);
+            return await AzureTableStorageDA.GetProjectLogsFromStorage(tableStorageConfig, partitionKey);
         }
 
         [HttpGet("UpdateGitHubProjectLog")]
