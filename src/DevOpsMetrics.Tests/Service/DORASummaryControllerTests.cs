@@ -88,7 +88,7 @@ namespace DevOpsMetrics.Tests.Service
                 model = await controller.UpdateDORASummaryItem(gitHubSettings.Owner, "", gitHubSettings.Repo,
                      gitHubSettings.Branch, gitHubSettings.WorkflowName, gitHubSettings.WorkflowId, gitHubSettings.ProductionResourceGroup,
                      numberOfDays, maxNumberOfItems,
-                     null, true, false);
+                     null, true, true);
                 doraSummaryItem = await controller.GetDORASummaryItem(gitHubSettings.Owner, gitHubSettings.Repo);
             }
 
@@ -133,7 +133,7 @@ namespace DevOpsMetrics.Tests.Service
                 model = await controller.UpdateDORASummaryItem(gitHubSettings.Owner, "", gitHubSettings.Repo,
                      gitHubSettings.Branch, gitHubSettings.WorkflowName, gitHubSettings.WorkflowId, gitHubSettings.ProductionResourceGroup,
                      numberOfDays, maxNumberOfItems,
-                     null, true, false);
+                     null, true, true);
             }
 
             //Assert
@@ -164,7 +164,8 @@ namespace DevOpsMetrics.Tests.Service
                         azSetting.Organization, azSetting.Project, azSetting.Repository,
                         azSetting.Branch, azSetting.BuildName, azSetting.BuildId,
                         azSetting.ProductionResourceGroup,
-                        numberOfDays, maxNumberOfItems, null, true, false);
+                        numberOfDays, maxNumberOfItems, 
+                        null, true, false);
                     totalResults += ghResult.TotalResults;
                 }
 
@@ -175,7 +176,8 @@ namespace DevOpsMetrics.Tests.Service
                         ghSetting.Owner, "", ghSetting.Repo, ghSetting.Branch,
                         ghSetting.WorkflowName, ghSetting.WorkflowId,
                         ghSetting.ProductionResourceGroup,
-                        numberOfDays, maxNumberOfItems, null, true, true);
+                        numberOfDays, maxNumberOfItems, 
+                        null, true, true);
                     totalResults += ghResult.TotalResults;
                 }
             }
