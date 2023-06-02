@@ -335,7 +335,7 @@ namespace DevOpsMetrics.Service.Controllers
             }
             catch (Exception ex)
             {
-                string error = $"Exception while processing GitHub owner {owner}, repo {repo}. {result.BuildsUpdated} builds and {result.PRsUpdated} prs/commits updated";
+                string error = $"Exception while processing GitHub owner {owner}, repo {repo}. {result.BuildsUpdated} builds and {result.PRsUpdated} prs/commits updated " + ex.ToString();
                 if (log == null)
                 {
                     Console.WriteLine(error);
