@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace DevOpsMetrics.Service.Controllers
 {
@@ -215,10 +216,24 @@ namespace DevOpsMetrics.Service.Controllers
                        owner, repo, branch, workflowName,
                        numberOfDays, maxNumberOfItems);
 
-                    await Task.WhenAll(deploymentFrequencyTask, leadTimeForChangesTask, meanTimeToRestoreTask, changeFailureRateTask);
+                    if (meanTimeToRestoreTask != null)
+                    {
+                        await Task.WhenAll(deploymentFrequencyTask, leadTimeForChangesTask, meanTimeToRestoreTask, changeFailureRateTask);
+                    }
+                    else
+                    {
+                        await Task.WhenAll(deploymentFrequencyTask, leadTimeForChangesTask, changeFailureRateTask);
+                    }
                     deploymentFrequencyModel = await deploymentFrequencyTask;
                     leadTimeForChangesModel = await leadTimeForChangesTask;
-                    meanTimeToRestoreModel = await meanTimeToRestoreTask;
+                    if (meanTimeToRestoreTask != null)
+                    {
+                        meanTimeToRestoreModel = await meanTimeToRestoreTask;
+                    }
+                    else
+                    {
+                        meanTimeToRestoreModel = null;
+                    }
                     changeFailureRateModel = await changeFailureRateTask;
                 }
                 else
