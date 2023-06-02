@@ -109,14 +109,10 @@ namespace DevOpsMetrics.Tests.Service
             string organization = "samsmithnz";
             string project = "AzDoDevOpsMetrics";
             string repository = "AzDoDevOpsMetrics";
-            string branch = "refs/heads/main";
-            string buildName = "azure-pipelines.yml";
-            string buildId = "3673";
-            string resourceGroup = null;
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             DORASummaryController controller = new(base.Configuration);
-            ProcessingResult model = null;
+            ProcessingResult model;
 
             //Act
             (AzureDevOpsSettings, GitHubSettings) setting = await GetSettingWithName(organization, project, repository);
