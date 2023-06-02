@@ -230,10 +230,6 @@ namespace DevOpsMetrics.Service.Controllers
                     {
                         meanTimeToRestoreModel = await meanTimeToRestoreTask;
                     }
-                    else
-                    {
-                        meanTimeToRestoreModel = null;
-                    }
                     changeFailureRateModel = await changeFailureRateTask;
                 }
                 else
