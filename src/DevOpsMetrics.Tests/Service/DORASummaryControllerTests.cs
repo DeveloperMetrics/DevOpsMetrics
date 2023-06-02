@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using System.Threading.Tasks;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
@@ -53,32 +54,43 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             //string organization = "DeveloperMetrics";
             //string repository = "DevOpsMetrics";
-            //string branch = "main";
-            //string workflowName = "CI/CD";
-            //string workflowId = "1162561";
-            //string resourceGroup = "DevOpsMetrics";
-            string organization = "samsmithnz";
-            string repository = "AzurePipelinesToGitHubActionsConverter";
-            string branch = "main";
-            string workflowName = "CI/ CD";
-            string workflowId = "38158";
-            string resourceGroup = null;
+            //string organization = "samsmithnz";
+            //string repository = "AzurePipelinesToGitHubActionsConverter";
             //string organization = "samsmithnz";
             //string repository = "AzurePipelinesToGitHubActionsConverterWeb";
-            //string branch = "main";
-            //string workflowName = "Pipelines to Actions website CI/CD";
-            //string workflowId = "43084";
-            //string resourceGroup = "PipelinesToActions";
+            string organization = "samsmithnz";
+            string project = "SamLearnsAzure";
+            string repository = "SamLearnsAzure";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             DORASummaryController controller = new(base.Configuration);
+            ProcessingResult model = null;
+            DORASummaryItem doraSummaryItem = null;
 
             //Act
-            ProcessingResult model = await controller.UpdateDORASummaryItem(organization, "", repository,
-                branch, workflowName, workflowId, resourceGroup, numberOfDays, maxNumberOfItems,
-                null, true, true);
+            (AzureDevOpsSettings, GitHubSettings) setting = await GetSettingWithName(organization, project, repository);
+            if (setting.Item1 != null)
+            {
+                AzureDevOpsSettings azureDevOpsSettings = setting.Item1;
+                model = await controller.UpdateDORASummaryItem(azureDevOpsSettings.Organization,
+                    azureDevOpsSettings.Project, azureDevOpsSettings.Repository,
+                    azureDevOpsSettings.Branch,
+                    azureDevOpsSettings.BuildName, azureDevOpsSettings.BuildId,
+                    azureDevOpsSettings.ProductionResourceGroup,
+                    numberOfDays, maxNumberOfItems,
+                    null, true, false);
+                doraSummaryItem = await controller.GetDORASummaryItem(azureDevOpsSettings.Organization, azureDevOpsSettings.Repository);
+            }
+            else
+            {
+                GitHubSettings gitHubSettings = setting.Item2;
+                model = await controller.UpdateDORASummaryItem(gitHubSettings.Owner, "", gitHubSettings.Repo,
+                     gitHubSettings.Branch, gitHubSettings.WorkflowName, gitHubSettings.WorkflowId, gitHubSettings.ProductionResourceGroup,
+                     numberOfDays, maxNumberOfItems,
+                     null, true, false);
+                doraSummaryItem = await controller.GetDORASummaryItem(gitHubSettings.Owner, gitHubSettings.Repo);
+            }
 
-            DORASummaryItem doraSummaryItem = await controller.GetDORASummaryItem(organization, repository);
 
             //Assert
             Assert.IsNotNull(model);
@@ -103,11 +115,29 @@ namespace DevOpsMetrics.Tests.Service
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             DORASummaryController controller = new(base.Configuration);
+            ProcessingResult model = null;
 
             //Act
-            ProcessingResult model = await controller.UpdateDORASummaryItem(organization, project, repository,
-                branch, buildName, buildId, resourceGroup, numberOfDays, maxNumberOfItems,
-                null, true, false);
+            (AzureDevOpsSettings, GitHubSettings) setting = await GetSettingWithName(organization, project, repository);
+            if (setting.Item1 != null)
+            {
+                AzureDevOpsSettings azureDevOpsSettings = setting.Item1;
+                model = await controller.UpdateDORASummaryItem(azureDevOpsSettings.Organization,
+                    azureDevOpsSettings.Project, azureDevOpsSettings.Repository,
+                    azureDevOpsSettings.Branch,
+                    azureDevOpsSettings.BuildName, azureDevOpsSettings.BuildId,
+                    azureDevOpsSettings.ProductionResourceGroup,
+                    numberOfDays, maxNumberOfItems,
+                    null, true, false);
+            }
+            else
+            {
+                GitHubSettings gitHubSettings = setting.Item2;
+                model = await controller.UpdateDORASummaryItem(gitHubSettings.Owner, "", gitHubSettings.Repo,
+                     gitHubSettings.Branch, gitHubSettings.WorkflowName, gitHubSettings.WorkflowId, gitHubSettings.ProductionResourceGroup,
+                     numberOfDays, maxNumberOfItems,
+                     null, true, false);
+            }
 
             //Assert
             Assert.IsNotNull(model);
