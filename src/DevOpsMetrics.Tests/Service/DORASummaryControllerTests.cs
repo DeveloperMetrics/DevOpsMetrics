@@ -52,15 +52,16 @@ namespace DevOpsMetrics.Tests.Service
         public async Task DORASummaryControllerGitHubUpdateIntegrationTest()
         {
             //Arrange
+            string project = null;
             //string organization = "DeveloperMetrics";
             //string repository = "DevOpsMetrics";
             //string organization = "samsmithnz";
             //string repository = "AzurePipelinesToGitHubActionsConverter";
-            //string organization = "samsmithnz";
-            //string repository = "AzurePipelinesToGitHubActionsConverterWeb";
             string organization = "samsmithnz";
-            string project = "SamLearnsAzure";
-            string repository = "SamLearnsAzure";
+            string repository = "DotNetCensus";
+            //string organization = "samsmithnz";
+            //string project = "SamLearnsAzure";
+            //string repository = "SamLearnsAzure";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             DORASummaryController controller = new(base.Configuration);
