@@ -58,7 +58,7 @@ namespace DevOpsMetrics.Tests.Service
             //string organization = "samsmithnz";
             //string repository = "AzurePipelinesToGitHubActionsConverter";
             string organization = "samsmithnz";
-            string repository = "DotNetCensus";
+            string repository = "CustomQueue";
             //string organization = "samsmithnz";
             //string project = "SamLearnsAzure";
             //string repository = "SamLearnsAzure";
@@ -82,7 +82,7 @@ namespace DevOpsMetrics.Tests.Service
                     null, true, false);
                 doraSummaryItem = await controller.GetDORASummaryItem(azureDevOpsSettings.Organization, azureDevOpsSettings.Repository);
             }
-            else
+            else if (setting.Item2 != null)
             {
                 GitHubSettings gitHubSettings = setting.Item2;
                 model = await controller.UpdateDORASummaryItem(gitHubSettings.Owner, "", gitHubSettings.Repo,
@@ -90,6 +90,15 @@ namespace DevOpsMetrics.Tests.Service
                      numberOfDays, maxNumberOfItems,
                      null, true, true);
                 doraSummaryItem = await controller.GetDORASummaryItem(gitHubSettings.Owner, gitHubSettings.Repo);
+            }
+            else
+            {
+                model = await controller.UpdateDORASummaryItem(organization, "", repository,
+                           "main", "", "", "",
+                           numberOfDays, maxNumberOfItems,
+                           null, true, true);
+                doraSummaryItem = await controller.GetDORASummaryItem(organization, repository);
+
             }
 
 
@@ -100,6 +109,7 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(doraSummaryItem.LeadTimeForChanges >= 0);
             Assert.IsTrue(doraSummaryItem.MeanTimeToRestore >= 0);
             Assert.IsTrue(doraSummaryItem.ChangeFailureRate >= -1); //Change failure rate is -1 when there is no data (since 0 means something different from this metric)
+            Assert.IsTrue(doraSummaryItem.ProcessingLogMessage.IndexOf("Error") == -1);
         }
 
         [TestMethod]
@@ -164,7 +174,7 @@ namespace DevOpsMetrics.Tests.Service
                         azSetting.Organization, azSetting.Project, azSetting.Repository,
                         azSetting.Branch, azSetting.BuildName, azSetting.BuildId,
                         azSetting.ProductionResourceGroup,
-                        numberOfDays, maxNumberOfItems, 
+                        numberOfDays, maxNumberOfItems,
                         null, true, false);
                     totalResults += ghResult.TotalResults;
                 }
@@ -176,7 +186,7 @@ namespace DevOpsMetrics.Tests.Service
                         ghSetting.Owner, "", ghSetting.Repo, ghSetting.Branch,
                         ghSetting.WorkflowName, ghSetting.WorkflowId,
                         ghSetting.ProductionResourceGroup,
-                        numberOfDays, maxNumberOfItems, 
+                        numberOfDays, maxNumberOfItems,
                         null, true, true);
                     totalResults += ghResult.TotalResults;
                 }
