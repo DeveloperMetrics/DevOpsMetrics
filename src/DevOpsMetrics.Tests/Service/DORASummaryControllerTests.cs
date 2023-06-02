@@ -6,6 +6,7 @@ using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
 using DevOpsMetrics.Service.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DevOpsMetrics.Tests.Service
@@ -162,6 +163,33 @@ namespace DevOpsMetrics.Tests.Service
                 Assert.IsTrue(totalResults == 0);
             }
         }
+
+        private async Task<(AzureDevOpsSettings, GitHubSettings)> GetSettingWithName(string owner, string project, string repo)
+        {
+            (AzureDevOpsSettings, GitHubSettings) results = (null, null);
+            SettingsController settingsController = new(base.Configuration, new AzureTableStorageDA());
+            List<AzureDevOpsSettings> azSettings = await settingsController.GetAzureDevOpsSettings();
+            List<GitHubSettings> ghSettings = await settingsController.GetGitHubSettings();
+
+            foreach (AzureDevOpsSettings azSetting in azSettings)
+            {
+                if (azSetting.Organization == owner && azSetting.Project == project && azSetting.Repository == repo)
+                {
+                    results = (azSetting, null);
+                    break;
+                }
+            }
+            foreach (GitHubSettings ghSetting in ghSettings)
+            {
+                if (ghSetting.Owner == owner && ghSetting.Repo == repo)
+                {
+                    results = (null, ghSetting);
+                    break;
+                }
+            }
+            return results;
+        }
+
 
     }
 }
