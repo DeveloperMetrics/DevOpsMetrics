@@ -98,7 +98,6 @@ namespace DevOpsMetrics.Tests.Service
                            numberOfDays, maxNumberOfItems,
                            null, true, true);
                 doraSummaryItem = await controller.GetDORASummaryItem(organization, repository);
-
             }
 
 
