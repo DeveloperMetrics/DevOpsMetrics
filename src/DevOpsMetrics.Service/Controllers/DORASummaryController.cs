@@ -306,7 +306,8 @@ namespace DevOpsMetrics.Service.Controllers
                     ChangeFailureRate = changeFailureRateModel.ChangeFailureRateMetric,
                     ChangeFailureRateBadgeURL = changeFailureRateModel.BadgeURL,
                     ChangeFailureRateBadgeWithMetricURL = changeFailureRateModel.BadgeWithMetricURL,
-                    ProcessingLogMessage = processingLogMessage
+                    LastUpdatedMessage = processingLogMessage,
+                    LastUpdated = DateTime.Now
                 };
 
                 //Serialize the summary into an Azure storage table
@@ -387,7 +388,8 @@ namespace DevOpsMetrics.Service.Controllers
                         ChangeFailureRate = changeFailureRateModel.ChangeFailureRateMetric,
                         ChangeFailureRateBadgeURL = changeFailureRateModel.BadgeURL,
                         ChangeFailureRateBadgeWithMetricURL = changeFailureRateModel.BadgeWithMetricURL,
-                        ProcessingLogMessage = processingLogMessage
+                        LastUpdatedMessage = processingLogMessage,
+                        LastUpdated = DateTime.Now
                     };
                     //Serialize the summary into an Azure storage table
                     await AzureTableStorageDA.UpdateDORASummaryItem(tableStorageConfig, owner, project, repo, DORASummary);

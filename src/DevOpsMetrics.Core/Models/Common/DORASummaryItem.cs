@@ -64,7 +64,7 @@ namespace DevOpsMetrics.Core.Models.Common
         {
             get; set;
         }
-        public string ProcessingLogMessage
+        public string LastUpdatedMessage
         {
             get; set;
         }

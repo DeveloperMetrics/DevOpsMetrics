@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -108,7 +109,8 @@ namespace DevOpsMetrics.Tests.Service
             Assert.IsTrue(doraSummaryItem.LeadTimeForChanges >= 0);
             Assert.IsTrue(doraSummaryItem.MeanTimeToRestore >= 0);
             Assert.IsTrue(doraSummaryItem.ChangeFailureRate >= -1); //Change failure rate is -1 when there is no data (since 0 means something different from this metric)
-            Assert.IsTrue(doraSummaryItem.ProcessingLogMessage.IndexOf("Error") == -1);
+            Assert.IsTrue(doraSummaryItem.LastUpdatedMessage.IndexOf("Error") == -1);
+            Assert.IsTrue(doraSummaryItem.LastUpdated > DateTime.MinValue);
         }
 
         [TestMethod]
