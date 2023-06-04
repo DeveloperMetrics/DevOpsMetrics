@@ -65,6 +65,8 @@ namespace DevOpsMetrics.Service.Controllers
             string clientId = null;
             string clientSecret = null;
             string patToken = null;
+            //Instead of throwing exceptions when there are no secrets, add the error message to the overall processing message
+            string errorMessage = null;
             if (isGitHub == true)
             {  //Get the client id and secret from the settings
                 string clientIdName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientId(owner, repo);
@@ -73,7 +75,7 @@ namespace DevOpsMetrics.Service.Controllers
                 clientSecret = Configuration[clientSecretName];
                 if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(clientSecret))
                 {
-                    throw new Exception($"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault");
+                    errorMessage = $"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault";
                 }
             }
             else
@@ -82,7 +84,7 @@ namespace DevOpsMetrics.Service.Controllers
                 patToken = Configuration[patTokenName];
                 if (string.IsNullOrEmpty(patToken))
                 {
-                    throw new Exception($"patToken '{patTokenName}' not found in key vault");
+                    errorMessage = $"patToken '{patTokenName}' not found in key vault";
                 }
             }
 
@@ -105,10 +107,12 @@ namespace DevOpsMetrics.Service.Controllers
                 //TODO: fix this - should be using a common interface, not this null hack
                 if (log == null)
                 {
+                    Console.WriteLine(errorMessage);
                     Console.WriteLine(message);
                 }
                 else
                 {
+                    log.LogInformation(errorMessage);
                     log.LogInformation(message);
                 }
                 if (useParallelProcessing)
@@ -177,6 +181,8 @@ namespace DevOpsMetrics.Service.Controllers
                     Task<LeadTimeForChangesModel> leadTimeForChangesTask;
                     Task<MeanTimeToRestoreModel> meanTimeToRestoreTask;
                     Task<ChangeFailureRateModel> changeFailureRateTask;
+
+                    //Get the deployment frequency and lead time for changes in parallel
                     if (isGitHub == true)
                     {
                         deploymentFrequencyTask = DeploymentFrequencyDA.GetGitHubDeploymentFrequency(false, clientId, clientSecret, tableStorageConfig,
@@ -197,6 +203,7 @@ namespace DevOpsMetrics.Service.Controllers
                            owner, project, repo, branch, workflowName,
                            numberOfDays, maxNumberOfItems, useCache);
                     }
+                    //Get the mean time to restore and change failure rate in parallel
                     if (resourceGroup != null)
                     {
                         meanTimeToRestoreTask = MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(false, tableStorageConfig,
@@ -210,12 +217,12 @@ namespace DevOpsMetrics.Service.Controllers
                         meanTimeToRestoreModel.MTTRAverageDurationInHours = 0;
                         meanTimeToRestoreModel.MTTRAverageDurationDescription = MeanTimeToRestore.GetMeanTimeToRestoreRating(0);
                     }
-
                     changeFailureRateTask = ChangeFailureRateDA.GetChangeFailureRate(false, tableStorageConfig,
                        DevOpsPlatform.GitHub,
                        owner, repo, branch, workflowName,
                        numberOfDays, maxNumberOfItems);
 
+                    //Process the tasks in parallel
                     if (meanTimeToRestoreTask != null)
                     {
                         await Task.WhenAll(deploymentFrequencyTask, leadTimeForChangesTask, meanTimeToRestoreTask, changeFailureRateTask);
@@ -236,6 +243,7 @@ namespace DevOpsMetrics.Service.Controllers
                 {
                     if (isGitHub == true)
                     {
+                        //Get the deployment frequency and lead time for changes
                         deploymentFrequencyModel = await DeploymentFrequencyDA.GetGitHubDeploymentFrequency(false, clientId, clientSecret, tableStorageConfig,
                             owner, repo, branch, workflowName, workflowId,
                             numberOfDays, maxNumberOfItems, useCache);
@@ -254,6 +262,7 @@ namespace DevOpsMetrics.Service.Controllers
                            owner, project, repo, branch, workflowName,
                            numberOfDays, maxNumberOfItems, useCache);
                     }
+                    //Get the mean time to restore and change failure rate
                     if (resourceGroup != null)
                     {
                         meanTimeToRestoreModel = await MeanTimeToRestoreDA.GetAzureMeanTimeToRestore(false, tableStorageConfig,
@@ -266,7 +275,6 @@ namespace DevOpsMetrics.Service.Controllers
                         meanTimeToRestoreModel.MTTRAverageDurationInHours = 0;
                         meanTimeToRestoreModel.MTTRAverageDurationDescription = MeanTimeToRestore.GetMeanTimeToRestoreRating(0);
                     }
-
                     changeFailureRateModel = await ChangeFailureRateDA.GetChangeFailureRate(false, tableStorageConfig,
                        DevOpsPlatform.GitHub,
                        owner, repo, branch, workflowName,
@@ -275,6 +283,10 @@ namespace DevOpsMetrics.Service.Controllers
 
                 //Get the total time since startTime
                 string processingLogMessage = $"Processed summary for {owner}, repo {repo} in {(DateTime.Now - startTime).TotalSeconds} seconds";
+                if (errorMessage != null)
+                {
+                    processingLogMessage += $", error: {errorMessage}";
+                }
 
                 //Summarize the results into a new object
                 DORASummaryItem DORASummary = new()
@@ -294,7 +306,8 @@ namespace DevOpsMetrics.Service.Controllers
                     ChangeFailureRate = changeFailureRateModel.ChangeFailureRateMetric,
                     ChangeFailureRateBadgeURL = changeFailureRateModel.BadgeURL,
                     ChangeFailureRateBadgeWithMetricURL = changeFailureRateModel.BadgeWithMetricURL,
-                    ProcessingLogMessage = processingLogMessage
+                    LastUpdatedMessage = processingLogMessage,
+                    LastUpdated = DateTime.Now
                 };
 
                 //Serialize the summary into an Azure storage table
@@ -323,7 +336,7 @@ namespace DevOpsMetrics.Service.Controllers
             }
             catch (Exception ex)
             {
-                string error = $"Exception while processing GitHub owner {owner}, repo {repo}. {result.BuildsUpdated} builds and {result.PRsUpdated} prs/commits updated";
+                string error = $"Exception while processing GitHub owner {owner}, repo {repo}. {result.BuildsUpdated} builds and {result.PRsUpdated} prs/commits updated " + ex.ToString();
                 if (log == null)
                 {
                     Console.WriteLine(error);
@@ -375,7 +388,8 @@ namespace DevOpsMetrics.Service.Controllers
                         ChangeFailureRate = changeFailureRateModel.ChangeFailureRateMetric,
                         ChangeFailureRateBadgeURL = changeFailureRateModel.BadgeURL,
                         ChangeFailureRateBadgeWithMetricURL = changeFailureRateModel.BadgeWithMetricURL,
-                        ProcessingLogMessage = processingLogMessage
+                        LastUpdatedMessage = processingLogMessage,
+                        LastUpdated = DateTime.Now
                     };
                     //Serialize the summary into an Azure storage table
                     await AzureTableStorageDA.UpdateDORASummaryItem(tableStorageConfig, owner, project, repo, DORASummary);
