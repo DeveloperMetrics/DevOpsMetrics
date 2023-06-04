@@ -1,4 +1,6 @@
-﻿namespace DevOpsMetrics.Core.Models.Common
+﻿using System;
+
+namespace DevOpsMetrics.Core.Models.Common
 {
     public class DORASummaryItem
     {
@@ -63,6 +65,10 @@
             get; set;
         }
         public string ProcessingLogMessage
+        {
+            get; set;
+        }
+        public DateTime LastUpdated
         {
             get; set;
         }
