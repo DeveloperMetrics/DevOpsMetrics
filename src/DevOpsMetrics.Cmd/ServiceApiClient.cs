@@ -79,7 +79,7 @@ namespace DevOpsMetrics.Cmd
 
             if (client != null && url != null)
             {
-                StringContent content = new StringContent(JsonConvert.SerializeObject(monitoringEvent), Encoding.UTF8, "application/json");
+                StringContent content = new(JsonConvert.SerializeObject(monitoringEvent), Encoding.UTF8, "application/json");
 
                 Debug.WriteLine("Running url: " + client.BaseAddress.ToString() + url);
                 using (HttpResponseMessage response = await client.PostAsync(url, content))
