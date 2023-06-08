@@ -74,7 +74,7 @@ namespace DevOpsMetrics.Cmd
             return obj;
         }
 
-        private async Task<bool> PostResponse(HttpClient client, string url, MonitoringEvent monitoringEvent)
+        private static async Task<bool> PostResponse(HttpClient client, string url, MonitoringEvent monitoringEvent)
         {
 
             if (client != null && url != null)
