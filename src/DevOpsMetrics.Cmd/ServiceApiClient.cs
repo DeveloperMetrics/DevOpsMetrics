@@ -50,7 +50,7 @@ namespace DevOpsMetrics.Cmd
             return await PostResponse(Client, url, monitoringEvent);
         }
 
-        private async Task<T> GetResponse<T>(HttpClient client, string url)
+        private static async Task<T> GetResponse<T>(HttpClient client, string url)
         {
             T obj = default;
             if (client != null && url != null)
