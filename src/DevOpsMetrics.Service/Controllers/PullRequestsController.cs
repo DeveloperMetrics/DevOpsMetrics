@@ -35,10 +35,10 @@ namespace DevOpsMetrics.Service.Controllers
                 string patTokenName = PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken(organization, project, repository);
                 patTokenName = SecretsProcessing.CleanKey(patTokenName);
                 string patToken = Configuration[patTokenName];
-                if (string.IsNullOrEmpty(patToken))
-                {
-                    throw new Exception($"patToken '{patTokenName}' not found in key vault");
-                }
+                //if (string.IsNullOrEmpty(patToken))
+                //{
+                //    throw new Exception($"patToken '{patTokenName}' not found in key vault");
+                //}
 
                 numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsPullRequestsInStorage(patToken, tableStorageConfig,
                          organization, project, repository, numberOfDays, maxNumberOfItems);
@@ -110,10 +110,10 @@ namespace DevOpsMetrics.Service.Controllers
                 string patTokenName = PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken(organization, project, repository);
                 patTokenName = SecretsProcessing.CleanKey(patTokenName);
                 string patToken = Configuration[patTokenName];
-                if (string.IsNullOrEmpty(patToken))
-                {
-                    throw new Exception($"patToken '{patTokenName}' not found in key vault");
-                }
+                //if (string.IsNullOrEmpty(patToken))
+                //{
+                //    throw new Exception($"patToken '{patTokenName}' not found in key vault");
+                //}
 
                 numberOfRecordsSaved = await AzureTableStorageDA.UpdateAzureDevOpsPullRequestCommitsInStorage(patToken, tableStorageConfig,
                     organization, project, repository, pullRequestId, numberOfDays, maxNumberOfItems);

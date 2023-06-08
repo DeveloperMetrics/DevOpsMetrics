@@ -35,10 +35,10 @@ namespace DevOpsMetrics.Service.Controllers
                 string patTokenName = PartitionKeys.CreateAzureDevOpsSettingsPartitionKeyPatToken(organization, project, repository);
                 patTokenName = SecretsProcessing.CleanKey(patTokenName);
                 string patToken = Configuration[patTokenName];
-                if (string.IsNullOrEmpty(patToken))
-                {
-                    throw new Exception($"patToken '{patTokenName}' not found in key vault");
-                }
+                //if (string.IsNullOrEmpty(patToken))
+                //{
+                //    throw new Exception($"patToken '{patTokenName}' not found in key vault");
+                //}
 
                 DeploymentFrequencyDA da = new();
                 model = await DeploymentFrequencyDA.GetAzureDevOpsDeploymentFrequency(getSampleData, patToken, tableStorageConfig, organization, project, branch, buildName, numberOfDays, maxNumberOfItems, useCache);
