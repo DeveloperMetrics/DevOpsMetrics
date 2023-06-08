@@ -72,10 +72,10 @@ namespace DevOpsMetrics.Service.Controllers
                 string clientSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret(owner, repo);
                 string clientId = Configuration[clientIdName];
                 string clientSecret = Configuration[clientSecretName];
-                if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(clientSecret))
-                {
-                    throw new Exception($"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault");
-                }
+                //if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(clientSecret))
+                //{
+                //    throw new Exception($"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault");
+                //}
 
                 numberOfRecordsSaved = await AzureTableStorageDA.UpdateGitHubActionRunsInStorage(clientId, clientSecret, tableStorageConfig,
                         owner, repo, branch, workflowName, workflowId, numberOfDays, maxNumberOfItems);

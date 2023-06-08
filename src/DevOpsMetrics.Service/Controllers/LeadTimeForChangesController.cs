@@ -76,10 +76,10 @@ namespace DevOpsMetrics.Service.Controllers
                 clientSecretName = SecretsProcessing.CleanKey(clientSecretName);
                 string clientId = Configuration[clientIdName];
                 string clientSecret = Configuration[clientSecretName];
-                if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(clientSecret))
-                {
-                    throw new Exception($"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault");
-                }
+                //if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(clientSecret))
+                //{
+                //    throw new Exception($"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault");
+                //}
 
                 LeadTimeForChangesDA da = new();
                 model = await LeadTimeForChangesDA.GetGitHubLeadTimesForChanges(getSampleData, clientId, clientSecret, tableStorageConfig,

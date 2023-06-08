@@ -56,7 +56,7 @@ namespace DevOpsMetrics.Service.Controllers
             Microsoft.Extensions.Logging.ILogger log = null,
             bool useCache = true,
             bool isGitHub = true,
-            bool useParallelProcessing = true)
+            bool useParallelProcessing = false)
         {
             //Start timer
             DateTime startTime = DateTime.Now;

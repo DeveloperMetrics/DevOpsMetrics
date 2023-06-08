@@ -208,6 +208,10 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 int numberOfDays, int maxNumberOfItems)
         {
             JArray items = await GitHubAPIAccess.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, workflowId);
+            if (items == null)
+            {
+                items = new();
+            }
             Debug.WriteLine($"{items.Count} builds found for {owner}/{repo}/{workflowName}");
 
             int itemsAdded = 0;

@@ -77,7 +77,7 @@ namespace DevOpsMetrics.Core.DataAccess.APIAccess
                 using (HttpResponseMessage response = await client.GetAsync(url))
                 {
                     //Throw a response exception
-                    response.EnsureSuccessStatusCode();
+                    //response.EnsureSuccessStatusCode();
                     if (response.IsSuccessStatusCode)
                     {
                         responseBody = await response.Content.ReadAsStringAsync();
