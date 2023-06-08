@@ -56,7 +56,7 @@ namespace DevOpsMetrics.Service.Controllers
             Microsoft.Extensions.Logging.ILogger log = null,
             bool useCache = true,
             bool isGitHub = true,
-            bool useParallelProcessing = true)
+            bool useParallelProcessing = false)
         {
             //Start timer
             DateTime startTime = DateTime.Now;
@@ -68,7 +68,8 @@ namespace DevOpsMetrics.Service.Controllers
             //Instead of throwing exceptions when there are no secrets, add the error message to the overall processing message
             string errorMessage = null;
             if (isGitHub == true)
-            {  //Get the client id and secret from the settings
+            {  
+                //Get the client id and secret from the settings
                 string clientIdName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientId(owner, repo);
                 string clientSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret(owner, repo);
                 clientId = Configuration[clientIdName];

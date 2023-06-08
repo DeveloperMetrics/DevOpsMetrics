@@ -208,6 +208,10 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 int numberOfDays, int maxNumberOfItems)
         {
             JArray items = await GitHubAPIAccess.GetGitHubActionRunsJArray(clientId, clientSecret, owner, repo, workflowId);
+            if (items == null)
+            {
+                items = new();
+            }
             Debug.WriteLine($"{items.Count} builds found for {owner}/{repo}/{workflowName}");
 
             int itemsAdded = 0;
@@ -269,7 +273,10 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 int numberOfDays, int maxNumberOfItems)
         {
             JArray items = await GitHubAPIAccess.GetGitHubPullRequestsJArray(clientId, clientSecret, owner, repo, branch);
-
+            if (items == null)
+            {
+                items = new();
+            }
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableGitHubPRs);
             //Check each build to see if it's in storage, adding the items not in storage
@@ -307,7 +314,10 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 string owner, string repo, string pull_number)
         {
             JArray items = await GitHubAPIAccess.GetGitHubPullRequestCommitsJArray(clientId, clientSecret, owner, repo, pull_number);
-
+            if (items == null)
+            {
+                items = new();
+            }
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableGitHubPRCommits);
             //Check each build to see if it's in storage, adding the items not in storage
@@ -400,7 +410,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             string owner, string project, string repo, DORASummaryItem DORASummaryItem)
         {
             string partitionKey = owner;
-            string rowKey = "";
+            string rowKey;
             if (string.IsNullOrEmpty(project))
             {
                 rowKey = repo;
