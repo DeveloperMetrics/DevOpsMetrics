@@ -410,7 +410,7 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
             string owner, string project, string repo, DORASummaryItem DORASummaryItem)
         {
             string partitionKey = owner;
-            string rowKey = "";
+            string rowKey;
             if (string.IsNullOrEmpty(project))
             {
                 rowKey = repo;
