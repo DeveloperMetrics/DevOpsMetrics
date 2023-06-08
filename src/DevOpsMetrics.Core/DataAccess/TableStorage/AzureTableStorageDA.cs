@@ -273,7 +273,10 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 int numberOfDays, int maxNumberOfItems)
         {
             JArray items = await GitHubAPIAccess.GetGitHubPullRequestsJArray(clientId, clientSecret, owner, repo, branch);
-
+            if (items == null)
+            {
+                items = new();
+            }
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableGitHubPRs);
             //Check each build to see if it's in storage, adding the items not in storage
@@ -311,7 +314,10 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 string owner, string repo, string pull_number)
         {
             JArray items = await GitHubAPIAccess.GetGitHubPullRequestCommitsJArray(clientId, clientSecret, owner, repo, pull_number);
-
+            if (items == null)
+            {
+                items = new();
+            }
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableGitHubPRCommits);
             //Check each build to see if it's in storage, adding the items not in storage
