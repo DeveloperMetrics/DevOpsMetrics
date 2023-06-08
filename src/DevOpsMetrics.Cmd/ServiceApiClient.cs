@@ -50,7 +50,7 @@ namespace DevOpsMetrics.Cmd
             return await PostResponse(Client, url, monitoringEvent);
         }
 
-        private async Task<T> GetResponse<T>(HttpClient client, string url)
+        private static async Task<T> GetResponse<T>(HttpClient client, string url)
         {
             T obj = default;
             if (client != null && url != null)
@@ -74,12 +74,12 @@ namespace DevOpsMetrics.Cmd
             return obj;
         }
 
-        private async Task<bool> PostResponse(HttpClient client, string url, MonitoringEvent monitoringEvent)
+        private static async Task<bool> PostResponse(HttpClient client, string url, MonitoringEvent monitoringEvent)
         {
 
             if (client != null && url != null)
             {
-                StringContent content = new StringContent(JsonConvert.SerializeObject(monitoringEvent), Encoding.UTF8, "application/json");
+                StringContent content = new(JsonConvert.SerializeObject(monitoringEvent), Encoding.UTF8, "application/json");
 
                 Debug.WriteLine("Running url: " + client.BaseAddress.ToString() + url);
                 using (HttpResponseMessage response = await client.PostAsync(url, content))
