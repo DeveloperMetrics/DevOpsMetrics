@@ -27,6 +27,10 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
         {
             TableStorageCommonDA tableDA = new(tableStorageConfig.StorageAccountConnectionString, tableName);
             List<AzureStorageTableModel> items = await tableDA.GetItems(partitionKey);
+            if (items == null)
+            {
+                items = new();
+            }
             JArray list = new();
             foreach (AzureStorageTableModel item in items)
             {
@@ -109,7 +113,10 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 int numberOfDays, int maxNumberOfItems)
         {
             JArray items = await AzureDevOpsAPIAccess.GetAzureDevOpsBuildsJArray(patToken, organization, project);
-
+            if (items == null)
+            {
+                items = new();
+            }
             int itemsAdded = 0;
             TableStorageCommonDA tableBuildsDA = new(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableAzureDevOpsBuilds);
             TableStorageCommonDA tableChangeFailureRateDA = new(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableChangeFailureRate);
@@ -154,7 +161,10 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 int numberOfDays, int maxNumberOfItems)
         {
             JArray items = await AzureDevOpsAPIAccess.GetAzureDevOpsPullRequestsJArray(patToken, organization, project, repository);
-
+            if (items == null)
+            {
+                items = new();
+            }
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableAzureDevOpsPRs);
             //Check each build to see if it's in storage, adding the items not in storage
@@ -183,7 +193,10 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
                 int numberOfDays, int maxNumberOfItems)
         {
             JArray items = await AzureDevOpsAPIAccess.GetAzureDevOpsPullRequestCommitsJArray(patToken, organization, project, repository, pullRequestId);
-
+            if (items == null)
+            {
+                items = new();
+            }
             int itemsAdded = 0;
             TableStorageCommonDA tableDA = new(tableStorageConfig.StorageAccountConnectionString, tableStorageConfig.TableAzureDevOpsPRCommits);
             //Check each build to see if it's in storage, adding the items not in storage
