@@ -54,10 +54,10 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             string project = null;
-            string organization = "DeveloperMetrics";
-            string repository = "DevOpsMetrics";
-            //string organization = "samsmithnz";
-            //string repository = "AzurePipelinesToGitHubActionsConverter";
+            //string organization = "DeveloperMetrics";
+            //string repository = "DevOpsMetrics";
+            string organization = "samsmithnz";
+            string repository = "TBS";
             //string organization = "samsmithnz";
             //string repository = "CustomQueue";
             //string organization = "samsmithnz";

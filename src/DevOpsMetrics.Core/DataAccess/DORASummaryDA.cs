@@ -23,12 +23,15 @@ namespace DevOpsMetrics.Core.DataAccess
         {
             DORASummaryItem result = null;
             List<DORASummaryItem> doraItems = await GetDORASummaryItems(tableStorageConfig, owner);
-            foreach (DORASummaryItem item in doraItems)
+            if (doraItems != null)
             {
-                if (item.Repo.ToLower() == repo.ToLower())
+                foreach (DORASummaryItem item in doraItems)
                 {
-                    result = item;
-                    break;
+                    if (item.Repo.ToLower() == repo.ToLower())
+                    {
+                        result = item;
+                        break;
+                    }
                 }
             }
             return result;
