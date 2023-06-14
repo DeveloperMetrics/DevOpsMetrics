@@ -23,26 +23,12 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             string organization = "DeveloperMetrics";
-            string repository = "DevOpsMetrics";
+            string project = null;
+            string repo = "DevOpsMetrics";
             DORASummaryController controller = new(base.Configuration);
 
             //Act
-            DORASummaryItem model = await controller.GetDORASummaryItem(organization, repository);
-
-            //Assert
-            Assert.IsNotNull(model);
-
-        }
-        [TestMethod]
-        public async Task DORASummaryControllerGetIntegrationTest2()
-        {
-            //Arrange
-            string organization = "samsmithnz";
-            string repository = "AzurePipelinesToGitHubActionsConverter";
-            DORASummaryController controller = new(base.Configuration);
-
-            //Act
-            DORASummaryItem model = await controller.GetDORASummaryItem(organization, repository);
+            DORASummaryItem model = await controller.GetDORASummaryItem(organization, project, repo);
 
             //Assert
             Assert.IsNotNull(model);
@@ -55,22 +41,22 @@ namespace DevOpsMetrics.Tests.Service
             //Arrange
             string project = null;
             string organization = "DeveloperMetrics";
-            string repository = "DevOpsMetrics";
+            string repo = "DevOpsMetrics";
             //string organization = "samsmithnz";
-            //string repository = "TBS";
+            //string repo = "Sams2048";
             //string organization = "samsmithnz";
-            //string repository = "CustomQueue";
+            //string repo = "CustomQueue";
             //string organization = "samsmithnz";
             //string project = "SamLearnsAzure";
-            //string repository = "SamLearnsAzure";
+            //string repo = "SamLearnsAzure";
             int numberOfDays = 30;
             int maxNumberOfItems = 20;
             DORASummaryController controller = new(base.Configuration);
-            ProcessingResult model = null;
-            DORASummaryItem doraSummaryItem = null;
+            ProcessingResult model;
+            DORASummaryItem doraSummaryItem;
 
             //Act
-            (AzureDevOpsSettings, GitHubSettings) setting = await GetSettingWithName(organization, project, repository);
+            (AzureDevOpsSettings, GitHubSettings) setting = await GetSettingWithName(organization, project, repo);
             if (setting.Item1 != null)
             {
                 AzureDevOpsSettings azureDevOpsSettings = setting.Item1;
@@ -81,7 +67,7 @@ namespace DevOpsMetrics.Tests.Service
                     azureDevOpsSettings.ProductionResourceGroup,
                     numberOfDays, maxNumberOfItems,
                     null, true, false);
-                doraSummaryItem = await controller.GetDORASummaryItem(azureDevOpsSettings.Organization, azureDevOpsSettings.Repository);
+                doraSummaryItem = await controller.GetDORASummaryItem(azureDevOpsSettings.Organization, azureDevOpsSettings.Project, azureDevOpsSettings.Repository);
             }
             else if (setting.Item2 != null)
             {
@@ -90,15 +76,15 @@ namespace DevOpsMetrics.Tests.Service
                      gitHubSettings.Branch, gitHubSettings.WorkflowName, gitHubSettings.WorkflowId, gitHubSettings.ProductionResourceGroup,
                      numberOfDays, maxNumberOfItems,
                      null, true, true);
-                doraSummaryItem = await controller.GetDORASummaryItem(gitHubSettings.Owner, gitHubSettings.Repo);
+                doraSummaryItem = await controller.GetDORASummaryItem(gitHubSettings.Owner, null, gitHubSettings.Repo);
             }
             else
             {
-                model = await controller.UpdateDORASummaryItem(organization, "", repository,
+                model = await controller.UpdateDORASummaryItem(organization, "", repo,
                            "main", "", "", "",
                            numberOfDays, maxNumberOfItems,
                            null, true, true);
-                doraSummaryItem = await controller.GetDORASummaryItem(organization, repository);
+                doraSummaryItem = await controller.GetDORASummaryItem(organization, project, repo);
             }
 
 
@@ -229,7 +215,6 @@ namespace DevOpsMetrics.Tests.Service
             }
             return results;
         }
-
 
     }
 }

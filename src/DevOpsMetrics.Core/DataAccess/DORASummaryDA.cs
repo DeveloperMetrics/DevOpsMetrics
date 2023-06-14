@@ -19,7 +19,7 @@ namespace DevOpsMetrics.Core.DataAccess
         }
 
         public static async Task<DORASummaryItem> GetDORASummaryItem(TableStorageConfiguration tableStorageConfig,
-                string owner, string repo)
+                string owner, string project, string repo)
         {
             DORASummaryItem result = null;
             List<DORASummaryItem> doraItems = await GetDORASummaryItems(tableStorageConfig, owner);
@@ -27,7 +27,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 foreach (DORASummaryItem item in doraItems)
                 {
-                    if (item.Repo.ToLower() == repo.ToLower())
+                    if ((project != null && item.Project == project) || (item.Repo.ToLower() == repo.ToLower()))
                     {
                         result = item;
                         break;
