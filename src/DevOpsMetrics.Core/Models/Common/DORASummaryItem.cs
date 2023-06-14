@@ -8,9 +8,10 @@ namespace DevOpsMetrics.Core.Models.Common
         {
         }
 
-        public DORASummaryItem(string owner, string repo)
+        public DORASummaryItem(string owner, string project, string repo)
         {
             Owner = owner;
+            Project = project;
             Repo = repo;
             //Set the properties to defaults (none)
             DeploymentFrequency = 0;
