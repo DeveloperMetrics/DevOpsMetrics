@@ -4,6 +4,10 @@ namespace DevOpsMetrics.Core.Models.Common
 {
     public class DORASummaryItem
     {
+        public DORASummaryItem()
+        {
+        }
+
         public DORASummaryItem(string owner, string repo)
         {
             Owner = owner;
