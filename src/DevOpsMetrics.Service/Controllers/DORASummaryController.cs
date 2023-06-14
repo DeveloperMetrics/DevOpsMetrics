@@ -35,10 +35,10 @@ namespace DevOpsMetrics.Service.Controllers
 
         // Get DORA Summary Item
         [HttpGet("GetDORASummaryItem")]
-        public async Task<DORASummaryItem> GetDORASummaryItem(string owner, string repository)
+        public async Task<DORASummaryItem> GetDORASummaryItem(string owner, string project, string repo)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
-            DORASummaryItem model = await DORASummaryDA.GetDORASummaryItem(tableStorageConfig, owner, repository);
+            DORASummaryItem model = await DORASummaryDA.GetDORASummaryItem(tableStorageConfig, owner, project, repo);
             return model;
         }
 
@@ -293,6 +293,7 @@ namespace DevOpsMetrics.Service.Controllers
                 DORASummaryItem DORASummary = new()
                 {
                     Owner = owner,
+                    Project = project,
                     Repo = repo,
                     NumberOfDays = numberOfDays,
                     DeploymentFrequency = deploymentFrequencyModel.DeploymentsPerDayMetric,
@@ -375,6 +376,7 @@ namespace DevOpsMetrics.Service.Controllers
                     DORASummaryItem DORASummary = new()
                     {
                         Owner = owner,
+                        Project = project,
                         Repo = repo,
                         NumberOfDays = numberOfDays,
                         DeploymentFrequency = deploymentFrequencyModel.DeploymentsPerDayMetric,

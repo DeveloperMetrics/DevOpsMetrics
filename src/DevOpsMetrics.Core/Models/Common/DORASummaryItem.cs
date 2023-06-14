@@ -8,6 +8,10 @@ namespace DevOpsMetrics.Core.Models.Common
         {
             get; set;
         }
+        public string Project
+        {
+            get; set;
+        }
         public string Repo
         {
             get; set;
