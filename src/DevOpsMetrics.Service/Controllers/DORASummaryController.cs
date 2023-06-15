@@ -68,7 +68,7 @@ namespace DevOpsMetrics.Service.Controllers
             //Instead of throwing exceptions when there are no secrets, add the error message to the overall processing message
             string errorMessage = null;
             if (isGitHub == true)
-            {  
+            {
                 //Get the client id and secret from the settings
                 string clientIdName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientId(owner, repo);
                 string clientSecretName = PartitionKeys.CreateGitHubSettingsPartitionKeyClientSecret(owner, repo);
@@ -77,6 +77,7 @@ namespace DevOpsMetrics.Service.Controllers
                 if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(clientSecret))
                 {
                     errorMessage = $"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault";
+                    throw new Exception(errorMessage);
                 }
             }
             else
@@ -86,6 +87,7 @@ namespace DevOpsMetrics.Service.Controllers
                 if (string.IsNullOrEmpty(patToken))
                 {
                     errorMessage = $"patToken '{patTokenName}' not found in key vault";
+                    throw new Exception(errorMessage);
                 }
             }
 
