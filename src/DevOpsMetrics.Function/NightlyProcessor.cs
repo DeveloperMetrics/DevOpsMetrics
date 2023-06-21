@@ -57,7 +57,7 @@ namespace DevOpsMetrics.Function
             {
                 log.LogInformation($"Processing Azure DevOps organization {azSetting.Organization}, project {azSetting.Project}");
                 ProcessingResult ghResult = await serviceApiClient.UpdateDORASummaryItem(
-                    azSetting.Organization, azSetting.Project, azSetting.Repository, 
+                    azSetting.Organization, azSetting.Project, azSetting.Repository,
                     azSetting.Branch, azSetting.BuildName, azSetting.BuildId,
                     azSetting.ProductionResourceGroup,
                     numberOfDays, maxNumberOfItems, false);

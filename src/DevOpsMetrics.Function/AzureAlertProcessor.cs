@@ -1,7 +1,6 @@
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

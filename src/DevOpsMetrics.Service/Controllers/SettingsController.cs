@@ -119,7 +119,7 @@ namespace DevOpsMetrics.Service.Controllers
         }
 
         [HttpGet("GetGitHubProjectLog")]
-        public async Task< List<ProjectLog>> GetGitHubProjectLog(string owner, string repo)
+        public async Task<List<ProjectLog>> GetGitHubProjectLog(string owner, string repo)
         {
             string partitionKey = PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo);
 

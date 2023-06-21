@@ -35,9 +35,9 @@ namespace DevOpsMetrics.Cmd
         }
 
         public async Task<ProcessingResult> UpdateDORASummaryItem(
-            string owner, string project, string repository, 
-            string branch, string workflowName, string workflowId, 
-            string resourceGroup, int numberOfDays, int maxNumberOfItems,            
+            string owner, string project, string repository,
+            string branch, string workflowName, string workflowId,
+            string resourceGroup, int numberOfDays, int maxNumberOfItems,
             bool isGitHub = true)
         {
             string url = $"/api/DORASummary/UpdateDORASummaryItem?owner={owner}&project={project}&repository={repository}&branch={branch}&workflowName={workflowName}&workflowId={workflowId}&resourceGroup={resourceGroup}&numberOfDays={numberOfDays}&maxNumberOfItems={maxNumberOfItems}&log=&useCache=true&isGitHub={isGitHub}";
