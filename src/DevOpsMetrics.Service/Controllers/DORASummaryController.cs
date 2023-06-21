@@ -6,10 +6,8 @@ using DevOpsMetrics.Core.DataAccess;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.Common;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Build.Framework;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace DevOpsMetrics.Service.Controllers
 {
@@ -56,7 +54,7 @@ namespace DevOpsMetrics.Service.Controllers
             Microsoft.Extensions.Logging.ILogger log = null,
             bool useCache = true,
             bool isGitHub = true,
-            bool useParallelProcessing = false)
+            bool useParallelProcessing = true)
         {
             //Start timer
             DateTime startTime = DateTime.Now;
