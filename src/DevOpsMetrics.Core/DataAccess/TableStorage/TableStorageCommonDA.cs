@@ -116,23 +116,26 @@ namespace DevOpsMetrics.Core.DataAccess.TableStorage
 
         public static string EncodePartitionKey(string text)
         {
-            //The forward slash(/) character
-            //The backslash(\) character
-            //The number sign(#) character
-            //The question mark (?) character
-            text = text.Replace("/", "_");
-            //text = text.Replace("\\", "_");
-            //text = text.Replace("#", "_");
-            //text = text.Replace("?", "_");
+            if (string.IsNullOrEmpty(text) == false)
+            {
+                //The forward slash(/) character
+                //The backslash(\) character
+                //The number sign(#) character
+                //The question mark (?) character
+                text = text.Replace("/", "_");
+                //text = text.Replace("\\", "_");
+                //text = text.Replace("#", "_");
+                //text = text.Replace("?", "_");
 
-            ////Control characters from U+0000 to U+001F, including:
-            ////The horizontal tab(\t) character
-            //text = text.Replace("\t", "_");
-            ////The linefeed(\n) character
-            //text = text.Replace("\n", "_");
-            ////The carriage return (\r) character
-            //text = text.Replace("\r", "_");
-            ////Control characters from U + 007F to U+009F
+                ////Control characters from U+0000 to U+001F, including:
+                ////The horizontal tab(\t) character
+                //text = text.Replace("\t", "_");
+                ////The linefeed(\n) character
+                //text = text.Replace("\n", "_");
+                ////The carriage return (\r) character
+                //text = text.Replace("\r", "_");
+                ////Control characters from U + 007F to U+009F
+            }
 
             return text;
         }
