@@ -27,7 +27,7 @@ namespace DevOpsMetrics.Core.DataAccess
             {
                 foreach (DORASummaryItem item in doraItems)
                 {
-                    if ((project != null && item.Project == project) || (item.Repo.ToLower() == repo.ToLower()))
+                    if ((project != null && item.Project == project) || (item.Repo?.ToLower() == repo.ToLower()))
                     {
                         result = item;
                         break;

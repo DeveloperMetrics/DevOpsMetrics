@@ -7,14 +7,11 @@ using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
-using DevOpsMetrics.Service.Controllers;
 using DevOpsMetrics.Web.Models;
 using DevOpsMetrics.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
-using NuGet.Protocol;
 
 namespace DevOpsMetrics.Web.Controllers
 {

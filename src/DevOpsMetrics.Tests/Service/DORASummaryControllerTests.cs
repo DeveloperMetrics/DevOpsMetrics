@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Reflection;
 using System.Threading.Tasks;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
 using DevOpsMetrics.Service.Controllers;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DevOpsMetrics.Tests.Service
@@ -40,10 +38,10 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             string project = null;
-            string organization = "DeveloperMetrics";
-            string repo = "DevOpsMetrics";
-            //string organization = "samsmithnz";
-            //string repo = "Sams2048";
+            //string organization = "DeveloperMetrics";
+            //string repo = "DevOpsMetrics";
+            string organization = "samsmithnz";
+            string repo = "SamsFeatureFlags";
             //string organization = "samsmithnz";
             //string repo = "CustomQueue";
             //string organization = "samsmithnz";
