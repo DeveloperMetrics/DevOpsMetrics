@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\ReadmeImages\Architecture.png = ..\ReadmeImages\Architecture.png
 		..\ReadmeImages\ChangeFailureRate.png = ..\ReadmeImages\ChangeFailureRate.png
 		..\.github\workflows\codeql-analysis.yml = ..\.github\workflows\codeql-analysis.yml
+		..\.github\dependabot.yml = ..\.github\dependabot.yml
 		..\ReadmeImages\DeploymentFrequencyDemo.png = ..\ReadmeImages\DeploymentFrequencyDemo.png
 		..\.github\workflows\dotnetcore.yml = ..\.github\workflows\dotnetcore.yml
 		..\GitVersion.yml = ..\GitVersion.yml
