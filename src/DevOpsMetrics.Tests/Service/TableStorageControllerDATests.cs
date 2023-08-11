@@ -7,7 +7,7 @@ using DevOpsMetrics.Core.Models.GitHub;
 using DevOpsMetrics.Service.Controllers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+using NSubstitute;
 
 namespace DevOpsMetrics.Tests.Service
 {
@@ -51,10 +51,10 @@ namespace DevOpsMetrics.Tests.Service
         public async Task UpdateAzureDevOpsBuildsTest()
         {
             //Arrange
-            Mock<IAzureTableStorageDA> mockDA = new();
-            mockDA.Setup(repo => repo.UpdateAzureDevOpsBuildsInStorage(It.IsAny<string>(), It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(GetSampleUpdateData()));
-            mockDA.Setup(repo => repo.GetAzureDevOpsSettingsFromStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(new List<AzureDevOpsSettings> { new AzureDevOpsSettings() }));
-            BuildsController controller = new(_configuration, mockDA.Object);
+            IAzureTableStorageDA mockDA = Substitute.For<IAzureTableStorageDA>();
+            mockDA.UpdateAzureDevOpsBuildsInStorage(Arg.Any<string>(), Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Task.FromResult(GetSampleUpdateData()));
+            mockDA.GetAzureDevOpsSettingsFromStorage(Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Task.FromResult(new List<AzureDevOpsSettings> { new AzureDevOpsSettings() }));
+            BuildsController controller = new(_configuration, mockDA);
             string organization = "";
             string project = "";
             string repository = "";
@@ -75,10 +75,10 @@ namespace DevOpsMetrics.Tests.Service
         public async Task UpdateGitHubActionRunsTest()
         {
             //Arrange
-            Mock<IAzureTableStorageDA> mockDA = new();
-            mockDA.Setup(repo => repo.UpdateGitHubActionRunsInStorage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(GetSampleUpdateData()));
-            mockDA.Setup(repo => repo.GetGitHubSettingsFromStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(new List<GitHubSettings> { new GitHubSettings() }));
-            BuildsController controller = new(_configuration, mockDA.Object);
+            IAzureTableStorageDA mockDA = Substitute.For<IAzureTableStorageDA>();
+            mockDA.UpdateGitHubActionRunsInStorage(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Task.FromResult(GetSampleUpdateData()));
+            mockDA.GetGitHubSettingsFromStorage(Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Task.FromResult(new List<GitHubSettings> { new GitHubSettings() }));
+            BuildsController controller = new(_configuration, mockDA);
             string owner = "";
             string repo = "";
             string branch = "";
@@ -98,10 +98,10 @@ namespace DevOpsMetrics.Tests.Service
         public async Task UpdateAzureDevOpsPullRequestsTest()
         {
             //Arrange
-            Mock<IAzureTableStorageDA> mockDA = new();
-            mockDA.Setup(repo => repo.UpdateAzureDevOpsPullRequestsInStorage(It.IsAny<string>(), It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(GetSampleUpdateData()));
-            mockDA.Setup(repo => repo.GetAzureDevOpsSettingsFromStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(new List<AzureDevOpsSettings> { new AzureDevOpsSettings() }));
-            PullRequestsController controller = new(_configuration, mockDA.Object);
+            IAzureTableStorageDA mockDA = Substitute.For<IAzureTableStorageDA>();
+            mockDA.UpdateAzureDevOpsPullRequestsInStorage(Arg.Any<string>(), Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Task.FromResult(GetSampleUpdateData()));
+            mockDA.GetAzureDevOpsSettingsFromStorage(Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Task.FromResult(new List<AzureDevOpsSettings> { new AzureDevOpsSettings() }));
+            PullRequestsController controller = new(_configuration, mockDA);
             string organization = "";
             string project = "";
             string repository = "";
@@ -119,10 +119,10 @@ namespace DevOpsMetrics.Tests.Service
         public async Task UpdateGitHubActionPullRequestsTest()
         {
             //Arrange
-            Mock<IAzureTableStorageDA> mockDA = new();
-            mockDA.Setup(repo => repo.UpdateGitHubActionPullRequestsInStorage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(GetSampleUpdateData()));
-            mockDA.Setup(repo => repo.GetGitHubSettingsFromStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(new List<GitHubSettings> { new GitHubSettings() }));
-            PullRequestsController controller = new(_configuration, mockDA.Object);
+            IAzureTableStorageDA mockDA = Substitute.For<IAzureTableStorageDA>();
+            mockDA.UpdateGitHubActionPullRequestsInStorage(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Task.FromResult(GetSampleUpdateData()));
+            mockDA.GetGitHubSettingsFromStorage(Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Task.FromResult(new List<GitHubSettings> { new GitHubSettings() }));
+            PullRequestsController controller = new(_configuration, mockDA);
             string owner = "";
             string repo = "";
             string branch = "";
@@ -140,10 +140,10 @@ namespace DevOpsMetrics.Tests.Service
         public async Task UpdateAzureDevOpsPullRequestCommitsTest()
         {
             //Arrange
-            Mock<IAzureTableStorageDA> mockDA = new();
-            mockDA.Setup(repo => repo.UpdateAzureDevOpsPullRequestCommitsInStorage(It.IsAny<string>(), It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).Returns(Task.FromResult(GetSampleUpdateData()));
-            mockDA.Setup(repo => repo.GetAzureDevOpsSettingsFromStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(new List<AzureDevOpsSettings> { new AzureDevOpsSettings() }));
-            PullRequestsController controller = new(_configuration, mockDA.Object);
+            IAzureTableStorageDA mockDA = Substitute.For<IAzureTableStorageDA>();
+            mockDA.UpdateAzureDevOpsPullRequestCommitsInStorage(Arg.Any<string>(), Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>()).Returns(Task.FromResult(GetSampleUpdateData()));
+            mockDA.GetAzureDevOpsSettingsFromStorage(Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Task.FromResult(new List<AzureDevOpsSettings> { new AzureDevOpsSettings() }));
+            PullRequestsController controller = new(_configuration, mockDA);
             string organization = "";
             string project = "";
             string repository = "";
@@ -162,10 +162,10 @@ namespace DevOpsMetrics.Tests.Service
         public async Task UpdateGitHubActionPullRequestCommitsTest()
         {
             //Arrange
-            Mock<IAzureTableStorageDA> mockDA = new();
-            mockDA.Setup(repo => repo.UpdateGitHubActionPullRequestCommitsInStorage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(GetSampleUpdateData()));
-            mockDA.Setup(repo => repo.GetGitHubSettingsFromStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(new List<GitHubSettings> { new GitHubSettings() }));
-            PullRequestsController controller = new(_configuration, mockDA.Object);
+            IAzureTableStorageDA mockDA = Substitute.For<IAzureTableStorageDA>();
+            mockDA.UpdateGitHubActionPullRequestCommitsInStorage(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Task.FromResult(GetSampleUpdateData()));
+            mockDA.GetGitHubSettingsFromStorage(Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Task.FromResult(new List<GitHubSettings> { new GitHubSettings() }));
+            PullRequestsController controller = new(_configuration, mockDA);
             string owner = "";
             string repo = "";
             string pull_number = "";
@@ -182,9 +182,9 @@ namespace DevOpsMetrics.Tests.Service
         public async Task GetAzureDevOpsSettingsTest()
         {
             //Arrange
-            Mock<IAzureTableStorageDA> mockDA = new();
-            mockDA.Setup(repo => repo.GetAzureDevOpsSettingsFromStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), null)).Returns(Task.FromResult(GetSampleAzureDevOpsSettingsData()));
-            SettingsController controller = new(_configuration, mockDA.Object);
+            IAzureTableStorageDA mockDA = Substitute.For<IAzureTableStorageDA>();
+            mockDA.GetAzureDevOpsSettingsFromStorage(Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Task.FromResult(GetSampleAzureDevOpsSettingsData()));
+            SettingsController controller = new(_configuration, mockDA);
 
             //Act
             List<AzureDevOpsSettings> result = await controller.GetAzureDevOpsSettings();
@@ -197,9 +197,9 @@ namespace DevOpsMetrics.Tests.Service
         public async Task GetGitHubSettingsTest()
         {
             //Arrange
-            Mock<IAzureTableStorageDA> mockDA = new();
-            mockDA.Setup(repo => repo.GetGitHubSettingsFromStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(GetSampleGitHubSettingsData()));
-            SettingsController controller = new(_configuration, mockDA.Object);
+            IAzureTableStorageDA mockDA = Substitute.For<IAzureTableStorageDA>();
+            mockDA.GetGitHubSettingsFromStorage(Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Task.FromResult(GetSampleGitHubSettingsData()));
+            SettingsController controller = new(_configuration, mockDA);
 
             //Act
             List<GitHubSettings> result = await controller.GetGitHubSettings();
@@ -213,9 +213,9 @@ namespace DevOpsMetrics.Tests.Service
         public async Task UpdateAzureDevOpsSettingTest()
         {
             //Arrange
-            Mock<IAzureTableStorageDA> mockDA = new();
-            mockDA.Setup(repo => repo.UpdateAzureDevOpsSettingInStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(Task.FromResult(true));
-            SettingsController controller = new(_configuration, mockDA.Object);
+            IAzureTableStorageDA mockDA = Substitute.For<IAzureTableStorageDA>();
+            mockDA.UpdateAzureDevOpsSettingInStorage(Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<bool>()).Returns(Task.FromResult(true));
+            SettingsController controller = new(_configuration, mockDA);
             string patToken = "";
             string organization = "";
             string project = "";
@@ -238,9 +238,9 @@ namespace DevOpsMetrics.Tests.Service
         public async Task UpdateGitHubSettingTest()
         {
             //Arrange
-            Mock<IAzureTableStorageDA> mockDA = new();
-            mockDA.Setup(repo => repo.UpdateGitHubSettingInStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(Task.FromResult(true));
-            SettingsController controller = new(_configuration, mockDA.Object);
+            IAzureTableStorageDA mockDA = Substitute.For<IAzureTableStorageDA>();
+            mockDA.UpdateGitHubSettingInStorage(Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<bool>()).Returns(Task.FromResult(true));
+            SettingsController controller = new(_configuration, mockDA);
             string clientId = "";
             string clientSecret = "";
             string owner = "";
@@ -263,9 +263,9 @@ namespace DevOpsMetrics.Tests.Service
         public async Task UpdateDevOpsMonitoringEventTest()
         {
             //Arrange
-            Mock<IAzureTableStorageDA> mockDA = new();
-            mockDA.Setup(repo => repo.UpdateDevOpsMonitoringEventInStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<MonitoringEvent>())).Returns(Task.FromResult(true));
-            SettingsController controller = new(_configuration, mockDA.Object);
+            IAzureTableStorageDA mockDA = Substitute.For<IAzureTableStorageDA>();
+            mockDA.UpdateDevOpsMonitoringEventInStorage(Arg.Any<TableStorageConfiguration>(), Arg.Any<MonitoringEvent>()).Returns(Task.FromResult(true));
+            SettingsController controller = new(_configuration, mockDA);
             MonitoringEvent newEvent = new();
 
             //Act
@@ -279,9 +279,9 @@ namespace DevOpsMetrics.Tests.Service
         public async Task GetAzureDevOpsLogTest()
         {
             //Arrange
-            Mock<IAzureTableStorageDA> mockDA = new();
-            mockDA.Setup(repo => repo.GetProjectLogsFromStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>())).Returns(Task.FromResult(new List<ProjectLog> { new ProjectLog() }));
-            SettingsController controller = new(_configuration, mockDA.Object);
+            IAzureTableStorageDA mockDA = Substitute.For<IAzureTableStorageDA>();
+            mockDA.GetProjectLogsFromStorage(Arg.Any<TableStorageConfiguration>(), Arg.Any<string>()).Returns(Task.FromResult(new List<ProjectLog> { new ProjectLog() }));
+            SettingsController controller = new(_configuration, mockDA);
             string organization = "TestOrg";
             string project = "TestProject";
             string repository = "TestRepo";
@@ -299,9 +299,9 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             //Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
-            Mock<IAzureTableStorageDA> mockDA = new();
-            mockDA.Setup(repo => repo.UpdateProjectLogInStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<ProjectLog>())).Returns(Task.FromResult(true));
-            SettingsController controller = new(_configuration, mockDA.Object);
+            IAzureTableStorageDA mockDA = Substitute.For<IAzureTableStorageDA>();
+            mockDA.UpdateProjectLogInStorage(Arg.Any<TableStorageConfiguration>(), Arg.Any<ProjectLog>()).Returns(Task.FromResult(true));
+            SettingsController controller = new(_configuration, mockDA);
             string organization = "TestOrg";
             string project = "TestProject";
             string repository = "TestRepo";
@@ -325,9 +325,9 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             //Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
-            Mock<IAzureTableStorageDA> mockDA = new();
-            mockDA.Setup(repo => repo.GetProjectLogsFromStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<string>())).Returns(Task.FromResult(new List<ProjectLog> { new ProjectLog() }));
-            SettingsController controller = new(_configuration, mockDA.Object);
+            IAzureTableStorageDA mockDA = Substitute.For<IAzureTableStorageDA>();
+            mockDA.GetProjectLogsFromStorage(Arg.Any<TableStorageConfiguration>(), Arg.Any<string>()).Returns(Task.FromResult(new List<ProjectLog> { new ProjectLog() }));
+            SettingsController controller = new(_configuration, mockDA);
             string owner = "TestOrg";
             string repo = "TestRepo";
 
@@ -344,9 +344,9 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             //Mock<IConfiguration> mockConfig = new Mock<IConfiguration>();
-            Mock<IAzureTableStorageDA> mockDA = new();
-            mockDA.Setup(repo => repo.UpdateProjectLogInStorage(It.IsAny<TableStorageConfiguration>(), It.IsAny<ProjectLog>())).Returns(Task.FromResult(true));
-            SettingsController controller = new(_configuration, mockDA.Object);
+            IAzureTableStorageDA mockDA = Substitute.For<IAzureTableStorageDA>();
+            mockDA.UpdateProjectLogInStorage(Arg.Any<TableStorageConfiguration>(), Arg.Any<ProjectLog>()).Returns(Task.FromResult(true));
+            SettingsController controller = new(_configuration, mockDA);
             string owner = "TestOrg";
             string repo = "TestRepo";
             int buildsUpdated = 0;
