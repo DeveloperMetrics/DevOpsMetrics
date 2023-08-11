@@ -183,7 +183,7 @@ namespace DevOpsMetrics.Tests.Service
         {
             //Arrange
             IAzureTableStorageDA mockDA = Substitute.For<IAzureTableStorageDA>();
-            mockDA.GetAzureDevOpsSettingsFromStorage(Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), null).Returns(Task.FromResult(GetSampleAzureDevOpsSettingsData()));
+            mockDA.GetAzureDevOpsSettingsFromStorage(Arg.Any<TableStorageConfiguration>(), Arg.Any<string>(), Arg.Any<string>()).Returns(Task.FromResult(GetSampleAzureDevOpsSettingsData()));
             SettingsController controller = new(_configuration, mockDA);
 
             //Act
