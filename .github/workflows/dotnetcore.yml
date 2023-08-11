@@ -274,13 +274,13 @@ jobs:
         creds: ${{ secrets.AZURE_SP }}     
       #Swap staging slots with prod
     - name: Swap web service staging slot to production
-      uses: Azure/cli@v1.0.7
+      uses: Azure/cli@v1.0.8
       with:
         inlineScript: az webapp deployment slot swap --name "devops-prod-eu-service" --resource-group "devopsmetrics" --slot staging --target-slot production
     - name: Deploy web service app settings
       run: az webapp config appsettings set --name "devops-prod-eu-service" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}"     
     - name: Swap web site staging slot to production
-      uses: Azure/cli@v1.0.7
+      uses: Azure/cli@v1.0.8
       with:
         inlineScript: az webapp deployment slot swap --name "devops-prod-eu-web" --resource-group "devopsmetrics" --slot staging --target-slot production
     - name: Deploy website app settings
