@@ -132,7 +132,7 @@ jobs:
     if: github.ref == 'refs/heads/main' 
     steps:
       - name: Run Sonarcloud test
-        uses: samsmithnz/SamsDotNetSonarCloudAction@1.2.0
+        uses: samsmithnz/SamsDotNetSonarCloudAction@v2.0.0
         with:
           projects: 'src/DevOpsMetrics.Core/DevOpsMetrics.Core.csproj,src/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj,src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj,src/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj,src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj,src/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj,src/DevOpsMetrics.Cmd/DevOpsMetrics.Cmd.csproj'
           dotnet-version: '7.0.x'
@@ -159,7 +159,7 @@ jobs:
 #      with:
 #        name: probot 
 #    - name: Deploy probot to Azure WebApp
-#      uses: Azure/webapps-deploy@v2.2.10
+#      uses: Azure/webapps-deploy@v2.2.11
 #      with:
 #        app-name: devops-prod-eu-probot
 #        package: probot 
@@ -207,7 +207,7 @@ jobs:
 
     #Deploy service, website, and function to Azure
     - name: Deploy web service to Azure WebApp
-      uses: Azure/webapps-deploy@v2.2.10
+      uses: Azure/webapps-deploy@v2.2.11
       with:
         app-name: devops-prod-eu-service
         package: serviceapp
@@ -216,7 +216,7 @@ jobs:
       run: az webapp config appsettings set --name "devops-prod-eu-service" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}"  "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}" "AppSettings:KeyVaultClientId=${{ secrets.KeyVaultClientId }}" "AppSettings:KeyVaultClientSecret=${{ secrets.KeyVaultClientSecret }}" #--slot "staging" 
     
     - name: Deploy website to Azure WebApp
-      uses: Azure/webapps-deploy@v2.2.10
+      uses: Azure/webapps-deploy@v2.2.11
       with:
         app-name: devops-prod-eu-web
         package: webapp 
@@ -240,7 +240,7 @@ jobs:
     
     # deploy function and settings
     - name: Deploy function to Azure WebApp
-      uses: Azure/webapps-deploy@v2.2.10
+      uses: Azure/webapps-deploy@v2.2.11
       with:
         app-name: devops-prod-eu-function
         package: functionapp 
