@@ -63,12 +63,11 @@ More information about high performing DevOps metrics can be found in a [blog po
 ![Change failure rate](https://github.com/samsmithnz/DevOpsMetrics/blob/main/ReadmeImages/ChangeFailureRate.png)
 
 # Architecture
-Developed in .NET 7. A GitHub action runs the CI/CD process. 
+Developed in .NET 8. A GitHub action runs the CI/CD process. 
 
 Currently the CI/CD process: 
 1. Builds the code
 2. Runs the unit tests
-3. ~~Deploys the Probot code to a Azure web app (http://devops-prod-eu-probot.azurewebsites.net/)~~ (Currently disabled)
 3. Deploys the webservice to a Azure web app (https://devops-prod-eu-service.azurewebsites.net)
 4. Deploys the demo website to a Azure web app (https://devops-prod-eu-web.azurewebsites.net)
 4. Deploys the function website to a Azure function 
@@ -94,7 +93,6 @@ The API can generate a URL for static badges, but more work is needed. Some curr
 # What's next?
 - Upgrades to packaging and setup (in progress)
 - Upgrades to store data in CosmosDB (currently in Azure storage)
-- Reviewing the current GitHub probot approach, to find a better target than issues (perhaps a metrics readme.md file?)
 - Support for more scenarios, releases, etc
 - ~~Azure DevOps marketplace integrations, so you can see the changes real time on your project/repo.~~ (lower priority to focus on GitHub)
 
