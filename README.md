@@ -17,8 +17,9 @@ This project is focused on helping you collect and analyze four key high perform
 
 ![High performing metrics](https://user-images.githubusercontent.com/8389039/212061370-6984b2c3-bc13-4d92-8afc-0068be4cdde1.png)
 (Chart from [page 11 of state of DevOps 2022 report](https://cloud.google.com/devops/state-of-devops))
-A [demo website displaying the metrics can be viewed here](https://devops-prod-eu-web.azurewebsites.net/).
-More information about high performing DevOps metrics can be found in a [blog post here](https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/)
+
+- A [demo website displaying these metrics can be viewed here](https://devops-prod-eu-web.azurewebsites.net/).
+- Insights I've noted about implementing DORA DevOps metrics can be found in a [blog post here](https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/)
 
 ## The current solution:
 **We currently have all four of the metrics implemented and undergoing a pilot. There is a Probot for GitHub. (The Azure DevOps widget is on hold to focus on GitHub).**
