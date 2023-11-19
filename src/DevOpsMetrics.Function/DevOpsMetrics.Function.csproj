@@ -6,9 +6,10 @@
 		<UserSecretsId>ed162474-1392-455c-b088-8b07e5438062</UserSecretsId>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.1.24" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
 		<PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.2.0" />
+		<PackageReference Include="Azure.Identity" Version="1.10.4" />
+		<PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.3.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\DevOpsMetrics.Core\DevOpsMetrics.Core.csproj" />
