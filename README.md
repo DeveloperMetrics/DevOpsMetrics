@@ -6,7 +6,9 @@
 [![Current Release](https://img.shields.io/github/release/samsmithnz/DevOpsMetrics/all.svg)](https://github.com/samsmithnz/DevOpsMetrics/releases)
 
 
-**Why should we care about DevOps Metrics and what are they?** All engineering, including software, needs metrics to track performance, but many metrics when measured individually, can be 'gamed', or don't encourage the right behaviors or incentives. This has been an issue with metrics for many years. The [DORA metrics](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf) are a step in the right direction, combining several metrics that encourage the behaviors and incentives - and hence that encourage DevOps teams to perform at a high level of performance.
+**Why should we care about DevOps Metrics and what are they?** All engineering, including software, needs metrics to track performance, but many metrics when measured individually, can be 'gamed', or don't encourage the right behaviors or incentives. This has been an issue with metrics for many years. The [DORA metrics](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf) are a step in the right direction, combining several metrics that encourage the behaviors and incentives - and hence that encourage DevOps teams to perform at a high level of performance.  DORA metrics aren't perfect, but are still the best we have available today.
+- A [demo website displaying these metrics can be viewed here](https://devops-prod-eu-web.azurewebsites.net/).
+- Insights I've noted about implementing DORA DevOps metrics can be found in a [blog post here](https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/)
 
 This project is focused on helping you collect and analyze four key high performing DevOps metrics from GitHub and Azure DevOps. [DORA's "State of DevOps" research](https://cloud.google.com/blog/products/devops-sre/announcing-dora-2021-accelerate-state-of-devops-report) and [Accelerate](https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339) highlighted four driving indicators of high performing DevOps teams. While these four metrics are widely used in DevOps discussion, it's challenging to implement and capture all of the metrics.
 
@@ -16,12 +18,10 @@ This project is focused on helping you collect and analyze four key high perform
 - **Change failure rate: After a production deployment, was it successful? Or was a fix or rollback required after the fact?** How often is a change we made 'successful'? This ties in well with deployment frequency and lead time for changes, but is challenging to measure - as it requires a signoff off of success. Not just that the code deployed correctly, but that there weren't adverse effects or degradation of the deployment to the system
 
 ![High performing metrics](https://user-images.githubusercontent.com/8389039/212061370-6984b2c3-bc13-4d92-8afc-0068be4cdde1.png)
-(Chart from [page 11 of state of DevOps 2022 report](https://cloud.google.com/devops/state-of-devops))
-A [demo website displaying the metrics can be viewed here](https://devops-prod-eu-web.azurewebsites.net/).
-More information about high performing DevOps metrics can be found in a [blog post here](https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/)
+[^1]
 
 ## The current solution:
-**We currently have all four of the metrics implemented and undergoing a pilot. There is a Probot for GitHub. (The Azure DevOps widget is on hold to focus on GitHub).**
+**We currently have all four of the metrics implemented and undergoing a pilot. (The Azure DevOps widget is currently not planned - but is possible if someone wants to build it!).**
 
 - **Deployment Frequency**, in both Azure DevOps and GitHub:
   - How does it work? We look at the number of successful pipeline runs. 
@@ -63,12 +63,11 @@ More information about high performing DevOps metrics can be found in a [blog po
 ![Change failure rate](https://github.com/samsmithnz/DevOpsMetrics/blob/main/ReadmeImages/ChangeFailureRate.png)
 
 # Architecture
-Developed in .NET 7. A GitHub action runs the CI/CD process. 
+Developed in .NET 8. A GitHub action runs the CI/CD process. 
 
 Currently the CI/CD process: 
 1. Builds the code
 2. Runs the unit tests
-3. ~~Deploys the Probot code to a Azure web app (http://devops-prod-eu-probot.azurewebsites.net/)~~ (Currently disabled)
 3. Deploys the webservice to a Azure web app (https://devops-prod-eu-service.azurewebsites.net)
 4. Deploys the demo website to a Azure web app (https://devops-prod-eu-web.azurewebsites.net)
 4. Deploys the function website to a Azure function 
@@ -78,7 +77,7 @@ Dependabot runs daily to check for dependency upgrades.
 ![Architecture diagram](https://github.com/samsmithnz/DevOpsMetrics/blob/main/ReadmeImages/Architecture.png)
 
 ## Badges
-The API can generate a URL for static badges, but more work is needed. Some current samples are shown below:
+The API can generate a URL for static badges, some samples are shown below:
 [![Build](https://img.shields.io/badge/Lead%20time%20for%20changes-High-green)](https://img.shields.io/badge/Lead%20time%20for%20changes-High-green) [![Build](https://img.shields.io/badge/Time%20to%20restore%20service-Medium-orange)](https://img.shields.io/badge/Time%20to%20restore%20service-Medium-orange) [![Build](https://img.shields.io/badge/Change%20failure%20rate-Low-red)](https://img.shields.io/badge/Change%20failure%20rate-Low-red)
 
 # Setup
@@ -94,7 +93,6 @@ The API can generate a URL for static badges, but more work is needed. Some curr
 # What's next?
 - Upgrades to packaging and setup (in progress)
 - Upgrades to store data in CosmosDB (currently in Azure storage)
-- Reviewing the current GitHub probot approach, to find a better target than issues (perhaps a metrics readme.md file?)
 - Support for more scenarios, releases, etc
 - ~~Azure DevOps marketplace integrations, so you can see the changes real time on your project/repo.~~ (lower priority to focus on GitHub)
 
@@ -102,3 +100,5 @@ The API can generate a URL for static badges, but more work is needed. Some curr
 
 - GitHub API: https://developer.GitHub.com/v3/actions/workflow-runs/
 - Azure DevOps API: https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1
+
+[^1]: Chart from [page 11 of state of DevOps 2022 report](https://cloud.google.com/devops/state-of-devops)

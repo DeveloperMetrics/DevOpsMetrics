@@ -2,15 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using Azure.Core;
 using DevOpsMetrics.Core.DataAccess.TableStorage;
 using DevOpsMetrics.Core.Models.AzureDevOps;
 using DevOpsMetrics.Core.Models.Common;
 using DevOpsMetrics.Core.Models.GitHub;
-using Microsoft.Azure.KeyVault;
-using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Azure.Core;
+using Azure.Identity;
 
 namespace DevOpsMetrics.Function
 {
@@ -36,9 +37,20 @@ namespace DevOpsMetrics.Function
             string keyVaultURL = Configuration["AppSettings:KeyVaultURL"];
             string keyVaultId = Configuration["AppSettings:KeyVaultClientId"];
             string keyVaultSecret = Configuration["AppSettings:KeyVaultClientSecret"];
-            AzureServiceTokenProvider azureServiceTokenProvider = new();
-            KeyVaultClient keyVaultClient = new(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
-            builder.AddAzureKeyVault(keyVaultURL, keyVaultId, keyVaultSecret);
+            string tenantId = Configuration["AppSettings:TenantId"];
+            //AzureServiceTokenProvider azureServiceTokenProvider = new();
+            //KeyVaultClient keyVaultClient = new(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
+            //builder.AddAzureKeyVault(keyVaultURL, keyVaultId, keyVaultSecret);
+
+            if (keyVaultURL != null && keyVaultId != null && keyVaultSecret != null && tenantId != null)
+            {
+                TokenCredential tokenCredential = new ClientSecretCredential(tenantId, keyVaultId, keyVaultSecret);
+                builder.AddAzureKeyVault(new(keyVaultURL), tokenCredential);
+            }
+            else
+            {
+                throw new System.Exception("Missing configuration for Azure Key Vault");
+            }
             Configuration = builder.Build();
             ServiceApiClient serviceApiClient = new(Configuration);
 

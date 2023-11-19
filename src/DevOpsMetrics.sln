@@ -30,16 +30,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Function", "D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.FunctionalTests", "DevOpsMetrics.FunctionalTests\DevOpsMetrics.FunctionalTests.csproj", "{613B7F21-62CF-412F-BCF4-B0500EAE6FCB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Probot", "Probot", "{91299047-588F-41CA-8ED2-9876284606F9}"
-	ProjectSection(SolutionItems) = preProject
-		ProbotMetrics\app.yml = ProbotMetrics\app.yml
-		ProbotMetrics\src\generateDevopsMetrics.js = ProbotMetrics\src\generateDevopsMetrics.js
-		ProbotMetrics\src\getGithubSettings.js = ProbotMetrics\src\getGithubSettings.js
-		ProbotMetrics\index.js = ProbotMetrics\index.js
-		ProbotMetrics\src\postDevopsMetrics.js = ProbotMetrics\src\postDevopsMetrics.js
-		ProbotMetrics\src\prepareDevOpsMetrics.js = ProbotMetrics\src\prepareDevOpsMetrics.js
-	EndProjectSection
-EndProject
 Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "DevOpsMetrics.Infrastructure", "DevOpsMetrics.Infrastructure\DevOpsMetrics.Infrastructure.deployproj", "{0465BF7A-C791-49CA-A7DE-27B4EECD2020}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Cmd", "DevOpsMetrics.Cmd\DevOpsMetrics.Cmd.csproj", "{D15713F2-D089-45A7-A0FA-1F16D664130D}"
