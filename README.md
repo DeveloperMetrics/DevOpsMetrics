@@ -8,7 +8,10 @@
 
 **Why should we care about DevOps Metrics and what are they?** All engineering, including software, needs metrics to track performance, but many metrics when measured individually, can be 'gamed', or don't encourage the right behaviors or incentives. This has been an issue with metrics for many years. The [DORA metrics](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf) are a step in the right direction, combining several metrics that encourage the behaviors and incentives - and hence that encourage DevOps teams to perform at a high level of performance.
 
-This project is focused on helping you collect and analyze four key high performing DevOps metrics from GitHub and Azure DevOps. [DORA's "State of DevOps" research](https://cloud.google.com/blog/products/devops-sre/announcing-dora-2021-accelerate-state-of-devops-report) and [Accelerate](https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339) highlighted four driving indicators of high performing DevOps teams. While these four metrics are widely used in DevOps discussion, it's challenging to implement and capture all of the metrics.
+This project is focused on helping you collect and analyze four key high performing DevOps metrics from GitHub and Azure DevOps. [DORA's "State of DevOps" research](https://cloud.google.com/blog/products/devops-sre/announcing-dora-2021-accelerate-state-of-devops-report) and [Accelerate](https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339) highlighted four driving indicators of high performing DevOps teams. While these four metrics are widely used in DevOps discussion, it's challenging to implement and capture all of the metrics. These metrics aren't perfect, but are still the best we have available today.
+- A [demo website displaying these metrics can be viewed here](https://devops-prod-eu-web.azurewebsites.net/).
+- Insights I've noted about implementing DORA DevOps metrics can be found in a [blog post here](https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/)
+
 
 - **Deployment frequency: Number of deployments to production.** This is important, as it highlights how often you can deploy to production - which in turn indicates there is a mature automated testing and a mature CI/CD pipeline to release to production.
 - **Lead time for changes: Time from committing a change to deployment to production.** How quickly can we change a line of code and have it running in production? Again, this indicates mature automated testing and a mature CI/CD pipeline able to handle changes.
@@ -17,9 +20,6 @@ This project is focused on helping you collect and analyze four key high perform
 
 ![High performing metrics](https://user-images.githubusercontent.com/8389039/212061370-6984b2c3-bc13-4d92-8afc-0068be4cdde1.png)
 [^1]
-
-- A [demo website displaying these metrics can be viewed here](https://devops-prod-eu-web.azurewebsites.net/).
-- Insights I've noted about implementing DORA DevOps metrics can be found in a [blog post here](https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/)
 
 ## The current solution:
 **We currently have all four of the metrics implemented and undergoing a pilot. There is a Probot for GitHub. (The Azure DevOps widget is on hold to focus on GitHub).**
