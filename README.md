@@ -21,7 +21,7 @@ This project is focused on helping you collect and analyze four key high perform
 [^1]
 
 ## The current solution:
-**We currently have all four of the metrics implemented and undergoing a pilot. There is a Probot for GitHub. (The Azure DevOps widget is on hold to focus on GitHub).**
+**We currently have all four of the metrics implemented and undergoing a pilot. (The Azure DevOps widget is currently not planned - but is possible if someone wants to build it!).**
 
 - **Deployment Frequency**, in both Azure DevOps and GitHub:
   - How does it work? We look at the number of successful pipeline runs. 
