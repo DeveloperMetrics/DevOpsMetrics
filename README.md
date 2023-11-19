@@ -77,7 +77,7 @@ Dependabot runs daily to check for dependency upgrades.
 ![Architecture diagram](https://github.com/samsmithnz/DevOpsMetrics/blob/main/ReadmeImages/Architecture.png)
 
 ## Badges
-The API can generate a URL for static badges, but more work is needed. Some current samples are shown below:
+The API can generate a URL for static badges, some samples are shown below:
 [![Build](https://img.shields.io/badge/Lead%20time%20for%20changes-High-green)](https://img.shields.io/badge/Lead%20time%20for%20changes-High-green) [![Build](https://img.shields.io/badge/Time%20to%20restore%20service-Medium-orange)](https://img.shields.io/badge/Time%20to%20restore%20service-Medium-orange) [![Build](https://img.shields.io/badge/Change%20failure%20rate-Low-red)](https://img.shields.io/badge/Change%20failure%20rate-Low-red)
 
 # Setup
