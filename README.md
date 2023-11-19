@@ -16,7 +16,7 @@ This project is focused on helping you collect and analyze four key high perform
 - **Change failure rate: After a production deployment, was it successful? Or was a fix or rollback required after the fact?** How often is a change we made 'successful'? This ties in well with deployment frequency and lead time for changes, but is challenging to measure - as it requires a signoff off of success. Not just that the code deployed correctly, but that there weren't adverse effects or degradation of the deployment to the system
 
 ![High performing metrics](https://user-images.githubusercontent.com/8389039/212061370-6984b2c3-bc13-4d92-8afc-0068be4cdde1.png)
-(Chart from [page 11 of state of DevOps 2022 report](https://cloud.google.com/devops/state-of-devops))
+[^1]
 
 - A [demo website displaying these metrics can be viewed here](https://devops-prod-eu-web.azurewebsites.net/).
 - Insights I've noted about implementing DORA DevOps metrics can be found in a [blog post here](https://samlearnsazure.blog/2020/04/30/high-performing-devops-metrics/)
@@ -101,3 +101,5 @@ The API can generate a URL for static badges, some samples are shown below:
 
 - GitHub API: https://developer.GitHub.com/v3/actions/workflow-runs/
 - Azure DevOps API: https://docs.microsoft.com/en-us/rest/api/azure/devops/build/builds/list?view=azure-devops-rest-5.1
+
+[^1]: Chart from [page 11 of state of DevOps 2022 report](https://cloud.google.com/devops/state-of-devops)
