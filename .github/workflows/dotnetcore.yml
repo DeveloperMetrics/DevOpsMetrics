@@ -132,7 +132,7 @@ jobs:
     if: github.ref == 'refs/heads/main' 
     steps:
       - name: Run Sonarcloud test
-        uses: samsmithnz/SamsDotNetSonarCloudAction@v2.0.1
+        uses: samsmithnz/SamsDotNetSonarCloudAction@v2.1.0
         with:
           projects: 'src/DevOpsMetrics.Core/DevOpsMetrics.Core.csproj,src/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj,src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj,src/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj,src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj,src/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj,src/DevOpsMetrics.Cmd/DevOpsMetrics.Cmd.csproj'
           dotnet-version: '8.0.x'
