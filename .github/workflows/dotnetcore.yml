@@ -31,7 +31,7 @@ jobs:
         echo "Version: ${{ steps.gitversion.outputs.SemVer }}"
         echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}"
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
     
@@ -83,7 +83,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
     #Run automated .NET tests   
@@ -114,7 +114,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x #Not a typo, the function is locked to a LTS version of .NET
     - name: .NET Publish Function
@@ -303,7 +303,7 @@ jobs:
 #    steps:
 #    - uses: actions/checkout@v4
 #    - name: Setup .NET Core
-#      uses: actions/setup-dotnet@v3
+#      uses: actions/setup-dotnet@v4
 #      with:
 #        dotnet-version: 3.1.101
 #    - name: .NET core Publish Azure DevOps Extension
