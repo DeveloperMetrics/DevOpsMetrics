@@ -20,11 +20,11 @@ jobs:
         fetch-depth: 0 #fetch-depth is needed for GitVersion  
     #Install and calculate the new version with GitVersion  
     - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v0.10.2
+      uses: gittools/actions/gitversion/setup@v1.1.1
       with:
         versionSpec: 5.x
     - name: Determine Version
-      uses: gittools/actions/gitversion/execute@v0.10.2
+      uses: gittools/actions/gitversion/execute@v1.1.1
       id: gitversion # step id used as reference for output values
     - name: Display GitVersion outputs
       run: |
@@ -132,7 +132,7 @@ jobs:
     if: github.ref == 'refs/heads/main' 
     steps:
       - name: Run Sonarcloud test
-        uses: samsmithnz/SamsDotNetSonarCloudAction@v2.1.0
+        uses: samsmithnz/SamsDotNetSonarCloudAction@v2.1
         with:
           projects: 'src/DevOpsMetrics.Core/DevOpsMetrics.Core.csproj,src/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj,src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj,src/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj,src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj,src/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj,src/DevOpsMetrics.Cmd/DevOpsMetrics.Cmd.csproj'
           dotnet-version: '8.0.x'
@@ -151,7 +151,7 @@ jobs:
 #    steps:        
 #    # Login with the secret SP details
 #    - name: Log into Azure
-#      uses: azure/login@v1
+#      uses: azure/login@v2
 #      with:
 #        creds: ${{ secrets.AZURE_SP_PROBOT }}  
 #    - name: Download webapp artifact
@@ -179,7 +179,7 @@ jobs:
     steps:        
     # Login with the secret SP details
     - name: Log into Azure
-      uses: azure/login@v1
+      uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_SP }}  
     
@@ -269,18 +269,18 @@ jobs:
     steps:
     # Login with the secret SP details
     - name: Log into Azure
-      uses: azure/login@v1
+      uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_SP }}     
       #Swap staging slots with prod
     - name: Swap web service staging slot to production
-      uses: Azure/cli@v1.0.8
+      uses: Azure/cli@v2.0.0
       with:
         inlineScript: az webapp deployment slot swap --name "devops-prod-eu-service" --resource-group "devopsmetrics" --slot staging --target-slot production
     - name: Deploy web service app settings
       run: az webapp config appsettings set --name "devops-prod-eu-service" --resource-group "devopsmetrics" --settings "AppSettings:AzureDevOpsPatToken=${{ secrets.AzureDevOpsPATToken }}" "AppSettings:GitHubClientId=${{ secrets.GitHubClientId }}" "AppSettings:GitHubClientSecret=${{ secrets.GitHubClientSecret }}" "AppSettings:AzureStorageAccountConfigurationString=${{ secrets.AzureStorageConnectionString }}"     
     - name: Swap web site staging slot to production
-      uses: Azure/cli@v1.0.8
+      uses: Azure/cli@v2.0.0
       with:
         inlineScript: az webapp deployment slot swap --name "devops-prod-eu-web" --resource-group "devopsmetrics" --slot staging --target-slot production
     - name: Deploy website app settings
