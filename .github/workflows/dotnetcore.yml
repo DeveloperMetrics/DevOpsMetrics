@@ -54,23 +54,23 @@ jobs:
         
     #Publish build artifacts to GitHub
     - name: Upload web service build artifacts back to GitHub
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: serviceapp
         path: ${{ github.workspace }}/webservice
     - name: Upload website build artifacts back to GitHub
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: webapp
         path: ${{ github.workspace }}/web
 
     - name: Upload functional test build artifacts back to GitHub
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: functionaltests
         path: ${{ github.workspace }}/functionalTests
     - name: Upload probot build artifacts back to GitHub
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: probot
         path: src/ProbotMetrics
@@ -120,7 +120,7 @@ jobs:
     - name: .NET Publish Function
       run: dotnet publish src/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj --configuration Debug --output ${{ github.workspace }}/function 
     - name: Upload function build artifacts back to GitHub
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: functionapp
         path: ${{ github.workspace }}/function
@@ -320,7 +320,7 @@ jobs:
 #        dir
 #        Write-Host "New env variable " ${{ env.extensionVersion }}
 #    - name: Upload Azure DevOps extension build artifacts back to GitHub
-#      uses: actions/upload-artifact@v3
+#      uses: actions/upload-artifact@v4
 #      with:
 #        name: azuredevopsextensionpackage
 #        path: src\DevOpsMetrics.AzureDevOpsExtension\bin\Release\netcoreapp3.1\publish\wwwroot\SamSmithNZ.high-performing-devops-metrics-${{ env.extensionVersion }}.vsix
