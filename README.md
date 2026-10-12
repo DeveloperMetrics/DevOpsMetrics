@@ -2,7 +2,6 @@
 
 [![Build](https://GitHub.com/samsmithnz/DevOpsMetrics/workflows/CI/CD/badge.svg)](https://GitHub.com/samsmithnz/DevOpsMetrics/actions?query=workflow%3ACI%2FCD)
 [![Coverage Status](https://coveralls.io/repos/github/samsmithnz/DevOpsMetrics/badge.svg?branch=main)](https://coveralls.io/github/samsmithnz/DevOpsMetrics?branch=main)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=samsmithnz_DevOpsMetrics&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=samsmithnz_DevOpsMetrics)
 [![Current Release](https://img.shields.io/github/release/samsmithnz/DevOpsMetrics/all.svg)](https://github.com/samsmithnz/DevOpsMetrics/releases)
 
 
@@ -63,7 +62,7 @@ This project is focused on helping you collect and analyze four key high perform
 ![Change failure rate](https://github.com/samsmithnz/DevOpsMetrics/blob/main/ReadmeImages/ChangeFailureRate.png)
 
 # Architecture
-Developed in .NET 8. A GitHub action runs the CI/CD process. 
+Developed in .NET 10. A GitHub action runs the CI/CD process. 
 
 Currently the CI/CD process: 
 1. Builds the code
