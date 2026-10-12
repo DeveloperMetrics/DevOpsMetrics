@@ -124,21 +124,6 @@ jobs:
       with:
         name: functionapp
         path: ${{ github.workspace }}/function
-
-
-  sonarCloud:
-    name: Run SonarCloud analysis
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' 
-    steps:
-      - name: Run Sonarcloud test
-        uses: samsmithnz/SamsDotNetSonarCloudAction@v2.1
-        with:
-          projects: 'src/DevOpsMetrics.Core/DevOpsMetrics.Core.csproj,src/DevOpsMetrics.Function/DevOpsMetrics.Function.csproj,src/DevOpsMetrics.FunctionalTests/DevOpsMetrics.FunctionalTests.csproj,src/DevOpsMetrics.Service/DevOpsMetrics.Service.csproj,src/DevOpsMetrics.Tests/DevOpsMetrics.Tests.csproj,src/DevOpsMetrics.Web/DevOpsMetrics.Web.csproj,src/DevOpsMetrics.Cmd/DevOpsMetrics.Cmd.csproj'
-          dotnet-version: '10.0.x'
-          sonarcloud-organization: samsmithnz-github
-          sonarcloud-project: samsmithnz_DevOpsMetrics
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           
 
   #Disabling PROBOT for 2021 reboot to focus on website
@@ -174,7 +159,6 @@ jobs:
     - build      
     - test
     - buildFunction
-    - sonarCloud
     if: github.ref == 'refs/heads/main'
     steps:        
     # Login with the secret SP details
