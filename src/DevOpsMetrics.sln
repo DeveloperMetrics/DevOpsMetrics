@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.3.32929.385
+# Visual Studio Version 18
+VisualStudioVersion = 18.7.11911.148 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Core", "DevOpsMetrics.Core\DevOpsMetrics.Core.csproj", "{274A42BF-52C4-4AD9-9A1C-E65076D7F81B}"
 EndProject
@@ -29,8 +29,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Function", "DevOpsMetrics.Function\DevOpsMetrics.Function.csproj", "{16C6AE31-8373-4F37-B291-AFDBE1829E3C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.FunctionalTests", "DevOpsMetrics.FunctionalTests\DevOpsMetrics.FunctionalTests.csproj", "{613B7F21-62CF-412F-BCF4-B0500EAE6FCB}"
-EndProject
-Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "DevOpsMetrics.Infrastructure", "DevOpsMetrics.Infrastructure\DevOpsMetrics.Infrastructure.deployproj", "{0465BF7A-C791-49CA-A7DE-27B4EECD2020}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevOpsMetrics.Cmd", "DevOpsMetrics.Cmd\DevOpsMetrics.Cmd.csproj", "{D15713F2-D089-45A7-A0FA-1F16D664130D}"
 EndProject
@@ -64,10 +62,6 @@ Global
 		{613B7F21-62CF-412F-BCF4-B0500EAE6FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{613B7F21-62CF-412F-BCF4-B0500EAE6FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{613B7F21-62CF-412F-BCF4-B0500EAE6FCB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0465BF7A-C791-49CA-A7DE-27B4EECD2020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0465BF7A-C791-49CA-A7DE-27B4EECD2020}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0465BF7A-C791-49CA-A7DE-27B4EECD2020}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0465BF7A-C791-49CA-A7DE-27B4EECD2020}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D15713F2-D089-45A7-A0FA-1F16D664130D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D15713F2-D089-45A7-A0FA-1F16D664130D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D15713F2-D089-45A7-A0FA-1F16D664130D}.Release|Any CPU.ActiveCfg = Release|Any CPU
