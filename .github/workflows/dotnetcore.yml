@@ -136,7 +136,7 @@ jobs:
 #    steps:        
 #    # Login with the secret SP details
 #    - name: Log into Azure
-#      uses: azure/login@v2
+#      uses: azure/login@v3
 #      with:
 #        creds: ${{ secrets.AZURE_SP_PROBOT }}  
 #    - name: Download webapp artifact
@@ -163,7 +163,7 @@ jobs:
     steps:        
     # Login with the secret SP details
     - name: Log into Azure
-      uses: azure/login@v2
+      uses: azure/login@v3
       with:
         creds: ${{ secrets.AZURE_SP }}  
     
@@ -253,7 +253,7 @@ jobs:
     steps:
     # Login with the secret SP details
     - name: Log into Azure
-      uses: azure/login@v2
+      uses: azure/login@v3
       with:
         creds: ${{ secrets.AZURE_SP }}     
       #Swap staging slots with prod
