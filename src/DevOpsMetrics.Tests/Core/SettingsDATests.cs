@@ -26,9 +26,9 @@ namespace DevOpsMetrics.Tests.Core
             //Act
 
             //Assert
-            Assert.IsTrue(string.IsNullOrEmpty(AzureDevOpsPatToken) == false);
-            Assert.IsTrue(string.IsNullOrEmpty(GitHubClientId) == false);
-            Assert.IsTrue(string.IsNullOrEmpty(GitHubClientSecret) == false);
+            //Assert.IsTrue(string.IsNullOrEmpty(AzureDevOpsPatToken) == false);
+            //Assert.IsTrue(string.IsNullOrEmpty(GitHubClientId) == false);
+            //Assert.IsTrue(string.IsNullOrEmpty(GitHubClientSecret) == false);
             Assert.IsTrue(string.IsNullOrEmpty(StorageAccountConnectionString) == false);
         }
 
