@@ -74,8 +74,7 @@ namespace DevOpsMetrics.Service.Controllers
                 clientSecret = Configuration[clientSecretName];
                 if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(clientSecret))
                 {
-                    errorMessage = $"clientId '{clientId}' or clientSecret '{clientSecret}' not found in key vault";
-                    throw new Exception(errorMessage);
+                    errorMessage = $"clientId '{clientIdName}' or clientSecret '{clientSecretName}' not found in key vault";
                 }
             }
             else
@@ -85,11 +84,23 @@ namespace DevOpsMetrics.Service.Controllers
                 if (string.IsNullOrEmpty(patToken))
                 {
                     errorMessage = $"patToken '{patTokenName}' not found in key vault";
-                    throw new Exception(errorMessage);
                 }
             }
 
             ProcessingResult result = new();
+            //If the settings are missing, skip the processing and return an empty result
+            if (string.IsNullOrEmpty(errorMessage) == false)
+            {
+                if (log == null)
+                {
+                    Console.WriteLine(errorMessage);
+                }
+                else
+                {
+                    log.LogInformation(errorMessage);
+                }
+                return result;
+            }
             DeploymentFrequencyModel deploymentFrequencyModel = new();
             LeadTimeForChangesModel leadTimeForChangesModel = new();
             MeanTimeToRestoreModel meanTimeToRestoreModel = new();
@@ -108,12 +119,10 @@ namespace DevOpsMetrics.Service.Controllers
                 //TODO: fix this - should be using a common interface, not this null hack
                 if (log == null)
                 {
-                    Console.WriteLine(errorMessage);
                     Console.WriteLine(message);
                 }
                 else
                 {
-                    log.LogInformation(errorMessage);
                     log.LogInformation(message);
                 }
                 if (useParallelProcessing)

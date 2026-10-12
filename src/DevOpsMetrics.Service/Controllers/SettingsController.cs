@@ -31,6 +31,11 @@ namespace DevOpsMetrics.Service.Controllers
         public async Task<List<AzureDevOpsSettings>> GetAzureDevOpsSettings(string rowKey = null)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+            //If the storage settings are missing, return an empty list instead of throwing an error
+            if (IsTableStorageConfigured(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings) == false)
+            {
+                return new List<AzureDevOpsSettings>();
+            }
             List<AzureDevOpsSettings> settings = await AzureTableStorageDA.GetAzureDevOpsSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings, rowKey);
             return settings;
         }
@@ -39,6 +44,11 @@ namespace DevOpsMetrics.Service.Controllers
         public async Task<List<GitHubSettings>> GetGitHubSettings(string rowKey = null)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+            //If the storage settings are missing, return an empty list instead of throwing an error
+            if (IsTableStorageConfigured(tableStorageConfig, tableStorageConfig.TableGitHubSettings) == false)
+            {
+                return new List<GitHubSettings>();
+            }
             List<GitHubSettings> settings = await AzureTableStorageDA.GetGitHubSettingsFromStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings, rowKey);
             return settings;
         }
@@ -59,6 +69,10 @@ namespace DevOpsMetrics.Service.Controllers
 
             //Save everything else to table storage
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+            if (IsTableStorageConfigured(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings) == false)
+            {
+                return false;
+            }
             return await AzureTableStorageDA.UpdateAzureDevOpsSettingInStorage(tableStorageConfig, tableStorageConfig.TableAzureDevOpsSettings,
                      organization, project, repository, branch, buildName, buildId, resourceGroup, itemOrder, showSetting);
         }
@@ -85,6 +99,10 @@ namespace DevOpsMetrics.Service.Controllers
 
             //Save everything else to table storage
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+            if (IsTableStorageConfigured(tableStorageConfig, tableStorageConfig.TableGitHubSettings) == false)
+            {
+                return false;
+            }
             return await AzureTableStorageDA.UpdateGitHubSettingInStorage(tableStorageConfig, tableStorageConfig.TableGitHubSettings,
                     owner, repo, branch, workflowName, workflowId, resourceGroup, itemOrder, showSetting);
         }
@@ -93,6 +111,10 @@ namespace DevOpsMetrics.Service.Controllers
         public async Task<bool> UpdateDevOpsMonitoringEvent([FromBody] MonitoringEvent monitoringEvent)
         {
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+            if (IsTableStorageConfigured(tableStorageConfig, tableStorageConfig.TableLog) == false)
+            {
+                return false;
+            }
             return await AzureTableStorageDA.UpdateDevOpsMonitoringEventInStorage(tableStorageConfig, monitoringEvent);
         }
 
@@ -102,6 +124,10 @@ namespace DevOpsMetrics.Service.Controllers
             string partitionKey = PartitionKeys.CreateAzureDevOpsSettingsPartitionKey(organization, project, repository);
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+            if (IsTableStorageConfigured(tableStorageConfig, tableStorageConfig.TableLog) == false)
+            {
+                return new List<ProjectLog>();
+            }
             return await AzureTableStorageDA.GetProjectLogsFromStorage(tableStorageConfig, partitionKey);
         }
 
@@ -115,6 +141,10 @@ namespace DevOpsMetrics.Service.Controllers
                 buildsUpdated, prsUpdated, HttpUtility.UrlDecode(buildUrl), HttpUtility.UrlDecode(prUrl), exceptionMessage, exceptionStackTrace);
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+            if (IsTableStorageConfigured(tableStorageConfig, tableStorageConfig.TableLog) == false)
+            {
+                return false;
+            }
             return await AzureTableStorageDA.UpdateProjectLogInStorage(tableStorageConfig, log);
         }
 
@@ -124,6 +154,10 @@ namespace DevOpsMetrics.Service.Controllers
             string partitionKey = PartitionKeys.CreateGitHubSettingsPartitionKey(owner, repo);
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+            if (IsTableStorageConfigured(tableStorageConfig, tableStorageConfig.TableLog) == false)
+            {
+                return new List<ProjectLog>();
+            }
             return await AzureTableStorageDA.GetProjectLogsFromStorage(tableStorageConfig, partitionKey);
         }
 
@@ -137,12 +171,29 @@ namespace DevOpsMetrics.Service.Controllers
                 buildsUpdated, prsUpdated, HttpUtility.UrlDecode(buildUrl), HttpUtility.UrlDecode(prUrl), exceptionMessage, exceptionStackTrace);
 
             TableStorageConfiguration tableStorageConfig = Common.GenerateTableStorageConfiguration(Configuration);
+            if (IsTableStorageConfigured(tableStorageConfig, tableStorageConfig.TableLog) == false)
+            {
+                return false;
+            }
             return await AzureTableStorageDA.UpdateProjectLogInStorage(tableStorageConfig, log);
+        }
+
+        //If the table storage settings aren't available, we skip the call rather than throwing an error
+        private static bool IsTableStorageConfigured(TableStorageConfiguration tableStorageConfig, string tableName)
+        {
+            return tableStorageConfig != null &&
+                string.IsNullOrEmpty(tableStorageConfig.StorageAccountConnectionString) == false &&
+                string.IsNullOrEmpty(tableName) == false;
         }
 
         private async Task<KeyVaultSecret> CreateKeyVaultSecret(string secretName, string secretValue)
         {
             string keyVaultURI = Configuration["AppSettings:KeyVaultURL"];
+            //If the key vault isn't setup, or the secret is empty, skip saving the secret rather than throwing an error
+            if (string.IsNullOrEmpty(keyVaultURI) || string.IsNullOrEmpty(secretValue))
+            {
+                return null;
+            }
             SecretClient secretClient = new(new Uri(keyVaultURI), new DefaultAzureCredential());
             return await secretClient.SetSecretAsync(secretName, secretValue);
         }
