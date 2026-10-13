@@ -25,7 +25,7 @@ namespace DevOpsMetrics.Service
         {
             services.AddControllers();
 
-            //services.AddScoped<IAzureTableStorageDA, AzureTableStorageDA>();
+            services.AddScoped<IAzureTableStorageDA, AzureTableStorageDA>();
 
             services.AddApplicationInsightsTelemetry();
         }
