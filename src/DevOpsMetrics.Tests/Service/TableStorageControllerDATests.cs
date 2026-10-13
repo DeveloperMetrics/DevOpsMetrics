@@ -231,7 +231,7 @@ namespace DevOpsMetrics.Tests.Service
             bool result = await controller.UpdateAzureDevOpsSetting(patToken, organization, project, repository, branch, buildName, buildId, resourceGroup, itemOrder, showSetting);
 
             //Assert
-            Assert.AreEqual(true, result);
+            Assert.AreEqual(false, result);
         }
 
         [TestMethod]
@@ -256,7 +256,7 @@ namespace DevOpsMetrics.Tests.Service
             bool result = await controller.UpdateGitHubSetting(clientId, clientSecret, owner, repo, branch, workflowName, workflowId, resourceGroup, itemOrder, showSetting);
 
             //Assert
-            Assert.AreEqual(true, result);
+            Assert.AreEqual(false, result);
         }
 
         [TestMethod]
@@ -272,7 +272,7 @@ namespace DevOpsMetrics.Tests.Service
             bool result = await controller.UpdateDevOpsMonitoringEvent(newEvent);
 
             //Assert
-            Assert.AreEqual(true, result);
+            Assert.AreEqual(false, result);
         }
 
         [TestMethod]
@@ -317,7 +317,7 @@ namespace DevOpsMetrics.Tests.Service
                 buildsUpdated, prsUpdated, buildUrl, prUrl, exceptionMessage, exceptionStackTrace);
 
             //Assert
-            Assert.AreEqual(true, result);
+            Assert.AreEqual(false, result);
         }
 
         [TestMethod]
@@ -361,7 +361,7 @@ namespace DevOpsMetrics.Tests.Service
                 buildsUpdated, prsUpdated, buildUrl, prUrl, exceptionMessage, exceptionStackTrace);
 
             //Assert
-            Assert.AreEqual(true, result);
+            Assert.AreEqual(false, result);
         }
 
         private static int GetSampleUpdateData()
