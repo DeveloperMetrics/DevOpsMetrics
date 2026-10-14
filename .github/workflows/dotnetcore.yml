@@ -15,7 +15,7 @@ jobs:
       Version: ${{ steps.gitversion.outputs.SemVer }}
       CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}  
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         fetch-depth: 0 #fetch-depth is needed for GitVersion  
     #Install and calculate the new version with GitVersion  
@@ -81,7 +81,7 @@ jobs:
     permissions:
       actions: read 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v4.0.1
       with:
@@ -112,7 +112,7 @@ jobs:
   buildFunction:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v4.0.1
       with:
@@ -285,7 +285,7 @@ jobs:
 #      extensionVersion: "0.0.0" 
 #    #if: github.ref == 'refs/heads/main'
 #    steps:
-#    - uses: actions/checkout@v4
+#    - uses: actions/checkout@v7
 #    - name: Setup .NET Core
 #      uses: actions/setup-dotnet@v4.0.1
 #      with:
